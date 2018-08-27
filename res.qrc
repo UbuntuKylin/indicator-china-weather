@@ -1,0 +1,46 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/close_hover_btn.png</file>
+        <file>res/close_normal_btn.png</file>
+        <file>res/close_pressed_btn.png</file>
+        <file>res/indicator-china-weather_min.png</file>
+        <file>res/min_hover_btn.png</file>
+        <file>res/min_pressed_btn.png</file>
+        <file>res/min_normal_btn.png</file>
+        <file>res/background/weather-clear-night.png</file>
+        <file>res/background/weather-clear.png</file>
+        <file>res/background/weather-few-clouds.png</file>
+        <file>res/background/weather-fog.png</file>
+        <file>res/background/weather-overcast.png</file>
+        <file>res/background/weather-rain.png</file>
+        <file>res/background/weather-sandstorm.png</file>
+        <file>res/background/weather-smog.png</file>
+        <file>res/background/weather-snow.png</file>
+        <file>res/indicator-china-weather.png</file>
+        <file>res/about_normal.png</file>
+        <file>res/quit_normal.png</file>
+        <file>res/location.png</file>
+        <file>res/set_city.png</file>
+        <file>res/current_sd.png</file>
+        <file>res/current_wind.png</file>
+        <file>res/aqi.png</file>
+        <file>res/temp.png</file>
+        <file>res/weather_icons/lightgrey/100.png</file>
+        <file>res/life_index_d.png</file>
+        <file>res/life_index_n.png</file>
+        <file>res/clothe_index.png</file>
+        <file>res/search.png</file>
+        <file>res/delete_hover_pressed_btn.png</file>
+        <file>res/delete_normal_btn.png</file>
+        <file>res/add.png</file>
+        <file>res/add_hover_btn.png</file>
+        <file>res/add_normal_btn.png</file>
+        <file>res/add_pressed_btn.png</file>
+        <file>res/subtract_hover_btn.png</file>
+        <file>res/subtract_normal_btn.png</file>
+        <file>res/subtract_pressed_btn.png</file>
+    </qresource>
+    <qresource prefix="/data">
+        <file>data/locations.txt</file>
+    </qresource>
+</RCC>
