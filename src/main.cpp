@@ -31,5 +31,30 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
+    //http://service.ubuntukylin.com:8001/weather/api/1.0/observe/101250101/
+    //service.ubuntukylin.com:8001/weather/api/1.0/heweather_forecast/101250101/
+
+    //pingback
+    //http://service.ubuntukylin.com:8001/weather/pingnetwork/
+    //service.ubuntukylin.com:8001/weather/pingbackmain?distro=ubuntu&version_os=16.04&version_weather=1.0&city=长沙
+
+    //post
+//    QNetworkRequest request;
+//    request.setUrl(QUrl("http://localhost:8888/login"));
+//    QByteArray postData;
+//    postData.append("myname=lk&mypwd=33");
+//    QNetworkReply* reply = m_accessManager->post(request,postData);
+
+
+//    QUrl url("http://localhost:8080/WebRoot/servlet/LoginServlet");
+//    QByteArray append("username=admin&password=123456");
+//    QNetworkReply* reply = nam->post(QNetworkRequest(url), append);
+
+
+    //get
+//    QNetworkRequest request;
+//    request.setUrl(QUrl("http://dict.baidu.com/s?wd=name"));
+//    m_accessManager->get(request);
+
     return a.exec();
 }

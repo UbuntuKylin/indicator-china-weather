@@ -22,6 +22,7 @@
 #include "contentwidget.h"
 #include "settingdialog.h"
 #include "aboutdialog.h"
+#include "weatherworker.h"
 
 #include <QApplication>
 #include <QDesktopWidget>
@@ -40,6 +41,10 @@ using namespace Global;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , m_mousePressed(false)
+    , m_weatherWorker(new WeatherWorker(this))
+    , m_centralWidget(new QWidget(this))
+    , m_titleBar(new TitleBar(this))
+    , m_contentWidget(new ContentWidget(m_weatherWorker, this))
 {
     this->setFixedSize(355, 552);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//需要加上Qt::WindowMinimizeButtonHint，否则showMinimized无效
@@ -49,15 +54,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     global_init();
 
-    m_centralWidget = new QWidget(this);
     m_layout = new QVBoxLayout(m_centralWidget);
     m_layout->setContentsMargins(0,0,0,0);
     m_layout->setSpacing(0);
 
-    m_titleBar = new TitleBar(this);//height:32
-    m_contentWidget = new ContentWidget(this);//height:520
-    m_layout->addWidget(m_titleBar);
-    m_layout->addWidget(m_contentWidget);
+    m_layout->addWidget(m_titleBar);//height:32
+    m_layout->addWidget(m_contentWidget);//height:520
     this->setCentralWidget(m_centralWidget);
 
     this->initMenuAndTray();
@@ -80,10 +82,9 @@ void MainWindow::initMenuAndTray()
     if (m_preferences->m_cityList == NULL) {
         return;
     }
-
-    m_preferences->m_cityList->addCityToStringList("北京");
-    m_preferences->m_cityList->addCityToStringList("上海");
-    m_preferences->m_cityList->addCityToStringList("长沙");
+//    m_preferences->m_cityList->addCityToStringList("北京");
+//    m_preferences->m_cityList->addCityToStringList("上海");
+//    m_preferences->m_cityList->addCityToStringList("长沙");
 
     m_mainMenu = new QMenu(this);
     m_cityMenu = new QMenu(this);
@@ -146,6 +147,9 @@ void MainWindow::initMenuAndTray()
 
     QShortcut *m_quitShortCut = new QShortcut(QKeySequence("Ctrl+Q"), this);
     connect(m_quitShortCut, SIGNAL(activated()), qApp, SLOT(quit()));
+
+
+    m_weatherWorker->refreshObserveWeatherData(m_preferences->currentCityId);
 }
 
 void MainWindow::showSettingDialog()
@@ -279,4 +283,11 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
     }
 
     QMainWindow::mouseMoveEvent(event);
+}
+
+void MainWindow::showEvent(QShowEvent *event)
+{
+    QWidget::showEvent(event);
+
+    //m_weatherWorker->refreshForecastWeatherData(m_preferences->currentCityId);
 }

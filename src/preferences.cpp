@@ -81,8 +81,13 @@ void Preferences::load()
     QSettings *set = m_settings;
 
     set->beginGroup("City");
-    currentCity = set->value("current_city", currentCity).toString();
     currentCityId = set->value("current_city_id", currentCityId).toString();
+    if (currentCityId.isEmpty()) {
+        currentCityId = "101250101";
+        currentCity = "长沙";
+        this->m_cityList->addCityToStringList("长沙");
+    }
+    currentCity = set->value("current_city", currentCity).toString();
     m_cityList->loadCityesToStringList(set->value("city_list", m_cityList->getCitiesList()).toStringList());
     set->endGroup();
 

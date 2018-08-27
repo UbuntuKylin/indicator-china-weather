@@ -24,7 +24,7 @@
 
 #include <QVBoxLayout>
 
-ContentWidget::ContentWidget(QWidget *parent) :
+ContentWidget::ContentWidget(WeatherWorker *weatherWorker, QWidget *parent) :
     QFrame(parent)
 {
     m_layout = new QVBoxLayout(this);
@@ -32,8 +32,8 @@ ContentWidget::ContentWidget(QWidget *parent) :
     m_layout->setSpacing(0);
 //    m_layout->setSpacing(1);
 
-    m_nowWidget = new NowWeatherWidget(this);//this->setFixedSize(355, 180);
-    m_forecastWidget = new ForecastWeatherWidget(this);//this->setFixedSize(355, 340);
+    m_nowWidget = new NowWeatherWidget(weatherWorker, this);//this->setFixedSize(355, 180);
+    m_forecastWidget = new ForecastWeatherWidget(weatherWorker, this);//this->setFixedSize(355, 340);
 
     m_layout->addWidget(m_nowWidget, 0, Qt::AlignTop);
     m_layout->addWidget(m_forecastWidget);

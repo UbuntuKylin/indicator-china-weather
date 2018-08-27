@@ -22,6 +22,8 @@
 
 #include <QFrame>
 
+#include "weatherworker.h"
+
 class QLabel;
 class TranslucentLabel;
 
@@ -30,7 +32,7 @@ class NowWeatherWidget : public QFrame
     Q_OBJECT
 
 public:
-    explicit NowWeatherWidget(QFrame *parent = 0);
+    explicit NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent = 0);
     ~NowWeatherWidget();
 
     void setWeatherIcon(const QString &iconPath);
@@ -44,6 +46,7 @@ private:
     QLabel *m_weatherIcon = nullptr;
     TranslucentLabel *m_aqiLabel = nullptr;
     TranslucentLabel *m_temperatureLabel = nullptr;
+    WeatherWorker *m_weatherWorker = nullptr;
 };
 
 #endif // NOW_WEATHER_WIDGET_H

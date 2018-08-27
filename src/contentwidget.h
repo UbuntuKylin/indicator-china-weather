@@ -26,13 +26,14 @@ class QVBoxLayout;
 class NowWeatherWidget;
 class ForecastWeatherWidget;
 //class IndexWeatherWidget;
+class WeatherWorker;
 
 class ContentWidget : public QFrame
 {
     Q_OBJECT
 
 public:
-    explicit ContentWidget(QWidget *parent = 0);
+    explicit ContentWidget(WeatherWorker *weatherWorker, QWidget *parent = 0);
     ~ContentWidget();
 
 private:

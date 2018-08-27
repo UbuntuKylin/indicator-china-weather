@@ -29,6 +29,7 @@
 class TitleBar;
 class ContentWidget;
 class SettingDialog;
+class WeatherWorker;
 
 class MainWindow : public QMainWindow
 {
@@ -48,6 +49,7 @@ protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
 
 public slots:
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
@@ -76,6 +78,7 @@ private:
     SettingDialog *m_setttingDialog = nullptr;
 
     //QStringList m_cityList;
+    WeatherWorker *m_weatherWorker = nullptr;
 };
 
 #endif // MAINWINDOW_H

@@ -24,8 +24,9 @@
 #include <QEvent>
 #include <QDebug>
 
-NowWeatherWidget::NowWeatherWidget(QFrame *parent) :
+NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent) :
     QFrame(parent)
+    , m_weatherWorker(weatherWorker)
 {
     this->setFixedSize(355, 180);
 //    this->setStyleSheet("QLabel{border-radius: 0px; color:rgb(250, 250, 250); background-color:argb(250, 205, 120, 130);}");

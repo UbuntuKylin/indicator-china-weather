@@ -4,9 +4,13 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += network
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+#greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+isEqual(QT_MAJOR_VERSION, 5) {
+    QT += widgets gui core
+}
 
 TARGET = indicator-china-weather
 TEMPLATE = app
@@ -67,7 +71,8 @@ SOURCES += src/main.cpp \
     src/menuactiongroup.cpp \
     src/global.cpp \
     src/preferences.cpp \
-    src/citieslist.cpp
+    src/citieslist.cpp \
+    src/weatherworker.cpp
 
 HEADERS  += src/mainwindow.h \
     src/titlebar.h \
@@ -99,7 +104,8 @@ HEADERS  += src/mainwindow.h \
     src/menuactiongroup.h \
     src/global.h \
     src/preferences.h \
-    src/citieslist.h
+    src/citieslist.h \
+    src/weatherworker.h
 
 RESOURCES += \
     res.qrc

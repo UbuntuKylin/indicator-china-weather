@@ -30,8 +30,9 @@ const QStringList LIFESTYLE = {"comf", "drsg", "flu", "sport", "trav", "uv", "cw
 
 }
 
-ForecastWeatherWidget::ForecastWeatherWidget(QFrame *parent) :
+ForecastWeatherWidget::ForecastWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent) :
     QFrame(parent)
+    , m_weatherWorker(weatherWorker)
 {
     this->setFixedSize(355, 340);
 //    this->setStyleSheet("QLabel{border-radius: 0px; color:rgb(250, 250, 250); background-color:argb(60, 60, 60, 130);}");
