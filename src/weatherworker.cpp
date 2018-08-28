@@ -28,9 +28,9 @@
 
 WeatherWorker::WeatherWorker(QObject *parent) :
     QObject(parent)
-    , m_manager(new QNetworkAccessManager(this))
+    , m_networkManager(new QNetworkAccessManager(this))
 {
-    connect(m_manager, &QNetworkAccessManager::finished, this, [] (QNetworkReply *reply) {
+    connect(m_networkManager, &QNetworkAccessManager::finished, this, [] (QNetworkReply *reply) {
         reply->deleteLater();
     });
 }
@@ -62,7 +62,7 @@ void WeatherWorker::refreshObserveWeatherData(const QString &cityId)
     QNetworkRequest request;
     request.setUrl(forecastUrl);
     //request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);//Qt5.6 for redirect
-    QNetworkReply *reply = m_manager->get(request);
+    QNetworkReply *reply = m_networkManager->get(request);
     connect(reply, &QNetworkReply::finished, this, &WeatherWorker::onWeatherObserveReply);
 }
 
@@ -72,26 +72,40 @@ void WeatherWorker::refreshForecastWeatherData(const QString &cityId)
         return;
 
     QString forecastUrl = QString("http://service.ubuntukylin.com:8001/weather/api/1.0/heweather_forecast/%1").arg(cityId);
-    QNetworkReply *reply = m_manager->get(QNetworkRequest(forecastUrl));
+    QNetworkReply *reply = m_networkManager->get(QNetworkRequest(forecastUrl));
     connect(reply, &QNetworkReply::finished, this, &WeatherWorker::onWeatherForecastReply);
 }
 
 void WeatherWorker::requestPingBackWeatherServer()
 {
-    QNetworkReply *reply = m_manager->get(QNetworkRequest(QString("http://service.ubuntukylin.com:8001/weather/pingnetwork/")));
+    QNetworkReply *reply = m_networkManager->get(QNetworkRequest(QString("http://service.ubuntukylin.com:8001/weather/pingnetwork/")));
     connect(reply, &QNetworkReply::finished, this, [=] () {
+        QNetworkReply *m_reply = qobject_cast<QNetworkReply*>(sender());
+        int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        if(m_reply->error() != QNetworkReply::NoError || statusCode != 200) {//200 is normal status
+            qDebug() << "pingback request error:" << m_reply->error() << ", statusCode=" << statusCode;
+            return;
+        }
 
+        QByteArray ba = m_reply->readAll();
+        m_reply->close();
+        m_reply->deleteLater();
+        QString reply_content = QString::fromUtf8(ba);
+        qDebug() << "pingback size: " << ba.size() << reply_content;
     });
 }
 
-void WeatherWorker::requestPostHostInfoToWeatherServer(const QString &hostInfo)
+void WeatherWorker::requestPostHostInfoToWeatherServer(QString hostInfo)
 {
-    //example: http://service.ubuntukylin.com:8001/weather/pingbackmain?distro=ubuntu&version_os=16.04&version_weather=1.0&city=长沙
-    QString postInfoUrl = QString("http://service.ubuntukylin.com:8001/weather/pingbackmain?%1").arg(hostInfo);
-    QNetworkReply *reply = m_manager->get(QNetworkRequest(postInfoUrl));
-    connect(reply, &QNetworkReply::finished, this, [=] () {
-
-    });
+    this->m_hostInfoParameters = hostInfo;
+    QByteArray parameters = hostInfo.toUtf8();
+    QNetworkRequest request;
+    request.setUrl(QUrl("http://service.ubuntukylin.com:8001/weather/pingbackmain"));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    request.setHeader(QNetworkRequest::ContentLengthHeader, parameters.length());
+    //QUrl url("http://service.ubuntukylin.com:8001/weather/pingbackmain");
+    QNetworkReply *reply = m_networkManager->post(request, parameters);//QNetworkReply *reply = m_networkManager->post(QNetworkRequest(url), parameters);
+    connect(reply, &QNetworkReply::finished, this, &WeatherWorker::onPingBackPostReply);
 }
 
 void WeatherWorker::AccessDedirectUrl(const QString &redirectUrl, WeatherType weatherType)
@@ -104,7 +118,7 @@ void WeatherWorker::AccessDedirectUrl(const QString &redirectUrl, WeatherType we
     url = redirectUrl;
     request.setUrl(QUrl(url));
 
-    QNetworkReply *reply = m_manager->get(request);
+    QNetworkReply *reply = m_networkManager->get(request);
 
     switch (weatherType) {
     case WeatherType::Type_Observe:
@@ -116,6 +130,22 @@ void WeatherWorker::AccessDedirectUrl(const QString &redirectUrl, WeatherType we
     default:
         break;
     }
+}
+
+void WeatherWorker::AccessDedirectUrlWithPost(const QString &redirectUrl)
+{
+    if (redirectUrl.isEmpty())
+        return;
+
+    QNetworkRequest request;
+    QString url;
+    url = redirectUrl;
+    QByteArray parameters = this->m_hostInfoParameters.toUtf8();
+    request.setUrl(QUrl(url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    request.setHeader(QNetworkRequest::ContentLengthHeader, parameters.length());
+    QNetworkReply *reply = m_networkManager->post(request, parameters);
+    connect(reply, &QNetworkReply::finished, this, &WeatherWorker::onPingBackPostReply);
 }
 
 void WeatherWorker::onWeatherObserveReply()
@@ -194,6 +224,29 @@ void WeatherWorker::onWeatherForecastReply()
     }
 
     emit this->forecastDataRefreshed();
+}
+
+void WeatherWorker::onPingBackPostReply()
+{
+    QNetworkReply *m_reply = qobject_cast<QNetworkReply*>(sender());
+    int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if(m_reply->error() != QNetworkReply::NoError || statusCode != 200) {//200 is normal status
+        qDebug() << "post host info request error:" << m_reply->error() << ", statusCode=" << statusCode;
+        if (statusCode == 301 || statusCode == 302) {//redirect
+            QVariant redirectionUrl = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
+            qDebug() << "pingback redirectionUrl=" << redirectionUrl.toString();
+            AccessDedirectUrlWithPost(redirectionUrl.toString());
+            m_reply->close();
+            m_reply->deleteLater();
+        }
+        return;
+    }
+
+    QByteArray ba = m_reply->readAll();
+    m_reply->close();
+    m_reply->deleteLater();
+    QString reply_content = QString::fromUtf8(ba);
+    qDebug() << "return size: " << ba.size() << reply_content;
 }
 
 /*  http://www.heweather.com/documents/status-code  */

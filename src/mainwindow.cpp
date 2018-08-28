@@ -149,7 +149,10 @@ void MainWindow::initMenuAndTray()
     connect(m_quitShortCut, SIGNAL(activated()), qApp, SLOT(quit()));
 
 
-    m_weatherWorker->refreshObserveWeatherData(m_preferences->currentCityId);
+//    m_weatherWorker->refreshObserveWeatherData(m_preferences->currentCityId);
+
+    m_weatherWorker->requestPostHostInfoToWeatherServer("distro=ubuntu&version_os=16.04&version_weather=1.0&city=长沙");
+//    m_weatherWorker->requestPingBackWeatherServer();
 }
 
 void MainWindow::showSettingDialog()

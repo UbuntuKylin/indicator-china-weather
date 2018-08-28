@@ -43,9 +43,10 @@ public:
     void refreshForecastWeatherData(const QString &cityId);
 
     void requestPingBackWeatherServer();
-    void requestPostHostInfoToWeatherServer(const QString &hostInfo);
+    void requestPostHostInfoToWeatherServer(QString hostInfo);
 
     void AccessDedirectUrl(const QString &redirectUrl, WeatherType weatherType);
+    void AccessDedirectUrlWithPost(const QString &redirectUrl);
 
     QString getErrorCodeDescription(QString errorCode);
 
@@ -56,9 +57,11 @@ signals:
 public slots:
     void onWeatherObserveReply();
     void onWeatherForecastReply();
+    void onPingBackPostReply();
 
 private:
-    QNetworkAccessManager *m_manager = nullptr;
+    QNetworkAccessManager *m_networkManager = nullptr;
+    QString m_hostInfoParameters;
 };
 
 #endif // WEATHERWORKER_H
