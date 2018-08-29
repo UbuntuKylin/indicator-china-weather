@@ -72,7 +72,8 @@ SOURCES += src/main.cpp \
     src/global.cpp \
     src/preferences.cpp \
     src/citieslist.cpp \
-    src/weatherworker.cpp
+    src/weatherworker.cpp \
+    src/networkerrorwidget.cpp
 
 HEADERS  += src/mainwindow.h \
     src/titlebar.h \
@@ -105,7 +106,8 @@ HEADERS  += src/mainwindow.h \
     src/global.h \
     src/preferences.h \
     src/citieslist.h \
-    src/weatherworker.h
+    src/weatherworker.h \
+    src/networkerrorwidget.h
 
 RESOURCES += \
     res.qrc

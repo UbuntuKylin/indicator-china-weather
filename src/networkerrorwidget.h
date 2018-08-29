@@ -17,33 +17,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONTENTWIDGET_H
-#define CONTENTWIDGET_H
+#ifndef NETWORK_ERROR_WIDGET_H
+#define NETWORK_ERROR_WIDGET_H
 
 #include <QFrame>
+#include <QVBoxLayout>
 
-class QVBoxLayout;
-class NowWeatherWidget;
-class ForecastWeatherWidget;
-class NetworkErrorWidget;
-//class IndexWeatherWidget;
-class WeatherWorker;
-
-class ContentWidget : public QFrame
+class NetworkErrorWidget : public QFrame
 {
     Q_OBJECT
 
 public:
-    explicit ContentWidget(WeatherWorker *weatherWorker, QWidget *parent = 0);
-    ~ContentWidget();
+    explicit NetworkErrorWidget(QFrame *parent = 0);
+    ~NetworkErrorWidget();
 
 private:
     QVBoxLayout *m_layout = nullptr;
-
-    NowWeatherWidget *m_nowWidget = nullptr;
-    ForecastWeatherWidget *m_forecastWidget = nullptr;
-    NetworkErrorWidget *m_networkErrorWidget = nullptr;
-//    IndexWeatherWidget *m_indexWidget = nullptr;
 };
 
-#endif // CONTENTWIDGET_H
+#endif // NETWORK_ERROR_WIDGET_H

@@ -39,6 +39,23 @@
         <file>res/subtract_hover_btn.png</file>
         <file>res/subtract_normal_btn.png</file>
         <file>res/subtract_pressed_btn.png</file>
+        <file>res/cash_wash_index.png</file>
+        <file>res/checkbox.png</file>
+        <file>res/city_background.png</file>
+        <file>res/link.gif</file>
+        <file>res/location_bg_hover.png</file>
+        <file>res/min_bg.png</file>
+        <file>res/network_warn.png</file>
+        <file>res/ok_disabled_btn.png</file>
+        <file>res/ok_hover_btn.png</file>
+        <file>res/ok_normal_btn.png</file>
+        <file>res/ok_pressed_btn.png</file>
+        <file>res/pressure.png</file>
+        <file>res/sd.png</file>
+        <file>res/ultraviolet_rays.png</file>
+        <file>res/unlink.png</file>
+        <file>res/update_warn.png</file>
+        <file>res/visibility.png</file>
     </qresource>
     <qresource prefix="/data">
         <file>data/locations.txt</file>

@@ -58,6 +58,7 @@ void WeatherWorker::refreshObserveWeatherData(const QString &cityId)
     manager->deleteLater();
     qDebug() << "weather observe size: " << responseData.size();*/
 
+    //heweather_observe_s6
     QString forecastUrl = QString("http://service.ubuntukylin.com:8001/weather/api/1.0/observe/%1").arg(cityId);
     QNetworkRequest request;
     request.setUrl(forecastUrl);
@@ -71,6 +72,7 @@ void WeatherWorker::refreshForecastWeatherData(const QString &cityId)
     if (cityId.isEmpty())
         return;
 
+    //heweather_forecast_s6
     QString forecastUrl = QString("http://service.ubuntukylin.com:8001/weather/api/1.0/heweather_forecast/%1").arg(cityId);
     QNetworkReply *reply = m_networkManager->get(QNetworkRequest(forecastUrl));
     connect(reply, &QNetworkReply::finished, this, &WeatherWorker::onWeatherForecastReply);

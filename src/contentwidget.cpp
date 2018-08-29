@@ -20,6 +20,7 @@
 #include "contentwidget.h"
 #include "nowweatherwidget.h"
 #include "forecastweatherwidget.h"
+#include "networkerrorwidget.h"
 //#include "indexweatherwidget.h"
 
 #include <QVBoxLayout>
@@ -34,9 +35,12 @@ ContentWidget::ContentWidget(WeatherWorker *weatherWorker, QWidget *parent) :
 
     m_nowWidget = new NowWeatherWidget(weatherWorker, this);//this->setFixedSize(355, 180);
     m_forecastWidget = new ForecastWeatherWidget(weatherWorker, this);//this->setFixedSize(355, 340);
+    m_networkErrorWidget = new NetworkErrorWidget(this);
 
     m_layout->addWidget(m_nowWidget, 0, Qt::AlignTop);
     m_layout->addWidget(m_forecastWidget);
+    m_networkErrorWidget->setVisible(false);
+    m_layout->addWidget(m_networkErrorWidget);
 }
 
 ContentWidget::~ContentWidget()
