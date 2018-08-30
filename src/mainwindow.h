@@ -45,6 +45,8 @@ public:
     void createSettingDialog();
     void refreshCityActions();
 
+    void refreshUI();
+
 protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;

@@ -28,7 +28,6 @@ IndexItemWidget::IndexItemWidget(const QString &name, QWidget *parent)
     , m_mouseHover(false)
     , m_indexName(name)
 {
-    this->setFixedSize(100, 50);
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
@@ -54,13 +53,13 @@ void IndexItemWidget::paintEvent(QPaintEvent *e)
     QWidget::paintEvent(e);
 
     QPainter painter(this);
-    painter.fillRect(rect(), QColor(255, 255, 255, 255 * (m_mouseHover ? 0.1 : 0.03)));
+    painter.fillRect(rect(), QColor(0, 0, 0, m_mouseHover ? 20 : 0));
 
     const qreal ratio = qApp->devicePixelRatio();
 
     painter.setRenderHint(QPainter::Antialiasing, true);
     QPixmap icon = QPixmap(":/res/clothe_index.png");
-    QRect iconRect(2, 2, icon.width()/ratio, icon.height()/ratio);
+    QRect iconRect(20, 2, icon.width()/ratio, icon.height()/ratio);
     painter.drawPixmap(iconRect, icon);
 
     painter.setRenderHint(QPainter::Antialiasing, false);

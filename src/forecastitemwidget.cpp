@@ -8,8 +8,8 @@
 ForecastItemWidget::ForecastItemWidget(QWidget *parent) :
     QWidget(parent)
 {
-    this->setFixedSize(100, 180);
-    this->setStyleSheet("QWidget{border-radius: 0px; color:rgb(250, 250, 250); background-color:argb(60, 60, 60, 130);}");
+    this->setFixedSize(100, 160);
+    this->setStyleSheet("QWidget{border-radius: 0px;color:rgb(250,250,250);background-color:rgba(0,0,0,0.2)}");
 //    setAttribute(Qt::WA_TransparentForMouseEvents);
 
     m_weekLabel = new QLabel(this);
@@ -24,7 +24,7 @@ ForecastItemWidget::ForecastItemWidget(QWidget *parent) :
     m_iconLabel->setStyleSheet("QLabel{border:none;background-color:transparent;}");
     m_tempLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
 
-    m_iconLabel->setFixedSize(100, 100);
+    m_iconLabel->setFixedSize(48, 48);
 
     m_layout = new QVBoxLayout(this);
     m_layout->setContentsMargins(0, 0, 0, 0);
@@ -55,7 +55,9 @@ void ForecastItemWidget::setDefaultData()
     m_weekLabel->setText("今天");
     m_dateLabel->setText("20180821");
     m_weatherLabel->setText("晴");
-    m_iconLabel->setPixmap(QPixmap(":/res/weather_icons/lightgrey/100.png"));
+    QPixmap pixmap = QPixmap(":/res/weather_icons/lightgrey/100.png");
+    pixmap = pixmap.scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    m_iconLabel->setPixmap(pixmap);
     m_tempLabel->setText("28°C-36°C");
 }
 

@@ -57,7 +57,7 @@ void TitleBar::initLeftContent()
 
     m_cityLabel = new QLabel;
     m_cityLabel->setText("长沙");//for test
-    m_cityLabel->setStyleSheet("QLabel{font-size:14px;color: rgb(255,255,255);background-color:transparent;}");
+    m_cityLabel->setStyleSheet("QLabel{font-size:12px;color:#ffffff;background-color:transparent;}");
 
     QLabel *locationLabel = new QLabel;
     locationLabel->setFixedSize(8, 11);

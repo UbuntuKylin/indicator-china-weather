@@ -28,6 +28,7 @@ SearchInputEdit::SearchInputEdit(QWidget* parent)
     , m_searchText(tr("Please input the city to search"))
     , m_searchPixmap(QPixmap(":/res/search.png"))
 {
+    this->setStyleSheet("QLineEdit{border:1px solid white;background-color:#3892eb;color:#ffffff;font-size:12px}");
     this->setFocusPolicy(Qt::ClickFocus);
     this->setFocus();
 }
@@ -35,6 +36,8 @@ SearchInputEdit::SearchInputEdit(QWidget* parent)
 void SearchInputEdit::paintEvent(QPaintEvent *event)
 {
     QLineEdit::paintEvent(event);
+    //QPainter painter(this);
+    //painter.setRenderHint(QPainter::Antialiasing);
 
     if (!this->hasFocus() && this->text().isEmpty()) {
         QRect rect = this->rect();
@@ -42,9 +45,15 @@ void SearchInputEdit::paintEvent(QPaintEvent *event)
         QPainter painter(this);
         painter.setRenderHint(QPainter::Antialiasing);
         painter.setOpacity(0.6);
+        painter.fillRect(this->rect(), QColor(56,146,235));//#3892eb
 
-        QFont curFont = QGuiApplication::font();
+        QFont curFont = painter.font();//QGuiApplication::font();
+        curFont.setPixelSize(12);//font.setPointSize(12);
         QFontMetrics fm(curFont);
+        QPen pen(Qt::white);
+        painter.setPen(pen);
+        painter.setFont(curFont);
+
         int textWidth = fm.width(m_searchText);
         int iconWidth = m_searchPixmap.width();
 
@@ -54,4 +63,20 @@ void SearchInputEdit::paintEvent(QPaintEvent *event)
         QRect iconRect(QPoint(rect.width() - iconWidth/qApp->devicePixelRatio() - 5, rect.height()/2 - m_searchPixmap.height()/qApp->devicePixelRatio()/2), m_searchPixmap.size()/qApp->devicePixelRatio());
         painter.drawPixmap(iconRect, m_searchPixmap);
     }
+    /*else {
+        QRect rect = this->rect();
+        painter.setOpacity(1);
+        painter.fillRect(this->rect(), QColor(56,146,235));//#3892eb
+
+        QFont curFont = painter.font();//QGuiApplication::font();
+        curFont.setPixelSize(12);//font.setPointSize(12);
+        QFontMetrics fm(curFont);
+        QPen pen(Qt::white);
+        painter.setPen(pen);
+        painter.setFont(curFont);
+
+        int textWidth = fm.width(this->text());
+        QRect textRect(5, 0, textWidth, rect.height());
+        painter.drawText(textRect, Qt::AlignVCenter | Qt::AlignLeft, this->text());
+    }*/
 }

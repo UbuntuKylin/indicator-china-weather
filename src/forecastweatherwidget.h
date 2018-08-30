@@ -52,7 +52,7 @@ protected:
 private:
     QVBoxLayout *m_layout = nullptr;
     QHBoxLayout *m_forecastlayout = nullptr;
-    QHBoxLayout *m_indexTitlelayout = nullptr;
+    QVBoxLayout *m_indexTitlelayout = nullptr;
     QVBoxLayout *m_indexlayout = nullptr;
     QGridLayout *m_indexGridLayout = nullptr;
     QStringList m_lifeIndexList;

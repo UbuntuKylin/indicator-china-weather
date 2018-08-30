@@ -39,7 +39,7 @@ SearchDialog::SearchDialog(QWidget *parent):
     QDialog(parent)
 {
     this->setWindowFlags(Qt::FramelessWindowHint);
-    this->setFixedSize(442, 326);
+    this->setFixedSize(479, 421);
     this->setFocusPolicy(Qt::ClickFocus);
     this->setWindowTitle(tr("Kylin Weather - Search"));
     this->setWindowIcon(QIcon(":/res/indicator-china-weather.png"));

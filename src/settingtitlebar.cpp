@@ -28,7 +28,7 @@ SettingTitleBar::SettingTitleBar(QWidget *parent) : QWidget(parent)
   , m_borderColor(QColor(255, 255, 255, 153))
   , m_borderRadius(1)
   , m_borderWidth(1)
-  , m_bgBrush(QBrush(QColor("#0d87ca")))
+  , m_bgBrush(QBrush(QColor("#1374e8")))
 {
 //    this->setFixedHeight(100);
     this->initWidgets();
@@ -59,13 +59,20 @@ void SettingTitleBar::initMiddleContent()
     w->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_mLayout = new QHBoxLayout(w);
     m_mLayout->setContentsMargins(0, 0, 0, 0);
-    m_mLayout->setSpacing(0);
+    m_mLayout->setSpacing(5);
     m_toplayout->addWidget(w);
 
+    QLabel *m_iconLabel = new QLabel;
+    m_iconLabel->setContentsMargins(0, 0, 0, 0);
+    QPixmap iconPixmap = QPixmap(":/res/indicator-china-weather_min.png");
+    m_iconLabel->setPixmap(iconPixmap);
+    m_iconLabel->setFixedSize(iconPixmap.size());
+
     QLabel *m_titleLabel = new QLabel;
-    m_titleLabel->setStyleSheet("QLabel{font-size:14px;color: rgb(255,255,255);background-color:transparent;}");
+    m_titleLabel->setStyleSheet("QLabel{font-size:12px;color: rgb(255,255,255);background-color:transparent;}");
     m_titleLabel->setText(tr("Kylin Weather - Setting"));
 
+    m_mLayout->addWidget(m_iconLabel);
     m_mLayout->addWidget(m_titleLabel);
 }
 

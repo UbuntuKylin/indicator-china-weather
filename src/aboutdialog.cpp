@@ -29,7 +29,7 @@ AboutDialog::AboutDialog(QWidget *parent)
     : QDialog(parent)
     , mousePressed(false)
     , m_pixmap(QPixmap(":/res/indicator-china-weather.png"))
-    , m_websiteLinkString("<a href='%1' style='text-decoration:none;font-size:14px;color:#0d87ca;'>%2</a>")
+    , m_websiteLinkString("<a href='%1' style='text-decoration:none;font-size:14px;color:#1374e8;'>%2</a>")
 {
     this->setStyleSheet("QDialog{border:1px solid white;border-radius:2px;background:rgba(255, 255, 255, 0.7);}QDialog:hover{background: rgba(255, 255, 255, 1.0);}");
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);

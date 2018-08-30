@@ -29,13 +29,13 @@ NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent)
     , m_weatherWorker(weatherWorker)
 {
     this->setFixedSize(355, 180);
-//    this->setStyleSheet("QLabel{border-radius: 0px; color:rgb(250, 250, 250); background-color:argb(250, 205, 120, 130);}");
+//    this->setStyleSheet("QLabel{border-radius: 0px; color:rgb(250, 250, 250); background-color:rgba(0,0,0,0.2)}");
 
     //-----------------------------
     m_tempLabel = new QLabel(this);
     m_tempLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff; font-size:65px;}");
     m_tempLabel->setGeometry(10, 10, 130, 100);
-    m_tempLabel->setAlignment(Qt::AlignRight);
+    m_tempLabel->setAlignment(Qt::AlignRight | Qt::AlignTop);
 //    QFont font;
 //    font.setPointSize(65);
 //    const QFontMetrics fm(font);
@@ -45,7 +45,7 @@ NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent)
 //    qDebug() << fm.width(temp) << fm.height();
 
     QLabel *tempUnit = new QLabel(this);
-    tempUnit->setAlignment(Qt::AlignLeft);
+    tempUnit->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     tempUnit->setGeometry(140, 10, 40, 30);
     tempUnit->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:20px;}");
     tempUnit->setText("°C");
@@ -88,7 +88,7 @@ NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent)
     m_windPowerLabel->setText("五级");
 
     m_weatherIcon = new QLabel(this);
-    m_weatherIcon->setGeometry(this->width() - 100 - 10, 0, 100, 100);
+    m_weatherIcon->setGeometry(this->width() - 64 - 20, 10, 64, 64);
     m_weatherIcon->setStyleSheet("QLabel{border:none;background-color:transparent;}");
 
 
@@ -98,7 +98,7 @@ NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent)
     m_aqiLabel = new TranslucentLabel(this);
     m_aqiLabel->setLabelIcon(":/res/aqi.png");
     m_aqiLabel->setLabelText("28 优");
-    m_aqiLabel->move(m_weatherIcon->x() + 10, m_weatherIcon->y() + m_weatherIcon->height());
+    m_aqiLabel->move(m_weatherIcon->x() - 10, m_windLabel->y());
 
     m_temperatureLabel = new TranslucentLabel(this);
     m_temperatureLabel->setLabelIcon(":/res/temp.png");
@@ -124,5 +124,7 @@ NowWeatherWidget::~NowWeatherWidget()
 
 void NowWeatherWidget::setWeatherIcon(const QString &iconPath)
 {
-    m_weatherIcon->setPixmap(QPixmap(iconPath));
+    QPixmap pixmap = QPixmap(iconPath);
+    pixmap = pixmap.scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    m_weatherIcon->setPixmap(pixmap);
 }

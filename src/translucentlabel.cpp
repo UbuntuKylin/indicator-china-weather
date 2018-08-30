@@ -30,7 +30,7 @@ TranslucentLabel::TranslucentLabel(QWidget *parent)
 //    setWordWrap(true);//QLabel自动换行
 //    setAttribute(Qt::WA_TransparentForMouseEvents);//实现鼠标穿透，如果要被穿透窗口只有一层，即没有嵌套窗口，直接只用对子窗口设置该属性，即鼠标事件让父窗口响应
 
-    this->setStyleSheet("QLabel{border-radius:4px;background-color: argb(60, 60, 60, 130);color: rgb(255, 255, 255);}");
+    this->setStyleSheet("QLabel{border-radius:4px;background-color:rgba(0,0,0,0.2);color: rgb(255,255,255);}");
     this->setFixedSize(80, 28);
 
     m_icon = new QLabel(this);

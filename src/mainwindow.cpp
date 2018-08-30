@@ -69,6 +69,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_titleBar, &TitleBar::requestShowSettingDialog, this, [=] {
         this->showSettingDialog();
     });
+
+
+    this->refreshUI();
 }
 
 MainWindow::~MainWindow()
@@ -140,7 +143,7 @@ void MainWindow::initMenuAndTray()
 
     m_systemTray = new QSystemTrayIcon(this);
     m_systemTray->setToolTip(QString(tr("Kylin Weather")));
-    m_systemTray->setIcon(QIcon(":/res/indicator-china-weather.png"));
+    //m_systemTray->setIcon(QIcon(":/res/indicator-china-weather.png"));
     connect(m_systemTray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
     m_systemTray->show();
     m_systemTray->setContextMenu(m_mainMenu);
@@ -215,6 +218,11 @@ void MainWindow::refreshCityActions()
     m_cityMenu->addActions(m_cityActionGroup->actions());
     m_cityMenu->menuAction()->setText("北京");
     m_cityActionGroup->setCurrentCheckedIndex(0);
+}
+
+void MainWindow::refreshUI()
+{
+    m_systemTray->setIcon(QIcon(":/res/weather_icons/lightgrey/100.png"));
 }
 
 void MainWindow::applySettings()

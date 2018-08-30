@@ -17,19 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "mainwindow.h"
-#include <QApplication>
+#include "separator.h"
 
-int main(int argc, char *argv[])
+VSeparator::VSeparator(QWidget *parent) :
+    QFrame(parent)
 {
-    QApplication a(argc, argv);
-    a.setOrganizationName("kylin");
-    a.setApplicationName("Kylin Weather (indication-china-weather)");
-    a.setApplicationVersion("3.0.0");
-    a.setQuitOnLastWindowClosed(false);//Avoid that after hiding mainwindow, close the sub window would cause the program exit
+    this->setStyleSheet("QFrame{background-color: rgba(238, 238, 238, 0.5);}");//#eeeeee 0:完全透明  1:完全不透明
+    this->setFixedWidth(1);
+    this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+}
 
-    MainWindow w;
-    w.show();
-
-    return a.exec();
+HSeparator::HSeparator(QWidget *parent) :
+    QFrame(parent)
+{
+    this->setStyleSheet("QFrame{background-color: rgba(238, 238, 238, 0.5);margin-left:5px;margin-right:5px;}");//#eeeeee 0:完全透明  1:完全不透明
+    this->setFixedHeight(1);
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 }

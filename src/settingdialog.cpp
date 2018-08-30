@@ -44,7 +44,7 @@ SettingDialog::SettingDialog(QWidget *parent):
 //    , m_okBtn(new QPushButton(this))
 {
     this->setWindowFlags(Qt::FramelessWindowHint);
-    this->setFixedSize(442, 326);
+    this->setFixedSize(479, 421);
     this->setFocusPolicy(Qt::ClickFocus);
     this->setWindowTitle(tr("Kylin Weather - Setting"));
     this->setWindowIcon(QIcon(":/res/indicator-china-weather.png"));

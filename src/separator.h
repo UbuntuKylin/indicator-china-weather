@@ -17,19 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "mainwindow.h"
-#include <QApplication>
+#ifndef SEPARATOR_H
+#define SEPARATOR_H
 
-int main(int argc, char *argv[])
+#include <QFrame>
+
+class VSeparator : public QFrame
 {
-    QApplication a(argc, argv);
-    a.setOrganizationName("kylin");
-    a.setApplicationName("Kylin Weather (indication-china-weather)");
-    a.setApplicationVersion("3.0.0");
-    a.setQuitOnLastWindowClosed(false);//Avoid that after hiding mainwindow, close the sub window would cause the program exit
+    Q_OBJECT
+public:
+    explicit VSeparator(QWidget *parent = 0);
+};
 
-    MainWindow w;
-    w.show();
+class HSeparator : public QFrame
+{
+    Q_OBJECT
+public:
+    explicit HSeparator(QWidget *parent = 0);
+};
 
-    return a.exec();
-}
+#endif // SEPARATOR_H
