@@ -19,6 +19,7 @@
 
 #include "nowweatherwidget.h"
 #include "translucentlabel.h"
+#include "tipwidget.h"
 
 #include <QVBoxLayout>
 #include <QEvent>
@@ -27,14 +28,25 @@
 NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent) :
     QFrame(parent)
     , m_weatherWorker(weatherWorker)
+    , m_tipTimer(new QTimer(this))
 {
     this->setFixedSize(355, 180);
 //    this->setStyleSheet("QLabel{border-radius: 0px; color:rgb(250, 250, 250); background-color:rgba(0,0,0,0.2)}");
 
+    //test background color
+    /*this->setAutoFillBackground(true);
+    QPalette palette;
+    palette.setBrush(QPalette::Window, QBrush(Qt::gray));
+    this->setPalette(palette);*/
+
+    m_tipWidget = new TipWidget(this);
+    m_tipWidget->setGeometry(10, 0, this->width(), 22);
+    m_tipWidget->setVisible(false);
+
     //-----------------------------
     m_tempLabel = new QLabel(this);
     m_tempLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff; font-size:65px;}");
-    m_tempLabel->setGeometry(10, 10, 130, 100);
+    m_tempLabel->setGeometry(10, 14, 130, 80);
     m_tempLabel->setAlignment(Qt::AlignRight | Qt::AlignTop);
 //    QFont font;
 //    font.setPointSize(65);
@@ -46,14 +58,13 @@ NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent)
 
     QLabel *tempUnit = new QLabel(this);
     tempUnit->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-    tempUnit->setGeometry(140, 10, 40, 30);
+    tempUnit->setGeometry(140, m_tempLabel->y(), 40, 30);
     tempUnit->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:20px;}");
     tempUnit->setText("°C");
 
-
     //-----------------------------
     QLabel *sdIcon = new QLabel(this);
-    sdIcon->setGeometry(m_tempLabel->x(), m_tempLabel->y() + m_tempLabel->height() - 20, 20, 20);
+    sdIcon->setGeometry(m_tempLabel->x(), m_tempLabel->y() + m_tempLabel->height() /*- 20*/, 20, 20);
     sdIcon->setStyleSheet("QLabel{border:none;background-color:transparent;}");
     sdIcon->setPixmap(QPixmap(":/res/current_sd.png"));
 
@@ -88,7 +99,7 @@ NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent)
     m_windPowerLabel->setText("五级");
 
     m_weatherIcon = new QLabel(this);
-    m_weatherIcon->setGeometry(this->width() - 64 - 20, 10, 64, 64);
+    m_weatherIcon->setGeometry(this->width() - 64 - 20, m_tempLabel->y(), 64, 64);
     m_weatherIcon->setStyleSheet("QLabel{border:none;background-color:transparent;}");
 
 
@@ -116,10 +127,31 @@ NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent)
 
     //	QFont &text_font = const_cast<QFont &>(font());
     //	text_font.setWeight(QFont::Bold);
+
+
+    connect(m_tipTimer, &QTimer::timeout, this, [=] {
+        m_tipTimer->stop();
+        m_tipWidget->setVisible(false);
+    });
+    this->displayTip();
 }
 
 NowWeatherWidget::~NowWeatherWidget()
 {
+    delete m_tipTimer;
+}
+
+void NowWeatherWidget::displayTip()
+{
+    if (m_tipWidget->isVisible())
+        m_tipWidget->setVisible(false);
+    if (m_tipTimer->isActive())
+        m_tipTimer->stop();
+
+    m_tipWidget->setLabelIcon(":/res/update_warn.png");
+    m_tipWidget->setLabelText(tr("Update failure"));
+    m_tipWidget->setVisible(true);
+    m_tipTimer->start(8000);
 }
 
 void NowWeatherWidget::setWeatherIcon(const QString &iconPath)

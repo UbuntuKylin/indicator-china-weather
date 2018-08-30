@@ -55,6 +55,8 @@
         <file>res/unlink.png</file>
         <file>res/update_warn.png</file>
         <file>res/visibility.png</file>
+        <file>res/delete_hover_press.png</file>
+        <file>res/delete_normal.png</file>
     </qresource>
     <qresource prefix="/data">
         <file>data/locations.txt</file>

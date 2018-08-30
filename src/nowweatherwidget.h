@@ -21,11 +21,13 @@
 #define NOW_WEATHER_WIDGET_H
 
 #include <QFrame>
+#include <QTimer>
 
 #include "weatherworker.h"
 
 class QLabel;
 class TranslucentLabel;
+class TipWidget;
 
 class NowWeatherWidget : public QFrame
 {
@@ -36,6 +38,7 @@ public:
     ~NowWeatherWidget();
 
     void setWeatherIcon(const QString &iconPath);
+    void displayTip();
 
 private:
     QLabel *m_tempLabel = nullptr;
@@ -46,7 +49,9 @@ private:
     QLabel *m_weatherIcon = nullptr;
     TranslucentLabel *m_aqiLabel = nullptr;
     TranslucentLabel *m_temperatureLabel = nullptr;
+    TipWidget *m_tipWidget = nullptr;
     WeatherWorker *m_weatherWorker = nullptr;
+    QTimer *m_tipTimer = nullptr;
 };
 
 #endif // NOW_WEATHER_WIDGET_H

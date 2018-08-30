@@ -27,15 +27,18 @@ NetworkErrorWidget::NetworkErrorWidget(QFrame *parent) :
     QFrame(parent)
 {
     this->setFixedSize(355, 340);
-    this->setStyleSheet("QWidget{background-image:url(':/res/background/weather-clear.png');}");
-
 
     QPushButton *m_retryBtn = new QPushButton;
+    m_retryBtn->setStyleSheet("QPushButton{border:1px solid #e0e0e0;text-align:center;font-size:14px;color:#000000;background:transparent;}");
     m_retryBtn->setFixedSize(90, 25);
     m_retryBtn->setFocusPolicy(Qt::NoFocus);
     m_retryBtn->setText(tr("retry"));
-    connect(m_retryBtn, &QPushButton::clicked, this, [=] {
+    /*QFont font = m_btn->font();
+    const QFontMetrics fm(font);
+    m_retryBtn->setFixedWidth(fm.width(m_retryBtn->text()));*/
 
+    connect(m_retryBtn, &QPushButton::clicked, this, [=] {
+        emit this->requestRetryAccessWeather();
     });
 
     QLabel *m_tipIcon = new QLabel;
@@ -43,12 +46,16 @@ NetworkErrorWidget::NetworkErrorWidget(QFrame *parent) :
     m_tipIcon->setStyleSheet("QLabel{border:none;background-color:transparent;}");
     m_tipIcon->setPixmap(QPixmap(":/res/unlink.png"));
     QLabel *m_tipLabel = new QLabel;
+    m_tipLabel->setFixedWidth(this->width());
+    m_tipLabel->setWordWrap(true);
+    m_tipLabel->setAlignment(Qt::AlignCenter);
+    m_tipLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
     m_tipLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
     m_tipLabel->setText(tr("Current network exception, please check network settings"));//当前网络异常，请检查网络设置
 
     m_layout = new QVBoxLayout(this);
     m_layout->setContentsMargins(0, 0, 0, 0);
-    m_layout->setSpacing(0);
+    m_layout->setSpacing(20);
     this->setLayout(m_layout);
 
     m_layout->addStretch();

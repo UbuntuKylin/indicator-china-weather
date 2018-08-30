@@ -29,6 +29,7 @@
 class TitleBar;
 class ContentWidget;
 class SettingDialog;
+class HintWidget;
 class WeatherWorker;
 
 class MainWindow : public QMainWindow
@@ -78,6 +79,8 @@ private:
     QAction *m_updateTimeAction = nullptr;
     QSystemTrayIcon *m_systemTray = nullptr;
     SettingDialog *m_setttingDialog = nullptr;
+    HintWidget *m_hintWidget = nullptr;
+    HintWidget *m_movieWidget = nullptr;
 
     //QStringList m_cityList;
     WeatherWorker *m_weatherWorker = nullptr;

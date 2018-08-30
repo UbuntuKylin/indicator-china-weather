@@ -17,25 +17,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NETWORK_ERROR_WIDGET_H
-#define NETWORK_ERROR_WIDGET_H
+#ifndef HINTWIDGET_H_
+#define HINTWIDGET_H_
 
 #include <QFrame>
-#include <QVBoxLayout>
+#include <QMovie>
 
-class NetworkErrorWidget : public QFrame
+class QLabel;
+class QPushButton;
+
+class HintWidget : public QFrame
 {
     Q_OBJECT
-
 public:
-    explicit NetworkErrorWidget(QFrame *parent = 0);
-    ~NetworkErrorWidget();
+    explicit HintWidget(QWidget *parent = 0);
+    explicit HintWidget(const QString &text, QWidget *parent = 0, const QString &movieSouce = "", bool movie = false);
+    ~HintWidget();
 
-signals:
-    void requestRetryAccessWeather();
+    void setIconAndText(const QString &iconPath, const QString &text);
+
+protected:
+    void enterEvent(QEvent *event) Q_DECL_OVERRIDE;
+    void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
+    bool event(QEvent *event);
 
 private:
-    QVBoxLayout *m_layout = nullptr;
+    QLabel *m_iconLabel = nullptr;
+    QLabel *m_textLabel = nullptr;
+    QPushButton *m_closeBtn = nullptr;
+    QMovie *m_movie = nullptr;
+    bool m_isMovie = false;
 };
 
-#endif // NETWORK_ERROR_WIDGET_H
+#endif // HINTWIDGET_H_

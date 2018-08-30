@@ -17,25 +17,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NETWORK_ERROR_WIDGET_H
-#define NETWORK_ERROR_WIDGET_H
+#ifndef TIPWIDGET_H
+#define TIPWIDGET_H
 
-#include <QFrame>
-#include <QVBoxLayout>
+#include <QLabel>
 
-class NetworkErrorWidget : public QFrame
-{
+class TipWidget : public QFrame {
     Q_OBJECT
-
 public:
-    explicit NetworkErrorWidget(QFrame *parent = 0);
-    ~NetworkErrorWidget();
+    explicit TipWidget(QWidget *parent = 0);
+    ~TipWidget();
 
-signals:
-    void requestRetryAccessWeather();
+    void setLabelIcon(const QString &iconPath);
+    void setLabelText(const QString &text);
 
 private:
-    QVBoxLayout *m_layout = nullptr;
+    QLabel *m_icon = nullptr;
+    QLabel *m_text = nullptr;
 };
-
-#endif // NETWORK_ERROR_WIDGET_H
+#endif // TIPWIDGET_H

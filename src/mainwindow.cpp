@@ -22,6 +22,7 @@
 #include "contentwidget.h"
 #include "settingdialog.h"
 #include "aboutdialog.h"
+#include "hintwidget.h"
 #include "weatherworker.h"
 
 #include <QApplication>
@@ -72,6 +73,15 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     this->refreshUI();
+
+    m_hintWidget = new HintWidget(this);
+    m_hintWidget->setIconAndText(":/res/network_warn.png", tr("Network not connected"));
+    m_hintWidget->move((this->width() - m_hintWidget->width())/2, (this->height() - m_hintWidget->height())/2);
+    m_hintWidget->setVisible(false);
+
+    m_movieWidget = new HintWidget(tr("Getting data"), this, ":/res/link.gif", true);
+    m_movieWidget->move((this->width() - m_hintWidget->width())/2, (this->height() - m_hintWidget->height())/2);
+    m_movieWidget->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -99,7 +109,6 @@ void MainWindow::initMenuAndTray()
         if (m_preferences->m_cityList->count() > 0 && m_preferences->m_cityList->count() >= index) {
             m_cityMenu->menuAction()->setText(m_preferences->m_cityList->cityName(index));
         }
-
     });
     this->refreshCityActions();
 
@@ -143,7 +152,7 @@ void MainWindow::initMenuAndTray()
 
     m_systemTray = new QSystemTrayIcon(this);
     m_systemTray->setToolTip(QString(tr("Kylin Weather")));
-    //m_systemTray->setIcon(QIcon(":/res/indicator-china-weather.png"));
+    m_systemTray->setIcon(QIcon(":/res/indicator-china-weather.png"));
     connect(m_systemTray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
     m_systemTray->show();
     m_systemTray->setContextMenu(m_mainMenu);
@@ -154,7 +163,7 @@ void MainWindow::initMenuAndTray()
 
 //    m_weatherWorker->refreshObserveWeatherData(m_preferences->currentCityId);
 
-    m_weatherWorker->requestPostHostInfoToWeatherServer("distro=ubuntu&version_os=16.04&version_weather=1.0&city=长沙");
+//    m_weatherWorker->requestPostHostInfoToWeatherServer("distro=ubuntu&version_os=16.04&version_weather=1.0&city=长沙");
 //    m_weatherWorker->requestPingBackWeatherServer();
 }
 
@@ -276,6 +285,9 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         this->m_dragPosition = event->globalPos() - frameGeometry().topLeft();
         this->m_mousePressed = true;
     }
+
+    if (m_hintWidget->isVisible())
+        m_hintWidget->setVisible(false);
 
     QMainWindow::mousePressEvent(event);
 }
