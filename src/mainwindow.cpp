@@ -24,6 +24,7 @@
 #include "aboutdialog.h"
 #include "hintwidget.h"
 #include "weatherworker.h"
+#include "data.h"
 
 #include <QApplication>
 #include <QDesktopWidget>
@@ -71,7 +72,6 @@ MainWindow::MainWindow(QWidget *parent)
         this->showSettingDialog();
     });
 
-
     this->refreshUI();
 
     m_hintWidget = new HintWidget(this);
@@ -89,7 +89,24 @@ MainWindow::MainWindow(QWidget *parent)
     else {
         m_movieWidget->setVisible(true);
         m_weatherWorker->refreshObserveWeatherData(m_preferences->currentCityId);
+        //m_weatherWorker->refreshForecastWeatherData(m_preferences->currentCityId);
     }
+
+    connect(m_weatherWorker, &WeatherWorker::observeDataRefreshed, this, [=] (const ObserveWeather &data) {
+        qDebug () << "data's id=" << data.id;
+        qDebug () << "data's city=" << data.city;
+    });
+
+    connect(m_weatherWorker, &WeatherWorker::forecastDataRefreshed, this, [=] (const QList<ForecastWeather> &datas) {
+        int len = datas.size();
+        if (len != 3) {
+            return;
+        }
+        for (int i = 0; i < len; ++i) {
+            qDebug () << "forecast's id=" << datas[i].forcast_date;
+        }
+
+    });
 }
 
 MainWindow::~MainWindow()

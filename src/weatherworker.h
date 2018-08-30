@@ -26,6 +26,8 @@
 #include <QNetworkConfigurationManager>
 #include <QHostInfo>
 
+#include "data.h"
+
 class WeatherWorker : public QObject
 {
     Q_OBJECT
@@ -57,8 +59,8 @@ public:
     QString getErrorCodeDescription(QString errorCode);
 
 signals:
-    void observeDataRefreshed();
-    void forecastDataRefreshed();
+    void observeDataRefreshed(const ObserveWeather &data);
+    void forecastDataRefreshed(const QList<ForecastWeather> &datas);
     void nofityNetworkStatus(bool status);
 
 public slots:

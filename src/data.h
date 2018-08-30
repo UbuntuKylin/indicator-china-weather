@@ -22,6 +22,50 @@
 
 #include <QObject>
 
+struct ObserveWeather
+{
+    QString id;
+    QString city;
+    QString updatetime;
+    QString air;
+    QString cloud;
+    QString cond_code;
+    QString fx;
+    QString fl;
+    QString hum;
+    QString pcpn;
+    QString pres;
+    QString tmp;
+    QString vis;
+    QString wind_deg;
+    QString wind_dir;
+    QString wind_sc;
+    QString wind_spd;
+};
+
+struct ForecastWeather
+{
+    QString cond_code_d;
+    QString cond_code_n;
+    QString cond_txt_d;
+    QString cond_txt_n;
+    QString forcast_date;
+    QString hum;
+    QString mr_ms;
+    QString pcpn;
+    QString pop;
+    QString pres;
+    QString sr_ss;
+    QString tmp_max;
+    QString tmp_min;
+    QString uv_index;
+    QString vis;
+    QString wind_deg;
+    QString wind_dir;
+    QString wind_sc;
+    QString wind_spd;
+};
+
 struct LocationData {
     QString id;
     QString country;
@@ -50,6 +94,8 @@ public:
     void setActive(bool b) { this->active = b; }
 };
 
+Q_DECLARE_METATYPE(ObserveWeather)
+Q_DECLARE_METATYPE(ForecastWeather)
 Q_DECLARE_METATYPE(LocationData)
 Q_DECLARE_METATYPE(CitySettingData)
 
