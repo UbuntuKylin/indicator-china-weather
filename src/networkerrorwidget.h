@@ -23,6 +23,8 @@
 #include <QFrame>
 #include <QVBoxLayout>
 
+class QLabel;
+
 class NetworkErrorWidget : public QFrame
 {
     Q_OBJECT
@@ -31,11 +33,14 @@ public:
     explicit NetworkErrorWidget(QFrame *parent = 0);
     ~NetworkErrorWidget();
 
+    void setErrorInfo(const QString &info);
+
 signals:
     void requestRetryAccessWeather();
 
 private:
     QVBoxLayout *m_layout = nullptr;
+    //QLabel *m_tipLabel = nullptr;
 };
 
 #endif // NETWORK_ERROR_WIDGET_H

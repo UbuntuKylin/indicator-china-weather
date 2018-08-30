@@ -37,6 +37,8 @@ public:
     explicit ContentWidget(WeatherWorker *weatherWorker, QWidget *parent = 0);
     ~ContentWidget();
 
+    void setNetworkErrorPages();
+
 private:
     QVBoxLayout *m_layout = nullptr;
 

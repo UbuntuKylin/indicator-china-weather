@@ -23,6 +23,8 @@
 #include <QObject>
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
+#include <QNetworkConfigurationManager>
+#include <QHostInfo>
 
 class WeatherWorker : public QObject
 {
@@ -39,6 +41,10 @@ public:
     explicit WeatherWorker(QObject *parent = 0);
     ~WeatherWorker();
 
+
+    bool isNetWorkSettingsGood();
+    void netWorkOnlineOrNot();
+
     void refreshObserveWeatherData(const QString &cityId);
     void refreshForecastWeatherData(const QString &cityId);
 
@@ -53,11 +59,13 @@ public:
 signals:
     void observeDataRefreshed();
     void forecastDataRefreshed();
+    void nofityNetworkStatus(bool status);
 
 public slots:
     void onWeatherObserveReply();
     void onWeatherForecastReply();
     void onPingBackPostReply();
+    void networkLookedUp(const QHostInfo &host);
 
 private:
     QNetworkAccessManager *m_networkManager = nullptr;

@@ -82,6 +82,14 @@ MainWindow::MainWindow(QWidget *parent)
     m_movieWidget = new HintWidget(tr("Getting data"), this, ":/res/link.gif", true);
     m_movieWidget->move((this->width() - m_hintWidget->width())/2, (this->height() - m_hintWidget->height())/2);
     m_movieWidget->setVisible(false);
+
+    if (!m_weatherWorker->isNetWorkSettingsGood()) {
+        m_contentWidget->setNetworkErrorPages();
+    }
+    else {
+        m_movieWidget->setVisible(true);
+        m_weatherWorker->refreshObserveWeatherData(m_preferences->currentCityId);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -159,9 +167,6 @@ void MainWindow::initMenuAndTray()
 
     QShortcut *m_quitShortCut = new QShortcut(QKeySequence("Ctrl+Q"), this);
     connect(m_quitShortCut, SIGNAL(activated()), qApp, SLOT(quit()));
-
-
-//    m_weatherWorker->refreshObserveWeatherData(m_preferences->currentCityId);
 
 //    m_weatherWorker->requestPostHostInfoToWeatherServer("distro=ubuntu&version_os=16.04&version_weather=1.0&city=长沙");
 //    m_weatherWorker->requestPingBackWeatherServer();

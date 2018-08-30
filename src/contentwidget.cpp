@@ -44,9 +44,6 @@ ContentWidget::ContentWidget(WeatherWorker *weatherWorker, QWidget *parent) :
         m_forecastWidget->setVisible(true);
     });
 
-//    m_nowWidget->setVisible(false);
-//    m_forecastWidget->setVisible(false);
-
     m_layout->addWidget(m_nowWidget, 0, Qt::AlignTop);
     m_layout->addWidget(m_forecastWidget);
     m_layout->addWidget(m_networkErrorWidget);
@@ -60,4 +57,12 @@ ContentWidget::~ContentWidget()
             child->widget()->deleteLater();
         delete child;
     }
+}
+
+void ContentWidget::setNetworkErrorPages()
+{
+    m_nowWidget->setVisible(false);
+    m_forecastWidget->setVisible(false);
+    m_networkErrorWidget->setVisible(true);
+    //m_networkErrorWidget->setErrorInfo("");
 }

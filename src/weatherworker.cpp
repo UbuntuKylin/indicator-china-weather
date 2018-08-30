@@ -23,7 +23,6 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonValue>
-
 #include <QEventLoop>
 
 WeatherWorker::WeatherWorker(QObject *parent) :
@@ -38,6 +37,31 @@ WeatherWorker::WeatherWorker(QObject *parent) :
 WeatherWorker::~WeatherWorker()
 {
 
+}
+
+bool WeatherWorker::isNetWorkSettingsGood()
+{
+    //判断网络是否有连接，不一定能上网
+    QNetworkConfigurationManager mgr;
+    return mgr.isOnline();
+}
+
+void WeatherWorker::netWorkOnlineOrNot()
+{
+    //http://service.ubuntukylin.com:8001/weather/pingnetwork/
+    QHostInfo::lookupHost("www.baidu.com", this, SLOT(networkLookedUp(QHostInfo)));
+}
+
+void WeatherWorker::networkLookedUp(const QHostInfo &host)
+{
+    if(host.error() != QHostInfo::NoError) {
+        qDebug() << "test network failed, errorCode:" << host.error();
+        emit this->nofityNetworkStatus(false);
+    }
+    else {
+        qDebug() << "test network success, the server's ip:" << host.addresses().first().toString();
+        emit this->nofityNetworkStatus(true);
+    }
 }
 
 void WeatherWorker::refreshObserveWeatherData(const QString &cityId)
@@ -59,7 +83,7 @@ void WeatherWorker::refreshObserveWeatherData(const QString &cityId)
     qDebug() << "weather observe size: " << responseData.size();*/
 
     //heweather_observe_s6
-    QString forecastUrl = QString("http://service.ubuntukylin.com:8001/weather/api/1.0/observe/%1").arg(cityId);
+    QString forecastUrl = QString("http://service.ubuntukylin.com:8001/weather/api/2.0/heweather_observe_s6/%1").arg(cityId);
     QNetworkRequest request;
     request.setUrl(forecastUrl);
     //request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);//Qt5.6 for redirect
@@ -73,7 +97,7 @@ void WeatherWorker::refreshForecastWeatherData(const QString &cityId)
         return;
 
     //heweather_forecast_s6
-    QString forecastUrl = QString("http://service.ubuntukylin.com:8001/weather/api/1.0/heweather_forecast/%1").arg(cityId);
+    QString forecastUrl = QString("http://service.ubuntukylin.com:8001/weather/api/2.0/heweather_observe_s6/%1").arg(cityId);
     QNetworkReply *reply = m_networkManager->get(QNetworkRequest(forecastUrl));
     connect(reply, &QNetworkReply::finished, this, &WeatherWorker::onWeatherForecastReply);
 }
@@ -167,21 +191,28 @@ void WeatherWorker::onWeatherObserveReply()
     }
 
     QByteArray ba = reply->readAll();
-    QString reply_content = QString::fromUtf8(ba);
+//    QString reply_content = QString::fromUtf8(ba);
     reply->close();
     reply->deleteLater();
-    qDebug() << "weather observe size: " << ba.size() << reply_content;
+    qDebug() << "weather observe size: " << ba.size();
 //    QStringList dataList = reply_content.split("\n");
 //    qDebug() << "---------------start---------------";
 //    for (QString data : dataList) {
 //        qDebug () << data;
 //    }
 //    qDebug() << "---------------end---------------";
-    QJsonArray items = QJsonDocument::fromJson(ba).array();
+    QJsonDocument jsonDocument = QJsonDocument::fromJson(ba);
+    if(jsonDocument.isNull() ){
+        qDebug()<< "===> QJsonDocument："<< ba;
+    }
+    QJsonObject jsonObject = jsonDocument.object();
+    qDebug() << "jsonObject" << jsonObject;
+
+    /*QJsonArray items = QJsonDocument::fromJson(ba).array();
     qDebug() << items;
-//    for (QJsonValue val : items) {
-//        QJsonObject json_obj = val.toObject();
-//        qDebug() << "---------------start---------------";
+    for (QJsonValue val : items) {
+        QJsonObject json_obj = val.toObject();
+        qDebug() << "---------------start---------------";
 //        qDebug() << json_obj["city"].toString();
 //        qDebug() << json_obj["WD"].toString();
 //        qDebug() << json_obj["temp"].toString();
@@ -195,8 +226,8 @@ void WeatherWorker::onWeatherObserveReply()
 //        qDebug() << json_obj["img1"].toString();
 //        qDebug() << json_obj["aqi"].toString();
 //        qDebug() << json_obj["SD"].toString();
-//        qDebug() << "---------------end---------------";
-//    }
+        qDebug() << "---------------end---------------";
+    }*/
     emit this->observeDataRefreshed();
 }
 

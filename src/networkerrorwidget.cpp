@@ -74,3 +74,8 @@ NetworkErrorWidget::~NetworkErrorWidget()
         delete child;
     }
 }
+
+void NetworkErrorWidget::setErrorInfo(const QString &info)
+{
+    //m_tipLabel->setText(tr("Current network exception, please check network settings"));//当前网络异常，请检查网络设置
+}
