@@ -45,6 +45,9 @@ public:
     void refreshForecastUI(const ForecastWeather &data, int index);
     void refreshLifestyleUI(const LifeStyle &data);
 
+    void setDayStyleSheets();
+    void setNightStyleSheets();
+
 signals:
     void requestRetryWeather();
 

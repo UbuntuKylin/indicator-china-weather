@@ -30,6 +30,8 @@ IndexItemWidget::IndexItemWidget(const QString &name, const QString &iconPath, Q
     , m_iconPath(iconPath)
     , m_brf("-")
     , m_txt("-")
+    , m_titleColor(QColor("#cfcfcf"))
+    , m_txtColor(QColor("#808080"))
 {
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
@@ -38,6 +40,20 @@ void IndexItemWidget::refreshLifeStyle(const QString &brf, const QString &txt)
 {
     this->m_brf = brf;
     this->m_txt = txt;
+    update();
+}
+
+void IndexItemWidget::setDayStyleSheets()
+{
+    m_titleColor = QColor("#cfcfcf");
+    m_txtColor = QColor("#808080");
+    update();
+}
+
+void IndexItemWidget::setNightStyleSheets()
+{
+    m_titleColor = QColor("#808080");
+    m_txtColor = QColor("#cdcdcd");
     update();
 }
 
@@ -82,11 +98,11 @@ void IndexItemWidget::paintEvent(QPaintEvent *e)
     painter.setFont(font);
 
     QRect valueRect(iconRect.right() + 5, iconRect.y(), fm.width(this->m_brf), 20);
-    painter.setPen(QPen(QColor("#808080")));
+    painter.setPen(QPen(m_txtColor));
     painter.drawText(valueRect, Qt::AlignVCenter | Qt::AlignLeft, this->m_brf);
 
     font.setPixelSize(12);//font.setPointSize(12);
     QRect titleRect(valueRect.x(), valueRect.bottom(), this->width() - icon.width()/ratio - 5*2, 20);
-    painter.setPen(QPen(QColor("#cfcfcf")));
+    painter.setPen(QPen(m_titleColor));
     painter.drawText(titleRect, Qt::AlignVCenter | Qt::AlignLeft, this->m_indexName);
 }

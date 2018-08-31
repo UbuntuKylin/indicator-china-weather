@@ -29,6 +29,8 @@
 
 class ForecastItemWidget;
 class IndexItemWidget;
+class HSeparator;
+class VSeparator;
 
 class ForecastWeatherWidget : public QFrame
 {
@@ -47,6 +49,9 @@ public:
     void refreshForecastData(const ForecastWeather &data, int index);
     void refreshLifestyleData(const LifeStyle &data);
 
+    void setDayStyleSheets();
+    void setNightStyleSheets();
+
 public slots:
     void showLifeStyleIndex(const QString &name);
 
@@ -61,12 +66,16 @@ private:
     QGridLayout *m_indexGridLayout = nullptr;
     QStringList m_lifeIndexList;
     QStringList m_lifeIndexIconList;
+    QLabel *lifeTextLabel = nullptr;
     ForecastItemWidget *m_firstDay = nullptr;
     ForecastItemWidget *m_secondDay = nullptr;
     ForecastItemWidget *m_thirdDay = nullptr;
     WeatherWorker *m_weatherWorker = nullptr;
-
-    QList<IndexItemWidget *> pl;
+    VSeparator *m_leftVSeparator = nullptr;
+    VSeparator *m_rightVSeparator = nullptr;
+    HSeparator *m_topHseperator = nullptr;
+    HSeparator *m_bottomHseperator = nullptr;
+    QList<IndexItemWidget *> m_lifeItems;
 };
 
 #endif // FORECAST_WEATHER_WIDGET_H

@@ -74,7 +74,6 @@ inline QString convertCodeToBackgroud(int code)
     else {
         return ":/res/background/weather-clear.png";
     }
-    //:/res/background/weather-clear-night.png
 }
 
 MainWindow::MainWindow(QWidget *parent)
@@ -104,6 +103,11 @@ MainWindow::MainWindow(QWidget *parent)
     this->initMenuAndTray();
 
     this->moveTopRight();
+
+    //TODO:read background from ini file
+    this->setStyleSheet("QMainWindow{color:white;background-image:url(':/res/background/weather-clear.png');background-repeat:no-repeat;}");
+    this->m_contentWidget->setDayStyleSheets();
+    this->m_titleBar->setDayStyleSheets();
 
     connect(m_titleBar, &TitleBar::requestShowSettingDialog, this, [=] {
         this->showSettingDialog();
@@ -153,10 +157,14 @@ MainWindow::MainWindow(QWidget *parent)
         if (!condCodeStr.isEmpty()) {
             if (condCodeStr.contains(QChar('n'))) {
                 this->setStyleSheet("QMainWindow{color:white;background-image:url(':/res/background/weather-clear-night.png');background-repeat:no-repeat;}");
+                m_contentWidget->setNightStyleSheets();
+                m_titleBar->setNightStyleSheets();
             }
             else {
                 QString styleSheetStr = QString("QMainWindow{color:white;background-image:url('%1');background-repeat:no-repeat;}").arg(convertCodeToBackgroud(condCodeStr.toInt()));
                 this->setStyleSheet(styleSheetStr);
+                m_contentWidget->setDayStyleSheets();
+                m_titleBar->setDayStyleSheets();
             }
         }
     });
@@ -183,7 +191,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::setOpacity(double opacity)
 {
-
+    this->setWindowOpacity(opacity);
 }
 
 void MainWindow::initMenuAndTray()
@@ -237,9 +245,22 @@ void MainWindow::initMenuAndTray()
     m_quitAction->setIcon(QIcon(":/res/quit_normal.png"));
 
     //for test change weather background
+    m_isDN = true;
     connect(m_switchAciton, &QAction::triggered, this, [=] {
-        QString currentBg = QString("QMainWindow{color:white;background-image:url('%1');background-repeat:no-repeat;}").arg(":/res/background/weather-clear-night.png");
-        this->setStyleSheet(currentBg);
+        if (m_isDN) {
+            m_isDN = false;
+            QString currentBg = QString("QMainWindow{color:white;background-image:url('%1');background-repeat:no-repeat;}").arg(":/res/background/weather-clear-night.png");
+            this->setStyleSheet(currentBg);
+            m_contentWidget->setNightStyleSheets();
+            m_titleBar->setNightStyleSheets();
+        }
+        else {
+            m_isDN = true;
+            QString currentBg = QString("QMainWindow{color:white;background-image:url('%1');background-repeat:no-repeat;}").arg(":/res/background/weather-clear.png");
+            this->setStyleSheet(currentBg);
+            m_contentWidget->setDayStyleSheets();
+            m_titleBar->setDayStyleSheets();
+        }
     });
     connect(m_aboutAction, &QAction::triggered, this, [=] {
         AboutDialog dlg;

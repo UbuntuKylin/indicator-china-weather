@@ -41,12 +41,12 @@ TitleBar::~TitleBar()
 
 void TitleBar::initLeftContent()
 {
-    QWidget *w = new QWidget;
-    m_lLayout = new QHBoxLayout(w);
+    m_leftWidget = new QWidget;
+    m_leftWidget->setFixedSize(69, 22);
+    m_lLayout = new QHBoxLayout(m_leftWidget);
     m_lLayout->setContentsMargins(5, 0, 0, 0);
-//    m_lLayout->setMargin(0);
     m_lLayout->setSpacing(5);
-    m_layout->addWidget(w, 1, Qt::AlignLeft);
+    m_layout->addWidget(m_leftWidget, 1, Qt::AlignLeft | Qt::AlignTop);
 
     QPushButton *city_button = new QPushButton;
     city_button->setFocusPolicy(Qt::NoFocus);
@@ -57,16 +57,18 @@ void TitleBar::initLeftContent()
 
     m_cityLabel = new QLabel;
     m_cityLabel->setText("长沙");//for test
-    m_cityLabel->setStyleSheet("QLabel{font-size:12px;color:#ffffff;background-color:transparent;}");
+    m_cityLabel->setStyleSheet("QLabel{font-size:12px;color:#ffffff;background:transparent;background-color:transparent;}");
 
     QLabel *locationLabel = new QLabel;
+    locationLabel->setStyleSheet("QLabel{background:transparent;}");
     locationLabel->setFixedSize(8, 11);
     locationLabel->setPixmap(QPixmap(":/res/location.png"));
 
+    m_lLayout->addStretch();
     m_lLayout->addWidget(city_button);
-    m_lLayout->addSpacing(5);
     m_lLayout->addWidget(m_cityLabel);
     m_lLayout->addWidget(locationLabel);
+    m_lLayout->addStretch();
 
     connect(city_button, &QPushButton::clicked, this, &TitleBar::requestShowSettingDialog);
 }
@@ -112,7 +114,7 @@ void TitleBar::initRightContent()
 void TitleBar::initWidgets()
 {
     m_layout = new QHBoxLayout(this);
-    m_layout->setContentsMargins(0, 0, 0, 0);
+    m_layout->setContentsMargins(2, 2, 0, 0);
     m_layout->setSpacing(0);
     this->setLayout(m_layout);
 
@@ -123,4 +125,14 @@ void TitleBar::initWidgets()
 void TitleBar::setCityName(const QString &city)
 {
     m_cityLabel->setText(city);
+}
+
+void TitleBar::setDayStyleSheets()
+{
+    m_leftWidget->setStyleSheet("QWidget{background-image:none;}");
+}
+
+void TitleBar::setNightStyleSheets()
+{
+    m_leftWidget->setStyleSheet("QWidget{background-image:url(':/res/location_bg_hover.png');}");
 }

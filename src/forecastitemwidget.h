@@ -41,6 +41,9 @@ public:
     void setDefaultData();
     void setTextData();
 
+    void setDayStyleSheets();
+    void setNightStyleSheets();
+
 protected:
     bool event(QEvent *event);
 
@@ -52,6 +55,7 @@ private:
     QLabel *m_tempLabel = nullptr;
     QVBoxLayout *m_layout = nullptr;
     ToolTip *m_toolTip = nullptr;
+    bool m_isDayOrNight;
 };
 
 #endif // FORECASTITEMWIDGET_H

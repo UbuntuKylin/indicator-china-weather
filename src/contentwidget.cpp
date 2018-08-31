@@ -82,3 +82,13 @@ void ContentWidget::setNetworkErrorPages()
     m_networkErrorWidget->setVisible(true);
     //m_networkErrorWidget->setErrorInfo("");
 }
+
+void ContentWidget::setDayStyleSheets()
+{
+    m_forecastWidget->setDayStyleSheets();
+}
+
+void ContentWidget::setNightStyleSheets()
+{
+    m_forecastWidget->setNightStyleSheets();
+}

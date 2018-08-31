@@ -43,45 +43,21 @@ ForecastWeatherWidget::ForecastWeatherWidget(WeatherWorker *weatherWorker, QFram
     m_lifeIndexIconList = LIFESTYLEICON;
 
     this->initWidgets();
-
-
-
-    /*m_layout = new QVBoxLayout(this);
-    m_layout->setContentsMargins(0, 0, 0, 0);
-    m_layout->setSpacing(0);
-
-    m_firstDay = new ForecastItemWidget(this);
-    m_secondDay = new ForecastItemWidget(this);
-    m_thirdDay = new ForecastItemWidget(this);
-
-    m_forecastlayout = new QHBoxLayout;
-    m_forecastlayout->setContentsMargins(0, 0, 0, 0);
-    m_forecastlayout->setSpacing(20);
-    m_forecastlayout->addWidget(m_firstDay, 0, Qt::AlignVCenter);
-    m_forecastlayout->addWidget(m_secondDay, 0, Qt::AlignVCenter);
-    m_forecastlayout->addWidget(m_thirdDay, 0, Qt::AlignVCenter);
-
-    m_layout->addLayout(m_forecastlayout);
-    m_layout->addStretch();*/
-
-
-//    m_label = new QLabel;
-//    m_label->setFixedSize(this->width(), this->height());
-//    m_label->setText(tr("Weather Forecast Category Page"));
-//    m_label->setAlignment(Qt::AlignCenter/* | Qt::AlignTop*/);
-//    m_label->setStyleSheet("QLabel{border-radius: 0px; color:rgb(250, 250, 250); background-color:rgba(0,0,0,0.2);}");
-
-//    m_layout->addWidget(m_label, 0, Qt::AlignHCenter);
 }
 
 ForecastWeatherWidget::~ForecastWeatherWidget()
 {
-    for(int i=0; i<pl.count(); i++) {
-        IndexItemWidget *item = pl.at(i);
+    for(int i=0; i<m_lifeItems.count(); i++) {
+        IndexItemWidget *item = m_lifeItems.at(i);
         delete item;
         item = NULL;
     }
-    pl.clear();
+    m_lifeItems.clear();
+
+    delete m_topHseperator;
+    delete m_bottomHseperator;
+    delete m_leftVSeparator;
+    delete m_rightVSeparator;
 
     while (QLayoutItem *item = m_indexGridLayout->takeAt(0)) {
         item->widget()->deleteLater();
@@ -131,10 +107,13 @@ void ForecastWeatherWidget::initForecastWidget()
     m_thirdDay = new ForecastItemWidget(this);
 //    m_thirdDay->setTextData();
 
+    m_leftVSeparator = new VSeparator;
+    m_rightVSeparator = new VSeparator;
+
     m_forecastlayout->addWidget(m_firstDay, 0, Qt::AlignVCenter);
-    m_forecastlayout->addWidget(new VSeparator/*, 0, Qt::AlignVCenter*/);
+    m_forecastlayout->addWidget(m_leftVSeparator/*new VSeparator*/);
     m_forecastlayout->addWidget(m_secondDay, 0, Qt::AlignVCenter);
-    m_forecastlayout->addWidget(new VSeparator/*, 0, Qt::AlignVCenter*/);
+    m_forecastlayout->addWidget(m_rightVSeparator/*new VSeparator*/);
     m_forecastlayout->addWidget(m_thirdDay, 0, Qt::AlignVCenter);
 }
 
@@ -159,27 +138,29 @@ void ForecastWeatherWidget::initIndexTitleWidget()
     m_layout->addWidget(w, 0, Qt::AlignLeft);
 
     QLabel *iconLabel = new QLabel;
-    QLabel *textLabel = new QLabel;
+    lifeTextLabel = new QLabel;
     iconLabel->setFixedSize(20 ,20);
     iconLabel->setStyleSheet("QLabel{border:none;background-color:transparent;}");
     iconLabel->setPixmap(QPixmap(":/res/life_index_d.png"));
-    textLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
-    textLabel->setText(tr("Life index"));
+    lifeTextLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
+    lifeTextLabel->setText(tr("Life index"));
 
     QHBoxLayout *h_layout = new QHBoxLayout;
     h_layout->setContentsMargins(10, 0, 0, 0);
     h_layout->setSpacing(5);
     h_layout->addWidget(iconLabel, 0, Qt::AlignLeft);
-    h_layout->addWidget(textLabel, 0, Qt::AlignVCenter | Qt::AlignLeft);
+    h_layout->addWidget(lifeTextLabel, 0, Qt::AlignVCenter | Qt::AlignLeft);
     h_layout->addStretch();
 
-    m_indexTitlelayout->addWidget(new HSeparator);
+    m_topHseperator = new HSeparator;
+    m_bottomHseperator = new HSeparator;
+    m_indexTitlelayout->addWidget(m_topHseperator/*new HSeparator*/);
     m_indexTitlelayout->addStretch();
     m_indexTitlelayout->addLayout(h_layout);
 //    m_indexTitlelayout->addWidget(iconLabel, 0, Qt::AlignLeft);
-//    m_indexTitlelayout->addWidget(textLabel, 0, Qt::AlignVCenter | Qt::AlignLeft);
+//    m_indexTitlelayout->addWidget(lifeTextLabel, 0, Qt::AlignVCenter | Qt::AlignLeft);
     m_indexTitlelayout->addStretch();
-    m_indexTitlelayout->addWidget(new HSeparator);
+    m_indexTitlelayout->addWidget(m_bottomHseperator/*new HSeparator*/);
 }
 
 void ForecastWeatherWidget::initIndexWidget()
@@ -195,10 +176,8 @@ void ForecastWeatherWidget::initIndexWidget()
     */
     w->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);//w->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_indexlayout = new QVBoxLayout(w);
-    m_indexlayout->setContentsMargins(0, 0, 0, 0);
-    m_indexlayout->setSpacing(1);
-
-//    m_layout->addSpacing(8);
+    m_indexlayout->setContentsMargins(5, 5, 5, 5);
+    m_indexlayout->setSpacing(3);
     m_layout->addWidget(w, 0, Qt::AlignHCenter);
 
     m_indexGridLayout = new QGridLayout;
@@ -211,7 +190,6 @@ void ForecastWeatherWidget::initIndexWidget()
 
     showLifeStyleIndex(QString());
 }
-
 
 void ForecastWeatherWidget::refershLifeIndexGridLayout()
 {
@@ -226,7 +204,7 @@ void ForecastWeatherWidget::refershLifeIndexGridLayout()
         IndexItemWidget *item = new IndexItemWidget(m_lifeIndexList[i], m_lifeIndexIconList[i]);
         connect(item, SIGNAL(requestShowMsg(QString)), this, SLOT(showLifeStyleIndex(QString)));
         m_indexGridLayout->addWidget(item, index / 3, index % 3);
-        pl.append(item);
+        m_lifeItems.append(item);
     }
 }
 
@@ -246,23 +224,23 @@ void ForecastWeatherWidget::refreshForecastData(const ForecastWeather &data, int
 void ForecastWeatherWidget::refreshLifestyleData(const LifeStyle &data)
 {
     int n = 0;
-    if (pl.count() == 8) {
+    if (m_lifeItems.count() == 8) {
         //舒适度指数
-        pl[n++]->refreshLifeStyle(data.comf_brf, data.comf_txt);
+        m_lifeItems[n++]->refreshLifeStyle(data.comf_brf, data.comf_txt);
         //穿衣指数
-        pl[n++]->refreshLifeStyle(data.drsg_brf, data.drsg_txt);
+        m_lifeItems[n++]->refreshLifeStyle(data.drsg_brf, data.drsg_txt);
         //感冒指数
-        pl[n++]->refreshLifeStyle(data.flu_brf, data.flu_txt);
+        m_lifeItems[n++]->refreshLifeStyle(data.flu_brf, data.flu_txt);
         //运动指数
-        pl[n++]->refreshLifeStyle(data.sport_brf, data.sport_txt);
+        m_lifeItems[n++]->refreshLifeStyle(data.sport_brf, data.sport_txt);
         //旅游指数
-        pl[n++]->refreshLifeStyle(data.trav_brf, data.trav_txt);
+        m_lifeItems[n++]->refreshLifeStyle(data.trav_brf, data.trav_txt);
         //紫外线指数
-        pl[n++]->refreshLifeStyle(data.uv_brf, data.uv_txt);
+        m_lifeItems[n++]->refreshLifeStyle(data.uv_brf, data.uv_txt);
         //洗车指数
-        pl[n++]->refreshLifeStyle(data.cw_brf, data.cw_txt);
+        m_lifeItems[n++]->refreshLifeStyle(data.cw_brf, data.cw_txt);
         //空气污染扩散条件指数
-        pl[n++]->refreshLifeStyle(data.air_brf, data.air_txt);
+        m_lifeItems[n++]->refreshLifeStyle(data.air_brf, data.air_txt);
     }
 }
 
@@ -291,6 +269,44 @@ void ForecastWeatherWidget::showLifeStyleIndex(const QString &name)
     if (!name.isEmpty()) {
         const int idx = LIFESTYLE.indexOf(name);
         qDebug() << tr(index_strings[idx]);
+    }
+}
+
+void ForecastWeatherWidget::setDayStyleSheets()
+{
+    lifeTextLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
+
+    m_leftVSeparator->setStyleSheet("QFrame{background-color: rgba(238, 238, 238, 1.0);}");
+    m_rightVSeparator->setStyleSheet("QFrame{background-color: rgba(238, 238, 238, 1.0);}");
+    m_topHseperator->setStyleSheet("QFrame{background-color: rgba(238, 238, 238, 0.5);margin-left:5px;margin-right:5px;}");
+    m_bottomHseperator->setStyleSheet("QFrame{background-color: rgba(238, 238, 238, 0.5);margin-left:5px;margin-right:5px;}");
+
+    m_firstDay->setDayStyleSheets();
+    m_secondDay->setDayStyleSheets();
+    m_thirdDay->setDayStyleSheets();
+
+    for(int i=0; i<m_lifeItems.count(); i++) {
+        IndexItemWidget *item = m_lifeItems.at(i);
+        item->setDayStyleSheets();
+    }
+}
+
+void ForecastWeatherWidget::setNightStyleSheets()
+{
+    lifeTextLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#d9d9d9;font-size:12px;}");
+
+    m_leftVSeparator->setStyleSheet("QFrame{background-color: rgba(238, 238, 238, 0.5);}");
+    m_rightVSeparator->setStyleSheet("QFrame{background-color: rgba(238, 238, 238, 0.5);}");
+    m_topHseperator->setStyleSheet("QFrame{background-color: rgba(238, 238, 238, 0.2);margin-left:5px;margin-right:5px;}");
+    m_bottomHseperator->setStyleSheet("QFrame{background-color: rgba(238, 238, 238, 0.2);margin-left:5px;margin-right:5px;}");
+
+    m_firstDay->setNightStyleSheets();
+    m_secondDay->setNightStyleSheets();
+    m_thirdDay->setNightStyleSheets();
+
+    for(int i=0; i<m_lifeItems.count(); i++) {
+        IndexItemWidget *item = m_lifeItems.at(i);
+        item->setNightStyleSheets();
     }
 }
 

@@ -87,6 +87,9 @@ private:
 
     //QStringList m_cityList;
     WeatherWorker *m_weatherWorker = nullptr;
+
+    //test
+    bool m_isDN;
 };
 
 #endif // MAINWINDOW_H

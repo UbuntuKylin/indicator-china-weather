@@ -37,6 +37,9 @@ public:
     void initWidgets();
     void setCityName(const QString &city);
 
+    void setDayStyleSheets();
+    void setNightStyleSheets();
+
 signals:
     void requestShowSettingDialog();
 
@@ -44,7 +47,7 @@ private:
     QHBoxLayout *m_layout = nullptr;
     QHBoxLayout *m_lLayout = nullptr;
     QHBoxLayout *m_rLayout = nullptr;
-
+    QWidget *m_leftWidget = nullptr;
     QPushButton *m_setCityBtn = nullptr;
     QLabel *m_cityLabel = nullptr;
     QPushButton *m_minBtn = nullptr;

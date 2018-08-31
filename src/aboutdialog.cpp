@@ -38,8 +38,9 @@ AboutDialog::AboutDialog(QWidget *parent)
     this->setFixedWidth(456);
 
     QWidget *topWidget = new QWidget;
+    topWidget->setStyleSheet("QWidget{border:none; background-color:#1374e8;}");
     QHBoxLayout *toplayout = new QHBoxLayout(topWidget);
-    toplayout->setContentsMargins(0, 0, 0, 0);
+    toplayout->setContentsMargins(5, 0, 0, 0);
     toplayout->setSpacing(0);
     QLabel *label = new QLabel();
     label->setStyleSheet("QLabel{background-color:transparent;font-size:16px;color:#000000;}");
@@ -94,7 +95,7 @@ AboutDialog::AboutDialog(QWidget *parent)
     m_copyrightLabel->setText("Copyright © 2013-2018 Ubuntu Kylin Team, lixiang@kylinos.cn");
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(5, 2, 5, 20);
+    mainLayout->setContentsMargins(0, 0, 0, 20);
     mainLayout->setSpacing(10);
     mainLayout->addWidget(topWidget, 0, Qt::AlignTop);
     mainLayout->addWidget(m_iconLabel, 0, Qt::AlignHCenter);

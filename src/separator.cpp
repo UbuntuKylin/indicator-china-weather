@@ -22,7 +22,7 @@
 VSeparator::VSeparator(QWidget *parent) :
     QFrame(parent)
 {
-    this->setStyleSheet("QFrame{background-color: rgba(238, 238, 238, 0.5);}");//#eeeeee 0:完全透明  1:完全不透明
+    this->setStyleSheet("QFrame{background-color: rgba(238, 238, 238, 1.0);}");//#eeeeee 0:完全透明  1:完全不透明
     this->setFixedWidth(1);
     this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 }

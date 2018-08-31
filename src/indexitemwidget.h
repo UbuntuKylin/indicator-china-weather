@@ -31,6 +31,9 @@ public:
 
     void refreshLifeStyle(const QString &brf, const QString &txt);
 
+    void setDayStyleSheets();
+    void setNightStyleSheets();
+
 signals:
     void requestShowMsg(const QString &name) const;
 
@@ -45,6 +48,8 @@ private:
     QString m_iconPath;
     QString m_brf;
     QString m_txt;
+    QColor m_txtColor;
+    QColor m_titleColor;
 };
 
 #endif // INDEXITEMWIDGET_H

@@ -220,7 +220,7 @@ void NowWeatherWidget::refreshData(const ObserveWeather &data)
     else {
         m_windPowerLabel->setText(tr("%1stage wind").arg(data.wind_sc));//级风
     }
-    this->setWeatherIcon(QString(":/res/weather_icons/lightgrey/%1.png").arg(data.cond_code));
+    this->setWeatherIcon(QString(":/res/weather_icons/white/%1.png").arg(data.cond_code));
     m_aqiLabel->setLabelText(data.air);
     m_temperatureLabel->setLabelText(convertTemperatureToString(data.tmp.toInt()));
 }

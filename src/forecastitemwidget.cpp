@@ -60,14 +60,8 @@ ForecastItemWidget::ForecastItemWidget(QWidget *parent) :
     m_weatherLabel = new QLabel(this);
     m_iconLabel = new QLabel(this);
     m_tempLabel = new QLabel(this);
-
-    m_weekLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
-    m_dateLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
-    m_weatherLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
-    m_iconLabel->setStyleSheet("QLabel{border:none;background-color:transparent;}");
-    m_tempLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
-
     m_iconLabel->setFixedSize(48, 48);
+    m_iconLabel->setStyleSheet("QLabel{border:none;background-color:transparent;}");
 
     m_layout = new QVBoxLayout(this);
     m_layout->setContentsMargins(0, 0, 0, 0);
@@ -91,14 +85,40 @@ void ForecastItemWidget::resetForecastData(const ForecastWeather &data, int inde
     else {
         m_weekLabel->setText(covertDateToWeek(data.forcast_date));
     }
-    qDebug() << data.cond_code_d;
+
     m_dateLabel->setText(data.forcast_date);
     m_weatherLabel->setText(data.cond_txt_d);
-    //darkgrey   white   lightgrey
-    QPixmap pixmap = QPixmap(QString(":/res/weather_icons/darkgrey/%1.png").arg(data.cond_code_d));
+    //darkgrey or lightgrey
+    QPixmap pixmap;
+    if (m_isDayOrNight) {
+        pixmap = QPixmap(QString(":/res/weather_icons/darkgrey/%1.png").arg(data.cond_code_d));
+    }
+    else {
+        pixmap = QPixmap(QString(":/res/weather_icons/lightgrey/%1.png").arg(data.cond_code_d));
+    }
     pixmap = pixmap.scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     m_iconLabel->setPixmap(pixmap);
     m_tempLabel->setText(QString("%1°C~%2°C").arg(data.tmp_min).arg(data.tmp_max));
+}
+
+void ForecastItemWidget::setDayStyleSheets()
+{
+    m_isDayOrNight = true;
+
+    m_weekLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
+    m_dateLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
+    m_weatherLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
+    m_tempLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
+}
+
+void ForecastItemWidget::setNightStyleSheets()
+{
+    m_isDayOrNight = false;
+
+    m_weekLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#d9d9d9;font-size:12px;}");
+    m_dateLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#d9d9d9;font-size:12px;}");
+    m_weatherLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#d9d9d9;font-size:12px;}");
+    m_tempLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#d9d9d9;font-size:12px;}");
 }
 
 void ForecastItemWidget::setTextData()
@@ -111,7 +131,7 @@ void ForecastItemWidget::setDefaultData()
     m_weekLabel->setText("-");
     m_dateLabel->setText("-");
     m_weatherLabel->setText("-");
-    QPixmap pixmap = QPixmap(":/res/weather_icons/white/999.png");
+    QPixmap pixmap = QPixmap(":/res/weather_icons/darkgrey/999.png");
     pixmap = pixmap.scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     m_iconLabel->setPixmap(pixmap);
     m_tempLabel->setText("-°C");
