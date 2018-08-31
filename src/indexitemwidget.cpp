@@ -86,7 +86,7 @@ void IndexItemWidget::paintEvent(QPaintEvent *e)
     painter.drawText(valueRect, Qt::AlignVCenter | Qt::AlignLeft, this->m_brf);
 
     font.setPixelSize(12);//font.setPointSize(12);
-    fm = QFontMetrics(font);
+    QRect titleRect(valueRect.x(), valueRect.bottom(), this->width() - icon.width()/ratio - 5*2, 20);
     painter.setPen(QPen(QColor("#cfcfcf")));
-    painter.drawText(QRect(valueRect.x(), valueRect.bottom(), fm.width(this->m_indexName), 20), Qt::AlignVCenter | Qt::AlignLeft, this->m_indexName);
+    painter.drawText(titleRect, Qt::AlignVCenter | Qt::AlignLeft, this->m_indexName);
 }

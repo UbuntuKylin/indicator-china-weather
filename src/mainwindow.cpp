@@ -39,6 +39,44 @@
 #include "global.h"
 using namespace Global;
 
+inline QString convertCodeToBackgroud(int code)
+{
+    if (code == 100 || code == 900) {
+        return ":/res/background/weather-clear.png";
+    }
+    else if (code <= 103 && code >= 101) {
+        return ":/res/background/weather-few-clouds.png";
+    }
+    else if (code == 104 || code == 901) {
+        return ":/res/background/weather-overcast.png";
+    }
+    else if (code <= 204 && code >= 200) {
+        return ":/res/background/weather-clear.png";
+    }
+    else if (code <= 213 && code >= 205) {
+        return ":/res/background/weather-overcast.png";
+    }
+    else if (code <= 399 && code >= 300) {
+        return ":/res/background/weather-rain.png";
+    }
+    else if (code <= 499 && code >= 400) {
+        return ":/res/background/weather-snow.png";
+    }
+    else if (code <= 502 && code >= 500) {
+        return ":/res/background/weather-fog.png";
+    }
+    else if (code <= 508 && code >= 503) {
+        return ":/res/background/weather-sandstorm.png";
+    }
+    else if (code <= 515 && code >= 509) {
+        return ":/res/background/weather-fog.png";
+    }
+    else {
+        return ":/res/background/weather-clear.png";
+    }
+    //:/res/background/weather-clear-night.png
+}
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , m_mousePressed(false)
@@ -89,26 +127,63 @@ MainWindow::MainWindow(QWidget *parent)
         m_weatherWorker->refreshForecastWeatherData(m_preferences->currentCityId);
     }
 
-    connect(m_weatherWorker, &WeatherWorker::observeDataRefreshed, this, [=] (const ObserveWeather &data) {
-        m_contentWidget->refreshObserveUI(data);
-        this->refreshTrayMenuWeather(data);
+    connect(m_contentWidget, &ContentWidget::requestRetryWeather, this, [=] {
+        m_movieWidget->setVisible(true);
+        m_weatherWorker->refreshObserveWeatherData(m_preferences->currentCityId);
+        m_weatherWorker->refreshForecastWeatherData(m_preferences->currentCityId);
     });
 
-    connect(m_weatherWorker, &WeatherWorker::forecastDataRefreshed, this, [=] (const LifeStyle &data/*const QList<ForecastWeather> &datas*/) {
-//        int len = datas.size();
-//        if (len != 3) {
-//            return;
-//        }
-//        for (int i = 0; i < len; ++i) {
-//            qDebug () << "forecast's id=" << datas[i].forcast_date;
-//        }
-            m_contentWidget->refreshForecastUI(data);
+    connect(m_weatherWorker, &WeatherWorker::responseFailure, this, [=] (int code) {
+        m_movieWidget->setVisible(false);
+        m_hintWidget->setVisible(true);
+        if (code == 0) {
+            m_hintWidget->setIconAndText(":/res/network_warn.png", tr("Incorrect access address"));
+        }
+        else {
+            m_hintWidget->setIconAndText(":/res/network_warn.png", QString(tr("Network error code:%1")).arg(QString::number(code)));
+        }
+    });
+
+    connect(m_weatherWorker, &WeatherWorker::observeDataRefreshed, this, [=] (const ObserveWeather &data) {
+        m_movieWidget->setVisible(false);
+        m_titleBar->setCityName(data.city);
+        m_contentWidget->refreshObserveUI(data);
+        this->refreshTrayMenuWeather(data);
+        QString condCodeStr = data.cond_code;
+        if (!condCodeStr.isEmpty()) {
+            if (condCodeStr.contains(QChar('n'))) {
+                this->setStyleSheet("QMainWindow{color:white;background-image:url(':/res/background/weather-clear-night.png');background-repeat:no-repeat;}");
+            }
+            else {
+                QString styleSheetStr = QString("QMainWindow{color:white;background-image:url('%1');background-repeat:no-repeat;}").arg(convertCodeToBackgroud(condCodeStr.toInt()));
+                this->setStyleSheet(styleSheetStr);
+            }
+        }
+    });
+
+    connect(m_weatherWorker, &WeatherWorker::forecastDataRefreshed, this, [=] (const QList<ForecastWeather> &datas, const LifeStyle &data) {
+        m_movieWidget->setVisible(false);
+
+        int len = datas.size();
+        if (len > 3) {
+            len = 3;
+        }
+        for (int i = 0; i < len; ++i) {
+            m_contentWidget->refreshForecastUI(datas[i], i);
+        }
+
+        m_contentWidget->refreshLifestyleUI(data);
     });
 }
 
 MainWindow::~MainWindow()
 {
     global_end();
+}
+
+void MainWindow::setOpacity(double opacity)
+{
+
 }
 
 void MainWindow::initMenuAndTray()

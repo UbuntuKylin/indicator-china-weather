@@ -230,7 +230,20 @@ void ForecastWeatherWidget::refershLifeIndexGridLayout()
     }
 }
 
-void ForecastWeatherWidget::refreshData(const LifeStyle &data)
+void ForecastWeatherWidget::refreshForecastData(const ForecastWeather &data, int index)
+{
+    if (index == 0) {
+        m_firstDay->resetForecastData(data, index);
+    }
+    else if (index == 1) {
+        m_secondDay->resetForecastData(data, index);
+    }
+    if (index == 2) {
+        m_thirdDay->resetForecastData(data, index);
+    }
+}
+
+void ForecastWeatherWidget::refreshLifestyleData(const LifeStyle &data)
 {
     int n = 0;
     if (pl.count() == 8) {

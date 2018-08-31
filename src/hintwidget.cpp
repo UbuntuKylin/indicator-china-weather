@@ -165,3 +165,22 @@ bool HintWidget::event(QEvent *event)
 
     return QFrame::event(event);
 }
+
+
+void HintWidget::showEvent(QShowEvent *event)
+{
+    QFrame::showEvent(event);
+
+    if (m_isMovie && m_movie) {
+        m_movie->start();
+    }
+}
+
+void HintWidget::hideEvent(QHideEvent* event)
+{
+  QFrame::hideEvent(event);
+
+  if (m_isMovie && m_movie) {
+      m_movie->stop();
+  }
+}

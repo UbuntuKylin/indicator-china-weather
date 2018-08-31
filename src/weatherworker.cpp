@@ -70,8 +70,10 @@ void WeatherWorker::networkLookedUp(const QHostInfo &host)
 
 void WeatherWorker::refreshObserveWeatherData(const QString &cityId)
 {
-    if (cityId.isEmpty())
+    if (cityId.isEmpty()) {
+        emit responseFailure(0);
         return;
+    }
 
     /*QString forecastUrl = QString("http://service.ubuntukylin.com:8001/weather/api/1.0/observe/%1").arg(cityId);
     qDebug() << "forecastUrl=" << forecastUrl;
@@ -97,8 +99,10 @@ void WeatherWorker::refreshObserveWeatherData(const QString &cityId)
 
 void WeatherWorker::refreshForecastWeatherData(const QString &cityId)
 {
-    if (cityId.isEmpty())
+    if (cityId.isEmpty()) {
+        emit responseFailure(0);
         return;
+    }
 
     //heweather_forecast_s6
     QString forecastUrl = QString("http://service.ubuntukylin.com:8001/weather/api/2.0/heweather_forecast_s6/%1").arg(cityId);
@@ -138,10 +142,10 @@ void WeatherWorker::requestPostHostInfoToWeatherServer(QString hostInfo)
     connect(reply, &QNetworkReply::finished, this, &WeatherWorker::onPingBackPostReply);
 }
 
-void WeatherWorker::AccessDedirectUrl(const QString &redirectUrl, WeatherType weatherType)
+bool WeatherWorker::AccessDedirectUrl(const QString &redirectUrl, WeatherType weatherType)
 {
     if (redirectUrl.isEmpty())
-        return;
+        return false;
 
     QNetworkRequest request;
     QString url;
@@ -160,6 +164,8 @@ void WeatherWorker::AccessDedirectUrl(const QString &redirectUrl, WeatherType we
     default:
         break;
     }
+
+    return true;
 }
 
 void WeatherWorker::AccessDedirectUrlWithPost(const QString &redirectUrl)
@@ -182,14 +188,19 @@ void WeatherWorker::onWeatherObserveReply()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    bool redirection = false;
+
     if(reply->error() != QNetworkReply::NoError || statusCode != 200) {//200 is normal status
         qDebug() << "weather request error:" << reply->error() << ", statusCode=" << statusCode;
         if (statusCode == 301 || statusCode == 302) {//redirect
             QVariant redirectionUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
             qDebug() << "redirectionUrl=" << redirectionUrl.toString();
-            AccessDedirectUrl(redirectionUrl.toString(), WeatherType::Type_Observe);//AccessDedirectUrl(reply->rawHeader("Location"));
+            redirection = AccessDedirectUrl(redirectionUrl.toString(), WeatherType::Type_Observe);//AccessDedirectUrl(reply->rawHeader("Location"));
             reply->close();
             reply->deleteLater();
+        }
+        if (!redirection) {
+            emit responseFailure(statusCode);
         }
         return;
     }
@@ -204,10 +215,12 @@ void WeatherWorker::onWeatherObserveReply()
     QJsonDocument jsonDocument = QJsonDocument::fromJson(ba, &err);
     if (err.error != QJsonParseError::NoError) {// Json type error
         qDebug() << "Json type error";
+        emit responseFailure(0);
         return;
     }
     if (jsonDocument.isNull() || jsonDocument.isEmpty()) {
         qDebug() << "Json null or empty!";
+        emit responseFailure(0);
         return;
     }
 
@@ -218,7 +231,25 @@ void WeatherWorker::onWeatherObserveReply()
     QJsonObject airObj = mainObj.value("air").toObject();
     QJsonObject weatherObj = mainObj.value("weather").toObject();
 
-    ObserveWeather observeData;
+    m_preferences->weather.id = weatherObj.value("id").toString();
+    m_preferences->weather.city = weatherObj.value("location").toString();
+    m_preferences->weather.updatetime = weatherObj.value("update_loc").toString();
+    m_preferences->weather.air = QString("%1(%2)").arg(airObj.value("aqi").toString()).arg(airObj.value("qlty").toString());
+    m_preferences->weather.cloud = weatherObj.value("cloud").toString();
+    m_preferences->weather.cond_code = weatherObj.value("cond_code").toString();
+    m_preferences->weather.cond_txt = weatherObj.value("cond_txt").toString();
+    m_preferences->weather.fl = weatherObj.value("fl").toString();
+    m_preferences->weather.hum = weatherObj.value("hum").toString();
+    m_preferences->weather.pcpn = weatherObj.value("pcpn").toString();
+    m_preferences->weather.pres = weatherObj.value("pres").toString();
+    m_preferences->weather.tmp = weatherObj.value("tmp").toString();
+    m_preferences->weather.vis = weatherObj.value("vis").toString();
+    m_preferences->weather.wind_deg = weatherObj.value("wind_deg").toString();
+    m_preferences->weather.wind_dir = weatherObj.value("wind_dir").toString();
+    m_preferences->weather.wind_sc = weatherObj.value("wind_sc").toString();
+    m_preferences->weather.wind_spd = weatherObj.value("wind_spd").toString();
+
+    /*ObserveWeather observeData;
     observeData.id = weatherObj.value("id").toString();
     observeData.city = weatherObj.value("location").toString();
     observeData.updatetime = weatherObj.value("update_loc").toString();
@@ -235,23 +266,28 @@ void WeatherWorker::onWeatherObserveReply()
     observeData.wind_deg = weatherObj.value("wind_deg").toString();
     observeData.wind_dir = weatherObj.value("wind_dir").toString();
     observeData.wind_sc = weatherObj.value("wind_sc").toString();
-    observeData.wind_spd = weatherObj.value("wind_spd").toString();
+    observeData.wind_spd = weatherObj.value("wind_spd").toString();*/
 
-    emit this->observeDataRefreshed(observeData);
+    emit this->observeDataRefreshed(m_preferences->weather);
 }
 
 void WeatherWorker::onWeatherForecastReply()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    bool redirection = false;
+
     if(reply->error() != QNetworkReply::NoError || statusCode != 200) {//200 is normal status
         qDebug() << "weather forecast request error:" << reply->error() << ", statusCode=" << statusCode;
         if (statusCode == 301 || statusCode == 302) {//redirect
             QVariant redirectionUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
             qDebug() << "redirectionUrl=" << redirectionUrl.toString();
-            AccessDedirectUrl(redirectionUrl.toString(), WeatherType::Type_Forecast);//AccessDedirectUrl(reply->rawHeader("Location"));
+            redirection = AccessDedirectUrl(redirectionUrl.toString(), WeatherType::Type_Forecast);//AccessDedirectUrl(reply->rawHeader("Location"));
             reply->close();
             reply->deleteLater();
+        }
+        if (!redirection) {
+            emit responseFailure(statusCode);
         }
         return;
     }
@@ -266,10 +302,12 @@ void WeatherWorker::onWeatherForecastReply()
     QJsonDocument jsonDocument = QJsonDocument::fromJson(ba, &err);
     if (err.error != QJsonParseError::NoError) {// Json type error
         qDebug() << "Json type error";
+        emit responseFailure(0);
         return;
     }
     if (jsonDocument.isNull() || jsonDocument.isEmpty()) {
         qDebug() << "Json null or empty!";
+        emit responseFailure(0);
         return;
     }
 
@@ -357,7 +395,11 @@ void WeatherWorker::onWeatherForecastReply()
     m_preferences->lifestyle.uv_brf = lifestyleObj.value("uv_brf").toString();
     m_preferences->lifestyle.uv_txt = lifestyleObj.value("uv_txt").toString();
 
-    emit this->forecastDataRefreshed(/*forecastDatas, */m_preferences->lifestyle);
+    QList<ForecastWeather> forecastDatas;
+    forecastDatas.append(m_preferences->forecast0);
+    forecastDatas.append(m_preferences->forecast1);
+    forecastDatas.append(m_preferences->forecast2);
+    emit this->forecastDataRefreshed(forecastDatas, m_preferences->lifestyle);
 
 
     /*ForecastWeather forecastData[3];

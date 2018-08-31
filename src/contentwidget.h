@@ -42,7 +42,11 @@ public:
     void setNetworkErrorPages();
 
     void refreshObserveUI(const ObserveWeather &data);
-    void refreshForecastUI(const LifeStyle &data);
+    void refreshForecastUI(const ForecastWeather &data, int index);
+    void refreshLifestyleUI(const LifeStyle &data);
+
+signals:
+    void requestRetryWeather();
 
 private:
     QVBoxLayout *m_layout = nullptr;

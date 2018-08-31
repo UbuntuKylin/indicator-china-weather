@@ -53,15 +53,16 @@ public:
     void requestPingBackWeatherServer();
     void requestPostHostInfoToWeatherServer(QString hostInfo);
 
-    void AccessDedirectUrl(const QString &redirectUrl, WeatherType weatherType);
+    bool AccessDedirectUrl(const QString &redirectUrl, WeatherType weatherType);
     void AccessDedirectUrlWithPost(const QString &redirectUrl);
 
     QString getErrorCodeDescription(QString errorCode);
 
 signals:
     void observeDataRefreshed(const ObserveWeather &data);
-    void forecastDataRefreshed(/*const QList<ForecastWeather> &datas, */LifeStyle data);
+    void forecastDataRefreshed(const QList<ForecastWeather> &datas, LifeStyle data);
     void nofityNetworkStatus(bool status);
+    void responseFailure(int code);
 
 public slots:
     void onWeatherObserveReply();

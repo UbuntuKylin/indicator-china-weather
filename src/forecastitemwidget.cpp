@@ -5,6 +5,49 @@
 #include <QEvent>
 #include <QCursor>
 
+inline QString covertDateToWeek(QString dateStr)
+{
+    //星期使用基姆拉尔森计算公式
+    if (dateStr.contains(QChar('-'))) {
+        QStringList dateList= dateStr.split(QChar('-'));
+        if (dateList.length() == 3) {
+            bool ok;
+            int year = dateList.at(0).toInt(&ok, 10);
+            int month = dateList.at(1).toInt(&ok, 10);
+            int day = dateList.at(2).toInt(&ok, 10);
+
+            int week = (day + 2*month + 3*(month+1)/5 + year + year/4 - year/100 + year/400)%7;
+            switch (week) {
+            case 0:
+                return QString(QObject::tr("Monday"));//星期一
+                break;
+            case 1:
+                return QString(QObject::tr("Tuesday"));//星期二
+                break;
+            case 2:
+                return QString(QObject::tr("Wednesday"));//星期三
+                break;
+            case 3:
+                return QString(QObject::tr("Thursday"));//星期四
+                break;
+            case 4:
+                return QString(QObject::tr("Friday"));//星期五
+                break;
+            case 5:
+                return QString(QObject::tr("Saturday"));//星期六
+                break;
+            case 6:
+                return QString(QObject::tr("Sunday"));//星期日
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
+    return "--";
+}
+
 ForecastItemWidget::ForecastItemWidget(QWidget *parent) :
     QWidget(parent)
 {
@@ -40,25 +83,38 @@ ForecastItemWidget::ForecastItemWidget(QWidget *parent) :
     this->setDefaultData();
 }
 
-void ForecastItemWidget::resetForecastData()
+void ForecastItemWidget::resetForecastData(const ForecastWeather &data, int index)
 {
-
+    if (index == 0) {
+        m_weekLabel->setText(tr("Today"));
+    }
+    else {
+        m_weekLabel->setText(covertDateToWeek(data.forcast_date));
+    }
+    qDebug() << data.cond_code_d;
+    m_dateLabel->setText(data.forcast_date);
+    m_weatherLabel->setText(data.cond_txt_d);
+    //darkgrey   white   lightgrey
+    QPixmap pixmap = QPixmap(QString(":/res/weather_icons/darkgrey/%1.png").arg(data.cond_code_d));
+    pixmap = pixmap.scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    m_iconLabel->setPixmap(pixmap);
+    m_tempLabel->setText(QString("%1°C~%2°C").arg(data.tmp_min).arg(data.tmp_max));
 }
 
 void ForecastItemWidget::setTextData()
 {
-    m_weekLabel->setText("星期五");
+//    m_weekLabel->setText("星期五");
 }
 
 void ForecastItemWidget::setDefaultData()
 {
-    m_weekLabel->setText("今天");
-    m_dateLabel->setText("20180821");
-    m_weatherLabel->setText("晴");
-    QPixmap pixmap = QPixmap(":/res/weather_icons/lightgrey/100.png");
+    m_weekLabel->setText("-");
+    m_dateLabel->setText("-");
+    m_weatherLabel->setText("-");
+    QPixmap pixmap = QPixmap(":/res/weather_icons/white/999.png");
     pixmap = pixmap.scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     m_iconLabel->setPixmap(pixmap);
-    m_tempLabel->setText("28°C-36°C");
+    m_tempLabel->setText("-°C");
 }
 
 void ForecastItemWidget::setLabelText(const QString &name, const QString &desc)

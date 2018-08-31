@@ -42,6 +42,7 @@ ContentWidget::ContentWidget(WeatherWorker *weatherWorker, QWidget *parent) :
         m_networkErrorWidget->setVisible(false);
         m_nowWidget->setVisible(true);
         m_forecastWidget->setVisible(true);
+        emit requestRetryWeather();
     });
 
     m_layout->addWidget(m_nowWidget, 0, Qt::AlignTop);
@@ -64,9 +65,14 @@ void ContentWidget::refreshObserveUI(const ObserveWeather &data)
     m_nowWidget->refreshData(data);
 }
 
-void ContentWidget::refreshForecastUI(const LifeStyle &data)
+void ContentWidget::refreshForecastUI(const ForecastWeather &data, int index)
 {
-    m_forecastWidget->refreshData(data);
+    m_forecastWidget->refreshForecastData(data, index);
+}
+
+void ContentWidget::refreshLifestyleUI(const LifeStyle &data)
+{
+    m_forecastWidget->refreshLifestyleData(data);
 }
 
 void ContentWidget::setNetworkErrorPages()

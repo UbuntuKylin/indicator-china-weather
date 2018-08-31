@@ -44,7 +44,8 @@ public:
     void initWidgets();
     void refershLifeIndexGridLayout();
 
-    void refreshData(const LifeStyle &data);
+    void refreshForecastData(const ForecastWeather &data, int index);
+    void refreshLifestyleData(const LifeStyle &data);
 
 public slots:
     void showLifeStyleIndex(const QString &name);

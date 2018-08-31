@@ -41,7 +41,7 @@ public:
     QString currentCityId;
     QString releaseTime;
 
-    struct Weather_settings {
+    /*struct Weather_settings {
         QString id;
         QString city;
         QString updatetime;
@@ -59,9 +59,9 @@ public:
         QString wind_dir;//风向 	西北
         QString wind_sc;//风力 	3 (0:静风  1:1级风)
         QString wind_spd;//风速，公里/小时 km/h 	15
-    } weather;
+    } weather;*/
 
-    struct Forecast_settings {
+    /*struct Forecast_settings {
         QString cond_code_d;//白天天气状况代码 	100
         QString cond_code_n;//晚间天气状况代码 	100
         QString cond_txt_d;//白天天气状况描述 	晴
@@ -81,7 +81,7 @@ public:
         QString wind_dir;//风向 	西北风
         QString wind_sc;//风力 	1-2 (级风)
         QString wind_spd;//风速，公里/小时 	14
-    } forecast0, forecast1, forecast2;
+    } forecast0, forecast1, forecast2;*/
 
     /*struct LifeStyle_settings {
         QString air_brf;
@@ -101,6 +101,9 @@ public:
         QString uv_brf;
         QString uv_txt;
     } lifestyle;*/
+
+    ObserveWeather weather;
+    ForecastWeather forecast0, forecast1, forecast2;
     LifeStyle lifestyle;
 
     CitiesList *m_cityList;

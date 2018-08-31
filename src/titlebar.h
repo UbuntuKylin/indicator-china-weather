@@ -35,8 +35,6 @@ public:
     void initLeftContent();
     void initRightContent();
     void initWidgets();
-
-public slots:
     void setCityName(const QString &city);
 
 signals:

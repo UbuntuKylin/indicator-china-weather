@@ -49,6 +49,8 @@ public:
 
     void refreshTrayMenuWeather(const ObserveWeather &data);
 
+    void setOpacity(double opacity);
+
 protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
