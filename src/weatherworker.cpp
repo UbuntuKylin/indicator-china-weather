@@ -194,7 +194,7 @@ void WeatherWorker::onWeatherObserveReply()
     //QString reply_content = QString::fromUtf8(ba);
     reply->close();
     reply->deleteLater();
-    qDebug() << "weather observe size: " << ba.size();
+    //qDebug() << "weather observe size: " << ba.size();
 
     QJsonParseError err;
     QJsonDocument jsonDocument = QJsonDocument::fromJson(ba, &err);
@@ -208,11 +208,11 @@ void WeatherWorker::onWeatherObserveReply()
     }
 
     QJsonObject jsonObject = jsonDocument.object();
-    qDebug() << "jsonObject" << jsonObject;
+    //qDebug() << "jsonObject" << jsonObject;
 
     QJsonObject mainObj = jsonObject.value("KylinWeather").toObject();
     QJsonObject airObj = mainObj.value("air").toObject();
-    qDebug() << "aqi=" << airObj.value("aqi").toString();
+    /*qDebug() << "aqi=" << airObj.value("aqi").toString();
     qDebug() << "co=" << airObj.value("co").toString();
     qDebug() << "main=" << airObj.value("main").toString();
     qDebug() << "no2=" << airObj.value("no2").toString();
@@ -220,7 +220,7 @@ void WeatherWorker::onWeatherObserveReply()
     qDebug() << "pm10=" << airObj.value("pm10").toString();
     qDebug() << "pm25=" << airObj.value("pm25").toString();
     qDebug() << "qlty=" << airObj.value("qlty").toString();
-    qDebug() << "so2=" << airObj.value("so2").toString();
+    qDebug() << "so2=" << airObj.value("so2").toString();*/
 
     QJsonObject weatherObj = mainObj.value("weather").toObject();
     qDebug() << "admin_area=" << weatherObj.value("admin_area").toString();
@@ -249,6 +249,21 @@ void WeatherWorker::onWeatherObserveReply()
     ObserveWeather observeData;
     observeData.id = weatherObj.value("id").toString();
     observeData.city = weatherObj.value("location").toString();
+    observeData.updatetime = weatherObj.value("location").toString();
+    observeData.air = QString("%1(%2)").arg(airObj.value("aqi").toString()).arg(airObj.value("qlty").toString());
+    observeData.cloud = weatherObj.value("cloud").toString();
+    observeData.cond_code = weatherObj.value("cond_code").toString();
+    observeData.cond_txt = weatherObj.value("cond_txt").toString();
+    observeData.fl = weatherObj.value("fl").toString();
+    observeData.hum = weatherObj.value("hum").toString();
+    observeData.pcpn = weatherObj.value("pcpn").toString();
+    observeData.pres = weatherObj.value("pres").toString();
+    observeData.tmp = weatherObj.value("tmp").toString();
+    observeData.vis = weatherObj.value("vis").toString();
+    observeData.wind_deg = weatherObj.value("wind_deg").toString();
+    observeData.wind_dir = weatherObj.value("wind_dir").toString();
+    observeData.wind_sc = weatherObj.value("wind_sc").toString();
+    observeData.wind_spd = weatherObj.value("wind_spd").toString();
 
     emit this->observeDataRefreshed(observeData);
 }

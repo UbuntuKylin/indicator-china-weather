@@ -35,23 +35,46 @@ void WorkerThread::run()
         return;
 
     //TODO: read from DB, now test reading from txt file
-    QFile file(":/data/data/locations.txt");
+    /*QFile file(":/data/data/china-city-list.csv");
+    if (file.open(QFile::ReadOnly | QFile::Text)) {
+        QString content = file.readAll();
+        QStringList resultList = content.split("\n");
+        qDebug() << resultList.length();
+        file.close();
+    }*/
+
+    //CN101250101,changsha,长沙,CN,China,中国,hunan,湖南,changsha,长沙,28.19409,112.98228,"430101,430100,430000",
+
+    QFile file(":/data/data/china-city-list.csv");
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QString line = file.readLine();
-        line = line.replace("\n", "");//北京,北京,北京:101010100:beijing
+        line = line.replace("\n", "");
         while (!line.isEmpty()) {
-            QStringList resultList = line.split(":");
-            LocationData data;
-            QString city = resultList.at(0);//北京,北京,北京
-            data.id = resultList.at(1);//101010100
-            data.pinyin = resultList.at(2);//beijing
+            QStringList resultList = line.split(",");
+            if (resultList.length() < 10) {
+                line = file.readLine();
+                line = line.replace("\n", "");
+                continue;
+            }
 
-            resultList.clear();
-            resultList = city.split(",");
-            data.province = resultList.at(0);
-            data.city = resultList.at(1);
-            data.county = resultList.at(1);
-            data.country = "China";
+            QString id = resultList.at(0);
+            if (!id.startsWith("CN")) {
+                line = file.readLine();
+                line = line.replace("\n", "");
+                continue;
+            }
+
+            LocationData data;
+            data.id = id.remove(0, 2);//remove "CN"
+            data.city_en = resultList.at(1);
+            data.city = resultList.at(2);
+            data.country_en = resultList.at(4);
+            data.country = resultList.at(5);
+            data.province_en = resultList.at(6);
+            data.province = resultList.at(7);
+            data.admin_district_en = resultList.at(8);
+            data.admin_district = resultList.at(9);
+
             m_worker->m_locatonList << data;
 
             line = file.readLine();
@@ -79,7 +102,7 @@ QList<LocationData> LocationWorker::exactMatchCity(const QString &inputText) con
     QList<LocationData> searchedList;
 
     for (const LocationData line : m_locatonList) {
-        if (line.id == inputText || line.city.contains(inputText) || line.county.contains(inputText) || line.pinyin.contains(inputText)) {
+        if (line.id == inputText || line.city.contains(inputText) || line.city_en.contains(inputText) || line.province.contains(inputText) || line.province_en.contains(inputText) || line.admin_district.contains(inputText) || line.admin_district_en.contains(inputText)) {
             searchedList.append(line);
         }
     }
