@@ -34,14 +34,14 @@ TranslucentLabel::TranslucentLabel(QWidget *parent)
     this->setFixedSize(80, 28);
 
     m_icon = new QLabel(this);
+    m_icon->setStyleSheet("QLabel{border:none;background-color:transparent;}");
+    //m_icon->setScaledContents(true);//自动缩放,显示图像大小自动调整为Qlabel大小
+    m_icon->setFixedSize(20, 20);
+
     m_text = new QLabel(this);
     m_text->adjustSize();//QLabel自适应文字的大小
     m_text->setAlignment(Qt::AlignLeft);
-    m_icon->setStyleSheet("QLabel{border:none;background-color:transparent;}");
     m_text->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:12px;}");
-
-    //m_icon->setScaledContents(true);//自动缩放,显示图像大小自动调整为Qlabel大小
-    m_icon->setFixedSize(20, 20);
 
     QHBoxLayout *m_layout = new QHBoxLayout(this);
     m_layout->setContentsMargins(5, 0, 5, 0);
@@ -60,5 +60,9 @@ void TranslucentLabel::setLabelIcon(const QString &iconPath)
 
 void TranslucentLabel::setLabelText(const QString &text)
 {
-    m_text->setText(text);
+    QFont font = m_text->font();
+    const QFontMetrics fm(font);
+    QString elided_text = fm.elidedText(text, Qt::ElideRight, this->width() - m_icon->width() - 10);
+    m_text->setText(elided_text);
+
 }

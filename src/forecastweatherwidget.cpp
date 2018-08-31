@@ -27,7 +27,8 @@
 
 namespace {
 
-const QStringList LIFESTYLE = {"comf", "drsg", "flu", "sport", "trav", "uv", "cw", "air"};
+const QStringList LIFESTYLE = {QString(QObject::tr("comf")), QString(QObject::tr("drsg")), QString(QObject::tr("flu")), QString(QObject::tr("sport")), QString(QObject::tr("trav")), QString(QObject::tr("uv")), QString(QObject::tr("cw")), QString(QObject::tr("air"))};
+const QStringList LIFESTYLEICON = {":/res/cash_wash_index.png", ":/res/clothe_index.png", ":/res/cash_wash_index.png", ":/res/cash_wash_index.png", ":/res/cash_wash_index.png", ":/res/ultraviolet_rays.png", ":/res/cash_wash_index.png", ":/res/cash_wash_index.png"};
 
 }
 
@@ -39,6 +40,7 @@ ForecastWeatherWidget::ForecastWeatherWidget(WeatherWorker *weatherWorker, QFram
 //    this->setStyleSheet("QLabel{border-radius: 0px; color:rgb(250, 250, 250); background-color:rgba(0,0,0,0.2)}");
 
     m_lifeIndexList = LIFESTYLE;
+    m_lifeIndexIconList = LIFESTYLEICON;
 
     this->initWidgets();
 
@@ -74,6 +76,13 @@ ForecastWeatherWidget::ForecastWeatherWidget(WeatherWorker *weatherWorker, QFram
 
 ForecastWeatherWidget::~ForecastWeatherWidget()
 {
+    for(int i=0; i<pl.count(); i++) {
+        IndexItemWidget *item = pl.at(i);
+        delete item;
+        item = NULL;
+    }
+    pl.clear();
+
     while (QLayoutItem *item = m_indexGridLayout->takeAt(0)) {
         item->widget()->deleteLater();
         delete item;
@@ -214,9 +223,33 @@ void ForecastWeatherWidget::refershLifeIndexGridLayout()
     int index = 0;
     const int count = m_lifeIndexList.size();
     for (int i = 0; i != count; ++i, ++index) {
-        IndexItemWidget *item = new IndexItemWidget(m_lifeIndexList[i]);
+        IndexItemWidget *item = new IndexItemWidget(m_lifeIndexList[i], m_lifeIndexIconList[i]);
         connect(item, SIGNAL(requestShowMsg(QString)), this, SLOT(showLifeStyleIndex(QString)));
         m_indexGridLayout->addWidget(item, index / 3, index % 3);
+        pl.append(item);
+    }
+}
+
+void ForecastWeatherWidget::refreshData(const LifeStyle &data)
+{
+    int n = 0;
+    if (pl.count() == 8) {
+        //舒适度指数
+        pl[n++]->refreshLifeStyle(data.comf_brf, data.comf_txt);
+        //穿衣指数
+        pl[n++]->refreshLifeStyle(data.drsg_brf, data.drsg_txt);
+        //感冒指数
+        pl[n++]->refreshLifeStyle(data.flu_brf, data.flu_txt);
+        //运动指数
+        pl[n++]->refreshLifeStyle(data.sport_brf, data.sport_txt);
+        //旅游指数
+        pl[n++]->refreshLifeStyle(data.trav_brf, data.trav_txt);
+        //紫外线指数
+        pl[n++]->refreshLifeStyle(data.uv_brf, data.uv_txt);
+        //洗车指数
+        pl[n++]->refreshLifeStyle(data.cw_brf, data.cw_txt);
+        //空气污染扩散条件指数
+        pl[n++]->refreshLifeStyle(data.air_brf, data.air_txt);
     }
 }
 
@@ -229,7 +262,7 @@ void ForecastWeatherWidget::showLifeStyleIndex(const QString &name)
     //trav_brf 旅游指数
     //uv_brf 紫外线指数
     //cw_brf 洗车指数
-    //air_brf 空气污染指数
+    //air_brf 空气污染扩散条件指数
 
     static const char *index_strings[] = {
         QT_TR_NOOP("comf index"),

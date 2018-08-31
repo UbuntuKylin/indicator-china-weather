@@ -66,6 +66,25 @@ struct ForecastWeather
     QString wind_spd;//风速，公里/小时 	14
 };
 
+struct LifeStyle {
+    QString air_brf;
+    QString air_txt;
+    QString comf_brf;
+    QString comf_txt;
+    QString cw_brf;
+    QString cw_txt;
+    QString drsg_brf;
+    QString drsg_txt;
+    QString flu_brf;
+    QString flu_txt;
+    QString sport_brf;
+    QString sport_txt;
+    QString trav_brf;
+    QString trav_txt;
+    QString uv_brf;
+    QString uv_txt;
+};
+
 struct LocationData {
     QString id;
     QString city_en;
@@ -99,6 +118,7 @@ public:
 
 Q_DECLARE_METATYPE(ObserveWeather)
 Q_DECLARE_METATYPE(ForecastWeather)
+Q_DECLARE_METATYPE(LifeStyle)
 Q_DECLARE_METATYPE(LocationData)
 Q_DECLARE_METATYPE(CitySettingData)
 

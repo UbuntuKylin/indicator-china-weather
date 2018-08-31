@@ -24,7 +24,6 @@
 #include "aboutdialog.h"
 #include "hintwidget.h"
 #include "weatherworker.h"
-#include "data.h"
 
 #include <QApplication>
 #include <QDesktopWidget>
@@ -72,8 +71,6 @@ MainWindow::MainWindow(QWidget *parent)
         this->showSettingDialog();
     });
 
-    this->refreshUI();
-
     m_hintWidget = new HintWidget(this);
     m_hintWidget->setIconAndText(":/res/network_warn.png", tr("Network not connected"));
     m_hintWidget->move((this->width() - m_hintWidget->width())/2, (this->height() - m_hintWidget->height())/2);
@@ -89,23 +86,23 @@ MainWindow::MainWindow(QWidget *parent)
     else {
         m_movieWidget->setVisible(true);
         m_weatherWorker->refreshObserveWeatherData(m_preferences->currentCityId);
-        //m_weatherWorker->refreshForecastWeatherData(m_preferences->currentCityId);
+        m_weatherWorker->refreshForecastWeatherData(m_preferences->currentCityId);
     }
 
     connect(m_weatherWorker, &WeatherWorker::observeDataRefreshed, this, [=] (const ObserveWeather &data) {
-        qDebug () << "data's id=" << data.id;
-        qDebug () << "data's city=" << data.city;
+        m_contentWidget->refreshObserveUI(data);
+        this->refreshTrayMenuWeather(data);
     });
 
-    connect(m_weatherWorker, &WeatherWorker::forecastDataRefreshed, this, [=] (const QList<ForecastWeather> &datas) {
-        int len = datas.size();
-        if (len != 3) {
-            return;
-        }
-        for (int i = 0; i < len; ++i) {
-            qDebug () << "forecast's id=" << datas[i].forcast_date;
-        }
-
+    connect(m_weatherWorker, &WeatherWorker::forecastDataRefreshed, this, [=] (const LifeStyle &data/*const QList<ForecastWeather> &datas*/) {
+//        int len = datas.size();
+//        if (len != 3) {
+//            return;
+//        }
+//        for (int i = 0; i < len; ++i) {
+//            qDebug () << "forecast's id=" << datas[i].forcast_date;
+//        }
+            m_contentWidget->refreshForecastUI(data);
     });
 }
 
@@ -141,12 +138,12 @@ void MainWindow::initMenuAndTray()
     QAction *m_switchAciton = m_mainMenu->addAction(tr("Switch"));
     m_mainMenu->addSeparator();
 
-    m_weatherAction = new QAction(tr("sunny"),this);
-    m_temperatureAction = new QAction(tr("33˚C"),this);
-    m_sdAction = new QAction(tr("37%"),this);
-    m_aqiAction = new QAction(tr("88"),this);
-    m_releaseTimeAction = new QAction(tr("None"),this);
-    m_updateTimeAction = new QAction(tr("None"),this);
+    m_weatherAction = new QAction("N/A",this);
+    m_temperatureAction = new QAction("N/A",this);
+    m_sdAction = new QAction("N/A",this);
+    m_aqiAction = new QAction("N/A",this);
+    m_releaseTimeAction = new QAction(tr("Release time"),this);
+    m_updateTimeAction = new QAction(tr("Refresh time"),this);
     m_mainMenu->addAction(m_weatherAction);
     m_mainMenu->addAction(m_temperatureAction);
     m_mainMenu->addAction(m_sdAction);
@@ -251,9 +248,15 @@ void MainWindow::refreshCityActions()
     m_cityActionGroup->setCurrentCheckedIndex(0);
 }
 
-void MainWindow::refreshUI()
+void MainWindow::refreshTrayMenuWeather(const ObserveWeather &data)
 {
-    m_systemTray->setIcon(QIcon(":/res/weather_icons/lightgrey/100.png"));
+    m_systemTray->setIcon(QIcon(QString(":/res/weather_icons/lightgrey/%1.png").arg(data.cond_code)));
+    m_weatherAction->setText(data.cond_txt);
+    m_temperatureAction->setText(QString(tr("Temperature:%1˚C")).arg(data.tmp));
+    m_sdAction->setText(QString(tr("Relative humidity:%1")).arg(data.hum));
+    m_aqiAction->setText(QString(tr("Air quality:%1")).arg(data.air));
+    m_releaseTimeAction->setText(QString(tr("Release time:%1")).arg(data.updatetime));
+//    m_updateTimeAction->setText(QString(tr("Refresh time:%1")).arg(data.updatetime));
 }
 
 void MainWindow::applySettings()

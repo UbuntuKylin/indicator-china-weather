@@ -23,12 +23,22 @@
 #include <QPainter>
 #include <QDebug>
 
-IndexItemWidget::IndexItemWidget(const QString &name, QWidget *parent)
+IndexItemWidget::IndexItemWidget(const QString &name, const QString &iconPath, QWidget *parent)
     : QWidget(parent)
     , m_mouseHover(false)
     , m_indexName(name)
+    , m_iconPath(iconPath)
+    , m_brf("-")
+    , m_txt("-")
 {
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+}
+
+void IndexItemWidget::refreshLifeStyle(const QString &brf, const QString &txt)
+{
+    this->m_brf = brf;
+    this->m_txt = txt;
+    update();
 }
 
 void IndexItemWidget::enterEvent(QEvent *event)
@@ -58,7 +68,7 @@ void IndexItemWidget::paintEvent(QPaintEvent *e)
     const qreal ratio = qApp->devicePixelRatio();
 
     painter.setRenderHint(QPainter::Antialiasing, true);
-    QPixmap icon = QPixmap(":/res/clothe_index.png");
+    QPixmap icon = QPixmap(this->m_iconPath);
     QRect iconRect(20, 2, icon.width()/ratio, icon.height()/ratio);
     painter.drawPixmap(iconRect, icon);
 
@@ -71,15 +81,12 @@ void IndexItemWidget::paintEvent(QPaintEvent *e)
     painter.setPen(pen);
     painter.setFont(font);
 
-    QString valueStr = "35.0KM";
-
-    QRect valueRect(iconRect.right() + 5, iconRect.y(), fm.width(valueStr), 20);
+    QRect valueRect(iconRect.right() + 5, iconRect.y(), fm.width(this->m_brf), 20);
     painter.setPen(QPen(QColor("#808080")));
-    painter.drawText(valueRect, Qt::AlignVCenter | Qt::AlignLeft, valueStr);
+    painter.drawText(valueRect, Qt::AlignVCenter | Qt::AlignLeft, this->m_brf);
 
     font.setPixelSize(12);//font.setPointSize(12);
     fm = QFontMetrics(font);
-    QString unitText = "°C";
     painter.setPen(QPen(QColor("#cfcfcf")));
-    painter.drawText(QRect(valueRect.x(), valueRect.bottom(), fm.width(unitText), 20), Qt::AlignVCenter | Qt::AlignLeft, unitText);
+    painter.drawText(QRect(valueRect.x(), valueRect.bottom(), fm.width(this->m_indexName), 20), Qt::AlignVCenter | Qt::AlignLeft, this->m_indexName);
 }

@@ -59,6 +59,16 @@ ContentWidget::~ContentWidget()
     }
 }
 
+void ContentWidget::refreshObserveUI(const ObserveWeather &data)
+{
+    m_nowWidget->refreshData(data);
+}
+
+void ContentWidget::refreshForecastUI(const LifeStyle &data)
+{
+    m_forecastWidget->refreshData(data);
+}
+
 void ContentWidget::setNetworkErrorPages()
 {
     m_nowWidget->setVisible(false);

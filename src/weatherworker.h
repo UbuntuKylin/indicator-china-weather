@@ -60,7 +60,7 @@ public:
 
 signals:
     void observeDataRefreshed(const ObserveWeather &data);
-    void forecastDataRefreshed(const QList<ForecastWeather> &datas);
+    void forecastDataRefreshed(/*const QList<ForecastWeather> &datas, */LifeStyle data);
     void nofityNetworkStatus(bool status);
 
 public slots:

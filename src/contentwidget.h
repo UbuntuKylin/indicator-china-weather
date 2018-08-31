@@ -22,6 +22,8 @@
 
 #include <QFrame>
 
+#include "data.h"
+
 class QVBoxLayout;
 class NowWeatherWidget;
 class ForecastWeatherWidget;
@@ -38,6 +40,9 @@ public:
     ~ContentWidget();
 
     void setNetworkErrorPages();
+
+    void refreshObserveUI(const ObserveWeather &data);
+    void refreshForecastUI(const LifeStyle &data);
 
 private:
     QVBoxLayout *m_layout = nullptr;

@@ -28,6 +28,7 @@
 #include "weatherworker.h"
 
 class ForecastItemWidget;
+class IndexItemWidget;
 
 class ForecastWeatherWidget : public QFrame
 {
@@ -43,6 +44,8 @@ public:
     void initWidgets();
     void refershLifeIndexGridLayout();
 
+    void refreshData(const LifeStyle &data);
+
 public slots:
     void showLifeStyleIndex(const QString &name);
 
@@ -56,10 +59,13 @@ private:
     QVBoxLayout *m_indexlayout = nullptr;
     QGridLayout *m_indexGridLayout = nullptr;
     QStringList m_lifeIndexList;
+    QStringList m_lifeIndexIconList;
     ForecastItemWidget *m_firstDay = nullptr;
     ForecastItemWidget *m_secondDay = nullptr;
     ForecastItemWidget *m_thirdDay = nullptr;
     WeatherWorker *m_weatherWorker = nullptr;
+
+    QList<IndexItemWidget *> pl;
 };
 
 #endif // FORECAST_WEATHER_WIDGET_H

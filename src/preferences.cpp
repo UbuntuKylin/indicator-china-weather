@@ -41,12 +41,12 @@ Preferences::~Preferences()
 
 void Preferences::reset()
 {
-    weather.weatherStatus = "";
-    weather.weatherIcon = "";
-    weather.temperature = "";
-    weather.sd = "";
-    weather.wind = "";
-    weather.aqi = "";
+//    weather.weatherStatus = "";
+//    weather.weatherIcon = "";
+//    weather.temperature = "";
+//    weather.sd = "";
+//    weather.wind = "";
+//    weather.aqi = "";
 
     m_cityList->clear();
 }
@@ -61,14 +61,14 @@ void Preferences::save()
     set->setValue("city_list", m_cityList->getCitiesList());
     set->endGroup();
 
-    set->beginGroup("Weather");
-    set->setValue("status", weather.weatherStatus);
-    set->setValue("icon", weather.weatherIcon);
-    set->setValue("temperature", weather.temperature);
-    set->setValue("sd", weather.sd);
-    set->setValue("wind", weather.wind);
-    set->setValue("aqi", weather.aqi);
-    set->endGroup();
+//    set->beginGroup("Weather");
+//    set->setValue("status", weather.weatherStatus);
+//    set->setValue("icon", weather.weatherIcon);
+//    set->setValue("temperature", weather.temperature);
+//    set->setValue("sd", weather.sd);
+//    set->setValue("wind", weather.wind);
+//    set->setValue("aqi", weather.aqi);
+//    set->endGroup();
 
 //    set->beginGroup("Forecast");
 //    set->endGroup();
@@ -91,12 +91,12 @@ void Preferences::load()
     m_cityList->loadCityesToStringList(set->value("city_list", m_cityList->getCitiesList()).toStringList());
     set->endGroup();
 
-    set->beginGroup("Weather");
-    weather.weatherStatus = set->value("status", weather.weatherStatus).toString();
-    weather.weatherIcon = set->value("icon", weather.weatherIcon).toString();
-    weather.temperature = set->value("temperature", weather.temperature).toString();
-    weather.sd = set->value("sd", weather.sd).toString();
-    weather.wind = set->value("wind", weather.wind).toString();
-    weather.aqi = set->value("aqi", weather.aqi).toString();
-    set->endGroup();
+//    set->beginGroup("Weather");
+//    weather.weatherStatus = set->value("status", weather.weatherStatus).toString();
+//    weather.weatherIcon = set->value("icon", weather.weatherIcon).toString();
+//    weather.temperature = set->value("temperature", weather.temperature).toString();
+//    weather.sd = set->value("sd", weather.sd).toString();
+//    weather.wind = set->value("wind", weather.wind).toString();
+//    weather.aqi = set->value("aqi", weather.aqi).toString();
+//    set->endGroup();
 }

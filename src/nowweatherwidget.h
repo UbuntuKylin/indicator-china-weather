@@ -39,6 +39,7 @@ public:
 
     void setWeatherIcon(const QString &iconPath);
     void displayTip();
+    void refreshData(const ObserveWeather &data);
 
 private:
     QLabel *m_tempLabel = nullptr;

@@ -27,7 +27,9 @@ class IndexItemWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit IndexItemWidget(const QString &name, QWidget *parent = 0);
+    explicit IndexItemWidget(const QString &name, const QString &iconPath, QWidget *parent = 0);
+
+    void refreshLifeStyle(const QString &brf, const QString &txt);
 
 signals:
     void requestShowMsg(const QString &name) const;
@@ -40,6 +42,9 @@ protected:
 private:
     bool m_mouseHover;
     QString m_indexName;
+    QString m_iconPath;
+    QString m_brf;
+    QString m_txt;
 };
 
 #endif // INDEXITEMWIDGET_H

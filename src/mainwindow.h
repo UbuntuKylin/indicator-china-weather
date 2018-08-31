@@ -25,6 +25,7 @@
 #include <QSystemTrayIcon>
 
 #include "menuactiongroup.h"
+#include "data.h"
 
 class TitleBar;
 class ContentWidget;
@@ -46,7 +47,7 @@ public:
     void createSettingDialog();
     void refreshCityActions();
 
-    void refreshUI();
+    void refreshTrayMenuWeather(const ObserveWeather &data);
 
 protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
