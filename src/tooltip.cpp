@@ -89,6 +89,7 @@ void ToolTip::setBorderColor(QColor borderColor)
 
 void ToolTip::resetData()
 {
+    //TODO
     m_weekLabel->setText("今天");
     m_dateLabel->setText("20180821");
     m_weatherLabel->setText("晴");

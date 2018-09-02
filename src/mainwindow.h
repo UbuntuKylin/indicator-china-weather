@@ -62,6 +62,7 @@ public slots:
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
     void showSettingDialog();
     void applySettings();
+    void updateTimeTip();
 
 private:
     QPoint m_dragPosition;
@@ -88,8 +89,14 @@ private:
 
     WeatherWorker *m_weatherWorker = nullptr;
 
+    QTimer *m_tipTimer = nullptr;
+    int m_actualizationTime;
+    QString m_updateTimeStr;
+
+    QTimer *m_autoRefreshTimer = nullptr;
+
     //test
-    bool m_isDN;
+    //bool m_isDN;
 };
 
 #endif // MAINWINDOW_H

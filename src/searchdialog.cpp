@@ -83,7 +83,7 @@ SearchDialog::SearchDialog(QWidget *parent):
     connect(m_searchView, &SearchView::clicked, this, [this](const QModelIndex &index) {
         QVariant data = index.data(Qt::UserRole);//SearchModel::data Qt::UserRole
         QString selectCityId = data.value<QString>();
-        qDebug() << "selectCityId=" << selectCityId;
+        //qDebug() << "selectCityId=" << selectCityId;
         for (const LocationData &line : m_searchModel->locationList()) {//it must exits.
             if (line.id == selectCityId) {
                 emit this->requestAddCityToMenu(line);

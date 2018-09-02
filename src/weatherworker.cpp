@@ -63,7 +63,7 @@ void WeatherWorker::networkLookedUp(const QHostInfo &host)
         emit this->nofityNetworkStatus(false);
     }
     else {
-        qDebug() << "test network success, the server's ip:" << host.addresses().first().toString();
+        //qDebug() << "test network success, the server's ip:" << host.addresses().first().toString();
         emit this->nofityNetworkStatus(true);
     }
 }
@@ -191,10 +191,10 @@ void WeatherWorker::onWeatherObserveReply()
     bool redirection = false;
 
     if(reply->error() != QNetworkReply::NoError || statusCode != 200) {//200 is normal status
-        qDebug() << "weather request error:" << reply->error() << ", statusCode=" << statusCode;
+        //qDebug() << "weather request error:" << reply->error() << ", statusCode=" << statusCode;
         if (statusCode == 301 || statusCode == 302) {//redirect
             QVariant redirectionUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
-            qDebug() << "redirectionUrl=" << redirectionUrl.toString();
+            //qDebug() << "redirectionUrl=" << redirectionUrl.toString();
             redirection = AccessDedirectUrl(redirectionUrl.toString(), WeatherType::Type_Observe);//AccessDedirectUrl(reply->rawHeader("Location"));
             reply->close();
             reply->deleteLater();
@@ -278,10 +278,10 @@ void WeatherWorker::onWeatherForecastReply()
     bool redirection = false;
 
     if(reply->error() != QNetworkReply::NoError || statusCode != 200) {//200 is normal status
-        qDebug() << "weather forecast request error:" << reply->error() << ", statusCode=" << statusCode;
+        //qDebug() << "weather forecast request error:" << reply->error() << ", statusCode=" << statusCode;
         if (statusCode == 301 || statusCode == 302) {//redirect
             QVariant redirectionUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
-            qDebug() << "redirectionUrl=" << redirectionUrl.toString();
+            //qDebug() << "redirectionUrl=" << redirectionUrl.toString();
             redirection = AccessDedirectUrl(redirectionUrl.toString(), WeatherType::Type_Forecast);//AccessDedirectUrl(reply->rawHeader("Location"));
             reply->close();
             reply->deleteLater();
@@ -296,7 +296,7 @@ void WeatherWorker::onWeatherForecastReply()
     //QString reply_content = QString::fromUtf8(ba);
     reply->close();
     reply->deleteLater();
-    qDebug() << "weather forecast size: " << ba.size();
+    //qDebug() << "weather forecast size: " << ba.size();
 
     QJsonParseError err;
     QJsonDocument jsonDocument = QJsonDocument::fromJson(ba, &err);
@@ -464,7 +464,7 @@ void WeatherWorker::onPingBackPostReply()
         qDebug() << "post host info request error:" << m_reply->error() << ", statusCode=" << statusCode;
         if (statusCode == 301 || statusCode == 302) {//redirect
             QVariant redirectionUrl = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
-            qDebug() << "pingback redirectionUrl=" << redirectionUrl.toString();
+            //qDebug() << "pingback redirectionUrl=" << redirectionUrl.toString();
             AccessDedirectUrlWithPost(redirectionUrl.toString());
             m_reply->close();
             m_reply->deleteLater();
@@ -472,11 +472,11 @@ void WeatherWorker::onPingBackPostReply()
         return;
     }
 
-    QByteArray ba = m_reply->readAll();
+    //QByteArray ba = m_reply->readAll();
     m_reply->close();
     m_reply->deleteLater();
-    QString reply_content = QString::fromUtf8(ba);
-    qDebug() << "return size: " << ba.size() << reply_content;
+    //QString reply_content = QString::fromUtf8(ba);
+    //qDebug() << "return size: " << ba.size() << reply_content;
 }
 
 /*  http://www.heweather.com/documents/status-code  */

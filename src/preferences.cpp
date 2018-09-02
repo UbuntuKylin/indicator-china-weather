@@ -31,6 +31,7 @@ Preferences::Preferences()
     //m_cityIdList.clear();
     m_cities.clear();
     m_maxCityItems = 10;
+    m_updateFrequency = 30;
 
     load();
 }
@@ -47,7 +48,7 @@ void Preferences::save()
     set->beginGroup("City");
     set->setValue("current_city_id", m_currentCityId);
     set->setValue("current_city", m_currentCity);
-    set->setValue("city_list2", this->getCitiesList());
+    //set->setValue("city_list2", this->getCitiesList());
 
     set->remove("city_list");
     set->beginWriteArray("city_list");
@@ -55,9 +56,10 @@ void Preferences::save()
         set->setArrayIndex(i);
         set->setValue("id", m_cities.at(i).id);
         set->setValue("name", m_cities.at(i).name);
-        qDebug() << m_cities.at(i).id << m_cities.at(i).name;
+        //qDebug() << m_cities.at(i).id << m_cities.at(i).name;
     }
     set->endArray();
+    set->setValue("update_frequency", m_updateFrequency);
     set->endGroup();
 
     set->beginGroup("Weather");
@@ -237,7 +239,7 @@ void Preferences::load()
     }
     m_currentCity = set->value("current_city", m_currentCity).toString();
 
-    qDebug() << "init load:" << m_currentCityId << m_currentCity;
+    //qDebug() << "init load:" << m_currentCityId << m_currentCity;
     //this->loadCityesToStringList(set->value("city_list2", this->getCitiesList()).toStringList());
 
     int cityCount = set->beginReadArray("city_list");
@@ -264,12 +266,14 @@ void Preferences::load()
             City city;
             city.id = set->value("id").toString();
             city.name = set->value("name").toString();
-            qDebug() << "load:" <<city.id << city.name;
+            //qDebug() << "load:" <<city.id << city.name;
             m_cities.append(city);
         }
     }
     this->reloadCityList();
     set->endArray();
+
+    m_updateFrequency = set->value("update_frequency", m_updateFrequency).toInt();
     set->endGroup();
 
 

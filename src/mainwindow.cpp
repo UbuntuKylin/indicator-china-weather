@@ -33,6 +33,7 @@
 #include <QScreen>
 #include <QShortcut>
 #include <QDebug>
+#include <QTimer>
 
 #include "preferences.h"
 #include "global.h"
@@ -82,6 +83,9 @@ MainWindow::MainWindow(QWidget *parent)
     , m_centralWidget(new QWidget(this))
     , m_titleBar(new TitleBar(this))
     , m_contentWidget(new ContentWidget(m_weatherWorker, this))
+    , m_tipTimer(new QTimer(this))
+    , m_autoRefreshTimer(new QTimer(this))
+    , m_actualizationTime(0)
 {
     this->setFixedSize(355, 552);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//需要加上Qt::WindowMinimizeButtonHint，否则showMinimized无效
@@ -90,6 +94,8 @@ MainWindow::MainWindow(QWidget *parent)
     this->setStyleSheet("QMainWindow{color:white;background-image:url(':/res/background/weather-clear.png');background-repeat:no-repeat;}");
 
     global_init();
+
+    m_updateTimeStr = QString(tr("Refresh time"));
 
     m_layout = new QVBoxLayout(m_centralWidget);
     m_layout->setContentsMargins(0,0,0,0);
@@ -123,6 +129,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     if (!m_weatherWorker->isNetWorkSettingsGood()) {
         m_contentWidget->setNetworkErrorPages();
+        m_autoRefreshTimer->stop();
     }
     else {
         this->startGetWeather();
@@ -133,6 +140,7 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
     connect(m_weatherWorker, &WeatherWorker::responseFailure, this, [=] (int code) {
+        m_autoRefreshTimer->stop();
         m_movieWidget->setVisible(false);
         m_hintWidget->setVisible(true);
         if (code == 0) {
@@ -145,6 +153,7 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
     connect(m_weatherWorker, &WeatherWorker::observeDataRefreshed, this, [=] (const ObserveWeather &data) {
+        m_autoRefreshTimer->start(m_preferences->m_updateFrequency * 1000);
         if (m_preferences->m_currentCity.isEmpty()) {
             m_preferences->m_currentCity = data.city;
         }
@@ -169,6 +178,10 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
     connect(m_weatherWorker, &WeatherWorker::forecastDataRefreshed, this, [=] (const QList<ForecastWeather> &datas, const LifeStyle &data) {
+        if (!m_autoRefreshTimer->isActive()) {
+            m_autoRefreshTimer->start(m_preferences->m_updateFrequency * 1000);
+        }
+
         m_movieWidget->setVisible(false);
 
         int len = datas.size();
@@ -181,11 +194,46 @@ MainWindow::MainWindow(QWidget *parent)
 
         m_contentWidget->refreshLifestyleUI(data);
     });
+
+    m_tipTimer->setInterval(60*1000);
+    m_tipTimer->setSingleShot(false);
+    connect(m_tipTimer, &QTimer::timeout, this, static_cast<void (MainWindow::*)()>(&MainWindow::updateTimeTip));
+
+    connect(m_autoRefreshTimer, &QTimer::timeout, this, [=] {
+        this->startGetWeather();
+    });
 }
 
 MainWindow::~MainWindow()
 {
+    if (m_tipTimer->isActive()) {
+        m_tipTimer->stop();
+        delete m_tipTimer;
+    }
+
     global_end();
+}
+
+void MainWindow::updateTimeTip()
+{
+
+    QDateTime time = QDateTime::currentDateTime();
+    int timeIntValue = time.toTime_t();
+    int ut = int((round(timeIntValue - m_actualizationTime)/60));
+    if (ut == 0 || m_actualizationTime == 0) {
+        m_updateTimeStr = QString(tr("Refresh time:Just updated"));
+    }
+    else {
+        if (ut < 2) {
+            m_updateTimeStr = QString(tr("Refresh time:%1 minute ago")).arg(QString::number(ut));
+        }
+        else {
+            m_updateTimeStr = QString(tr("Refresh time:%1 minutes ago")).arg(QString::number(ut));
+        }
+    }
+    m_actualizationTime = timeIntValue;
+
+    m_updateTimeAction->setText(m_updateTimeStr);
 }
 
 void MainWindow::setOpacity(double opacity)
@@ -195,6 +243,7 @@ void MainWindow::setOpacity(double opacity)
 
 void MainWindow::startGetWeather()
 {
+    m_tipTimer->stop();
     m_movieWidget->setVisible(true);
     m_titleBar->setCityName(m_preferences->m_currentCity);
     m_weatherWorker->refreshObserveWeatherData(m_preferences->m_currentCityId);
@@ -222,7 +271,7 @@ void MainWindow::initMenuAndTray()
     this->refreshCityActions();
 
     m_mainMenu->addMenu(m_cityMenu);
-    QAction *m_switchAciton = m_mainMenu->addAction(tr("Switch"));
+    //QAction *m_switchAciton = m_mainMenu->addAction(tr("Switch"));
     m_mainMenu->addSeparator();
 
     m_weatherAction = new QAction("N/A",this);
@@ -230,7 +279,7 @@ void MainWindow::initMenuAndTray()
     m_sdAction = new QAction("N/A",this);
     m_aqiAction = new QAction("N/A",this);
     m_releaseTimeAction = new QAction(tr("Release time"),this);
-    m_updateTimeAction = new QAction(tr("Refresh time"),this);
+    m_updateTimeAction = new QAction(m_updateTimeStr,this);
     m_mainMenu->addAction(m_weatherAction);
     m_mainMenu->addAction(m_temperatureAction);
     m_mainMenu->addAction(m_sdAction);
@@ -240,16 +289,20 @@ void MainWindow::initMenuAndTray()
 
     QAction *m_forecastAction = m_mainMenu->addAction(tr("Weather Forecast"));
     connect(m_forecastAction, &QAction::triggered, this, [=] {
-        this->showNormal();
+        if (!this->isVisible())
+            this->showNormal();
     });
 
+    m_mainMenu->addSeparator();
+    QAction *m_settingAction = m_mainMenu->addAction(tr("Settings"));
+    m_settingAction->setIcon(QIcon(":/res/prefs.png"));
     QAction *m_aboutAction = m_mainMenu->addAction(tr("Kylin Weather - About"));
     m_aboutAction->setIcon(QIcon(":/res/about_normal.png"));
     QAction *m_quitAction = m_mainMenu->addAction(tr("Exit"));
     m_quitAction->setIcon(QIcon(":/res/quit_normal.png"));
 
     //for test change weather background
-    m_isDN = true;
+    /*m_isDN = true;
     connect(m_switchAciton, &QAction::triggered, this, [=] {
         if (m_isDN) {
             m_isDN = false;
@@ -265,6 +318,10 @@ void MainWindow::initMenuAndTray()
             m_contentWidget->setDayStyleSheets();
             m_titleBar->setDayStyleSheets();
         }
+    });*/
+
+    connect(m_settingAction, &QAction::triggered, this, [=] {
+        this->showSettingDialog();
     });
     connect(m_aboutAction, &QAction::triggered, this, [=] {
         AboutDialog dlg;
@@ -349,13 +406,16 @@ void MainWindow::refreshCityActions()
 
 void MainWindow::refreshTrayMenuWeather(const ObserveWeather &data)
 {
-    m_systemTray->setIcon(QIcon(QString(":/res/weather_icons/lightgrey/%1.png").arg(data.cond_code)));
+    m_systemTray->setIcon(QIcon(QString(":/res/weather_icons/white/%1.png").arg(data.cond_code)));
     m_weatherAction->setText(data.cond_txt);
     m_temperatureAction->setText(QString(tr("Temperature:%1˚C")).arg(data.tmp));
     m_sdAction->setText(QString(tr("Relative humidity:%1")).arg(data.hum));
     m_aqiAction->setText(QString(tr("Air quality:%1")).arg(data.air));
     m_releaseTimeAction->setText(QString(tr("Release time:%1")).arg(data.updatetime));
-//    m_updateTimeAction->setText(QString(tr("Refresh time:%1")).arg(data.updatetime));
+    m_updateTimeStr = QString(tr("Refresh time:Just updated"));
+    m_actualizationTime = 0;
+    m_updateTimeAction->setText(m_updateTimeStr);
+    m_tipTimer->start();
 }
 
 void MainWindow::applySettings()

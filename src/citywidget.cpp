@@ -130,7 +130,7 @@ void CityWidget::loadCityItems()
 {
     //TODO
     //test data;
-    CitySettingData info;
+    /*CitySettingData info;
     info.active = true;
     info.id = "101010100";
     info.name = "北京";
@@ -151,7 +151,17 @@ void CityWidget::loadCityItems()
 
     addCityItem(info);
     addCityItem(info1);
-    addCityItem(info2);
+    addCityItem(info2);*/
+
+    for (int i = 0; i < m_preferences->m_cities.size(); ++i) {
+        CitySettingData info;
+        info.active = (m_preferences->m_currentCityId == m_preferences->m_cities.at(i).id) ? true : false;
+        info.id = m_preferences->m_cities.at(i).id;
+        info.name = m_preferences->m_cities.at(i).name;
+        info.temperature = "33";
+        info.icon = ":/res/weather_icons/darkgrey/100.png";
+        addCityItem(info);
+    }
 }
 
 void CityWidget::addCityItem(const CitySettingData &info)

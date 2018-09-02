@@ -209,6 +209,7 @@
         <file>res/weather_icons/white/900.png</file>
         <file>res/weather_icons/white/901.png</file>
         <file>res/weather_icons/white/999.png</file>
+        <file>res/prefs.png</file>
     </qresource>
     <qresource prefix="/data">
         <file>data/china-city-list.csv</file>

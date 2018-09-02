@@ -104,7 +104,7 @@ SettingDialog::SettingDialog(QWidget *parent):
     m_spinBox->setContextMenuPolicy(Qt::NoContextMenu);
     m_spinBox->setRange(15, 60);
     //TODO:Read default refresh time from conf
-    m_spinBox->setValue(20);
+    m_spinBox->setValue(m_preferences->m_updateFrequency);
 
     QHBoxLayout *m_variableLayout = new QHBoxLayout;
     m_variableLayout->setContentsMargins(GROUP_BOX_MARGIN, 10, GROUP_BOX_MARGIN, 10);
@@ -162,7 +162,7 @@ SettingDialog::SettingDialog(QWidget *parent):
                 info.active = false;
                 info.id = data.id;
                 info.name = data.city;
-                info.icon = ":/res/weather_icons/lightgrey/100.png";
+                info.icon = ":/res/weather_icons/darkgrey/100.png";
                 m_locationWidget->addCityItem(info);
 
                 City city;
@@ -208,7 +208,8 @@ SettingDialog::SettingDialog(QWidget *parent):
     });
 
     connect(m_spinBox, static_cast<void(SpinBox::*)(int)>(&SpinBox::valueChanged), this, [=] (int value) {
-        qDebug() << "SpinBox Value:"  << value << ", Text:"  << m_spinBox->text();
+        //qDebug() << "SpinBox Value:"  << value << ", Text:"  << m_spinBox->text();
+        m_preferences->m_updateFrequency = value;
     });
 }
 
