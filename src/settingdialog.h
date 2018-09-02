@@ -43,6 +43,7 @@ public:
     ~SettingDialog();
 
     void setData();
+    void refreshCityList(const QString &id);
 
 public slots:
     virtual void accept();
@@ -50,9 +51,10 @@ public slots:
 
 signals:
     void applied();
-    void requeAddCityToMenu(const LocationData &data);
-    void requestRemoveCityFromMenu(const QString &id);
-    void requestSetDefaultCity();
+    void requestRefreshCityMenu(bool removedDefault);
+    void requestRefreshWeatherById(const QString &id);
+    //void requestSetDefaultCity();
+
 
 protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;

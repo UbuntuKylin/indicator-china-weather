@@ -37,6 +37,7 @@ public:
     ~CityWidget();
 
     void loadCityItems();
+    void refreshCityList(const QString &id);
 
 public slots:
     void addCityItem(const CitySettingData &info);
@@ -45,8 +46,9 @@ public slots:
 
 signals:
     void requestAddCity();
-    void requestRemoveCityFromMenu(const QString &id);
-    void requestSetDefaultCity();
+    void requestRefreshCityMenu(bool removedDefault);
+    //void requestSetDefaultCity();
+    void requestRefreshWeatherById(const QString &id);
 
 private:
     bool event(QEvent *event);

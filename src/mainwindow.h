@@ -86,7 +86,6 @@ private:
     HintWidget *m_hintWidget = nullptr;
     HintWidget *m_movieWidget = nullptr;
 
-    //QStringList m_cityList;
     WeatherWorker *m_weatherWorker = nullptr;
 
     //test

@@ -37,12 +37,13 @@ public:
     //void removeCityFromStringList(QString name);
     //void loadCityesToStringList(QStringList list);
     QStringList getCitiesList();
-    QString cityName(int index);
+    //QString cityName(int index);
     int citiesCount();
     void setCurrentCityIdAndName(const QString &cityName/*int index*/);
+    void resetCurrentCityNameById(const QString &id);
 
     void addCityInfoToPref(City city);
-    void removeCityInfoFromPref(const QString &id);
+    void removeCityInfoFromPref(const QString &id, bool isActive);
     void reloadCityList();
     bool isCityIdExistOrOverMax(const QString &id);
     void setDefaultCity();
@@ -116,7 +117,7 @@ public:
     LifeStyle lifestyle;
     int m_maxCityItems;
     QStringList m_cityList;
-    QStringList m_cityIdList;
+    //QStringList m_cityIdList;
     QList<City> m_cities;
 };
 

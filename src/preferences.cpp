@@ -28,7 +28,7 @@ using namespace Global;
 Preferences::Preferences()
 {
     m_cityList.clear();
-    m_cityIdList.clear();
+    //m_cityIdList.clear();
     m_cities.clear();
     m_maxCityItems = 10;
 
@@ -485,12 +485,12 @@ void Preferences::load()
 //        m_cityList.removeAt(pos);
 //}
 
-QString Preferences::cityName(int index)
-{
-    QString name = m_cityList[index];
+//QString Preferences::cityName(int index)
+//{
+//    QString name = m_cityList[index];
 
-    return name;
-}
+//    return name;
+//}
 
 //void Preferences::loadCityesToStringList(QStringList list)
 //{
@@ -533,6 +533,7 @@ void Preferences::setCurrentCityIdAndName(const QString &cityName/*int index*/)
     for (int i = 0; i < m_cities.size(); ++i) {
         if (m_cities.at(i).name == cityName) {
             this->m_currentCityId = m_cities.at(i).id;
+            break;
         }
     }
 }
@@ -562,7 +563,7 @@ void Preferences::addCityInfoToPref(City city)
     this->reloadCityList();
 }
 
-void Preferences::removeCityInfoFromPref(const QString &id)
+void Preferences::removeCityInfoFromPref(const QString &id, bool isActive)
 {
     for (int i = 0; i < m_cities.size(); ++i) {
         City city;
@@ -577,7 +578,9 @@ void Preferences::removeCityInfoFromPref(const QString &id)
         }
     }
 
-    this->setDefaultCity();
+    if (isActive) {
+        this->setDefaultCity();
+    }
 }
 
 bool Preferences::isCityIdExistOrOverMax(const QString &id)
@@ -596,4 +599,15 @@ bool Preferences::isCityIdExistOrOverMax(const QString &id)
     }
 
     return b;
+}
+
+void Preferences::resetCurrentCityNameById(const QString &id)
+{
+    this->m_currentCityId = id;
+    for (int i = 0; i < m_cities.size(); ++i) {
+        if (m_cities.at(i).id == id) {
+            this->m_currentCity = m_cities.at(i).name;
+            break;
+        }
+    }
 }

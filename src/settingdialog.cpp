@@ -32,6 +32,10 @@
 #include <QGroupBox>
 #include <QDebug>
 
+#include "preferences.h"
+#include "global.h"
+using namespace Global;
+
 namespace {
 const int BUTTON_WIDGET_HEIGHT = 30;
 const int GROUP_BOX_MARGIN = 20;
@@ -151,24 +155,33 @@ SettingDialog::SettingDialog(QWidget *parent):
     });
     connect(m_locationWidget, &CityWidget::requestAddCity, this, [=] {
         SearchDialog dlg;
-        connect(&dlg, &SearchDialog::requeAddCityToMenu, this, [this] (const LocationData &data) {
+        connect(&dlg, &SearchDialog::requestAddCityToMenu, this, [this] (const LocationData &data) {
             qDebug() << "set city's id=" << data.id;
-            CitySettingData info;
-            info.active = false;
-            info.id = data.id;
-            info.name = data.city;
-            info.icon = ":/res/weather_icons/lightgrey/100.png";
-            m_locationWidget->addCityItem(info);
-            emit this->requeAddCityToMenu(data);
+            if (!m_preferences->isCityIdExistOrOverMax(data.id)) {
+                CitySettingData info;
+                info.active = false;
+                info.id = data.id;
+                info.name = data.city;
+                info.icon = ":/res/weather_icons/lightgrey/100.png";
+                m_locationWidget->addCityItem(info);
+
+                City city;
+                city.id = data.id;
+                city.name = data.city;
+                m_preferences->addCityInfoToPref(city);
+
+                emit this->requestRefreshCityMenu(info.active);
+            }
         });
         dlg.exec();
     });
 
-    connect(m_locationWidget, &CityWidget::requestSetDefaultCity, this, &SettingDialog::requestSetDefaultCity);
-    connect(m_locationWidget, &CityWidget::requestRemoveCityFromMenu, this, &SettingDialog::requestRemoveCityFromMenu);
+    connect(m_locationWidget, &CityWidget::requestRefreshCityMenu, this, &SettingDialog::requestRefreshCityMenu);
+    //connect(m_locationWidget, &CityWidget::requestSetDefaultCity, this, &SettingDialog::requestSetDefaultCity);
+    connect(m_locationWidget, &CityWidget::requestRefreshWeatherById, this, &SettingDialog::requestRefreshWeatherById);
     /*connect(m_addCityBtn, &QPushButton::clicked, this, [=] {
         SearchDialog dlg;
-        connect(&dlg, &SearchDialog::requeAddCityToMenu, this, [this] (const LocationData &data) {
+        connect(&dlg, &SearchDialog::requestAddCityToMenu, this, [this] (const LocationData &data) {
             qDebug() << "set city's id=" << data.id;
             CitySettingData info;
             info.active = false;
@@ -176,7 +189,7 @@ SettingDialog::SettingDialog(QWidget *parent):
             info.name = data.city;
             info.icon = ":/res/weather_icons/lightgrey/100.png";
             m_cityListWidget->loadItem(info);
-            emit this->requeAddCityToMenu(data);
+            emit this->requestAddCityToMenu(data);
         });
         dlg.exec();
     });*/
@@ -235,6 +248,11 @@ void SettingDialog::mouseMoveEvent(QMouseEvent *event)
 void SettingDialog::setData()
 {
 
+}
+
+void SettingDialog::refreshCityList(const QString &id)
+{
+    m_locationWidget->refreshCityList(id);
 }
 
 void SettingDialog::accept()

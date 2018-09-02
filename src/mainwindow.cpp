@@ -203,21 +203,18 @@ void MainWindow::startGetWeather()
 
 void MainWindow::initMenuAndTray()
 {
-//    m_cityList << "北京" << "上海" << "长沙";
-//    m_preferences->m_cityListObj->addCityToStringList("北京");
-//    m_preferences->m_cityListObj->addCityToStringList("上海");
-//    m_preferences->m_cityListObj->addCityToStringList("长沙");
-
     m_mainMenu = new QMenu(this);
     m_cityMenu = new QMenu(this);
     m_cityMenu->menuAction()->setText(tr("City"));
     m_cityActionGroup = new MenuActionGroup(this);
     connect(m_cityActionGroup, &MenuActionGroup::activated, this, [=] (int index) {
         QString cur_cityName = m_cityActionGroup->setCurrentCheckedIndex(index);
-//        m_cityMenu->menuAction()->setText(this->m_cityList.at(index));
         if (m_preferences->citiesCount() > 0 && m_preferences->citiesCount() >= index) {
             m_cityMenu->menuAction()->setText(cur_cityName/*m_preferences->cityName(index)*/);
+
             m_preferences->setCurrentCityIdAndName(cur_cityName/*index*/);
+
+            m_setttingDialog->refreshCityList(m_preferences->m_currentCity);
 
             this->startGetWeather();
         }
@@ -306,42 +303,23 @@ void MainWindow::createSettingDialog()
     m_setttingDialog = new SettingDialog;
     m_setttingDialog->setModal(false);
     connect(m_setttingDialog, SIGNAL(applied()), this, SLOT(applySettings()));
-    connect(m_setttingDialog, &SettingDialog::requeAddCityToMenu, this, [this] (const LocationData &data) {
-        qDebug() << "main get city's id=" << data.id << data.city;
-//        this->m_cityList.append(data.city);
-//        m_preferences->addCityToStringList(data.city);
-
-        if (!m_preferences->isCityIdExistOrOverMax(data.id)) {
-            City city;
-            city.id = data.id;
-            city.name = data.city;
-            m_preferences->addCityInfoToPref(city);
-            this->refreshCityActions();
-        }
-    });
-    connect(m_setttingDialog, &SettingDialog::requestRemoveCityFromMenu, this, [this] (const QString &id) {
-        /*bool hasFound = false;
-        for (int i=0; i<m_cityList.length(); i++) {
-            if (m_cityList.at(i) == name) {
-                this->m_cityList.removeAt(i);
-                hasFound = true;
-                break;
-            }
-        }
-        if (hasFound) {
-            this->refreshCityActions();
-        }*/
-
-//        m_preferences->removeCityFromStringList(name);
-        m_preferences->removeCityInfoFromPref(id);
-
+    connect(m_setttingDialog, &SettingDialog::requestRefreshCityMenu, this, [this] (bool removedDefault) {
         this->refreshCityActions();
-    });
-    connect(m_setttingDialog, &SettingDialog::requestSetDefaultCity, this, [=] {
-        m_preferences->setDefaultCity();
 
+        if (removedDefault) {//刪除了默认城市后，重新设置了列表中第一个城市为默认城市后，从服务端获取该城市的天气
+            this->startGetWeather();
+        }
+    });
+    connect(m_setttingDialog, &SettingDialog::requestRefreshWeatherById, this, [this] (const QString &id) {
+        m_preferences->resetCurrentCityNameById(id);
         this->startGetWeather();
     });
+
+    /*connect(m_setttingDialog, &SettingDialog::requestSetDefaultCity, this, [=] {
+        m_preferences->setDefaultCity();
+        m_setttingDialog->refreshCityList(m_preferences->m_currentCityId);
+        this->startGetWeather();
+    });*/
 
     QApplication::restoreOverrideCursor();
 }
@@ -352,10 +330,8 @@ void MainWindow::refreshCityActions()
     m_cityActionGroup->clearAllActions();
 
     // add new action list
-    //qDebug() << m_cityList;
     int i = 0;
     int currentIndex = 0;
-//    foreach (QString city, m_cityList) {
     foreach (QString city, m_preferences->getCitiesList()) {
 //        m_cityMenu->addAction(city);
         if (city == m_preferences->m_currentCity) {

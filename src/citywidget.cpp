@@ -25,6 +25,10 @@
 #include <QScrollBar>
 #include <QDebug>
 
+#include "preferences.h"
+#include "global.h"
+using namespace Global;
+
 CityWidget::CityWidget(QWidget *parent)
     : QWidget(parent)
     , m_cityListWidget(new CityListWidget)
@@ -124,6 +128,7 @@ bool CityWidget::event(QEvent *event)
 
 void CityWidget::loadCityItems()
 {
+    //TODO
     //test data;
     CitySettingData info;
     info.active = true;
@@ -164,6 +169,12 @@ void CityWidget::addCityItem(const CitySettingData &info)
     }
     m_dataList.append(info);
 
+//    City city;
+//    city.id = info.id;
+//    city.name = info.name;
+//    m_preferences->addCityInfoToPref(city);
+
+
     CityItemWidget *item = new CityItemWidget(info);
     m_cityListWidget->appendItem(item);
 //    connect(item, SIGNAL(enter()), this, SLOT(onMouseEnter()));
@@ -172,32 +183,36 @@ void CityWidget::addCityItem(const CitySettingData &info)
             qDebug() << "At least there must be a city!!!";
             return;
         }
+
         for (CitySettingData line : m_dataList) {
             if (line.id == id) {
                 //delete this city
-                this->removeCityItemById(id);
-                emit this->requestRemoveCityFromMenu(id);
-
-                // If the deleted city is the default city
-                if (line.active) {
-                    // Reset default city and Access the city's weather
-                    //TODO
-                    emit this->requestSetDefaultCity();
-
-//                    item->setItemAction(true);
+                int pos = m_dataList.indexOf(line);
+                if (pos != -1) {
+                    m_dataList.removeAt(pos);
                 }
+                this->removeCityItemById(id);
+
+                if (line.active) {
+                    m_preferences->setDefaultCity();
+                }
+                this->refreshCityList(m_preferences->m_currentCityId);
+                m_preferences->removeCityInfoFromPref(id, line.active);//remove and update m_cityList, m_cities, m_currentCity and m_currentCityId
+
+                emit this->requestRefreshCityMenu(line.active);
             }
         }
     });
 
     connect(item, &CityItemWidget::requestRefreshDefaultCity, this, [=] (const QString id) {
-        for (CitySettingData line : m_dataList) {
-            if (line.id == id) {
+        QList<CityItemWidget *> cityItems = findChildren<CityItemWidget*>();
+        for (CityItemWidget *cityItem : cityItems) {
+            if (cityItem->getCityId() == id) {
+                cityItem->setItemAction(true);
+                emit this->requestRefreshWeatherById(id);
             }
-            QList<CityItemWidget *> items = findChildren<CityItemWidget*>();
-            for (CityItemWidget *item : items) {
-//                item->setItemAction(true);
-                //TODO
+            else {
+                cityItem->setItemAction(false);
             }
         }
     });
@@ -212,6 +227,17 @@ void CityWidget::removeCityItemById(const QString &id)
             item->deleteLater();
             break;
         }
+    }
+}
+
+void CityWidget::refreshCityList(const QString &id)
+{
+    QList<CityItemWidget *> cityItems = findChildren<CityItemWidget*>();
+    for (CityItemWidget *cityItem : cityItems) {
+        if (cityItem->getCityId() == id)
+            cityItem->setItemAction(true);
+        else
+            cityItem->setItemAction(false);
     }
 }
 

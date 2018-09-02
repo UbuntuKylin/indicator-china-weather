@@ -104,15 +104,6 @@ struct LocationData {
     QString admin_district;
 };
 
-inline bool operator ==(const City &data, const City &other) {
-    return data.id == other.id;
-}
-
-inline bool operator ==(const LocationData &data, const LocationData &that)
-{
-    return data.id == that.id || (data.admin_district == that.admin_district && data.city == that.city);
-}
-
 class CitySettingData
 {
 public:
@@ -126,6 +117,19 @@ public:
 public:
     void setActive(bool b) { this->active = b; }
 };
+
+inline bool operator ==(const City &data, const City &other) {
+    return data.id == other.id;
+}
+
+inline bool operator ==(const CitySettingData &data, const CitySettingData &other) {
+    return data.id == other.id;
+}
+
+inline bool operator ==(const LocationData &data, const LocationData &that)
+{
+    return data.id == that.id || (data.admin_district == that.admin_district && data.city == that.city);
+}
 
 Q_DECLARE_METATYPE(City)
 Q_DECLARE_METATYPE(ObserveWeather)

@@ -101,12 +101,14 @@ CityItemWidget::CityItemWidget(CitySettingData info, QWidget *parent) : QWidget(
 
 void CityItemWidget::setItemAction(bool active)
 {
-//    if (active) {
-//        m_cityLabel->setText(QString(tr("%1 [Default]")).arg(info.name));
-//    }
-//    else {
-//        m_cityLabel->setText(info.name);
-//    }
+    if (active) {
+        m_data.active = true;
+        m_cityLabel->setText(QString(tr("%1 [Default]")).arg(m_data.name));
+    }
+    else {
+        m_data.active = false;
+        m_cityLabel->setText(m_data.name);
+    }
 }
 
 void CityItemWidget::setItemHovered()

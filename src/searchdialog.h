@@ -40,7 +40,7 @@ public:
     ~SearchDialog();
 
 signals:
-    void requeAddCityToMenu(const LocationData &data);
+    void requestAddCityToMenu(const LocationData &data);
 
 protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
