@@ -71,7 +71,6 @@ SOURCES += src/main.cpp \
     src/menuactiongroup.cpp \
     src/global.cpp \
     src/preferences.cpp \
-    src/citieslist.cpp \
     src/weatherworker.cpp \
     src/networkerrorwidget.cpp \
     src/separator.cpp \
@@ -108,7 +107,6 @@ HEADERS  += src/mainwindow.h \
     src/menuactiongroup.h \
     src/global.h \
     src/preferences.h \
-    src/citieslist.h \
     src/weatherworker.h \
     src/networkerrorwidget.h \
     src/separator.h \

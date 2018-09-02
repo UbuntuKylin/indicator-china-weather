@@ -86,7 +86,7 @@ SearchDialog::SearchDialog(QWidget *parent):
         qDebug() << "selectCityId=" << selectCityId;
         for (const LocationData &line : m_searchModel->locationList()) {//it must exits.
             if (line.id == selectCityId) {
-                emit this->requesetSetCurrentCity(line);
+                emit this->requeAddCityToMenu(line);
                 break;
             }
         }

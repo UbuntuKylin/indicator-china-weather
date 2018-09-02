@@ -35,7 +35,6 @@
 #include <QDebug>
 
 #include "preferences.h"
-#include "citieslist.h"
 #include "global.h"
 using namespace Global;
 
@@ -126,15 +125,11 @@ MainWindow::MainWindow(QWidget *parent)
         m_contentWidget->setNetworkErrorPages();
     }
     else {
-        m_movieWidget->setVisible(true);
-        m_weatherWorker->refreshObserveWeatherData(m_preferences->currentCityId);
-        m_weatherWorker->refreshForecastWeatherData(m_preferences->currentCityId);
+        this->startGetWeather();
     }
 
     connect(m_contentWidget, &ContentWidget::requestRetryWeather, this, [=] {
-        m_movieWidget->setVisible(true);
-        m_weatherWorker->refreshObserveWeatherData(m_preferences->currentCityId);
-        m_weatherWorker->refreshForecastWeatherData(m_preferences->currentCityId);
+        this->startGetWeather();
     });
 
     connect(m_weatherWorker, &WeatherWorker::responseFailure, this, [=] (int code) {
@@ -146,9 +141,13 @@ MainWindow::MainWindow(QWidget *parent)
         else {
             m_hintWidget->setIconAndText(":/res/network_warn.png", QString(tr("Network error code:%1")).arg(QString::number(code)));
         }
+        m_contentWidget->setNetworkErrorPages();
     });
 
     connect(m_weatherWorker, &WeatherWorker::observeDataRefreshed, this, [=] (const ObserveWeather &data) {
+        if (m_preferences->m_currentCity.isEmpty()) {
+            m_preferences->m_currentCity = data.city;
+        }
         m_movieWidget->setVisible(false);
         m_titleBar->setCityName(data.city);
         m_contentWidget->refreshObserveUI(data);
@@ -194,25 +193,33 @@ void MainWindow::setOpacity(double opacity)
     this->setWindowOpacity(opacity);
 }
 
+void MainWindow::startGetWeather()
+{
+    m_movieWidget->setVisible(true);
+    m_titleBar->setCityName(m_preferences->m_currentCity);
+    m_weatherWorker->refreshObserveWeatherData(m_preferences->m_currentCityId);
+    m_weatherWorker->refreshForecastWeatherData(m_preferences->m_currentCityId);
+}
+
 void MainWindow::initMenuAndTray()
 {
 //    m_cityList << "北京" << "上海" << "长沙";
-    if (m_preferences->m_cityList == NULL) {
-        return;
-    }
-//    m_preferences->m_cityList->addCityToStringList("北京");
-//    m_preferences->m_cityList->addCityToStringList("上海");
-//    m_preferences->m_cityList->addCityToStringList("长沙");
+//    m_preferences->m_cityListObj->addCityToStringList("北京");
+//    m_preferences->m_cityListObj->addCityToStringList("上海");
+//    m_preferences->m_cityListObj->addCityToStringList("长沙");
 
     m_mainMenu = new QMenu(this);
     m_cityMenu = new QMenu(this);
     m_cityMenu->menuAction()->setText(tr("City"));
     m_cityActionGroup = new MenuActionGroup(this);
     connect(m_cityActionGroup, &MenuActionGroup::activated, this, [=] (int index) {
-        m_cityActionGroup->setCurrentCheckedIndex(index);
+        QString cur_cityName = m_cityActionGroup->setCurrentCheckedIndex(index);
 //        m_cityMenu->menuAction()->setText(this->m_cityList.at(index));
-        if (m_preferences->m_cityList->count() > 0 && m_preferences->m_cityList->count() >= index) {
-            m_cityMenu->menuAction()->setText(m_preferences->m_cityList->cityName(index));
+        if (m_preferences->citiesCount() > 0 && m_preferences->citiesCount() >= index) {
+            m_cityMenu->menuAction()->setText(cur_cityName/*m_preferences->cityName(index)*/);
+            m_preferences->setCurrentCityIdAndName(cur_cityName/*index*/);
+
+            this->startGetWeather();
         }
     });
     this->refreshCityActions();
@@ -299,13 +306,20 @@ void MainWindow::createSettingDialog()
     m_setttingDialog = new SettingDialog;
     m_setttingDialog->setModal(false);
     connect(m_setttingDialog, SIGNAL(applied()), this, SLOT(applySettings()));
-    connect(m_setttingDialog, &SettingDialog::requesetSetCurrentCity, this, [this] (const LocationData &data) {
-        qDebug() << "main get city's id=" << data.id;
+    connect(m_setttingDialog, &SettingDialog::requeAddCityToMenu, this, [this] (const LocationData &data) {
+        qDebug() << "main get city's id=" << data.id << data.city;
 //        this->m_cityList.append(data.city);
-        m_preferences->m_cityList->addCityToStringList(data.city);
-        this->refreshCityActions();
+//        m_preferences->addCityToStringList(data.city);
+
+        if (!m_preferences->isCityIdExistOrOverMax(data.id)) {
+            City city;
+            city.id = data.id;
+            city.name = data.city;
+            m_preferences->addCityInfoToPref(city);
+            this->refreshCityActions();
+        }
     });
-    connect(m_setttingDialog, &SettingDialog::requestRemoveCityFromMenu, this, [this] (const QString &name) {
+    connect(m_setttingDialog, &SettingDialog::requestRemoveCityFromMenu, this, [this] (const QString &id) {
         /*bool hasFound = false;
         for (int i=0; i<m_cityList.length(); i++) {
             if (m_cityList.at(i) == name) {
@@ -317,8 +331,16 @@ void MainWindow::createSettingDialog()
         if (hasFound) {
             this->refreshCityActions();
         }*/
-        m_preferences->m_cityList->removeCityFromStringList(name);
+
+//        m_preferences->removeCityFromStringList(name);
+        m_preferences->removeCityInfoFromPref(id);
+
         this->refreshCityActions();
+    });
+    connect(m_setttingDialog, &SettingDialog::requestSetDefaultCity, this, [=] {
+        m_preferences->setDefaultCity();
+
+        this->startGetWeather();
     });
 
     QApplication::restoreOverrideCursor();
@@ -332,16 +354,21 @@ void MainWindow::refreshCityActions()
     // add new action list
     //qDebug() << m_cityList;
     int i = 0;
+    int currentIndex = 0;
 //    foreach (QString city, m_cityList) {
-    foreach (QString city, m_preferences->m_cityList->getCitiesList()) {
+    foreach (QString city, m_preferences->getCitiesList()) {
 //        m_cityMenu->addAction(city);
+        if (city == m_preferences->m_currentCity) {
+            currentIndex = i;
+        }
+
         MenuActionGroupItem *cityAction = new MenuActionGroupItem(this, m_cityActionGroup, i);
         cityAction->setActionText(city);
         i++;
     }
     m_cityMenu->addActions(m_cityActionGroup->actions());
-    m_cityMenu->menuAction()->setText("北京");
-    m_cityActionGroup->setCurrentCheckedIndex(0);
+    m_cityMenu->menuAction()->setText(m_preferences->m_currentCity);
+    m_cityActionGroup->setCurrentCheckedIndex(currentIndex);
 }
 
 void MainWindow::refreshTrayMenuWeather(const ObserveWeather &data)
@@ -433,5 +460,5 @@ void MainWindow::showEvent(QShowEvent *event)
 {
     QWidget::showEvent(event);
 
-    //m_weatherWorker->refreshForecastWeatherData(m_preferences->currentCityId);
+    //m_weatherWorker->refreshForecastWeatherData(m_preferences->m_currentCityId);
 }

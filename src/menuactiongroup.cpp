@@ -43,15 +43,19 @@ MenuActionGroup::MenuActionGroup(QObject *parent) : QActionGroup(parent)
     });
 }
 
-void MenuActionGroup::setCurrentCheckedIndex(int index)
+QString MenuActionGroup::setCurrentCheckedIndex(int index)
 {
+    QString text;
     QList <QAction *> actionList = actions();
     for (int i=0; i < actionList.count(); i++) {
         if ((!actionList[i]->isSeparator()) && (actionList[i]->data().toInt() == index)) {
             actionList[i]->setChecked(true);
+            text = actionList[i]->text();
             break;
         }
     }
+
+    return text;
 }
 
 int MenuActionGroup::getCurrentCheckedIndex()

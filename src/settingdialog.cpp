@@ -151,7 +151,7 @@ SettingDialog::SettingDialog(QWidget *parent):
     });
     connect(m_locationWidget, &CityWidget::requestAddCity, this, [=] {
         SearchDialog dlg;
-        connect(&dlg, &SearchDialog::requesetSetCurrentCity, this, [this] (const LocationData &data) {
+        connect(&dlg, &SearchDialog::requeAddCityToMenu, this, [this] (const LocationData &data) {
             qDebug() << "set city's id=" << data.id;
             CitySettingData info;
             info.active = false;
@@ -159,14 +159,16 @@ SettingDialog::SettingDialog(QWidget *parent):
             info.name = data.city;
             info.icon = ":/res/weather_icons/lightgrey/100.png";
             m_locationWidget->addCityItem(info);
-            emit this->requesetSetCurrentCity(data);
+            emit this->requeAddCityToMenu(data);
         });
         dlg.exec();
     });
+
+    connect(m_locationWidget, &CityWidget::requestSetDefaultCity, this, &SettingDialog::requestSetDefaultCity);
     connect(m_locationWidget, &CityWidget::requestRemoveCityFromMenu, this, &SettingDialog::requestRemoveCityFromMenu);
     /*connect(m_addCityBtn, &QPushButton::clicked, this, [=] {
         SearchDialog dlg;
-        connect(&dlg, &SearchDialog::requesetSetCurrentCity, this, [this] (const LocationData &data) {
+        connect(&dlg, &SearchDialog::requeAddCityToMenu, this, [this] (const LocationData &data) {
             qDebug() << "set city's id=" << data.id;
             CitySettingData info;
             info.active = false;
@@ -174,7 +176,7 @@ SettingDialog::SettingDialog(QWidget *parent):
             info.name = data.city;
             info.icon = ":/res/weather_icons/lightgrey/100.png";
             m_cityListWidget->loadItem(info);
-            emit this->requesetSetCurrentCity(data);
+            emit this->requeAddCityToMenu(data);
         });
         dlg.exec();
     });*/

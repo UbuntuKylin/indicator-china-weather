@@ -41,7 +41,10 @@ public:
     void setItemHovered();
     void unsetItemHovered();
 
+    void setItemAction(bool active);
+
 signals:
+    void requestRefreshDefaultCity(const QString &id);
     void requestDeleteCity(const QString &id);
     void enter();
 

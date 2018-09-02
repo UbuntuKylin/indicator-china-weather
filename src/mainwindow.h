@@ -48,6 +48,7 @@ public:
     void refreshCityActions();
 
     void refreshTrayMenuWeather(const ObserveWeather &data);
+    void startGetWeather();
 
     void setOpacity(double opacity);
 

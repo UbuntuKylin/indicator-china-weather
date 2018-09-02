@@ -69,7 +69,7 @@ CityItemWidget::CityItemWidget(CitySettingData info, QWidget *parent) : QWidget(
     m_layout->addSpacing(15);
 
     connect(m_defaultBtn, &QPushButton::clicked, this, [=] {
-
+        emit this->requestRefreshDefaultCity(this->getCityId());
     });
     connect(m_deleteBtn, &QPushButton::clicked, this, [=] {
         emit this->requestDeleteCity(this->getCityId());
@@ -98,6 +98,16 @@ CityItemWidget::CityItemWidget(CitySettingData info, QWidget *parent) : QWidget(
 //{
 //    return item;
 //}
+
+void CityItemWidget::setItemAction(bool active)
+{
+//    if (active) {
+//        m_cityLabel->setText(QString(tr("%1 [Default]")).arg(info.name));
+//    }
+//    else {
+//        m_cityLabel->setText(info.name);
+//    }
+}
 
 void CityItemWidget::setItemHovered()
 {

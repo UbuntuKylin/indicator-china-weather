@@ -45,7 +45,8 @@ public slots:
 
 signals:
     void requestAddCity();
-    void requestRemoveCityFromMenu(const QString &name);
+    void requestRemoveCityFromMenu(const QString &id);
+    void requestSetDefaultCity();
 
 private:
     bool event(QEvent *event);

@@ -25,21 +25,30 @@
 
 #include "data.h"
 
-class CitiesList;
-
 class Preferences {
 public:
     Preferences();
     ~Preferences();
 
-    void reset();
-
     void save();
     void load();
 
-    QString currentCity;
-    QString currentCityId;
-    QString releaseTime;
+    //void addCityToStringList(QString name);
+    //void removeCityFromStringList(QString name);
+    //void loadCityesToStringList(QStringList list);
+    QStringList getCitiesList();
+    QString cityName(int index);
+    int citiesCount();
+    void setCurrentCityIdAndName(const QString &cityName/*int index*/);
+
+    void addCityInfoToPref(City city);
+    void removeCityInfoFromPref(const QString &id);
+    void reloadCityList();
+    bool isCityIdExistOrOverMax(const QString &id);
+    void setDefaultCity();
+
+    QString m_currentCity;
+    QString m_currentCityId;
 
     /*struct Weather_settings {
         QString id;
@@ -105,8 +114,10 @@ public:
     ObserveWeather weather;
     ForecastWeather forecast0, forecast1, forecast2;
     LifeStyle lifestyle;
-
-    CitiesList *m_cityList;
+    int m_maxCityItems;
+    QStringList m_cityList;
+    QStringList m_cityIdList;
+    QList<City> m_cities;
 };
 
 #endif // PREFERENCES_H

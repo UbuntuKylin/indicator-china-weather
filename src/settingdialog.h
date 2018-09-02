@@ -50,8 +50,9 @@ public slots:
 
 signals:
     void applied();
-    void requesetSetCurrentCity(const LocationData &data);
-    void requestRemoveCityFromMenu(const QString &name);
+    void requeAddCityToMenu(const LocationData &data);
+    void requestRemoveCityFromMenu(const QString &id);
+    void requestSetDefaultCity();
 
 protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;

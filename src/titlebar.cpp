@@ -56,7 +56,7 @@ void TitleBar::initLeftContent()
     city_button->setIcon(QIcon(":/res/set_city.png"));
 
     m_cityLabel = new QLabel;
-    m_cityLabel->setText("长沙");//for test
+    m_cityLabel->setText("--");//for test
     m_cityLabel->setStyleSheet("QLabel{font-size:12px;color:#ffffff;background:transparent;background-color:transparent;}");
 
     QLabel *locationLabel = new QLabel;

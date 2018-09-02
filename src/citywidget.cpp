@@ -176,13 +176,28 @@ void CityWidget::addCityItem(const CitySettingData &info)
             if (line.id == id) {
                 //delete this city
                 this->removeCityItemById(id);
-                emit this->requestRemoveCityFromMenu(line.name);
+                emit this->requestRemoveCityFromMenu(id);
 
                 // If the deleted city is the default city
                 if (line.active) {
                     // Reset default city and Access the city's weather
                     //TODO
+                    emit this->requestSetDefaultCity();
+
+//                    item->setItemAction(true);
                 }
+            }
+        }
+    });
+
+    connect(item, &CityItemWidget::requestRefreshDefaultCity, this, [=] (const QString id) {
+        for (CitySettingData line : m_dataList) {
+            if (line.id == id) {
+            }
+            QList<CityItemWidget *> items = findChildren<CityItemWidget*>();
+            for (CityItemWidget *item : items) {
+//                item->setItemAction(true);
+                //TODO
             }
         }
     });

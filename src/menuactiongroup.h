@@ -43,7 +43,7 @@ class MenuActionGroup : public QActionGroup
 public:
     MenuActionGroup (QObject *parent);
 
-    void setCurrentCheckedIndex(int index);
+    QString setCurrentCheckedIndex(int index);
     int getCurrentCheckedIndex();
     void uncheckAll();
     void clearAllActions();
