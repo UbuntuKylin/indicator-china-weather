@@ -99,6 +99,8 @@ void ForecastItemWidget::resetForecastData(const ForecastWeather &data, int inde
     pixmap = pixmap.scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     m_iconLabel->setPixmap(pixmap);
     m_tempLabel->setText(QString("%1°C~%2°C").arg(data.tmp_min).arg(data.tmp_max));
+
+    m_toolTip->resetData(data, m_weekLabel->text());
 }
 
 void ForecastItemWidget::setDayStyleSheets()
@@ -152,7 +154,6 @@ void ForecastItemWidget::setLabelText(const QString &name, const QString &desc)
 bool ForecastItemWidget::event(QEvent *event)
 {
     if (event->type() == QEvent::ToolTip) {
-        m_toolTip->resetData();
         m_toolTip->popupTip(QCursor::pos());
     }
     else if (event->type() == QEvent::Leave) {

@@ -32,6 +32,7 @@ Preferences::Preferences()
     m_cities.clear();
     m_maxCityItems = 10;
     m_updateFrequency = 30;
+    m_opacity = 90;
 
     load();
 }
@@ -60,6 +61,7 @@ void Preferences::save()
     }
     set->endArray();
     set->setValue("update_frequency", m_updateFrequency);
+    set->setValue("opacity", m_opacity);
     set->endGroup();
 
     set->beginGroup("Weather");
@@ -274,6 +276,7 @@ void Preferences::load()
     set->endArray();
 
     m_updateFrequency = set->value("update_frequency", m_updateFrequency).toInt();
+    m_opacity = set->value("opacity", m_opacity).toInt();
     set->endGroup();
 
 

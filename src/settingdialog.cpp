@@ -29,6 +29,7 @@
 #include <QStackedWidget>
 #include <QMouseEvent>
 #include <QVBoxLayout>
+#include <QSlider>
 #include <QGroupBox>
 #include <QDebug>
 
@@ -98,7 +99,7 @@ SettingDialog::SettingDialog(QWidget *parent):
     QLabel *updateFreqLabel = new QLabel;
     updateFreqLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
     updateFreqLabel->setStyleSheet("QLabel{color:#808080;font-size:14px;text-align:left;}");
-    updateFreqLabel->setText(tr("update frequency") + "(5-60)");
+    updateFreqLabel->setText(tr("Update frequency") + "(5-60)");
     m_spinBox = new SpinBox(m_systemWidget);
     m_spinBox->setFixedWidth(80);
     m_spinBox->setContextMenuPolicy(Qt::NoContextMenu);
@@ -106,12 +107,44 @@ SettingDialog::SettingDialog(QWidget *parent):
     //TODO:Read default refresh time from conf
     m_spinBox->setValue(m_preferences->m_updateFrequency);
 
-    QHBoxLayout *m_variableLayout = new QHBoxLayout;
+    QHBoxLayout *m_freqLayout = new QHBoxLayout;
+    m_freqLayout->setSpacing(5);
+    m_freqLayout->addWidget(updateFreqLabel);
+    m_freqLayout->addWidget(m_spinBox);
+
+    QLabel *opacityLabel = new QLabel;
+    opacityLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+    opacityLabel->setStyleSheet("QLabel{color:#808080;font-size:14px;text-align:left;}");
+    opacityLabel->setText(tr("Background transparency"));
+    m_opacitySlider = new QSlider(Qt::Horizontal, m_systemWidget);
+    m_opacitySlider->setStyleSheet("QSlider::groove:horizontal,QSlider::add-page:horizontal{height:3px;border-radius:3px;background:#7c8487;}QSlider::sub-page:horizontal{height:8px;border-radius:3px;background:#bdbdbd;}QSlider::handle:horizontal{width:12px;margin-top:-5px;margin-bottom:-4px;border-radius:6px;background:qradialgradient(spread:pad,cx:0.5,cy:0.5,radius:0.5,fx:0.5,fy:0.5,stop:0.6 #7c8487,stop:0.8 #7c8487);}QSlider::groove:vertical,QSlider::sub-page:vertical{width:8px;border-radius:3px;background:#808080;}QSlider::add-page:vertical{width:8px;border-radius:3px;background:#808080;}QSlider::handle:vertical{height:12px;margin-left:-5px;margin-right:-4px;border-radius:6px;background:qradialgradient(spread:pad,cx:0.5,cy:0.5,radius:0.5,fx:0.5,fy:0.5,stop:0.6 #7c8487,stop:0.8 #7c8487);}");
+    m_opacitySlider->setFocusPolicy(Qt::NoFocus);
+    m_opacitySlider->setFocusProxy(this);
+    m_opacitySlider->setTracking(true);
+    m_opacitySlider->setRange(60, 100);
+    m_opacitySlider->setSingleStep(1);
+    m_opacitySlider->blockSignals(true);
+    m_opacitySlider->setValue(m_preferences->m_opacity);//static_cast<int>(m_preferences->m_opacity * 100);
+    m_opacitySlider->blockSignals(false);
+
+    QHBoxLayout *m_opacityLayout = new QHBoxLayout;
+    m_opacityLayout->setSpacing(5);
+    m_opacityLayout->addWidget(opacityLabel);
+    m_opacityLayout->addWidget(m_opacitySlider);
+
+
+    QVBoxLayout *m_variableLayout = new QVBoxLayout;
     m_variableLayout->setContentsMargins(GROUP_BOX_MARGIN, 10, GROUP_BOX_MARGIN, 10);
     m_variableLayout->setSpacing(5);
-    m_variableLayout->addWidget(updateFreqLabel);
-    m_variableLayout->addWidget(m_spinBox);
+    m_variableLayout->addLayout(m_freqLayout);
+    m_variableLayout->addLayout(m_opacityLayout);
     m_variableGroup->setLayout(m_variableLayout);
+//    QHBoxLayout *m_variableLayout = new QHBoxLayout;
+//    m_variableLayout->setContentsMargins(GROUP_BOX_MARGIN, 10, GROUP_BOX_MARGIN, 10);
+//    m_variableLayout->setSpacing(5);
+//    m_variableLayout->addWidget(updateFreqLabel);
+//    m_variableLayout->addWidget(m_spinBox);
+//    m_variableGroup->setLayout(m_variableLayout);
 
     m_fixedGroup = new QGroupBox(m_systemWidget);
     m_fixedGroup->setStyleSheet("QGroupBox{border:1px solid #e0e0e0;border-radius:2px;margin-top:15px;font-size:14px;}QGroupBox:title{subcontrol-origin: margin;subcontrol-position: top left;padding: 6px 3px;color:#00609a;font-weight:bold;}");
@@ -210,6 +243,11 @@ SettingDialog::SettingDialog(QWidget *parent):
     connect(m_spinBox, static_cast<void(SpinBox::*)(int)>(&SpinBox::valueChanged), this, [=] (int value) {
         //qDebug() << "SpinBox Value:"  << value << ", Text:"  << m_spinBox->text();
         m_preferences->m_updateFrequency = value;
+    });
+
+    connect(m_opacitySlider, &QSlider::valueChanged, [=] (int value) {
+        m_preferences->m_opacity = value;
+        emit requestChangeOpacity(value);
     });
 }
 

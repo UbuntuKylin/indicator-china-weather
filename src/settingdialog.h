@@ -32,6 +32,7 @@ class SettingTitleBar;
 //class CityListWidget;
 class CityWidget;
 class SpinBox;
+class QSlider;
 class QGroupBox;
 
 class SettingDialog : public QDialog
@@ -54,7 +55,7 @@ signals:
     void requestRefreshCityMenu(bool removedDefault);
     void requestRefreshWeatherById(const QString &id);
     //void requestSetDefaultCity();
-
+    void requestChangeOpacity(int opacity);
 
 protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
@@ -78,6 +79,7 @@ private:
     QGroupBox *m_variableGroup = nullptr;
     QGroupBox *m_fixedGroup = nullptr;
     SpinBox *m_spinBox = nullptr;
+    QSlider *m_opacitySlider = nullptr;
 
 //    QPushButton *m_okBtn = nullptr;
 };

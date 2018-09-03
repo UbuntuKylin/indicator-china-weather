@@ -25,41 +25,42 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
+#include "data.h"
+
 class ToolTip : public QFrame
 {
     Q_OBJECT
-    Q_PROPERTY(int radius READ radius WRITE setRadius)
-    Q_PROPERTY(QBrush background READ background WRITE setBackground)
-    Q_PROPERTY(QColor borderColor READ borderColor WRITE setBorderColor)
-
 public:
     explicit ToolTip(QWidget *parent = 0);
 
-    int radius() const { return this->_radius; }
-    QBrush background() const { return this->_background; }
-    QColor borderColor() const { return this->_borderColor; }
-
-    void setRadius(int radius);
-    void setBackground(QBrush background);
-    void setBorderColor(QColor borderColor);
-
-    void resetData();
+    void resetData(const ForecastWeather &data, const QString &week);
     void popupTip(QPoint point);
 
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
 private:
-    int _radius;
-    QBrush _background;
-    QColor _borderColor;
+    int m_radius;
+    QBrush m_background;
+    QColor m_borderColor;
 
     QFrame *m_frame = nullptr;
-    QLabel *m_weekLabel = nullptr;
     QLabel *m_dateLabel = nullptr;
-    QLabel *m_weatherLabel = nullptr;
-    QLabel *m_iconLabel = nullptr;
+    QLabel *m_dWeatherLabel = nullptr;
+    QLabel *m_nWeatherLabel = nullptr;
+    QLabel *m_dIconLabel = nullptr;
+    QLabel *m_nIconLabel = nullptr;
     QLabel *m_tempLabel = nullptr;
+    QLabel *m_mrmsLabel = nullptr;
+    QLabel *m_srssLabel = nullptr;
+    QLabel *m_humLabel = nullptr;
+    QLabel *m_pcpnLabel = nullptr;
+    QLabel *m_popLabel = nullptr;
+    QLabel *m_presLabel = nullptr;
+    QLabel *m_uvIndexLabel = nullptr;
+    QLabel *m_visLabel = nullptr;
+    QLabel *m_windLabel = nullptr;
+
     QVBoxLayout *m_layout = nullptr;
 };
 

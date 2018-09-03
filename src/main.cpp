@@ -33,3 +33,4 @@ int main(int argc, char *argv[])
 
     return a.exec();
 }
+//TODO: chinese lifestyle's tip  forecast's tip  thread

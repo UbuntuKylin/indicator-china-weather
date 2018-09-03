@@ -23,6 +23,7 @@
 
 #include <QEvent>
 #include <QScrollBar>
+#include <QTimer>
 #include <QDebug>
 
 #include "preferences.h"
@@ -33,6 +34,7 @@ CityWidget::CityWidget(QWidget *parent)
     : QWidget(parent)
     , m_cityListWidget(new CityListWidget)
     , m_addBtn(new QPushButton(this))
+    , m_timer(new QTimer(this))
 {
     this->setAttribute(Qt::WA_TranslucentBackground);
     this->setStyleSheet("QWidget{border:none; background-color:#ffffff;}");
@@ -80,11 +82,24 @@ CityWidget::CityWidget(QWidget *parent)
     connect(m_addBtn, &QPushButton::clicked, this, &CityWidget::requestAddCity);
 
     m_dataList.clear();
-    this->loadCityItems();//for test data
+    this->loadCityItems();
+
+    m_timer->setSingleShot(true);
+    m_timer->setInterval(15);
+    connect(m_timer, &QTimer::timeout, this, &CityWidget::refreshListWeatherStatus, Qt::QueuedConnection);
 }
 
 CityWidget::~CityWidget()
 {
+    if (m_timer) {
+        disconnect(m_timer, SIGNAL(timeout()), this, SLOT(refreshListWeatherStatus()));
+        if(m_timer->isActive()) {
+            m_timer->stop();
+        }
+        delete m_timer;
+        m_timer = nullptr;
+    }
+
     QList<CityItemWidget *> items = findChildren<CityItemWidget*>();
     for (CityItemWidget *item : items) {
         m_cityListWidget->removeItem(item);
@@ -158,8 +173,8 @@ void CityWidget::loadCityItems()
         info.active = (m_preferences->m_currentCityId == m_preferences->m_cities.at(i).id) ? true : false;
         info.id = m_preferences->m_cities.at(i).id;
         info.name = m_preferences->m_cities.at(i).name;
-        info.temperature = "33";
-        info.icon = ":/res/weather_icons/darkgrey/100.png";
+        info.temperature = (m_preferences->m_currentCityId == m_preferences->m_cities.at(i).id) ? m_preferences->weather.tmp + "°C" : "";
+        info.icon = (m_preferences->m_currentCityId == m_preferences->m_cities.at(i).id) ? QString(":/res/weather_icons/darkgrey/%1.png").arg(m_preferences->weather.cond_code) : ":/res/weather_icons/darkgrey/999.png";
         addCityItem(info);
     }
 }
@@ -224,8 +239,10 @@ void CityWidget::addCityItem(const CitySettingData &info)
             else {
                 cityItem->setItemAction(false);
             }
+            m_timer->start();
         }
     });
+    m_timer->start();
 }
 
 void CityWidget::removeCityItemById(const QString &id)
@@ -236,6 +253,19 @@ void CityWidget::removeCityItemById(const QString &id)
             m_cityListWidget->removeItem(item);
             item->deleteLater();
             break;
+        }
+    }
+    m_timer->start();
+}
+
+void CityWidget::refreshListWeatherStatus()
+{
+    QList<CityItemWidget *> items = findChildren<CityItemWidget*>();
+    for (CityItemWidget *item : items) {
+        if (item->getCityId() == m_preferences->m_currentCityId) {
+            item->setItemWeather(m_preferences->weather.tmp + "°C", QString(":/res/weather_icons/darkgrey/%1.png").arg(m_preferences->weather.cond_code));
+        } else {
+            item->setItemWeather("", ":/res/weather_icons/darkgrey/999.png");
         }
     }
 }
@@ -249,6 +279,7 @@ void CityWidget::refreshCityList(const QString &id)
         else
             cityItem->setItemAction(false);
     }
+    m_timer->start();
 }
 
 /*void CityWidget::onMouseEnter()

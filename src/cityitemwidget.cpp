@@ -111,6 +111,16 @@ void CityItemWidget::setItemAction(bool active)
     }
 }
 
+void CityItemWidget::setItemWeather(const QString &temp, const QString &iconPath)
+{
+    m_data.icon = iconPath;
+    m_data.temperature = temp;
+    m_temperatureLabel->setText(m_data.temperature);
+    QPixmap pixmap = QPixmap(m_data.icon);
+    pixmap = pixmap.scaled(24, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    m_iconLabel->setPixmap(pixmap);
+}
+
 void CityItemWidget::setItemHovered()
 {
     m_mouseHover = true;

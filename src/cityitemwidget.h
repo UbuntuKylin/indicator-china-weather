@@ -42,6 +42,7 @@ public:
     void unsetItemHovered();
 
     void setItemAction(bool active);
+    void setItemWeather(const QString &temp, const QString &iconPath);
 
 signals:
     void requestRefreshDefaultCity(const QString &id);

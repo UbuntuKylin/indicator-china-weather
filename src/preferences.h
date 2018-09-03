@@ -51,6 +51,7 @@ public:
     QString m_currentCity;
     QString m_currentCityId;
     int m_updateFrequency;
+    int m_opacity;
 
     /*struct Weather_settings {
         QString id;

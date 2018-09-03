@@ -43,6 +43,7 @@ public slots:
     void addCityItem(const CitySettingData &info);
     void removeCityItemById(const QString &id);
 //    void onMouseEnter();
+    void refreshListWeatherStatus();
 
 signals:
     void requestAddCity();
@@ -60,6 +61,7 @@ private:
     QList<CitySettingData> m_dataList;
     QScrollArea *m_scrollArea = nullptr;
     QWidget *m_widget = nullptr;
+    QTimer *m_timer = nullptr;
 };
 
 #endif // CITYWIDGET_H

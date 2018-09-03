@@ -202,6 +202,14 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_autoRefreshTimer, &QTimer::timeout, this, [=] {
         this->startGetWeather();
     });
+
+
+    double value = m_preferences->m_opacity*0.01;
+    if (value < 0.6) {
+        value = 0.60;
+        m_preferences->m_opacity = 60;
+    }
+    this->setOpacity(value);
 }
 
 MainWindow::~MainWindow()
@@ -371,6 +379,16 @@ void MainWindow::createSettingDialog()
         m_preferences->resetCurrentCityNameById(id);
         this->startGetWeather();
     });
+    connect(m_setttingDialog, &SettingDialog::requestChangeOpacity, this, [this] (int opcatity) {
+        double value = opcatity*0.01;
+        if (value < 0.6) {
+            value = 0.60;
+            m_preferences->m_opacity = 60;
+        }
+        this->setOpacity(value);
+    });
+
+
 
     /*connect(m_setttingDialog, &SettingDialog::requestSetDefaultCity, this, [=] {
         m_preferences->setDefaultCity();
