@@ -20,3 +20,11 @@ http://service.ubuntukylin.com:8001/weather/pingnetwork/
 http://service.ubuntukylin.com:8001/weather/api/2.0/heweather_observe_s6/101250101
 
 http://service.ubuntukylin.com:8001/weather/api/2.0/heweather_forecast_s6/101250101
+
+### Internationalization
+
+lupdate indicator-china-weather.pro
+
+linguist translation/indicator-china-weather_zh_CN.ts
+
+lrelease indicator-china-weather.pro

@@ -133,26 +133,26 @@ void ToolTip::resetData(const ForecastWeather &data, const QString &week)
 
     if (data.sr_ss.contains(QChar('+'))) {
         QStringList sunList= data.sr_ss.split(QChar('+'));
-        m_srssLabel->setText(QString("Sunrise: %1 sunset: %2").arg(sunList.at(0)).arg(sunList.at(1)));
+        m_srssLabel->setText(QString(tr("Sunrise: %1 sunset: %2")).arg(sunList.at(0)).arg(sunList.at(1)));
     }
     else {
-        m_srssLabel->setText(QString("Sunrise and sunset: %1").arg(data.sr_ss));
+        m_srssLabel->setText(QString(tr("Sunrise and sunset: %1")).arg(data.sr_ss));
     }
     if (data.mr_ms.contains(QChar('+'))) {
         QStringList moonList= data.mr_ms.split(QChar('+'));
-        m_mrmsLabel->setText(QString("Moonrise: %1 moonset: %2").arg(moonList.at(0)).arg(moonList.at(1)));
+        m_mrmsLabel->setText(QString(tr("Moonrise: %1 moonset: %2")).arg(moonList.at(0)).arg(moonList.at(1)));
     }
     else {
-        m_mrmsLabel->setText(QString("Moonrise and moonset: %1").arg(data.mr_ms));
+        m_mrmsLabel->setText(QString(tr("Moonrise and moonset: %1")).arg(data.mr_ms));
     }
 
-    m_humLabel->setText(QString("Relative humidity:%1").arg(data.hum));//相对湿度
-    m_pcpnLabel->setText(QString("Precipitation:%1 mm").arg(data.pcpn));//降水量
-    m_popLabel->setText(QString("Probability of precipitation:%1").arg(data.pop));//降水概率
-    m_presLabel->setText(QString("Atmospheric pressure:%1 hPa").arg(data.pres));//大气压强
-    m_uvIndexLabel->setText(QString("UV intensity index:%1").arg(data.uv_index));//紫外线强度指数
-    m_visLabel->setText(QString("Visibility:%1 km").arg(data.vis));//能见度
-    m_windLabel->setText(QString("Wind:%1 %2stage  direction %3  speed %4 km/h").arg(data.wind_dir).arg(data.wind_sc).arg(data.wind_deg).arg(data.wind_spd));
+    m_humLabel->setText(QString(tr("Relative humidity:%1")).arg(data.hum) + "%");//相对湿度
+    m_pcpnLabel->setText(QString(tr("Precipitation:%1 mm")).arg(data.pcpn));//降水量
+    m_popLabel->setText(QString(tr("Probability of precipitation:%1")).arg(data.pop) + "%");//降水概率
+    m_presLabel->setText(QString(tr("Atmospheric pressure:%1 hPa")).arg(data.pres));//大气压强
+    m_uvIndexLabel->setText(QString(tr("UV intensity index:%1")).arg(data.uv_index));//紫外线强度指数
+    m_visLabel->setText(QString(tr("Visibility:%1 km")).arg(data.vis));//能见度
+    m_windLabel->setText(QString(tr("Wind:%1 %2stage  direction %3  speed %4 km/h")).arg(data.wind_dir).arg(data.wind_sc).arg(data.wind_deg).arg(data.wind_spd));
 }
 
 void ToolTip::popupTip(QPoint point)

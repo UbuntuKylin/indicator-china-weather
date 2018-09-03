@@ -426,7 +426,12 @@ void MainWindow::refreshTrayMenuWeather(const ObserveWeather &data)
     m_weatherAction->setText(data.cond_txt);
     m_temperatureAction->setText(QString(tr("Temperature:%1˚C")).arg(data.tmp));
     m_sdAction->setText(QString(tr("Relative humidity:%1")).arg(data.hum));
-    m_aqiAction->setText(QString(tr("Air quality:%1")).arg(data.air));
+    if (data.air.isEmpty() || data.air.contains("Unknown")) {
+        m_aqiAction->setText(QString(tr("Air quality:%1")).arg(QString(tr("Unknown"))));
+    }
+    else {
+        m_aqiAction->setText(QString(tr("Air quality:%1")).arg(data.air));
+    }
     m_releaseTimeAction->setText(QString(tr("Release time:%1")).arg(data.updatetime));
     m_updateTimeStr = QString(tr("Refresh time:Just updated"));
     m_actualizationTime = 0;

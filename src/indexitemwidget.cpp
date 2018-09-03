@@ -26,7 +26,6 @@
 IndexItemWidget::IndexItemWidget(const QString &name, const QString &iconPath, QWidget *parent)
     : QWidget(parent)
     , m_mouseHover(false)
-    , m_indexName(name)
     , m_iconPath(iconPath)
     , m_brf("-")
     , m_txt("-")
@@ -34,6 +33,34 @@ IndexItemWidget::IndexItemWidget(const QString &name, const QString &iconPath, Q
     , m_txtColor(QColor("#808080"))
 {
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    if (name == "comf") {
+        m_indexName = QString(tr("comf"));
+    }
+    else if (name == "drsg") {
+        m_indexName = QString(tr("drsg"));
+    }
+    else if (name == "flu") {
+        m_indexName = QString(tr("flu"));
+    }
+    else if (name == "sport") {
+        m_indexName = QString(tr("sport"));
+    }
+    else if (name == "trav") {
+        m_indexName = QString(tr("trav"));
+    }
+    else if (name == "uv") {
+        m_indexName = QString(tr("uv"));
+    }
+    else if (name == "cw") {
+        m_indexName = QString(tr("cw"));
+    }
+    else if (name == "air") {
+        m_indexName = QString(tr("air"));
+    }
+    else {
+        m_indexName = name;
+    }
 }
 
 void IndexItemWidget::refreshLifeStyle(const QString &brf, const QString &txt)
@@ -91,7 +118,7 @@ void IndexItemWidget::paintEvent(QPaintEvent *e)
     painter.setRenderHint(QPainter::Antialiasing, false);
 
     QFont font = painter.font();
-    font.setPixelSize(14);//font.setPointSize(14);
+    font.setPixelSize(12);//font.setPointSize(14);
     QFontMetrics fm(font);
     QPen pen(Qt::white);
     painter.setPen(pen);
@@ -101,7 +128,7 @@ void IndexItemWidget::paintEvent(QPaintEvent *e)
     painter.setPen(QPen(m_txtColor));
     painter.drawText(valueRect, Qt::AlignVCenter | Qt::AlignLeft, this->m_brf);
 
-    font.setPixelSize(12);//font.setPointSize(12);
+    font.setPixelSize(10);//font.setPointSize(12);
     QRect titleRect(valueRect.x(), valueRect.bottom(), this->width() - icon.width()/ratio - 5*2, 20);
     painter.setPen(QPen(m_titleColor));
     painter.drawText(titleRect, Qt::AlignVCenter | Qt::AlignLeft, this->m_indexName);

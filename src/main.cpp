@@ -19,6 +19,9 @@
 
 #include "mainwindow.h"
 #include <QApplication>
+#include <QTranslator>
+#include <QLibraryInfo>
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {
@@ -27,6 +30,20 @@ int main(int argc, char *argv[])
     a.setApplicationName("Kylin Weather (indication-china-weather)");
     a.setApplicationVersion("3.0.0");
     a.setQuitOnLastWindowClosed(false);//Avoid that after hiding mainwindow, close the sub window would cause the program exit
+
+    QString locale = QLocale::system().name();
+    QTranslator translator;
+    if(locale == "zh_CN") {
+        if(!translator.load("indicator-china-weather_" + locale + ".qm",
+                            ":/qm/translation/"))
+            qDebug() << "Load translation file："<< "indicator-china-weather_" + locale + ".qm" << " failed!";
+        else
+            a.installTranslator(&translator);
+    }
+
+    QTranslator qtTranslator;
+    qtTranslator.load("qt_" + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    a.installTranslator(&qtTranslator);
 
     MainWindow w;
     w.show();

@@ -230,6 +230,7 @@ void WeatherWorker::onWeatherObserveReply()
     QJsonObject mainObj = jsonObject.value("KylinWeather").toObject();
     QJsonObject airObj = mainObj.value("air").toObject();
     QJsonObject weatherObj = mainObj.value("weather").toObject();
+    //qDebug() << "airObj" << airObj;
 
     m_preferences->weather.id = weatherObj.value("id").toString();
     m_preferences->weather.city = weatherObj.value("location").toString();

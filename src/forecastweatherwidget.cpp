@@ -29,7 +29,8 @@
 
 namespace {
 
-const QStringList LIFESTYLE = {QString(QObject::tr("comf")), QString(QObject::tr("drsg")), QString(QObject::tr("flu")), QString(QObject::tr("sport")), QString(QObject::tr("trav")), QString(QObject::tr("uv")), QString(QObject::tr("cw")), QString(QObject::tr("air"))};
+const QStringList LIFESTYLE = {"comf", "drsg", "flu", "sport", "trav", "uv", "cw", "air"};
+//const QStringList LIFESTYLE = {QString(QObject::tr("comf")), QString(QObject::tr("drsg")), QString(QObject::tr("flu")), QString(QObject::tr("sport")), QString(QObject::tr("trav")), QString(QObject::tr("uv")), QString(QObject::tr("cw")), QString(QObject::tr("air"))};
 const QStringList LIFESTYLEICON = {":/res/cash_wash_index.png", ":/res/clothe_index.png", ":/res/cash_wash_index.png", ":/res/cash_wash_index.png", ":/res/cash_wash_index.png", ":/res/ultraviolet_rays.png", ":/res/cash_wash_index.png", ":/res/cash_wash_index.png"};
 
 }

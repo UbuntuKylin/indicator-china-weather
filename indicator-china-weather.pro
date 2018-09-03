@@ -120,3 +120,6 @@ HEADERS  += src/mainwindow.h \
 
 RESOURCES += \
     res.qrc
+
+TRANSLATIONS += \
+    translation/indicator-china-weather_zh_CN.ts

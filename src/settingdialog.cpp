@@ -158,7 +158,7 @@ SettingDialog::SettingDialog(QWidget *parent):
     QLabel *serviceLabel = new QLabel;
     serviceLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
     serviceLabel->setStyleSheet("QLabel{color:#808080;font-size:14px;text-align:left;}");
-    serviceLabel->setText(tr("Source of weather") + ": " +  "heweather");
+    serviceLabel->setText(tr("Source of weather: heweather"));
 
     QVBoxLayout *m_fixedLayout = new QVBoxLayout;
     m_fixedLayout->setContentsMargins(GROUP_BOX_MARGIN, 10, GROUP_BOX_MARGIN, 10);

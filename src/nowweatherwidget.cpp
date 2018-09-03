@@ -132,9 +132,9 @@ NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent)
 
     m_humidityLabel = new QLabel(this);
     m_humidityLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:12x;}");
-    m_humidityLabel->setGeometry(sdIcon->x() + sdIcon->width(), sdIcon->y(), 40, 20);
+    m_humidityLabel->setGeometry(sdIcon->x() + sdIcon->width(), sdIcon->y(), 80, 20);
     m_humidityLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    m_humidityLabel->setText(tr("湿度"));
+    m_humidityLabel->setText(tr("Humidity"));
 
     m_humidityValueLabel = new QLabel(this);
     m_humidityValueLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:12x;}");
@@ -232,6 +232,11 @@ void NowWeatherWidget::refreshData(const ObserveWeather &data)
         m_windPowerLabel->setText(tr("%1stage wind").arg(data.wind_sc));//级风
     }
     this->setWeatherIcon(QString(":/res/weather_icons/white/%1.png").arg(data.cond_code));
-    m_aqiLabel->setLabelText(data.air);
+    if (data.air.isEmpty() || data.air.contains("Unknown")) {
+        m_aqiLabel->setLabelText(QString(tr("Unknown")));
+    }
+    else {
+        m_aqiLabel->setLabelText(data.air);
+    }
     m_temperatureLabel->setLabelText(convertTemperatureToString(data.tmp.toInt()));
 }
