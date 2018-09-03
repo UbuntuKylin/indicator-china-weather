@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HINTWIDGET_H_
-#define HINTWIDGET_H_
+#ifndef PROMPTWIDGET_H_
+#define PROMPTWIDGET_H_
 
 #include <QFrame>
 #include <QMovie>
@@ -26,13 +26,13 @@
 class QLabel;
 class QPushButton;
 
-class HintWidget : public QFrame
+class PromptWidget : public QFrame
 {
     Q_OBJECT
 public:
-    explicit HintWidget(QWidget *parent = 0);
-    explicit HintWidget(const QString &text, QWidget *parent = 0, const QString &movieSouce = "", bool movie = false);
-    ~HintWidget();
+    explicit PromptWidget(QWidget *parent = 0);
+    explicit PromptWidget(const QString &text, QWidget *parent = 0, const QString &movieSouce = "", bool movie = false);
+    ~PromptWidget();
 
     void setIconAndText(const QString &iconPath, const QString &text);
 
@@ -51,4 +51,4 @@ private:
     bool m_isMovie = false;
 };
 
-#endif // HINTWIDGET_H_
+#endif // PROMPTWIDGET_H_

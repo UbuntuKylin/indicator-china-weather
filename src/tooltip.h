@@ -32,6 +32,7 @@ class ToolTip : public QFrame
     Q_OBJECT
 public:
     explicit ToolTip(QWidget *parent = 0);
+    ~ToolTip();
 
     void resetData(const ForecastWeather &data, const QString &week);
     void popupTip(QPoint point);

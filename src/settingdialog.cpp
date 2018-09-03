@@ -60,10 +60,10 @@ SettingDialog::SettingDialog(QWidget *parent):
 
     m_titleBar = new SettingTitleBar;
     m_titleBar->setFixedHeight(100);
-    m_locationWidget = new CityWidget;//m_locationWidget = new QWidget;
-//    m_locationWidget->setContentsMargins(0, 0, 0, 0);
-    m_locationWidget->setFixedHeight(this->height() - m_titleBar->height()/* - BUTTON_WIDGET_HEIGHT*/);
-    m_locationWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    m_cityWidget = new CityWidget;//m_cityWidget = new QWidget;
+//    m_cityWidget->setContentsMargins(0, 0, 0, 0);
+    m_cityWidget->setFixedHeight(this->height() - m_titleBar->height()/* - BUTTON_WIDGET_HEIGHT*/);
+    m_cityWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_systemWidget = new QWidget;
     m_systemWidget->setStyleSheet("QWidget{border-radius: 0px; background-color:#ffffff;}");
     m_systemWidget->setFixedHeight(this->height() - m_titleBar->height()/* - BUTTON_WIDGET_HEIGHT*/);
@@ -74,8 +74,8 @@ SettingDialog::SettingDialog(QWidget *parent):
     m_okBtn->setText(tr("Close"));*/
 
     //------------------
-    /*m_cityListWidget = new CityListWidget(m_locationWidget);
-    m_addCityBtn = new QPushButton(m_locationWidget);
+    /*m_cityListWidget = new CityListWidget(m_cityWidget);
+    m_addCityBtn = new QPushButton(m_cityWidget);
     m_addCityBtn->setFocusPolicy(Qt::NoFocus);
     m_addCityBtn->setStyleSheet("QPushButton{font-size:12px;color:#808080;background:transparent;text-align:left;}");//margin-left:18px;border:1px solid rgba(0, 0, 0, 0.08);   QPushButton:hover{background-color:#f5fbff;}
     m_addCityBtn->setFixedWidth(this->width());
@@ -83,7 +83,7 @@ SettingDialog::SettingDialog(QWidget *parent):
     m_addCityBtn->setIconSize(QSize(24, 24));
     m_addCityBtn->setIcon(QIcon(":/res/add.png"));
 
-    QVBoxLayout *m_cityLayout = new QVBoxLayout(m_locationWidget);
+    QVBoxLayout *m_cityLayout = new QVBoxLayout(m_cityWidget);
     m_cityLayout->setContentsMargins(0, 0, 0, 0);
     m_cityLayout->setSpacing(0);
     m_cityLayout->addWidget(m_cityListWidget, 1, Qt::AlignTop);
@@ -174,9 +174,9 @@ SettingDialog::SettingDialog(QWidget *parent):
     m_systemLayout->addWidget(m_fixedGroup, 0, Qt::AlignLeft);
     m_systemLayout->addStretch();
 
-    m_stackedWidget->addWidget(m_locationWidget);
+    m_stackedWidget->addWidget(m_cityWidget);
     m_stackedWidget->addWidget(m_systemWidget);
-    m_stackedWidget->setCurrentWidget(m_locationWidget);
+    m_stackedWidget->setCurrentWidget(m_cityWidget);
 
     m_mainLayout->addWidget(m_titleBar, 0, Qt::AlignTop);
     m_mainLayout->addWidget(m_stackedWidget, 1, Qt::AlignVCenter);
@@ -186,7 +186,7 @@ SettingDialog::SettingDialog(QWidget *parent):
     connect(m_titleBar, &SettingTitleBar::requestCloseDialog, this, [=] {
         this->reject();
     });
-    connect(m_locationWidget, &CityWidget::requestAddCity, this, [=] {
+    connect(m_cityWidget, &CityWidget::requestAddCity, this, [=] {
         SearchDialog dlg;
         connect(&dlg, &SearchDialog::requestAddCityToMenu, this, [this] (const LocationData &data) {
             qDebug() << "set city's id=" << data.id;
@@ -196,7 +196,7 @@ SettingDialog::SettingDialog(QWidget *parent):
                 info.id = data.id;
                 info.name = data.city;
                 info.icon = ":/res/weather_icons/darkgrey/100.png";
-                m_locationWidget->addCityItem(info);
+                m_cityWidget->addCityItem(info);
 
                 City city;
                 city.id = data.id;
@@ -209,9 +209,9 @@ SettingDialog::SettingDialog(QWidget *parent):
         dlg.exec();
     });
 
-    connect(m_locationWidget, &CityWidget::requestRefreshCityMenu, this, &SettingDialog::requestRefreshCityMenu);
-    //connect(m_locationWidget, &CityWidget::requestSetDefaultCity, this, &SettingDialog::requestSetDefaultCity);
-    connect(m_locationWidget, &CityWidget::requestRefreshWeatherById, this, &SettingDialog::requestRefreshWeatherById);
+    connect(m_cityWidget, &CityWidget::requestRefreshCityMenu, this, &SettingDialog::requestRefreshCityMenu);
+    //connect(m_cityWidget, &CityWidget::requestSetDefaultCity, this, &SettingDialog::requestSetDefaultCity);
+    connect(m_cityWidget, &CityWidget::requestRefreshWeatherById, this, &SettingDialog::requestRefreshWeatherById);
     /*connect(m_addCityBtn, &QPushButton::clicked, this, [=] {
         SearchDialog dlg;
         connect(&dlg, &SearchDialog::requestAddCityToMenu, this, [this] (const LocationData &data) {
@@ -232,7 +232,7 @@ SettingDialog::SettingDialog(QWidget *parent):
     });*/
     connect(m_titleBar, &SettingTitleBar::requestSwitchPage, this, [=] (bool b) {
         if (b) {
-            m_stackedWidget->setCurrentWidget(m_locationWidget);
+            m_stackedWidget->setCurrentWidget(m_cityWidget);
 //            m_cityListWidget->resetData();
         }
         else {
@@ -291,7 +291,9 @@ void SettingDialog::setData()
 
 void SettingDialog::refreshCityList(const QString &id)
 {
-    m_locationWidget->refreshCityList(id);
+    if (m_cityWidget) {
+        m_cityWidget->refreshCityList(id);
+    }
 }
 
 void SettingDialog::accept()

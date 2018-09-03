@@ -21,6 +21,8 @@
 #include "forecastitemwidget.h"
 #include "indexitemwidget.h"
 #include "separator.h"
+#include "texttip.h"
+#include "tipmodule.h"
 
 #include <QEvent>
 #include <QDebug>
@@ -35,12 +37,16 @@ const QStringList LIFESTYLEICON = {":/res/cash_wash_index.png", ":/res/clothe_in
 ForecastWeatherWidget::ForecastWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent) :
     QFrame(parent)
     , m_weatherWorker(weatherWorker)
+    , m_tipModule(new TipModule)
 {
     this->setFixedSize(355, 340);
 //    this->setStyleSheet("QLabel{border-radius: 0px; color:rgb(250, 250, 250); background-color:rgba(0,0,0,0.2)}");
 
     m_lifeIndexList = LIFESTYLE;
     m_lifeIndexIconList = LIFESTYLEICON;
+
+    m_lifeItems.clear();
+    m_tips.clear();
 
     this->initWidgets();
 }
@@ -54,10 +60,18 @@ ForecastWeatherWidget::~ForecastWeatherWidget()
     }
     m_lifeItems.clear();
 
+    for(int i=0; i<m_tips.count(); i++) {
+        TextTip *tip = m_tips.at(i);
+        delete tip;
+        tip = NULL;
+    }
+    m_tips.clear();
+
     delete m_topHseperator;
     delete m_bottomHseperator;
     delete m_leftVSeparator;
     delete m_rightVSeparator;
+    delete m_tipModule;
 
     while (QLayoutItem *item = m_indexGridLayout->takeAt(0)) {
         item->widget()->deleteLater();
@@ -198,12 +212,21 @@ void ForecastWeatherWidget::refershLifeIndexGridLayout()
         delete item;
     }
 
+    for(int i=0; i<m_tips.count(); i++) {
+        TextTip *tip = m_tips.at(i);
+        delete tip;
+        tip = NULL;
+    }
+    m_tips.clear();
+
     int index = 0;
     const int count = m_lifeIndexList.size();
     for (int i = 0; i != count; ++i, ++index) {
         IndexItemWidget *item = new IndexItemWidget(m_lifeIndexList[i], m_lifeIndexIconList[i]);
         connect(item, SIGNAL(requestShowMsg(QString)), this, SLOT(showLifeStyleIndex(QString)));
         m_indexGridLayout->addWidget(item, index / 3, index % 3);
+        TextTip *tip = this->setTipWidget(item, "");
+        m_tips.append(tip);
         m_lifeItems.append(item);
     }
 }
@@ -224,24 +247,48 @@ void ForecastWeatherWidget::refreshForecastData(const ForecastWeather &data, int
 void ForecastWeatherWidget::refreshLifestyleData(const LifeStyle &data)
 {
     int n = 0;
-    if (m_lifeItems.count() == 8) {
+    if (m_lifeItems.count() == 8 && m_tips.count() == 8) {
         //舒适度指数
-        m_lifeItems[n++]->refreshLifeStyle(data.comf_brf, data.comf_txt);
+        m_lifeItems[n]->refreshLifeStyle(data.comf_brf, data.comf_txt);
+        m_tips[n++]->resetTipText(data.comf_txt);
+
         //穿衣指数
-        m_lifeItems[n++]->refreshLifeStyle(data.drsg_brf, data.drsg_txt);
+        m_lifeItems[n]->refreshLifeStyle(data.drsg_brf, data.drsg_txt);
+        m_tips[n++]->resetTipText(data.drsg_txt);
+
         //感冒指数
-        m_lifeItems[n++]->refreshLifeStyle(data.flu_brf, data.flu_txt);
+        m_lifeItems[n]->refreshLifeStyle(data.flu_brf, data.flu_txt);
+        m_tips[n++]->resetTipText(data.flu_txt);
+
         //运动指数
-        m_lifeItems[n++]->refreshLifeStyle(data.sport_brf, data.sport_txt);
+        m_lifeItems[n]->refreshLifeStyle(data.sport_brf, data.sport_txt);
+        m_tips[n++]->resetTipText(data.sport_txt);
+
         //旅游指数
-        m_lifeItems[n++]->refreshLifeStyle(data.trav_brf, data.trav_txt);
+        m_lifeItems[n]->refreshLifeStyle(data.trav_brf, data.trav_txt);
+        m_tips[n++]->resetTipText(data.trav_txt);
+
         //紫外线指数
-        m_lifeItems[n++]->refreshLifeStyle(data.uv_brf, data.uv_txt);
+        m_lifeItems[n]->refreshLifeStyle(data.uv_brf, data.uv_txt);
+        m_tips[n++]->resetTipText(data.uv_txt);
+
         //洗车指数
-        m_lifeItems[n++]->refreshLifeStyle(data.cw_brf, data.cw_txt);
+        m_lifeItems[n]->refreshLifeStyle(data.cw_brf, data.cw_txt);
+        m_tips[n++]->resetTipText(data.cw_txt);
+
         //空气污染扩散条件指数
-        m_lifeItems[n++]->refreshLifeStyle(data.air_brf, data.air_txt);
+        m_lifeItems[n]->refreshLifeStyle(data.air_brf, data.air_txt);
+        m_tips[n++]->resetTipText(data.air_txt);
     }
+}
+
+TextTip *ForecastWeatherWidget::setTipWidget(QWidget *w, const QString &txt)
+{
+    TextTip *tip = new TextTip(txt, this);
+    w->setProperty("TextTipWidget", QVariant::fromValue<QWidget *>(tip));
+    w->installEventFilter(m_tipModule);
+
+    return tip;
 }
 
 void ForecastWeatherWidget::showLifeStyleIndex(const QString &name)
@@ -255,7 +302,7 @@ void ForecastWeatherWidget::showLifeStyleIndex(const QString &name)
     //cw_brf 洗车指数
     //air_brf 空气污染扩散条件指数
 
-    static const char *index_strings[] = {
+    /*static const char *index_strings[] = {
         QT_TR_NOOP("comf index"),
         QT_TR_NOOP("drsg index"),
         QT_TR_NOOP("flu index"),
@@ -269,7 +316,7 @@ void ForecastWeatherWidget::showLifeStyleIndex(const QString &name)
     if (!name.isEmpty()) {
         const int idx = LIFESTYLE.indexOf(name);
         qDebug() << tr(index_strings[idx]);
-    }
+    }*/
 }
 
 void ForecastWeatherWidget::setDayStyleSheets()

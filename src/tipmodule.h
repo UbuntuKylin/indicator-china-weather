@@ -17,19 +17,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "mainwindow.h"
-#include <QApplication>
+#ifndef TIPMODULE_H
+#define TIPMODULE_H
 
-int main(int argc, char *argv[])
+#include <QObject>
+
+class QTimer;
+
+class TipModule: public QObject
 {
-    QApplication a(argc, argv);
-    a.setOrganizationName("kylin");
-    a.setApplicationName("Kylin Weather (indication-china-weather)");
-    a.setApplicationVersion("3.0.0");
-    a.setQuitOnLastWindowClosed(false);//Avoid that after hiding mainwindow, close the sub window would cause the program exit
+    Q_OBJECT
+public:
+    TipModule(QObject *parent = 0);
+    ~TipModule();
 
-    MainWindow w;
-    w.show();
+public slots:
+    void onDisplayTimeOut();
 
-    return a.exec();
-}
+private:
+    bool eventFilter(QObject *obj, QEvent *event) Q_DECL_OVERRIDE;
+
+private:
+    QWidget *m_parentWidget = nullptr;
+    QWidget *m_tipWidget = nullptr;
+    QTimer  *m_displayTimer = nullptr;
+};
+
+#endif // TIPMODULE_H

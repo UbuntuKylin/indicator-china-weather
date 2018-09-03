@@ -20,6 +20,8 @@
 #include "nowweatherwidget.h"
 #include "translucentlabel.h"
 #include "tipwidget.h"
+#include "texttip.h"
+#include "tipmodule.h"
 
 #include <QVBoxLayout>
 #include <QEvent>
@@ -87,8 +89,12 @@ NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent)
     QFrame(parent)
     , m_weatherWorker(weatherWorker)
     , m_tipTimer(new QTimer(this))
+    , m_tipModule(new TipModule)
+    , m_tip(new TextTip(QString(), this))
 {
     this->setFixedSize(355, 180);
+
+    m_tip->setFixedSize(100, 32);
 //    this->setStyleSheet("QLabel{border-radius: 0px; color:rgb(250, 250, 250); background-color:rgba(0,0,0,0.2)}");
 
     //test background color
@@ -154,6 +160,8 @@ NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent)
     m_weatherIcon = new QLabel(this);
     m_weatherIcon->setGeometry(this->width() - 64 - 20, m_tempLabel->y(), 64, 64);
     m_weatherIcon->setStyleSheet("QLabel{border:none;background-color:transparent;}");
+    m_weatherIcon->setProperty("TextTipWidget", QVariant::fromValue<QWidget *>(m_tip));
+    m_weatherIcon->installEventFilter(m_tipModule);
 
     m_aqiLabel = new TranslucentLabel(this);
     m_aqiLabel->setLabelIcon(":/res/aqi.png");
@@ -186,6 +194,7 @@ NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent)
 NowWeatherWidget::~NowWeatherWidget()
 {
     delete m_tipTimer;
+    delete m_tipModule;
 }
 
 void NowWeatherWidget::displayTip()
@@ -210,6 +219,8 @@ void NowWeatherWidget::setWeatherIcon(const QString &iconPath)
 
 void NowWeatherWidget::refreshData(const ObserveWeather &data)
 {
+    m_tip->resetTipText(data.cond_txt);
+
     m_tempLabel->setText(data.tmp);
     m_humidityValueLabel->setText(data.hum);
     m_windLabel->setText(data.wind_dir);

@@ -17,19 +17,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "mainwindow.h"
-#include <QApplication>
+#ifndef TEXTTIP_H
+#define TEXTTIP_H
 
-int main(int argc, char *argv[])
+#include <QFrame>
+
+class QLabel;
+
+class TextTip : public QFrame
 {
-    QApplication a(argc, argv);
-    a.setOrganizationName("kylin");
-    a.setApplicationName("Kylin Weather (indication-china-weather)");
-    a.setApplicationVersion("3.0.0");
-    a.setQuitOnLastWindowClosed(false);//Avoid that after hiding mainwindow, close the sub window would cause the program exit
+    Q_OBJECT
+public:
+    explicit TextTip(const QString &txt, QWidget *parent = 0);
+    ~TextTip();
 
-    MainWindow w;
-    w.show();
+    void resetTipText(const QString &txt);
 
-    return a.exec();
-}
+protected:
+    virtual void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+
+private:
+    int m_radius;
+    QBrush m_background;
+    QColor m_borderColor;
+    QLabel *m_textLabel = nullptr;
+    QFrame *m_frame = nullptr;
+};
+
+#endif // TEXTTIP_H

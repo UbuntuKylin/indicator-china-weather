@@ -70,8 +70,8 @@ private:
     SettingTitleBar *m_titleBar = nullptr;
     QStackedWidget *m_stackedWidget = nullptr;
 
-    CityWidget *m_locationWidget = nullptr;
-    /*QWidget *m_locationWidget = nullptr;
+    CityWidget *m_cityWidget = nullptr;
+    /*QWidget *m_cityWidget = nullptr;
     CityListWidget *m_cityListWidget = nullptr;
     QPushButton *m_addCityBtn = nullptr;*/
 

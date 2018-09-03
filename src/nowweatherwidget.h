@@ -28,6 +28,8 @@
 class QLabel;
 class TranslucentLabel;
 class TipWidget;
+class TextTip;
+class TipModule;
 
 class NowWeatherWidget : public QFrame
 {
@@ -53,6 +55,8 @@ private:
     TipWidget *m_tipWidget = nullptr;
     WeatherWorker *m_weatherWorker = nullptr;
     QTimer *m_tipTimer = nullptr;
+    TextTip *m_tip = nullptr;
+    TipModule *m_tipModule = nullptr;
 };
 
 #endif // NOW_WEATHER_WIDGET_H

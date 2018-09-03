@@ -75,7 +75,9 @@ SOURCES += src/main.cpp \
     src/networkerrorwidget.cpp \
     src/separator.cpp \
     src/tipwidget.cpp \
-    src/hintwidget.cpp
+    src/texttip.cpp \
+    src/tipmodule.cpp \
+    src/promptwidget.cpp
 
 HEADERS  += src/mainwindow.h \
     src/titlebar.h \
@@ -111,7 +113,10 @@ HEADERS  += src/mainwindow.h \
     src/networkerrorwidget.h \
     src/separator.h \
     src/tipwidget.h \
-    src/hintwidget.h
+    src/texttip.h \
+    src/tipmodule.h \
+    src/promptwidget.h
+
 
 RESOURCES += \
     res.qrc

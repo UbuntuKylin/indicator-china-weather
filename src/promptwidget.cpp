@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "hintwidget.h"
+#include "promptwidget.h"
 
 #include <QApplication>
 #include <QDebug>
@@ -27,7 +27,7 @@
 #include <QPushButton>
 #include <QPainter>
 
-HintWidget::HintWidget(QWidget *parent) : QFrame(parent)
+PromptWidget::PromptWidget(QWidget *parent) : QFrame(parent)
     , m_iconLabel(new QLabel(this))
     , m_textLabel(new QLabel(this))
     , m_closeBtn(new QPushButton(this))
@@ -62,7 +62,7 @@ HintWidget::HintWidget(QWidget *parent) : QFrame(parent)
     });
 }
 
-HintWidget::HintWidget(const QString &text, QWidget *parent, const QString &movieSouce, bool movie)
+PromptWidget::PromptWidget(const QString &text, QWidget *parent, const QString &movieSouce, bool movie)
     : QFrame(parent)
     , m_iconLabel(new QLabel(this))
     , m_textLabel(new QLabel(this))
@@ -109,14 +109,14 @@ HintWidget::HintWidget(const QString &text, QWidget *parent, const QString &movi
     });
 }
 
-HintWidget::~HintWidget()
+PromptWidget::~PromptWidget()
 {
     if (m_movie) {
         delete m_movie;
     }
 }
 
-void HintWidget::setIconAndText(const QString &iconPath, const QString &text)
+void PromptWidget::setIconAndText(const QString &iconPath, const QString &text)
 {
     const qreal ratio = qApp->devicePixelRatio();
     QIcon icon = QIcon(iconPath);
@@ -128,21 +128,21 @@ void HintWidget::setIconAndText(const QString &iconPath, const QString &text)
     m_textLabel->setText(text);
 }
 
-void HintWidget::enterEvent(QEvent *event)
+void PromptWidget::enterEvent(QEvent *event)
 {
     QFrame::enterEvent(event);
     m_closeBtn->move(this->width() -12, 0);
     m_closeBtn->setVisible(true);
 }
 
-void HintWidget::leaveEvent(QEvent *event)
+void PromptWidget::leaveEvent(QEvent *event)
 {
     QFrame::enterEvent(event);
 
     m_closeBtn->setVisible(false);
 }
 
-bool HintWidget::event(QEvent *event)
+bool PromptWidget::event(QEvent *event)
 {
     switch (event->type()) {
     case QEvent::MouseButtonPress:
@@ -167,7 +167,7 @@ bool HintWidget::event(QEvent *event)
 }
 
 
-void HintWidget::showEvent(QShowEvent *event)
+void PromptWidget::showEvent(QShowEvent *event)
 {
     QFrame::showEvent(event);
 
@@ -176,7 +176,7 @@ void HintWidget::showEvent(QShowEvent *event)
     }
 }
 
-void HintWidget::hideEvent(QHideEvent* event)
+void PromptWidget::hideEvent(QHideEvent* event)
 {
   QFrame::hideEvent(event);
 

@@ -28,14 +28,13 @@
 
 ToolTip::ToolTip(QWidget *parent) :
     QFrame(parent)
-    , m_radius(4)
+    , m_radius(5)
     , m_background(QBrush(QColor(255,255,255,255)))
-    , m_borderColor(QColor(0, 0, 0, 130))
+    , m_borderColor(QColor(224,224,224,130))
 {
     this->setWindowFlags(Qt::ToolTip | Qt::FramelessWindowHint);
     this->setAttribute(Qt::WA_TranslucentBackground);
     this->setContentsMargins(0, 0, 0, 0);
-//    this->resize(100, 180);
 
     m_layout = new QVBoxLayout(this);
     m_layout->setContentsMargins(0, 0, 0, 0);
@@ -63,6 +62,9 @@ ToolTip::ToolTip(QWidget *parent) :
     m_visLabel = new QLabel(this);
     m_windLabel = new QLabel(this);
 
+    m_dIconLabel->setFixedSize(48, 48);
+    m_nIconLabel->setFixedSize(48, 48);
+
     m_dateLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
     m_dWeatherLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
     m_nWeatherLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
@@ -79,14 +81,12 @@ ToolTip::ToolTip(QWidget *parent) :
     m_visLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
     m_windLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
 
-//    m_dIconLabel->setFixedSize(100, 100);
-
     QVBoxLayout *d_vlayout = new QVBoxLayout;
-    d_vlayout->addWidget(m_dIconLabel);
-    d_vlayout->addWidget(m_dWeatherLabel);
+    d_vlayout->addWidget(m_dIconLabel, 0, Qt::AlignHCenter);
+    d_vlayout->addWidget(m_dWeatherLabel, 0, Qt::AlignHCenter);
     QVBoxLayout *n_vlayout = new QVBoxLayout;
-    n_vlayout->addWidget(m_nIconLabel);
-    n_vlayout->addWidget(m_nWeatherLabel);
+    n_vlayout->addWidget(m_nIconLabel, 0, Qt::AlignHCenter);
+    n_vlayout->addWidget(m_nWeatherLabel, 0, Qt::AlignHCenter);
     QHBoxLayout *h_layout = new QHBoxLayout;
     h_layout->addLayout(d_vlayout);
     h_layout->addLayout(n_vlayout);
@@ -94,8 +94,8 @@ ToolTip::ToolTip(QWidget *parent) :
     layout->addWidget(m_dateLabel, 0, Qt::AlignTop | Qt::AlignHCenter);
     layout->addLayout(h_layout);
     layout->addWidget(m_tempLabel, 0, Qt::AlignHCenter);
-    layout->addWidget(m_mrmsLabel, 0, Qt::AlignHCenter);
     layout->addWidget(m_srssLabel, 0, Qt::AlignHCenter);
+    layout->addWidget(m_mrmsLabel, 0, Qt::AlignHCenter);
     layout->addWidget(m_humLabel, 0, Qt::AlignHCenter);
     layout->addWidget(m_pcpnLabel, 0, Qt::AlignHCenter);
     layout->addWidget(m_popLabel, 0, Qt::AlignHCenter);
@@ -107,6 +107,11 @@ ToolTip::ToolTip(QWidget *parent) :
     m_layout->addWidget(m_frame, 0, Qt::AlignVCenter);
 
     adjustSize();
+}
+
+ToolTip::~ToolTip()
+{
+
 }
 
 void ToolTip::resetData(const ForecastWeather &data, const QString &week)
@@ -126,15 +131,28 @@ void ToolTip::resetData(const ForecastWeather &data, const QString &week)
 
     m_tempLabel->setText(QString("%1°C~%2°C").arg(data.tmp_min).arg(data.tmp_max));
 
-    m_mrmsLabel->setText(data.mr_ms);
-    m_srssLabel->setText(data.sr_ss);
-    m_humLabel->setText(data.hum);
-    m_pcpnLabel->setText(data.pcpn);
-    m_popLabel->setText(data.pop);
-    m_presLabel->setText(data.pres);
-    m_uvIndexLabel->setText(data.uv_index);
-    m_visLabel->setText(data.vis);
-    m_windLabel->setText(data.wind_deg + data.wind_dir + data.wind_sc + data.wind_spd);
+    if (data.sr_ss.contains(QChar('+'))) {
+        QStringList sunList= data.sr_ss.split(QChar('+'));
+        m_srssLabel->setText(QString("Sunrise: %1 sunset: %2").arg(sunList.at(0)).arg(sunList.at(1)));
+    }
+    else {
+        m_srssLabel->setText(QString("Sunrise and sunset: %1").arg(data.sr_ss));
+    }
+    if (data.mr_ms.contains(QChar('+'))) {
+        QStringList moonList= data.mr_ms.split(QChar('+'));
+        m_mrmsLabel->setText(QString("Moonrise: %1 moonset: %2").arg(moonList.at(0)).arg(moonList.at(1)));
+    }
+    else {
+        m_mrmsLabel->setText(QString("Moonrise and moonset: %1").arg(data.mr_ms));
+    }
+
+    m_humLabel->setText(QString("Relative humidity:%1").arg(data.hum));//相对湿度
+    m_pcpnLabel->setText(QString("Precipitation:%1 mm").arg(data.pcpn));//降水量
+    m_popLabel->setText(QString("Probability of precipitation:%1").arg(data.pop));//降水概率
+    m_presLabel->setText(QString("Atmospheric pressure:%1 hPa").arg(data.pres));//大气压强
+    m_uvIndexLabel->setText(QString("UV intensity index:%1").arg(data.uv_index));//紫外线强度指数
+    m_visLabel->setText(QString("Visibility:%1 km").arg(data.vis));//能见度
+    m_windLabel->setText(QString("Wind:%1 %2stage  direction %3  speed %4 km/h").arg(data.wind_dir).arg(data.wind_sc).arg(data.wind_deg).arg(data.wind_spd));
 }
 
 void ToolTip::popupTip(QPoint point)
@@ -156,7 +174,7 @@ void ToolTip::popupTip(QPoint point)
 //    this->m_frame->setGraphicsEffect(opacityEffect);
 
     QPropertyAnimation *animation = new QPropertyAnimation(opacityEffect, "opacity");
-    animation->setDuration(2000);
+    animation->setDuration(1000);
     animation->setStartValue(0);
     animation->setKeyValueAt(0.25, 1);
     animation->setKeyValueAt(0.5, 1);
@@ -170,7 +188,7 @@ void ToolTip::popupTip(QPoint point)
     });
 }
 
-void ToolTip::paintEvent(QPaintEvent *)
+void ToolTip::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     painter.setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);

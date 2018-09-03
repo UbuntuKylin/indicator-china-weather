@@ -22,7 +22,7 @@
 #include "contentwidget.h"
 #include "settingdialog.h"
 #include "aboutdialog.h"
-#include "hintwidget.h"
+#include "promptwidget.h"
 #include "weatherworker.h"
 
 #include <QApplication>
@@ -118,14 +118,16 @@ MainWindow::MainWindow(QWidget *parent)
         this->showSettingDialog();
     });
 
-    m_hintWidget = new HintWidget(this);
+    m_hintWidget = new PromptWidget(this);
     m_hintWidget->setIconAndText(":/res/network_warn.png", tr("Network not connected"));
     m_hintWidget->move((this->width() - m_hintWidget->width())/2, (this->height() - m_hintWidget->height())/2);
     m_hintWidget->setVisible(false);
 
-    m_movieWidget = new HintWidget(tr("Getting data"), this, ":/res/link.gif", true);
+    m_movieWidget = new PromptWidget(tr("Getting data"), this, ":/res/link.gif", true);
     m_movieWidget->move((this->width() - m_hintWidget->width())/2, (this->height() - m_hintWidget->height())/2);
     m_movieWidget->setVisible(false);
+
+    this->createSettingDialog();
 
     if (!m_weatherWorker->isNetWorkSettingsGood()) {
         m_contentWidget->setNetworkErrorPages();
@@ -353,10 +355,6 @@ void MainWindow::initMenuAndTray()
 
 void MainWindow::showSettingDialog()
 {
-    if (!m_setttingDialog) {
-        createSettingDialog();
-    }
-
     m_setttingDialog->move((width() - m_setttingDialog->width()) / 2 + mapToGlobal(QPoint(0, 0)).x(),
                                (window()->height() - m_setttingDialog->height()) / 2 + mapToGlobal(QPoint(0, 0)).y());
     m_setttingDialog->show();

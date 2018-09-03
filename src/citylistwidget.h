@@ -45,7 +45,7 @@ public slots:
     void updateCityListHeight();
 
 private:
-    bool eventFilter(QObject *, QEvent *event) Q_DECL_OVERRIDE;
+    bool eventFilter(QObject *obj, QEvent *event) Q_DECL_OVERRIDE;
 
 private:
     QVBoxLayout *m_layout = nullptr;

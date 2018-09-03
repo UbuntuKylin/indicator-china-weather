@@ -32,7 +32,7 @@ Preferences::Preferences()
     m_cities.clear();
     m_maxCityItems = 10;
     m_updateFrequency = 30;
-    m_opacity = 90;
+    m_opacity = 100;
 
     load();
 }

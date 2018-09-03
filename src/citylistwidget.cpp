@@ -112,7 +112,7 @@ CityItemWidget *CityListWidget::getItem(int index)
     return NULL;
 }
 
-bool CityListWidget::eventFilter(QObject *, QEvent *event)
+bool CityListWidget::eventFilter(QObject *obj, QEvent *event)
 {
     switch (event->type())
     {

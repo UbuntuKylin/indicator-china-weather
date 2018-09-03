@@ -31,6 +31,8 @@ class ForecastItemWidget;
 class IndexItemWidget;
 class HSeparator;
 class VSeparator;
+class TextTip;
+class TipModule;
 
 class ForecastWeatherWidget : public QFrame
 {
@@ -51,6 +53,8 @@ public:
 
     void setDayStyleSheets();
     void setNightStyleSheets();
+
+    TextTip *setTipWidget(QWidget *w, const QString &txt);
 
 public slots:
     void showLifeStyleIndex(const QString &name);
@@ -76,6 +80,8 @@ private:
     HSeparator *m_topHseperator = nullptr;
     HSeparator *m_bottomHseperator = nullptr;
     QList<IndexItemWidget *> m_lifeItems;
+    QList<TextTip *> m_tips;
+    TipModule *m_tipModule = nullptr;
 };
 
 #endif // FORECAST_WEATHER_WIDGET_H
