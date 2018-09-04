@@ -22,10 +22,15 @@
 #include "tipwidget.h"
 #include "texttip.h"
 #include "tipmodule.h"
+#include "airwidget.h"
 
 #include <QVBoxLayout>
 #include <QEvent>
 #include <QDebug>
+
+#include "preferences.h"
+#include "global.h"
+using namespace Global;
 
 inline QString convertTemperatureToString(int temp)
 {
@@ -163,11 +168,30 @@ NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent)
     m_weatherIcon->setProperty("TextTipWidget", QVariant::fromValue<QWidget *>(m_tip));
     m_weatherIcon->installEventFilter(m_tipModule);
 
-    m_aqiLabel = new TranslucentLabel(this);
+    m_ariWidget = new AirWidget(this);
+    m_ariWidget->raise();
+    m_ariWidget->setVisible(false);
+
+    m_aqiLabel = new TranslucentLabel(true, this);
     m_aqiLabel->setLabelIcon(":/res/aqi.png");
     m_aqiLabel->move(m_weatherIcon->x() - 10, m_windLabel->y());
+    connect(m_aqiLabel, &TranslucentLabel::clicked, this, [=] {
+        if (m_ariWidget->isVisible()) {
+            m_ariWidget->animationHide();
+        }
+        else {
+            if (m_preferences->air.id != m_preferences->m_currentCityId) {
+                return;
+            }
+            if (m_preferences->air.aqi.contains("Unknown") && m_preferences->air.qlty.contains("Unknown")) {
+                return;
+            }
+            m_ariWidget->resetData(m_preferences->air);
+            m_ariWidget->animationShow();
+        }
+    });
 
-    m_temperatureLabel = new TranslucentLabel(this);
+    m_temperatureLabel = new TranslucentLabel(false, this);
     m_temperatureLabel->setLabelIcon(":/res/temp.png");
     m_temperatureLabel->move(m_aqiLabel->x(), m_aqiLabel->y() + m_aqiLabel->height() + 8);
 
@@ -188,16 +212,17 @@ NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent)
         m_tipTimer->stop();
         m_tipWidget->setVisible(false);
     });
-    //this->displayTip();
+    //this->displayTip(tr("Update failure"));
 }
 
 NowWeatherWidget::~NowWeatherWidget()
 {
     delete m_tipTimer;
     delete m_tipModule;
+    delete m_ariWidget;
 }
 
-void NowWeatherWidget::displayTip()
+void NowWeatherWidget::displayTip(const QString &info)
 {
     if (m_tipWidget->isVisible())
         m_tipWidget->setVisible(false);
@@ -205,7 +230,7 @@ void NowWeatherWidget::displayTip()
         m_tipTimer->stop();
 
     m_tipWidget->setLabelIcon(":/res/update_warn.png");
-    m_tipWidget->setLabelText(tr("Update failure"));
+    m_tipWidget->setLabelText(info);
     m_tipWidget->setVisible(true);
     m_tipTimer->start(8000);
 }
@@ -239,4 +264,13 @@ void NowWeatherWidget::refreshData(const ObserveWeather &data)
         m_aqiLabel->setLabelText(data.air);
     }
     m_temperatureLabel->setLabelText(convertTemperatureToString(data.tmp.toInt()));
+}
+
+void NowWeatherWidget::mousePressEvent(QMouseEvent *event)
+{
+    if (m_ariWidget->isVisible()) {
+        m_ariWidget->animationHide();
+    }
+
+    QFrame::mousePressEvent(event);
 }

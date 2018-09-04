@@ -52,6 +52,7 @@ public:
     QString m_currentCityId;
     int m_updateFrequency;
     int m_opacity;
+    bool m_serverNotify;
 
     /*struct Weather_settings {
         QString id;
@@ -117,6 +118,8 @@ public:
     ObserveWeather weather;
     ForecastWeather forecast0, forecast1, forecast2;
     LifeStyle lifestyle;
+    Air air;
+
     int m_maxCityItems;
     QStringList m_cityList;
     //QStringList m_cityIdList;

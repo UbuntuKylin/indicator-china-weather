@@ -21,6 +21,7 @@
 #define TIPWIDGET_H
 
 #include <QLabel>
+#include <QPushButton>
 
 class TipWidget : public QFrame {
     Q_OBJECT
@@ -31,8 +32,13 @@ public:
     void setLabelIcon(const QString &iconPath);
     void setLabelText(const QString &text);
 
+protected:
+    void enterEvent(QEvent *event) Q_DECL_OVERRIDE;
+    void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
+
 private:
     QLabel *m_icon = nullptr;
     QLabel *m_text = nullptr;
+    QPushButton *m_closeBtn = nullptr;
 };
 #endif // TIPWIDGET_H

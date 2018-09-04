@@ -33,6 +33,7 @@ Preferences::Preferences()
     m_maxCityItems = 10;
     m_updateFrequency = 30;
     m_opacity = 100;
+    m_serverNotify = true;
 
     load();
 }

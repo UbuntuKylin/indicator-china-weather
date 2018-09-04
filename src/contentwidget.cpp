@@ -60,6 +60,12 @@ ContentWidget::~ContentWidget()
     }
 }
 
+void ContentWidget::showServerNotifyInfo(const QString &info)
+{
+    if (!info.isEmpty())
+        m_nowWidget->displayTip(info);
+}
+
 void ContentWidget::refreshObserveUI(const ObserveWeather &data)
 {
     m_nowWidget->refreshData(data);

@@ -89,6 +89,7 @@ private:
 
     WeatherWorker *m_weatherWorker = nullptr;
 
+    QTimer *m_pingbackTimer = nullptr;
     QTimer *m_tipTimer = nullptr;
     int m_actualizationTime;
     QString m_updateTimeStr;

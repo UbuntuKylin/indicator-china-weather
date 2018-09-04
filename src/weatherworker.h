@@ -63,6 +63,7 @@ signals:
     void forecastDataRefreshed(const QList<ForecastWeather> &datas, LifeStyle data);
     void nofityNetworkStatus(bool status);
     void responseFailure(int code);
+    void requestDiplayServerNotify(const QString &notifyInfo);
 
 public slots:
     void onWeatherObserveReply();

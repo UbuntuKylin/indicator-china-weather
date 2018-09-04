@@ -112,20 +112,36 @@ void WeatherWorker::refreshForecastWeatherData(const QString &cityId)
 
 void WeatherWorker::requestPingBackWeatherServer()
 {
-    QNetworkReply *reply = m_networkManager->get(QNetworkRequest(QString("http://service.ubuntukylin.com:8001/weather/pingnetwork/")));
+    QNetworkReply *reply = m_networkManager->get(QNetworkRequest(QString("http://service.ubuntukylin.com:8001/weather/pinginformation/")));
     connect(reply, &QNetworkReply::finished, this, [=] () {
         QNetworkReply *m_reply = qobject_cast<QNetworkReply*>(sender());
         int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         if(m_reply->error() != QNetworkReply::NoError || statusCode != 200) {//200 is normal status
             qDebug() << "pingback request error:" << m_reply->error() << ", statusCode=" << statusCode;
+            emit responseFailure(statusCode);
             return;
         }
 
         QByteArray ba = m_reply->readAll();
         m_reply->close();
         m_reply->deleteLater();
-        QString reply_content = QString::fromUtf8(ba);
-        qDebug() << "pingback size: " << ba.size() << reply_content;
+
+        QJsonParseError err;
+        QJsonDocument jsonDocument = QJsonDocument::fromJson(ba, &err);
+        if (err.error != QJsonParseError::NoError) {// Json type error
+            qDebug() << "Json type error";
+            return;
+        }
+        if (jsonDocument.isNull() || jsonDocument.isEmpty()) {
+            qDebug() << "Json null or empty!";
+            return;
+        }
+
+        QJsonObject jsonObject = jsonDocument.object();
+        QString notifyInfo = jsonObject.value("info").toString();
+        if (!notifyInfo.isEmpty() && !notifyInfo.isNull()) {
+            emit requestDiplayServerNotify(notifyInfo);
+        }
     });
 }
 
@@ -231,6 +247,17 @@ void WeatherWorker::onWeatherObserveReply()
     QJsonObject airObj = mainObj.value("air").toObject();
     QJsonObject weatherObj = mainObj.value("weather").toObject();
     //qDebug() << "airObj" << airObj;
+
+    m_preferences->air.id = weatherObj.value("id").toString();
+    m_preferences->air.aqi = airObj.value("aqi").toString();
+    m_preferences->air.qlty = airObj.value("qlty").toString();
+    m_preferences->air.main = airObj.value("main").toString();
+    m_preferences->air.pm25 = airObj.value("pm25").toString();
+    m_preferences->air.pm10 = airObj.value("pm10").toString();
+    m_preferences->air.no2 = airObj.value("no2").toString();
+    m_preferences->air.so2 = airObj.value("so2").toString();
+    m_preferences->air.co = airObj.value("co").toString();
+    m_preferences->air.o3 = airObj.value("o3").toString();
 
     m_preferences->weather.id = weatherObj.value("id").toString();
     m_preferences->weather.city = weatherObj.value("location").toString();

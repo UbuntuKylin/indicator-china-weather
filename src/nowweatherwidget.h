@@ -30,6 +30,7 @@ class TranslucentLabel;
 class TipWidget;
 class TextTip;
 class TipModule;
+class AirWidget;
 
 class NowWeatherWidget : public QFrame
 {
@@ -40,8 +41,11 @@ public:
     ~NowWeatherWidget();
 
     void setWeatherIcon(const QString &iconPath);
-    void displayTip();
+    void displayTip(const QString &info);
     void refreshData(const ObserveWeather &data);
+
+protected:
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 private:
     QLabel *m_tempLabel = nullptr;
@@ -57,6 +61,7 @@ private:
     QTimer *m_tipTimer = nullptr;
     TextTip *m_tip = nullptr;
     TipModule *m_tipModule = nullptr;
+    AirWidget *m_ariWidget = nullptr;
 };
 
 #endif // NOW_WEATHER_WIDGET_H

@@ -48,6 +48,8 @@ public:
     void setDayStyleSheets();
     void setNightStyleSheets();
 
+    void showServerNotifyInfo(const QString &info);
+
 signals:
     void requestRetryWeather();
 

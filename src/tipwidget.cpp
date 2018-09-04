@@ -20,6 +20,11 @@
 #include "tipwidget.h"
 
 #include <QHBoxLayout>
+#include <QDebug>
+
+#include "preferences.h"
+#include "global.h"
+using namespace Global;
 
 TipWidget::TipWidget(QWidget *parent)
     : QFrame(parent) {
@@ -36,8 +41,18 @@ TipWidget::TipWidget(QWidget *parent)
     m_icon->setStyleSheet("QLabel{border:none;background-color:transparent;}");
     m_text->setStyleSheet("QLabel{border:none;background-color:transparent;color:#fff222;font-size:12px;}");
 
+    m_closeBtn = new QPushButton(this);
+    m_closeBtn->setFixedSize(12, 12);
+    m_closeBtn->setFocusPolicy(Qt::NoFocus);
+    m_closeBtn->setStyleSheet("QPushButton{background-image:url(':/res/delete_normal.png');border:0px;}QPushButton:hover{background:url(':/res/delete_hover_press.png');}QPushButton:pressed{background:url(':/res/delete_hover_press.png');}");
+    m_closeBtn->setVisible(false);
+    connect(m_closeBtn, &QPushButton::clicked, this, [=] {
+        m_preferences->m_serverNotify = false;
+        this->setVisible(false);
+    });
+
     QHBoxLayout *m_layout = new QHBoxLayout(this);
-    m_layout->setContentsMargins(5, 0, 5, 0);
+    m_layout->setContentsMargins(15, 0, 5, 0);
     m_layout->setSpacing(5);
 
     m_layout->addWidget(m_icon, 0, Qt::AlignLeft | Qt::AlignVCenter);
@@ -62,4 +77,19 @@ void TipWidget::setLabelText(const QString &text)
     const QFontMetrics fm(font);
     QString elided_text = fm.elidedText(text, Qt::ElideRight, this->width() - 40);
     m_text->setText(elided_text);
+}
+
+void TipWidget::enterEvent(QEvent *event)
+{
+    QFrame::enterEvent(event);
+
+    m_closeBtn->move(1, 5);
+    m_closeBtn->setVisible(true);
+}
+
+void TipWidget::leaveEvent(QEvent *event)
+{
+    QFrame::enterEvent(event);
+
+    m_closeBtn->setVisible(false);
 }

@@ -83,6 +83,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_centralWidget(new QWidget(this))
     , m_titleBar(new TitleBar(this))
     , m_contentWidget(new ContentWidget(m_weatherWorker, this))
+    , m_pingbackTimer(new QTimer(this))
     , m_tipTimer(new QTimer(this))
     , m_autoRefreshTimer(new QTimer(this))
     , m_actualizationTime(0)
@@ -134,10 +135,12 @@ MainWindow::MainWindow(QWidget *parent)
         m_autoRefreshTimer->stop();
     }
     else {
+        //m_weatherWorker->requestPostHostInfoToWeatherServer("distro=ubuntu&version_os=16.04&version_weather=1.0&city=长沙");
         this->startGetWeather();
     }
 
     connect(m_contentWidget, &ContentWidget::requestRetryWeather, this, [=] {
+        //m_weatherWorker->requestPostHostInfoToWeatherServer("distro=ubuntu&version_os=16.04&version_weather=1.0&city=长沙");
         this->startGetWeather();
     });
 
@@ -152,6 +155,10 @@ MainWindow::MainWindow(QWidget *parent)
             m_hintWidget->setIconAndText(":/res/network_warn.png", QString(tr("Network error code:%1")).arg(QString::number(code)));
         }
         m_contentWidget->setNetworkErrorPages();
+    });
+    connect(m_weatherWorker, &WeatherWorker::requestDiplayServerNotify, this, [=] (const QString &notifyInfo) {
+        if (!notifyInfo.isEmpty() && m_preferences->m_serverNotify)
+            m_contentWidget->showServerNotifyInfo(notifyInfo);
     });
 
     connect(m_weatherWorker, &WeatherWorker::observeDataRefreshed, this, [=] (const ObserveWeather &data) {
@@ -226,7 +233,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::updateTimeTip()
 {
-
     QDateTime time = QDateTime::currentDateTime();
     int timeIntValue = time.toTime_t();
     int ut = int((round(timeIntValue - m_actualizationTime)/60));
@@ -244,6 +250,8 @@ void MainWindow::updateTimeTip()
     m_actualizationTime = timeIntValue;
 
     m_updateTimeAction->setText(m_updateTimeStr);
+
+    m_weatherWorker->requestPingBackWeatherServer();
 }
 
 void MainWindow::setOpacity(double opacity)
@@ -348,9 +356,6 @@ void MainWindow::initMenuAndTray()
 
     QShortcut *m_quitShortCut = new QShortcut(QKeySequence("Ctrl+Q"), this);
     connect(m_quitShortCut, SIGNAL(activated()), qApp, SLOT(quit()));
-
-//    m_weatherWorker->requestPostHostInfoToWeatherServer("distro=ubuntu&version_os=16.04&version_weather=1.0&city=长沙");
-//    m_weatherWorker->requestPingBackWeatherServer();
 }
 
 void MainWindow::showSettingDialog()

@@ -77,7 +77,8 @@ SOURCES += src/main.cpp \
     src/tipwidget.cpp \
     src/texttip.cpp \
     src/tipmodule.cpp \
-    src/promptwidget.cpp
+    src/promptwidget.cpp \
+    src/airwidget.cpp
 
 HEADERS  += src/mainwindow.h \
     src/titlebar.h \
@@ -115,8 +116,8 @@ HEADERS  += src/mainwindow.h \
     src/tipwidget.h \
     src/texttip.h \
     src/tipmodule.h \
-    src/promptwidget.h
-
+    src/promptwidget.h \
+    src/airwidget.h
 
 RESOURCES += \
     res.qrc

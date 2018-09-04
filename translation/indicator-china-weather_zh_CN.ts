@@ -16,6 +16,54 @@
     </message>
 </context>
 <context>
+    <name>AirWidget</name>
+    <message>
+        <location filename="../src/airwidget.cpp" line="134"/>
+        <source>aqi:%1</source>
+        <translation>空气质量指数:%1</translation>
+    </message>
+    <message>
+        <location filename="../src/airwidget.cpp" line="135"/>
+        <source>qlty:%1</source>
+        <translation>空气质量:%1</translation>
+    </message>
+    <message>
+        <location filename="../src/airwidget.cpp" line="136"/>
+        <source>main:%1</source>
+        <translation>主要污染物：%1</translation>
+    </message>
+    <message>
+        <location filename="../src/airwidget.cpp" line="137"/>
+        <source>pm25:%1</source>
+        <translation>pm25：%1</translation>
+    </message>
+    <message>
+        <location filename="../src/airwidget.cpp" line="138"/>
+        <source>pm10:%1</source>
+        <translation>pm10：%1</translation>
+    </message>
+    <message>
+        <location filename="../src/airwidget.cpp" line="139"/>
+        <source>no2:%1</source>
+        <translation>二氧化氮：%1</translation>
+    </message>
+    <message>
+        <location filename="../src/airwidget.cpp" line="140"/>
+        <source>so2:%1</source>
+        <translation>二氧化硫：%1</translation>
+    </message>
+    <message>
+        <location filename="../src/airwidget.cpp" line="141"/>
+        <source>co:%1</source>
+        <translation>一氧化碳：%1</translation>
+    </message>
+    <message>
+        <location filename="../src/airwidget.cpp" line="142"/>
+        <source>o3:%1</source>
+        <translation>臭氧：%1</translation>
+    </message>
+</context>
+<context>
     <name>CityItemWidget</name>
     <message>
         <location filename="../src/cityitemwidget.cpp" line="51"/>
@@ -210,27 +258,27 @@
 <context>
     <name>NowWeatherWidget</name>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="137"/>
+        <location filename="../src/nowweatherwidget.cpp" line="143"/>
         <source>Humidity</source>
         <translation>湿度</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="208"/>
+        <location filename="../src/nowweatherwidget.cpp" line="230"/>
         <source>Update failure</source>
         <translation>更新失败</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="229"/>
+        <location filename="../src/nowweatherwidget.cpp" line="251"/>
         <source>Static wind</source>
         <translation>静风</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="232"/>
+        <location filename="../src/nowweatherwidget.cpp" line="254"/>
         <source>%1stage wind</source>
         <translation>%1级风</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="236"/>
+        <location filename="../src/nowweatherwidget.cpp" line="258"/>
         <source>Unknown</source>
         <translation>未知</translation>
     </message>
@@ -305,92 +353,92 @@
         <translation type="vanished">空气污染扩散条件指数</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="33"/>
+        <location filename="../src/nowweatherwidget.cpp" line="38"/>
         <source>Extremely cold</source>
         <translation>极寒</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="36"/>
+        <location filename="../src/nowweatherwidget.cpp" line="41"/>
         <source>Cold and cold</source>
         <translation>奇寒</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="39"/>
+        <location filename="../src/nowweatherwidget.cpp" line="44"/>
         <source>Severe cold</source>
         <translation>酷寒</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="42"/>
+        <location filename="../src/nowweatherwidget.cpp" line="47"/>
         <source>Bitter cold</source>
         <translation>严寒</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="45"/>
+        <location filename="../src/nowweatherwidget.cpp" line="50"/>
         <source>Deep cold</source>
         <translation>深寒</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="48"/>
+        <location filename="../src/nowweatherwidget.cpp" line="53"/>
         <source>Very cold</source>
         <translation>大寒</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="51"/>
+        <location filename="../src/nowweatherwidget.cpp" line="56"/>
         <source>Lesser cold</source>
         <translation>小寒</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="54"/>
+        <location filename="../src/nowweatherwidget.cpp" line="59"/>
         <source>Mildly cold</source>
         <translation>轻寒</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="57"/>
+        <location filename="../src/nowweatherwidget.cpp" line="62"/>
         <source>Slightly cold</source>
         <translation>微寒</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="60"/>
+        <location filename="../src/nowweatherwidget.cpp" line="65"/>
         <source>Cold</source>
         <translation>凉</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="63"/>
+        <location filename="../src/nowweatherwidget.cpp" line="68"/>
         <source>Warm and cool</source>
         <translation>温凉</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="66"/>
+        <location filename="../src/nowweatherwidget.cpp" line="71"/>
         <source>Mild</source>
         <translation>温和</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="69"/>
+        <location filename="../src/nowweatherwidget.cpp" line="74"/>
         <source>Warm</source>
         <translation>温暖</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="72"/>
+        <location filename="../src/nowweatherwidget.cpp" line="77"/>
         <source>Hot</source>
         <translation>热</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="75"/>
+        <location filename="../src/nowweatherwidget.cpp" line="80"/>
         <source>Scorching hot</source>
         <translation>炎热</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="78"/>
+        <location filename="../src/nowweatherwidget.cpp" line="83"/>
         <source>Boiling hot</source>
         <translation>酷热</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="81"/>
+        <location filename="../src/nowweatherwidget.cpp" line="86"/>
         <source>Excessive heat</source>
         <translation>奇热</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="84"/>
+        <location filename="../src/nowweatherwidget.cpp" line="89"/>
         <source>Extremely hot</source>
         <translation>极热</translation>
     </message>
@@ -545,7 +593,7 @@
 <context>
     <name>WeatherWorker</name>
     <message>
-        <location filename="../src/weatherworker.cpp" line="517"/>
+        <location filename="../src/weatherworker.cpp" line="528"/>
         <source>Unknown</source>
         <translation>未知</translation>
     </message>

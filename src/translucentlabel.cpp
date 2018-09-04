@@ -20,14 +20,25 @@
 #include "translucentlabel.h"
 
 #include <QHBoxLayout>
+#include <QEvent>
+#include <QFocusEvent>
+#include <QDebug>
 
-TranslucentLabel::TranslucentLabel(QWidget *parent)
-    : QLabel(parent) {
+TranslucentLabel::TranslucentLabel(bool showTip, QWidget *parent)
+    : QLabel(parent), m_showTip(showTip)
+{
     //使用颜色值设置背景
     //this->setStyleSheet("QLabel{border-radius:4px;background-color:rgba(0,0,0,0.2);color:rgb(255,255,255);}");
     //使用图片设置背景
     this->setStyleSheet("QLabel{background:transparent;background-image:url(':/res/min_bg.png');}");//border-image
     this->setFixedSize(69, 26);
+    this->setFocusPolicy(Qt::NoFocus);
+
+    if (m_showTip) {
+        this->setFocusPolicy(Qt::ClickFocus);
+        this->setMouseTracking(true);
+        installEventFilter(this);
+    }
 
     m_icon = new QLabel(this);
     m_icon->setStyleSheet("QLabel{border:none;background:transparent;background-color:transparent;}");
@@ -62,3 +73,68 @@ void TranslucentLabel::setLabelText(const QString &text)
     m_text->setText(elided_text);
 
 }
+
+bool TranslucentLabel::eventFilter(QObject *obj, QEvent *event)
+{
+    switch (event->type()) {
+    case QEvent::Enter: {
+        QWidget *widget = qobject_cast<QWidget *>(obj);
+        if (widget) {
+            widget->setCursor(QCursor(Qt::PointingHandCursor));
+        }
+        break;
+    }
+    case QEvent::Leave: {
+        QWidget *widget = qobject_cast<QWidget *>(obj);
+        if (!widget) {
+            widget->unsetCursor();
+        }
+        break;
+    }
+    default:
+        break;
+    }
+
+    return QObject::eventFilter(obj, event);
+}
+
+
+void TranslucentLabel::mousePressEvent(QMouseEvent *event)
+{
+    if (m_showTip) {
+        emit this->clicked();
+    }
+
+    QLabel::mousePressEvent(event);
+}
+
+/*bool TranslucentLabel::event(QEvent *event)
+{
+    switch (event->type()) {
+    case QEvent::MouseButtonPress:
+        qDebug() << "press.";
+        break;
+    default:
+        break;
+    }
+
+    return QWidget::event(event);
+}
+
+void TranslucentLabel::focusOutEvent(QFocusEvent *event)
+{
+    QPoint mousePos = mapToParent(mapFromGlobal(QCursor::pos()));
+    if (!this->geometry().contains(mousePos)) {
+        if (event && event->reason() == Qt::MouseFocusReason) {
+            qDebug() << "focus out...........";
+        }
+    }
+
+    QLabel::focusOutEvent(event);
+}
+
+void TranslucentLabel::focusInEvent(QFocusEvent *event)
+{
+    qDebug() << "focus in...........";
+    QLabel::focusInEvent(event);
+}*/

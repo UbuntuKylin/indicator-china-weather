@@ -29,6 +29,21 @@ struct City
     QString name;
 };
 
+
+struct Air
+{
+    QString id;
+    QString aqi;
+    QString qlty;
+    QString main;
+    QString pm25;
+    QString pm10;
+    QString no2;
+    QString so2;
+    QString co;
+    QString o3;
+};
+
 struct ObserveWeather
 {
     QString id;

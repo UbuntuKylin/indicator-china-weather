@@ -131,6 +131,7 @@ void PromptWidget::setIconAndText(const QString &iconPath, const QString &text)
 void PromptWidget::enterEvent(QEvent *event)
 {
     QFrame::enterEvent(event);
+
     m_closeBtn->move(this->width() -12, 0);
     m_closeBtn->setVisible(true);
 }
