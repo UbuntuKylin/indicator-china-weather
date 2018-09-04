@@ -102,7 +102,7 @@ void ForecastWeatherWidget::initWidgets()
 void ForecastWeatherWidget::initForecastWidget()
 {
     QWidget *w = new QWidget;
-    w->setFixedSize(this->width(), 180);
+    w->setFixedSize(this->width(), 160);
     //test background
     /*w->setAutoFillBackground(true);
     QPalette palette;
@@ -181,7 +181,7 @@ void ForecastWeatherWidget::initIndexTitleWidget()
 void ForecastWeatherWidget::initIndexWidget()
 {
     QWidget *w = new QWidget;
-    w->setFixedSize(this->width(), 126);
+    w->setFixedSize(this->width(), 146);
     //test background
     /*w->setAutoFillBackground(true);
     QPalette palette;

@@ -22,6 +22,7 @@
 
 #include <QSpinBox>
 #include <QFrame>
+#include <QLabel>
 
 class SpinBox : public QSpinBox
 {
@@ -31,14 +32,15 @@ public:
     explicit SpinBox(QWidget *parent = 0);
     ~SpinBox();
 
-    int getValue() const { return this->m_value; }
-    void setValue(int value);
+    int getSpinValue() const { return this->m_value; }
+    void setSpinValue(int value);
 
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 
 private:
     QFrame *m_frame = nullptr;
+    QLabel *m_valueLabel = nullptr;
     int m_value;
 };
 

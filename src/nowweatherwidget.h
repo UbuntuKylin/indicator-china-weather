@@ -49,7 +49,7 @@ protected:
 
 private:
     QLabel *m_tempLabel = nullptr;
-    QLabel *m_humidityLabel = nullptr;
+    QLabel *m_weatherLabel = nullptr;
     QLabel *m_humidityValueLabel = nullptr;
     QLabel *m_windLabel = nullptr;
     QLabel *m_windPowerLabel = nullptr;
@@ -59,8 +59,8 @@ private:
     TipWidget *m_tipWidget = nullptr;
     WeatherWorker *m_weatherWorker = nullptr;
     QTimer *m_tipTimer = nullptr;
-    TextTip *m_tip = nullptr;
-    TipModule *m_tipModule = nullptr;
+    //TextTip *m_tip = nullptr;
+    //TipModule *m_tipModule = nullptr;
     AirWidget *m_ariWidget = nullptr;
 };
 

@@ -21,7 +21,6 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QLineEdit>
-#include <QLabel>
 #include <QDebug>
 
 #include "spinbox.h"
@@ -51,9 +50,9 @@ SpinBox::SpinBox(QWidget *parent) :
     m_addBtn->setStyleSheet("QPushButton{background-image:url(':/res/add_normal_btn.png');border:0px;}QPushButton:hover{background:url(':/res/add_hover_btn.png');}QPushButton:pressed{background:url(':/res/add_pressed_btn.png');}");
     m_subtractBtn->setStyleSheet("QPushButton{background-image:url(':/res/subtract_normal_btn.png');border:0px;}QPushButton:hover{background:url(':/res/subtract_hover_btn.png');}QPushButton:pressed{background:url(':/res/subtract_pressed_btn.png');}");
 
-    QLabel *m_valueLabel = new QLabel;
+    m_valueLabel = new QLabel;
     m_valueLabel->setStyleSheet("QLabel{font-size:14px;color:#808080;background-color:transparent;border:none}");
-    m_valueLabel->setText(this->text());
+    //m_valueLabel->setText(this->text());
 
     m_layout->addWidget(m_subtractBtn, 0, Qt::AlignVCenter | Qt::AlignLeft);
     m_layout->addStretch();
@@ -74,12 +73,14 @@ SpinBox::~SpinBox()
 
 }
 
-void SpinBox::setValue(int value)
+void SpinBox::setSpinValue(int value)
 {
     if (this->m_value == value)
         return;
 
     this->m_value = value;
+    this->setValue(this->m_value);
+    m_valueLabel->setText(QString::number(this->m_value));
 }
 
 void SpinBox::resizeEvent(QResizeEvent *event)

@@ -51,7 +51,7 @@ inline QString covertDateToWeek(QString dateStr)
 ForecastItemWidget::ForecastItemWidget(QWidget *parent) :
     QWidget(parent)
 {
-    this->setFixedSize(100, 160);
+    this->setFixedSize(100, 140);//140:initForecastWidget's height - 2*space = 160- 10*2
     this->setStyleSheet("QWidget{border-radius: 0px;color:rgb(250,250,250);background-color:rgba(0,0,0,0.2)}");
 //    setAttribute(Qt::WA_TransparentForMouseEvents);
 

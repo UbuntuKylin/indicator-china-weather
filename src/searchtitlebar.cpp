@@ -199,17 +199,17 @@ void SearchTitleBar::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    QPainterPath outBorderPath;
-    outBorderPath.addRoundedRect(this->rect(), m_borderRadius, m_borderRadius);
-    QPen pen(m_borderColor, m_borderWidth);
-    painter.setPen(pen);
-    painter.drawPath(outBorderPath);
+//    QPainterPath outBorderPath;
+//    outBorderPath.addRoundedRect(this->rect(), m_borderRadius, m_borderRadius);
+//    QPen pen(m_borderColor, m_borderWidth);
+//    painter.setPen(pen);
+//    painter.drawPath(outBorderPath);
 
-    QRect borderRect;
-    borderRect.setRect(this->rect().x() + m_borderWidth, this->rect().y() + m_borderWidth, this->rect().width() - m_borderWidth * 2, this->rect().height() - m_borderWidth * 2);
-    QPainterPath inBorderPath;
-    inBorderPath.addRoundedRect(borderRect, m_borderRadius, m_borderRadius);
-    painter.setClipPath(inBorderPath);
+//    QRect borderRect;
+//    borderRect.setRect(this->rect().x() + m_borderWidth, this->rect().y() + m_borderWidth, this->rect().width() - m_borderWidth * 2, this->rect().height() - m_borderWidth * 2);
+//    QPainterPath inBorderPath;
+//    inBorderPath.addRoundedRect(borderRect, m_borderRadius, m_borderRadius);
+//    painter.setClipPath(inBorderPath);
 
     painter.fillRect(0, 0, width(), height(), m_bgBrush);
 }

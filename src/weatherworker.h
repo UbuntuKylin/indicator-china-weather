@@ -51,7 +51,7 @@ public:
     void refreshForecastWeatherData(const QString &cityId);
 
     void requestPingBackWeatherServer();
-    void requestPostHostInfoToWeatherServer(QString hostInfo);
+    void requestPostHostInfoToWeatherServer();
 
     bool AccessDedirectUrl(const QString &redirectUrl, WeatherType weatherType);
     void AccessDedirectUrlWithPost(const QString &redirectUrl);

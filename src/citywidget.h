@@ -50,6 +50,7 @@ signals:
     void requestRefreshCityMenu(bool removedDefault);
     //void requestSetDefaultCity();
     void requestRefreshWeatherById(const QString &id);
+    void responseCityError(const QString &info);
 
 private:
     bool event(QEvent *event);

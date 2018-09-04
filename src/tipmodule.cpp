@@ -66,11 +66,22 @@ void TipModule::onDisplayTimeOut()
             }
 
             QPoint point = m_parentWidget->mapToGlobal(m_parentWidget->rect().center());
-            point.setX(point.x()  - m_tipWidget->size().width() / 2);
-            point.setY(point.y() - m_tipWidget->size().height());
-            point = m_tipWidget->mapFromGlobal(point);
-            point = m_tipWidget->mapToParent(point);
-            m_tipWidget->move(point);
+//            point.setX(point.x()/*  - m_tipWidget->size().width() / 2*/);
+//            point.setY(point.y()/* - m_tipWidget->size().height()*/);
+//            point = m_tipWidget->mapFromGlobal(point);
+//            point = m_tipWidget->mapToParent(point);
+//            m_tipWidget->move(point);
+
+            int point_X;
+            int point_Y;
+            if (point.rx() < m_tipWidget->width()) {
+                point_X = point.rx() + 10;
+            }
+            else {
+                point_X = point.rx() - m_tipWidget->width();
+            }
+            point_Y = point.ry();
+            m_tipWidget->move(QPoint(point_X, point_Y));
         });
     }
     this->m_displayTimer->stop();

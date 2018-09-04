@@ -94,12 +94,12 @@ NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent)
     QFrame(parent)
     , m_weatherWorker(weatherWorker)
     , m_tipTimer(new QTimer(this))
-    , m_tipModule(new TipModule)
-    , m_tip(new TextTip(QString(), this))
+//    , m_tipModule(new TipModule)
+//    , m_tip(new TextTip(QString(), this))
 {
     this->setFixedSize(355, 180);
 
-    m_tip->setFixedSize(100, 32);
+    //m_tip->setFixedSize(100, 32);
 //    this->setStyleSheet("QLabel{border-radius: 0px; color:rgb(250, 250, 250); background-color:rgba(0,0,0,0.2)}");
 
     //test background color
@@ -115,8 +115,8 @@ NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent)
     //-----------------------------
     m_tempLabel = new QLabel(this);
     m_tempLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff; font-size:65px;}");
-    m_tempLabel->setGeometry(10, 14, 130, 80);
-    m_tempLabel->setAlignment(Qt::AlignRight | Qt::AlignTop);
+    m_tempLabel->setGeometry(10, 14, 100, 70);
+    m_tempLabel->setAlignment(Qt::AlignCenter);
 //    QFont font;
 //    font.setPointSize(65);
 //    const QFontMetrics fm(font);
@@ -125,21 +125,29 @@ NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent)
 
     QLabel *tempUnit = new QLabel(this);
     tempUnit->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-    tempUnit->setGeometry(140, m_tempLabel->y(), 40, 30);
+    tempUnit->setGeometry(m_tempLabel->x() + m_tempLabel->width(), m_tempLabel->y(), 40, 28);
     tempUnit->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:20px;}");
     tempUnit->setText("°C");
 
+    m_weatherLabel = new QLabel(this);
+    m_weatherLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff; font-size:20px;}");
+    m_weatherLabel->setGeometry(tempUnit->x(), m_tempLabel->height() - 28/2, 130, 28);
+    m_weatherLabel->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+
     //-----------------------------
     QLabel *sdIcon = new QLabel(this);
-    sdIcon->setGeometry(m_tempLabel->x(), m_tempLabel->y() + m_tempLabel->height() /*- 20*/, 20, 20);
+    sdIcon->setGeometry(m_tempLabel->x(), m_tempLabel->y() + m_tempLabel->height() + 5, 20, 20);
     sdIcon->setStyleSheet("QLabel{border:none;background-color:transparent;}");
     sdIcon->setPixmap(QPixmap(":/res/current_sd.png"));
 
-    m_humidityLabel = new QLabel(this);
+    QLabel *m_humidityLabel = new QLabel(this);
     m_humidityLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:12x;}");
-    m_humidityLabel->setGeometry(sdIcon->x() + sdIcon->width(), sdIcon->y(), 80, 20);
+
     m_humidityLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     m_humidityLabel->setText(tr("Humidity"));
+    QFont font = m_humidityLabel->font();
+    const QFontMetrics fm(font);
+    m_humidityLabel->setGeometry(sdIcon->x() + sdIcon->width(), sdIcon->y(), fm.width(m_humidityLabel->text()), 20);
 
     m_humidityValueLabel = new QLabel(this);
     m_humidityValueLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:12x;}");
@@ -148,7 +156,7 @@ NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent)
 
     //-----------------------------
     QLabel *windIcon = new QLabel(this);
-    windIcon->setGeometry(m_humidityLabel->x() + 60, m_humidityLabel->y(), 20, 20);
+    windIcon->setGeometry(m_humidityLabel->x() + m_humidityLabel->width() + 10, m_humidityLabel->y(), 20, 20);
     windIcon->setStyleSheet("QLabel{border:none;background-color:transparent;}");
     windIcon->setPixmap(QPixmap(":/res/current_wind.png"));
 
@@ -165,8 +173,8 @@ NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent)
     m_weatherIcon = new QLabel(this);
     m_weatherIcon->setGeometry(this->width() - 64 - 20, m_tempLabel->y(), 64, 64);
     m_weatherIcon->setStyleSheet("QLabel{border:none;background-color:transparent;}");
-    m_weatherIcon->setProperty("TextTipWidget", QVariant::fromValue<QWidget *>(m_tip));
-    m_weatherIcon->installEventFilter(m_tipModule);
+    //m_weatherIcon->setProperty("TextTipWidget", QVariant::fromValue<QWidget *>(m_tip));
+    //m_weatherIcon->installEventFilter(m_tipModule);
 
     m_ariWidget = new AirWidget(this);
     m_ariWidget->raise();
@@ -218,7 +226,7 @@ NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent)
 NowWeatherWidget::~NowWeatherWidget()
 {
     delete m_tipTimer;
-    delete m_tipModule;
+    //delete m_tipModule;
     delete m_ariWidget;
 }
 
@@ -244,7 +252,8 @@ void NowWeatherWidget::setWeatherIcon(const QString &iconPath)
 
 void NowWeatherWidget::refreshData(const ObserveWeather &data)
 {
-    m_tip->resetTipText(data.cond_txt);
+    //m_tip->resetTipText(data.cond_txt);
+    m_weatherLabel->setText(data.cond_txt);
 
     m_tempLabel->setText(data.tmp);
     m_humidityValueLabel->setText(data.hum);

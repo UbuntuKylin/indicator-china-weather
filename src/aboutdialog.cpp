@@ -31,14 +31,22 @@ AboutDialog::AboutDialog(QWidget *parent)
     , m_pixmap(QPixmap(":/res/indicator-china-weather.png"))
     , m_websiteLinkString("<a href='%1' style='text-decoration:none;font-size:14px;color:#1374e8;'>%2</a>")
 {
-    this->setStyleSheet("QDialog{border:1px solid white;border-radius:2px;background:rgba(255, 255, 255, 0.7);}QDialog:hover{background: rgba(255, 255, 255, 1.0);}");
+    this->setStyleSheet("QDialog{border:1px solid #000000;border-radius:2px;background:rgba(255, 255, 255, 0.7);}QDialog:hover{background: rgba(255, 255, 255, 1.0);}");
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
     this->setWindowTitle(tr("Kylin Weather - About"));
     this->setWindowIcon(QIcon(":/res/indicator-china-weather.png"));
     this->setFixedWidth(456);
 
+    //边框阴影效果
+//    QGraphicsDropShadowEffect *shadow_effect = new QGraphicsDropShadowEffect(this);
+//    shadow_effect->setBlurRadius(5);
+//    shadow_effect->setColor(QColor(0, 0, 0, 127));
+//    shadow_effect->setOffset(2, 4);
+//    this->setGraphicsEffect(shadow_effect);
+
     QWidget *topWidget = new QWidget;
     topWidget->setStyleSheet("QWidget{border:none; background-color:#1374e8;}");
+    topWidget->setContentsMargins(1,1,1,0);
     QHBoxLayout *toplayout = new QHBoxLayout(topWidget);
     toplayout->setContentsMargins(5, 0, 0, 0);
     toplayout->setSpacing(0);
@@ -95,7 +103,7 @@ AboutDialog::AboutDialog(QWidget *parent)
     m_copyrightLabel->setText("Copyright © 2013-2018 Ubuntu Kylin Team, lixiang@kylinos.cn");
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(0, 0, 0, 20);
+    mainLayout->setContentsMargins(1, 1, 1, 20);
     mainLayout->setSpacing(10);
     mainLayout->addWidget(topWidget, 0, Qt::AlignTop);
     mainLayout->addWidget(m_iconLabel, 0, Qt::AlignHCenter);

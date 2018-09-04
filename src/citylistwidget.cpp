@@ -112,6 +112,16 @@ CityItemWidget *CityListWidget::getItem(int index)
     return NULL;
 }
 
+void CityListWidget::updateCityListHeight()
+{
+    this->setFixedHeight(m_layout->sizeHint().height());
+}
+
+void CityListWidget::resetData()
+{
+
+}
+
 bool CityListWidget::eventFilter(QObject *obj, QEvent *event)
 {
     switch (event->type())
@@ -124,14 +134,4 @@ bool CityListWidget::eventFilter(QObject *obj, QEvent *event)
     }
 
     return false;
-}
-
-void CityListWidget::updateCityListHeight()
-{
-    this->setFixedHeight(m_layout->sizeHint().height());
-}
-
-void CityListWidget::resetData()
-{
-
 }

@@ -102,7 +102,7 @@ QList<LocationData> LocationWorker::exactMatchCity(const QString &inputText) con
     QList<LocationData> searchedList;
 
     for (const LocationData line : m_locatonList) {
-        if (line.id == inputText || line.city.contains(inputText) || line.city_en.contains(inputText) || line.province.contains(inputText) || line.province_en.contains(inputText) || line.admin_district.contains(inputText) || line.admin_district_en.contains(inputText)) {
+        if (line.id == inputText || line.city.contains(inputText) || line.city_en.contains(inputText) || line.province == inputText || line.province_en == inputText || line.admin_district.contains(inputText) || line.admin_district_en.contains(inputText)) {
             searchedList.append(line);
         }
     }

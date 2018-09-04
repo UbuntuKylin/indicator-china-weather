@@ -110,10 +110,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->moveTopRight();
 
-    //TODO:read background from ini file
-    this->setStyleSheet("QMainWindow{color:white;background-image:url(':/res/background/weather-clear.png');background-repeat:no-repeat;}");
-    this->m_contentWidget->setDayStyleSheets();
-    this->m_titleBar->setDayStyleSheets();
+    if (m_preferences->weather.cond_code.contains(QChar('n'))) {
+        this->setStyleSheet("QMainWindow{color:white;background-image:url(':/res/background/weather-clear-night.png');background-repeat:no-repeat;}");
+        m_contentWidget->setNightStyleSheets();
+        m_titleBar->setNightStyleSheets();
+    }
+    else {
+        QString styleSheetStr = QString("QMainWindow{color:white;background-image:url('%1');background-repeat:no-repeat;}").arg(convertCodeToBackgroud(m_preferences->weather.cond_code.toInt()));
+        this->setStyleSheet(styleSheetStr);
+        m_contentWidget->setDayStyleSheets();
+        m_titleBar->setDayStyleSheets();
+    }
 
     connect(m_titleBar, &TitleBar::requestShowSettingDialog, this, [=] {
         this->showSettingDialog();
@@ -135,12 +142,12 @@ MainWindow::MainWindow(QWidget *parent)
         m_autoRefreshTimer->stop();
     }
     else {
-        //m_weatherWorker->requestPostHostInfoToWeatherServer("distro=ubuntu&version_os=16.04&version_weather=1.0&city=长沙");
+        m_weatherWorker->requestPostHostInfoToWeatherServer();
         this->startGetWeather();
     }
 
     connect(m_contentWidget, &ContentWidget::requestRetryWeather, this, [=] {
-        //m_weatherWorker->requestPostHostInfoToWeatherServer("distro=ubuntu&version_os=16.04&version_weather=1.0&city=长沙");
+        m_weatherWorker->requestPostHostInfoToWeatherServer();
         this->startGetWeather();
     });
 
@@ -162,7 +169,7 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
     connect(m_weatherWorker, &WeatherWorker::observeDataRefreshed, this, [=] (const ObserveWeather &data) {
-        m_autoRefreshTimer->start(m_preferences->m_updateFrequency * 1000);
+        m_autoRefreshTimer->start(m_preferences->m_updateFrequency * 1000 * 60);
         if (m_preferences->m_currentCity.isEmpty()) {
             m_preferences->m_currentCity = data.city;
         }
@@ -188,7 +195,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(m_weatherWorker, &WeatherWorker::forecastDataRefreshed, this, [=] (const QList<ForecastWeather> &datas, const LifeStyle &data) {
         if (!m_autoRefreshTimer->isActive()) {
-            m_autoRefreshTimer->start(m_preferences->m_updateFrequency * 1000);
+            m_autoRefreshTimer->start(m_preferences->m_updateFrequency * 1000 * 60);
         }
 
         m_movieWidget->setVisible(false);
@@ -282,7 +289,6 @@ void MainWindow::initMenuAndTray()
             m_preferences->setCurrentCityIdAndName(cur_cityName/*index*/);
 
             m_setttingDialog->refreshCityList(m_preferences->m_currentCity);
-
             this->startGetWeather();
         }
     });

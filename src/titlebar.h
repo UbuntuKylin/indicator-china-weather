@@ -44,6 +44,9 @@ signals:
     void requestShowSettingDialog();
 
 private:
+    bool eventFilter(QObject *obj, QEvent *event) Q_DECL_OVERRIDE;
+
+private:
     QHBoxLayout *m_layout = nullptr;
     QHBoxLayout *m_lLayout = nullptr;
     QHBoxLayout *m_rLayout = nullptr;

@@ -38,12 +38,15 @@ public:
     void initBottomContent();
     void initWidgets();
 
-protected:
-    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+public slots:
+    void showWarnInfo(const QString &info);
 
 signals:
     void requestCloseDialog();
     void requestSwitchPage(bool is_isFirs);
+
+protected:
+    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
 private:
     QVBoxLayout *m_layout = nullptr;
@@ -53,7 +56,8 @@ private:
     QHBoxLayout *m_rLayout = nullptr;
     QHBoxLayout *m_bLayout = nullptr;
     QPushButton *m_closeBtn = nullptr;
-
+    QLabel *m_tipLabel = nullptr;
+    QTimer *m_timer = nullptr;
     QColor m_borderColor;
     int m_borderRadius;
     int m_borderWidth;

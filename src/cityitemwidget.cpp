@@ -27,7 +27,7 @@
 CityItemWidget::CityItemWidget(CitySettingData info, QWidget *parent) : QWidget(parent)
 {
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    this->setFixedSize(440, 46);
+    this->setFixedSize(469, 46);
 
     this->m_data = info;
     this->m_id = info.id;
@@ -36,7 +36,7 @@ CityItemWidget::CityItemWidget(CitySettingData info, QWidget *parent) : QWidget(
 //    item->setSizeHint(QSize(this->width(), 36));
 
     m_layout = new QHBoxLayout(this);
-    m_layout->setContentsMargins(10, 0, 10, 0);
+    m_layout->setContentsMargins(10, 0, 5, 0);
     m_layout->setSpacing(5);
 
     m_iconLabel = new QLabel(this);
@@ -49,6 +49,7 @@ CityItemWidget::CityItemWidget(CitySettingData info, QWidget *parent) : QWidget(
     m_defaultBtn->setFocusPolicy(Qt::NoFocus);
     m_defaultBtn->setStyleSheet("QPushButton{border:none;text-align:center;background:transparent;color:#0a9ff5;font-size:14px;}");
     m_defaultBtn->setText(tr("Set as default"));
+    m_defaultBtn->setCursor(QCursor(Qt::PointingHandCursor));
     m_defaultBtn->setVisible(false);
     QFont font = m_defaultBtn->font();
     const QFontMetrics fm(font);
@@ -58,6 +59,7 @@ CityItemWidget::CityItemWidget(CitySettingData info, QWidget *parent) : QWidget(
     m_deleteBtn->setFocusPolicy(Qt::NoFocus);
     m_deleteBtn->setFixedSize(16, 15);
     m_deleteBtn->setStyleSheet("QPushButton{background-image:url(':/res/delete_normal_btn.png');border:0px;}QPushButton:hover{background:url(':/res/delete_hover_pressed_btn.png');}QPushButton:pressed{background:url(':/res/delete_hover_pressed_btn.png');}");
+    m_deleteBtn->setCursor(QCursor(Qt::PointingHandCursor));
 
     m_layout->addWidget(m_iconLabel);
     m_layout->addWidget(m_cityLabel);

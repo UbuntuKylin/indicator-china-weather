@@ -58,7 +58,7 @@ QVariant SearchModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    return QVariant(QString("%1, %2, %3").arg(info.province).arg(info.city).arg(info.admin_district));
+    return QVariant(QString("%1, %2, %3").arg(info.city).arg(info.admin_district).arg(info.province));
 }
 
 QList<LocationData> SearchModel::locationList() const

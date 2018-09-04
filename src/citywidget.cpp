@@ -56,7 +56,7 @@ CityWidget::CityWidget(QWidget *parent)
                                              "QScrollBar::add-line:vertical{subcontrol-origin:margin;border:1px solid green;height:18px;}");
 
     m_addBtn->setFocusPolicy(Qt::NoFocus);
-    m_addBtn->setStyleSheet("QPushButton{font-size:12px;color:#808080;border:none;background:transparent;text-align:left;}QPushButton:hover{background-color:#f5fbff;}");//margin-left:18px;border:1px solid rgba(0, 0, 0, 0.08);
+    m_addBtn->setStyleSheet("QPushButton{padding-left:10px;font-size:12px;color:#808080;border:none;background:transparent;text-align:left;}QPushButton:hover{background-color:#f5fbff;}");//margin-left:18px;border:1px solid rgba(0, 0, 0, 0.08);
     m_addBtn->setFixedWidth(this->width());
     m_addBtn->setText("Add City");
     m_addBtn->setIconSize(QSize(24, 24));
@@ -71,6 +71,7 @@ CityWidget::CityWidget(QWidget *parent)
     m_widget = new QWidget;
     //m_widget->setStyleSheet("QWidget{background-color: #0d8700;}");//test widget's area with background color
     m_widget->setFixedWidth(m_scrollArea->width());
+    //m_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_scrollArea->setWidget(m_widget);
     QVBoxLayout *v_layout = new QVBoxLayout(m_widget);
     v_layout->setContentsMargins(0,0,0,0);
@@ -134,7 +135,7 @@ CityWidget::~CityWidget()
 
 bool CityWidget::event(QEvent *event)
 {
-    if (event->type() == QEvent::LayoutRequest) {;
+    if (event->type() == QEvent::LayoutRequest) {
         m_widget->setFixedHeight(m_layout->sizeHint().height());
     }
 
@@ -182,16 +183,17 @@ void CityWidget::loadCityItems()
 void CityWidget::addCityItem(const CitySettingData &info)
 {
     if (m_dataList.count() > 10) {
-        qDebug() << "Max len is 10";
+        emit responseCityError(QString(tr("Only 10 cities can be added at most!")));//最多只能添加10个城市
         return;
     }
 
     for (CitySettingData line : m_dataList) {
         if (info.id == line.id) {
-            qDebug() << "The city had exist!";
+            emit responseCityError(QString(tr("The city already exists!")));//该城市已存在
             return;
         }
     }
+
     m_dataList.append(info);
 
 //    City city;
@@ -206,6 +208,7 @@ void CityWidget::addCityItem(const CitySettingData &info)
     connect(item, &CityItemWidget::requestDeleteCity, this, [=] (const QString id) {
         if (this->m_dataList.count() == 1) {
             qDebug() << "At least there must be a city!!!";
+            emit responseCityError(QString(tr("At least one city needs to be preserved!")));//至少需要保留一个城市
             return;
         }
 

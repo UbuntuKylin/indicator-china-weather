@@ -26,7 +26,7 @@
 
 TextTip::TextTip(const QString &txt, QWidget *parent) : QFrame(parent)
   , m_radius(5)
-  , m_background(QBrush(QColor(255,255,255,130)))
+  , m_background(QBrush(QColor(255,255,255,255)))
   , m_borderColor(QColor(224,224,224,130))
 {
     this->setWindowFlags(Qt::ToolTip | Qt::FramelessWindowHint);

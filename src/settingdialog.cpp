@@ -32,6 +32,7 @@
 #include <QSlider>
 #include <QGroupBox>
 #include <QDebug>
+#include <QPainter>
 
 #include "preferences.h"
 #include "global.h"
@@ -53,21 +54,23 @@ SettingDialog::SettingDialog(QWidget *parent):
     this->setFocusPolicy(Qt::ClickFocus);
     this->setWindowTitle(tr("Kylin Weather - Setting"));
     this->setWindowIcon(QIcon(":/res/indicator-china-weather.png"));
+    //TODO:Why????? setStyleSheet将导致添加城市后，列表没有自动拉伸，出现重叠，但是qDebug打印的高度确实增加了，但是使用paintEvent可以
+    //this->setStyleSheet("QDialog{border:1px solid #000000;border-radius:2px;background:rgba(255, 255, 255, 0.7);}QDialog:hover{background: rgba(255, 255, 255, 1.0);}");
 
-    m_mainLayout->setContentsMargins(0, 0, 0, 0);
-    m_mainLayout->setMargin(0);
+    m_mainLayout->setContentsMargins(1, 1, 1, 1);
     m_mainLayout->setSpacing(0);
 
     m_titleBar = new SettingTitleBar;
     m_titleBar->setFixedHeight(100);
     m_cityWidget = new CityWidget;//m_cityWidget = new QWidget;
 //    m_cityWidget->setContentsMargins(0, 0, 0, 0);
-    m_cityWidget->setFixedHeight(this->height() - m_titleBar->height()/* - BUTTON_WIDGET_HEIGHT*/);
+    m_cityWidget->setFixedHeight(this->height() - m_titleBar->height() - 2/* - BUTTON_WIDGET_HEIGHT*/);
     m_cityWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_systemWidget = new QWidget;
     m_systemWidget->setStyleSheet("QWidget{border-radius: 0px; background-color:#ffffff;}");
-    m_systemWidget->setFixedHeight(this->height() - m_titleBar->height()/* - BUTTON_WIDGET_HEIGHT*/);
+    m_systemWidget->setFixedHeight(this->height() - m_titleBar->height() - 2/* - BUTTON_WIDGET_HEIGHT*/);
     m_systemWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    connect(m_cityWidget, &CityWidget::responseCityError, m_titleBar, &SettingTitleBar::showWarnInfo);
 
     /*m_okBtn->setFixedSize(90, 25);
     m_okBtn->setFocusPolicy(Qt::NoFocus);
@@ -99,13 +102,12 @@ SettingDialog::SettingDialog(QWidget *parent):
     QLabel *updateFreqLabel = new QLabel;
     updateFreqLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
     updateFreqLabel->setStyleSheet("QLabel{color:#808080;font-size:14px;text-align:left;}");
-    updateFreqLabel->setText(tr("Update frequency") + "(5-60)");
+    updateFreqLabel->setText(tr("Update frequency") + "(15-60)");
     m_spinBox = new SpinBox(m_systemWidget);
     m_spinBox->setFixedWidth(80);
     m_spinBox->setContextMenuPolicy(Qt::NoContextMenu);
     m_spinBox->setRange(15, 60);
-    //TODO:Read default refresh time from conf
-    m_spinBox->setValue(m_preferences->m_updateFrequency);
+    m_spinBox->setSpinValue(m_preferences->m_updateFrequency);
 
     QHBoxLayout *m_freqLayout = new QHBoxLayout;
     m_freqLayout->setSpacing(5);
@@ -131,7 +133,6 @@ SettingDialog::SettingDialog(QWidget *parent):
     m_opacityLayout->setSpacing(5);
     m_opacityLayout->addWidget(opacityLabel);
     m_opacityLayout->addWidget(m_opacitySlider);
-
 
     QVBoxLayout *m_variableLayout = new QVBoxLayout;
     m_variableLayout->setContentsMargins(GROUP_BOX_MARGIN, 10, GROUP_BOX_MARGIN, 10);
@@ -188,23 +189,29 @@ SettingDialog::SettingDialog(QWidget *parent):
     });
     connect(m_cityWidget, &CityWidget::requestAddCity, this, [=] {
         SearchDialog dlg;
-        connect(&dlg, &SearchDialog::requestAddCityToMenu, this, [this] (const LocationData &data) {
-            qDebug() << "set city's id=" << data.id;
-            if (!m_preferences->isCityIdExistOrOverMax(data.id)) {
-                CitySettingData info;
-                info.active = false;
-                info.id = data.id;
-                info.name = data.city;
-                info.icon = ":/res/weather_icons/darkgrey/100.png";
-                m_cityWidget->addCityItem(info);
-
-                City city;
-                city.id = data.id;
-                city.name = data.city;
-                m_preferences->addCityInfoToPref(city);
-
-                emit this->requestRefreshCityMenu(info.active);
+        connect(&dlg, &SearchDialog::requestAddCityToMenu, this, [this] (const LocationData &data) {   
+            if (m_preferences->isCitiesCountOverMax()) {
+                m_titleBar->showWarnInfo(tr("Only 10 cities can be added at most!"));//最多只能添加10个城市
+                return;
             }
+            if (m_preferences->isCityIdExist(data.id)) {
+                m_titleBar->showWarnInfo(tr("The city already exists!"));//该城市已存在
+                return;
+            }
+
+            CitySettingData info;
+            info.active = false;
+            info.id = data.id;
+            info.name = data.city;
+            info.icon = ":/res/weather_icons/darkgrey/100.png";
+            m_cityWidget->addCityItem(info);
+
+            City city;
+            city.id = data.id;
+            city.name = data.city;
+            m_preferences->addCityInfoToPref(city);
+
+            emit this->requestRefreshCityMenu(info.active);
         });
         dlg.exec();
     });
@@ -308,4 +315,20 @@ void SettingDialog::reject()
     hide();
     setResult(QDialog::Rejected);
     setResult(QDialog::Accepted);
+}
+
+void SettingDialog::paintEvent(QPaintEvent *event)
+{
+    QWidget::paintEvent(event);
+
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    QRect borderRect;
+    borderRect.setRect(this->rect().x(), this->rect().y(), this->rect().width(), this->rect().height());
+    QPainterPath inBorderPath;
+    inBorderPath.addRoundedRect(borderRect, 2, 2);
+    painter.setClipPath(inBorderPath);
+
+    painter.fillRect(0, 0, width(), height(), QBrush(QColor("#000000")));
 }

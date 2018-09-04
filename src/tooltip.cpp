@@ -116,7 +116,7 @@ ToolTip::~ToolTip()
 
 void ToolTip::resetData(const ForecastWeather &data, const QString &week)
 {
-    m_dateLabel->setText(week + data.forcast_date);
+    m_dateLabel->setText(QString("%1 %2").arg(week).arg(data.forcast_date));
 
     QPixmap pixmap1 = QPixmap(QString(":/res/weather_icons/lightgrey/%1.png").arg(data.cond_code_d));
     pixmap1 = pixmap1.scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);

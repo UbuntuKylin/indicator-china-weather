@@ -39,6 +39,7 @@ SearchDialog::SearchDialog(QWidget *parent):
     QDialog(parent)
 {
     this->setWindowFlags(Qt::FramelessWindowHint);
+    this->setStyleSheet("QDialog{border:1px solid #000000;border-radius:2px;background:rgba(255, 255, 255, 0.7);}QDialog:hover{background: rgba(255, 255, 255, 1.0);}");
     this->setFixedSize(479, 421);
     this->setFocusPolicy(Qt::ClickFocus);
     this->setWindowTitle(tr("Kylin Weather - Search"));
@@ -68,8 +69,7 @@ SearchDialog::SearchDialog(QWidget *parent):
     m_noResultLabel->setFixedWidth(fm.width(m_noResultLabel->text()));
 
     QVBoxLayout *layout = new QVBoxLayout(this);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->setMargin(0);
+    layout->setContentsMargins(1, 1, 1, 1);
     layout->setSpacing(0);
     layout->addWidget(m_titleBar);
     layout->addWidget(m_displayWidget);

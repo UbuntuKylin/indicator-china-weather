@@ -277,7 +277,14 @@ void Preferences::load()
     set->endArray();
 
     m_updateFrequency = set->value("update_frequency", m_updateFrequency).toInt();
+    if (m_updateFrequency > 60 || m_updateFrequency < 15) {
+        m_updateFrequency = 30;
+    }
+
     m_opacity = set->value("opacity", m_opacity).toInt();
+    if (m_opacity > 100 || m_opacity < 60) {
+        m_opacity = 100;
+    }
     set->endGroup();
 
 
@@ -591,19 +598,26 @@ void Preferences::removeCityInfoFromPref(const QString &id, bool isActive)
     }
 }
 
-bool Preferences::isCityIdExistOrOverMax(const QString &id)
+bool Preferences::isCityIdExist(const QString &id)
 {
     bool b = false;
-    if (m_cities.count() >= 10) {
-        b = true;
-        return b;
-    }
 
     for (int i = 0; i < m_cities.size(); ++i) {
         if (id == m_cities.at(i).id) {
             b = true;
             break;
         }
+    }
+
+    return b;
+}
+
+bool Preferences::isCitiesCountOverMax()
+{
+    bool b = false;
+    if (m_cities.count() >= 10) {
+        b = true;
+        return b;
     }
 
     return b;

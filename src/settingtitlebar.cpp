@@ -22,6 +22,7 @@
 
 #include <QApplication>
 #include <QDebug>
+#include <QTimer>
 #include <QPainter>
 
 SettingTitleBar::SettingTitleBar(QWidget *parent) : QWidget(parent)
@@ -29,9 +30,17 @@ SettingTitleBar::SettingTitleBar(QWidget *parent) : QWidget(parent)
   , m_borderRadius(1)
   , m_borderWidth(1)
   , m_bgBrush(QBrush(QColor("#1374e8")))
+  , m_timer(new QTimer(this))
 {
 //    this->setFixedHeight(100);
     this->initWidgets();
+
+    m_timer->setSingleShot(true);
+    m_timer->setInterval(1000*5);
+    connect(m_timer, &QTimer::timeout, this, [=] {
+        m_timer->stop();
+        m_tipLabel->setVisible(false);
+    }, Qt::QueuedConnection);
 }
 
 SettingTitleBar::~SettingTitleBar()
@@ -98,16 +107,24 @@ void SettingTitleBar::initBottomContent()
 {
     QWidget *w = new QWidget;
     m_bLayout = new QHBoxLayout(w);
-    m_bLayout->setContentsMargins(10, 0, 0, 0);
+    m_bLayout->setContentsMargins(10, 0, 20, 0);
     m_bLayout->setSpacing(10);
     m_layout->addWidget(w);
 
     ActiveButton *locationBtn = new ActiveButton(tr("Location Setting"));
     locationBtn->setActive(true);
     ActiveButton *systemBtn = new ActiveButton(tr("System Setting"));
+
+    m_tipLabel = new QLabel(this);
+    m_tipLabel->setFixedHeight(28);
+    m_tipLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    m_tipLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#fff222;font-size:12px;}");
+    m_tipLabel->setVisible(false);
+
     m_bLayout->addWidget(locationBtn);
     m_bLayout->addWidget(systemBtn);
     m_bLayout->addStretch();
+    m_bLayout->addWidget(m_tipLabel);
 
     connect(locationBtn, &ActiveButton::btnClicked, this, [=] {
         locationBtn->setActive(true);
@@ -140,6 +157,14 @@ void SettingTitleBar::initWidgets()
     initBottomContent();
 }
 
+
+void SettingTitleBar::showWarnInfo(const QString &info)
+{
+    m_tipLabel->setText(info);
+    m_tipLabel->setVisible(true);
+    m_timer->start();
+}
+
 void SettingTitleBar::paintEvent(QPaintEvent *event)
 {
     QWidget::paintEvent(event);
@@ -147,17 +172,17 @@ void SettingTitleBar::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    QPainterPath outBorderPath;
-    outBorderPath.addRoundedRect(this->rect(), m_borderRadius, m_borderRadius);
-    QPen pen(m_borderColor, m_borderWidth);
-    painter.setPen(pen);
-    painter.drawPath(outBorderPath);
+//    QPainterPath outBorderPath;
+//    outBorderPath.addRoundedRect(this->rect(), m_borderRadius, m_borderRadius);
+//    QPen pen(m_borderColor, m_borderWidth);
+//    painter.setPen(pen);
+//    painter.drawPath(outBorderPath);
 
-    QRect borderRect;
-    borderRect.setRect(this->rect().x() + m_borderWidth, this->rect().y() + m_borderWidth, this->rect().width() - m_borderWidth * 2, this->rect().height() - m_borderWidth * 2);
-    QPainterPath inBorderPath;
-    inBorderPath.addRoundedRect(borderRect, m_borderRadius, m_borderRadius);
-    painter.setClipPath(inBorderPath);
+//    QRect borderRect;
+//    borderRect.setRect(this->rect().x() + m_borderWidth, this->rect().y() + m_borderWidth, this->rect().width() - m_borderWidth * 2, this->rect().height() - m_borderWidth * 2);
+//    QPainterPath inBorderPath;
+//    inBorderPath.addRoundedRect(borderRect, m_borderRadius, m_borderRadius);
+//    painter.setClipPath(inBorderPath);
 
     painter.fillRect(0, 0, width(), height(), m_bgBrush);
 }

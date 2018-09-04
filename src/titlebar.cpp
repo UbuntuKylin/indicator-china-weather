@@ -20,6 +20,7 @@
 #include "titlebar.h"
 
 #include <QApplication>
+#include <QMouseEvent>
 #include <QDebug>
 
 TitleBar::TitleBar(QWidget *parent) : QWidget(parent)
@@ -42,6 +43,8 @@ TitleBar::~TitleBar()
 void TitleBar::initLeftContent()
 {
     m_leftWidget = new QWidget;
+    m_leftWidget->setStyleSheet("QWidget{background-image:none;}QWidget::hover{background-image:url(':/res/location_bg_hover.png');}");
+    m_leftWidget->installEventFilter(this);
     m_leftWidget->setFixedSize(69, 22);
     m_lLayout = new QHBoxLayout(m_leftWidget);
     m_lLayout->setContentsMargins(5, 0, 0, 0);
@@ -129,10 +132,50 @@ void TitleBar::setCityName(const QString &city)
 
 void TitleBar::setDayStyleSheets()
 {
-    m_leftWidget->setStyleSheet("QWidget{background-image:none;}");
+    //m_leftWidget->setStyleSheet("QWidget{background-image:none;}");
 }
 
 void TitleBar::setNightStyleSheets()
 {
-    m_leftWidget->setStyleSheet("QWidget{background-image:url(':/res/location_bg_hover.png');}");
+    //m_leftWidget->setStyleSheet("QWidget{background-image:url(':/res/location_bg_hover.png');}");
+}
+
+bool TitleBar::eventFilter(QObject *obj, QEvent *event)
+{
+    if(obj == m_leftWidget) {
+        switch (event->type()) {
+        case QEvent::Enter: {
+            QWidget *widget = qobject_cast<QWidget *>(obj);
+            if (widget) {
+                widget->setCursor(QCursor(Qt::PointingHandCursor));
+            }
+            break;
+        }
+        case QEvent::Leave: {
+            QWidget *widget = qobject_cast<QWidget *>(obj);
+            if (!widget) {
+                widget->unsetCursor();
+            }
+            break;
+        }
+        default:
+            break;
+        }
+
+        if (event->type() == QEvent::MouseButtonPress) {
+            QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+            if(mouseEvent->button() == Qt::LeftButton) {
+                emit this->requestShowSettingDialog();
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+    return QObject::eventFilter(obj, event);
 }
