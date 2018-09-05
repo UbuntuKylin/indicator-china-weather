@@ -48,7 +48,7 @@ TextTip::TextTip(const QString &txt, QWidget *parent) : QFrame(parent)
     m_textLabel->setText(txt);
 
     QHBoxLayout *h_layout = new QHBoxLayout(this->m_frame);
-    h_layout->setContentsMargins(5, 0, 5, 0);
+    h_layout->setContentsMargins(10, 5, 10, 5);
     h_layout->setSpacing(0);
     h_layout->addWidget(m_textLabel, 0, Qt::AlignVCenter);
 

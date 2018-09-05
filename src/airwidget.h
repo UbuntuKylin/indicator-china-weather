@@ -39,7 +39,7 @@ public:
     void resetData(const Air &data);
 
 public slots:
-    void animationShow();
+    void animationShow(const QString &styleSheet);
     void animationHide();
 
 protected:

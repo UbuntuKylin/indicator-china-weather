@@ -88,6 +88,7 @@ void ForecastItemWidget::resetForecastData(const ForecastWeather &data, int inde
 
     m_dateLabel->setText(data.forcast_date);
     m_weatherLabel->setText(data.cond_txt_d);
+
     //darkgrey or lightgrey
     QPixmap pixmap;
     if (m_isDayOrNight) {

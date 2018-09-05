@@ -86,6 +86,7 @@ CityItemWidget::CityItemWidget(CitySettingData info, QWidget *parent) : QWidget(
     else {
         m_cityLabel->setText(info.name);
     }
+
     m_temperatureLabel->setText(info.temperature);
 
     //test data

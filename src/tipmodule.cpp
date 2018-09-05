@@ -27,7 +27,7 @@
 TipModule::TipModule(QObject *parent)  : QObject(parent)
     , m_displayTimer(new QTimer)
 {
-    m_displayTimer->setInterval(1000);
+    m_displayTimer->setInterval(300);
     connect(m_displayTimer, SIGNAL(timeout()), this, SLOT(onDisplayTimeOut()));
 }
 
@@ -60,7 +60,7 @@ void TipModule::onDisplayTimeOut()
         m_tipWidget->setVisible(true);
         m_tipWidget->raise();
 
-        QTimer::singleShot(15, this, [this] {
+        QTimer::singleShot(5, this, [this] {
             if (!m_parentWidget) {
                 return;
             }

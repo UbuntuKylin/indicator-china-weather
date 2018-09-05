@@ -238,8 +238,10 @@ void Preferences::load()
         City city;
         city.id = m_currentCityId;
         city.name = m_currentCity;
-        m_preferences->addCityInfoToPref(city);
+
+        //this->addCityInfoToPref(city);
     }
+
     m_currentCity = set->value("current_city", m_currentCity).toString();
 
     //qDebug() << "init load:" << m_currentCityId << m_currentCity;
@@ -273,6 +275,7 @@ void Preferences::load()
             m_cities.append(city);
         }
     }
+
     this->reloadCityList();
     set->endArray();
 
@@ -563,17 +566,18 @@ void Preferences::setDefaultCity()
 
 void Preferences::addCityInfoToPref(City city)
 {
-//    if (!m_cities.contains(city)) {
-
-//    }
-
-    int pos = m_cities.indexOf(city);
-    if (pos != -1)
-        m_cities.removeAt(pos);
-    m_cities.prepend(city);
-
-    if (m_cities.count() > m_maxCityItems)
-        m_cities.removeLast();
+    if (m_cities.size() == 0) {
+        m_cities.append(city);
+    }
+    else {
+        int pos = m_cities.indexOf(city);
+        if (pos != -1) {
+            m_cities.removeAt(pos);
+        }
+        m_cities.prepend(city);
+        if (m_cities.count() > m_maxCityItems)
+            m_cities.removeLast();
+    }
 
     this->reloadCityList();
 }

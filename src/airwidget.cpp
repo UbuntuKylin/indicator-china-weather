@@ -30,11 +30,12 @@ AirWidget::AirWidget(QWidget *parent)
     , m_timer(new QTimer(this))
 {
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
-    this->setContentsMargins(20, 2, 20, 2);
+    this->setContentsMargins(10, 2, 10, 2);
+//    this->setStyleSheet("QFrame{border:none;background-color:rgba(0,0,0,0.9);color:rgb(255,255,255);}");
+
 //    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    this->setStyleSheet("QFrame{border:none;background-color:rgba(0,0,0,0.9);color:rgb(255,255,255);}");
     //this->setStyleSheet("QFrame{border:1px solid #e0e0e0;border-radius:2px;background-color:rgba(255, 255, 255, 0.8);}");
-    this->setFixedSize(200, 150);
+    this->setFixedSize(160, 150);
     m_layout->setSpacing(1);
     m_layout->setMargin(0);
 
@@ -45,7 +46,7 @@ AirWidget::AirWidget(QWidget *parent)
     m_opacityEffect->setOpacity(1.0);
     this->setGraphicsEffect(m_opacityEffect);
     m_animation->setEasingCurve(QEasingCurve::InOutCubic);
-    m_animation->setDuration(300);
+    m_animation->setDuration(500);
 
     m_aqiLabel = new QLabel;
     m_qltyLabel = new QLabel;
@@ -67,16 +68,15 @@ AirWidget::AirWidget(QWidget *parent)
 //    m_coLabel->setStyleSheet("QLabel{border-radius:3px;background-color:rgba(0,0,0,0.2);color:#808080;font-size:12px;}");
 //    m_o3Label->setStyleSheet("QLabel{border-radius:3px;background-color:rgba(0,0,0,0.2);color:#808080;font-size:12px;}");
 
-    m_aqiLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
-    m_qltyLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
-    m_mainLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
-    m_pm25Label->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
-    m_pm10Label->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
-    m_no2Label->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
-    m_so2Label->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
-    m_coLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
-    m_o3Label->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
-
+    m_aqiLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:12px;}");
+    m_qltyLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:12px;}");
+    m_mainLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:12px;}");
+    m_pm25Label->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:12px;}");
+    m_pm10Label->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:12px;}");
+    m_no2Label->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:12px;}");
+    m_so2Label->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:12px;}");
+    m_coLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:12px;}");
+    m_o3Label->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:12px;}");
 
     m_layout->addWidget(m_aqiLabel, 0, Qt::AlignTop | Qt::AlignLeft);
     m_layout->addWidget(m_qltyLabel, 0, Qt::AlignLeft);
@@ -110,15 +110,17 @@ AirWidget::~AirWidget()
     }
 }
 
-void AirWidget::animationShow()
+void AirWidget::animationShow(const QString &styleSheet)
 {
     if (m_animation->state() == QPropertyAnimation::Running)
         return;
 
+    this->setStyleSheet(styleSheet);
+
     QWidget::show();
 
-    m_animation->setStartValue(QPoint(width(), 0));
-    m_animation->setEndValue(QPoint());
+    m_animation->setStartValue(QPoint(335, 0));//QPoint(0, 0)
+    m_animation->setEndValue(QPoint(100, 0));
     m_animation->start();
 
     m_timer->start();
@@ -131,10 +133,9 @@ void AirWidget::animationHide()
 
     m_timer->stop();
 
-    m_animation->setStartValue(QPoint());
-    m_animation->setEndValue(QPoint(-width(), 0));
+    m_animation->setStartValue(QPoint(100, 0));
+    m_animation->setEndValue(QPoint(335, 0));//QPoint(0, 0)
     m_animation->start();
-
     QTimer::singleShot(m_animation->duration(), [=] {
         setAttribute(Qt::WA_TransparentForMouseEvents, false);
         QWidget::hide();

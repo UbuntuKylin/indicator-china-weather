@@ -123,6 +123,7 @@ SettingDialog::SettingDialog(QWidget *parent):
     m_opacitySlider->setFocusPolicy(Qt::NoFocus);
     m_opacitySlider->setFocusProxy(this);
     m_opacitySlider->setTracking(true);
+    m_opacitySlider->setFixedWidth(80);
     m_opacitySlider->setRange(60, 100);
     m_opacitySlider->setSingleStep(1);
     m_opacitySlider->blockSignals(true);
@@ -209,6 +210,7 @@ SettingDialog::SettingDialog(QWidget *parent):
             City city;
             city.id = data.id;
             city.name = data.city;
+
             m_preferences->addCityInfoToPref(city);
 
             emit this->requestRefreshCityMenu(info.active);

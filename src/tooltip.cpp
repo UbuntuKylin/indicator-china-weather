@@ -28,7 +28,7 @@
 
 ToolTip::ToolTip(QWidget *parent) :
     QFrame(parent)
-    , m_radius(5)
+    , m_radius(0)
     , m_background(QBrush(QColor(255,255,255,255)))
     , m_borderColor(QColor(224,224,224,130))
 {
@@ -43,7 +43,7 @@ ToolTip::ToolTip(QWidget *parent) :
     m_frame = new QFrame();
     m_frame->setContentsMargins(0, 0, 0, 0);
     QVBoxLayout *layout = new QVBoxLayout(this->m_frame);
-    layout->setContentsMargins(5, 5, 5, 5);
+    layout->setContentsMargins(15, 5, 15, 5);
     layout->setSpacing(5);
 
     m_dateLabel = new QLabel(this);
@@ -122,7 +122,7 @@ void ToolTip::resetData(const ForecastWeather &data, const QString &week)
     pixmap1 = pixmap1.scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     m_dIconLabel->setPixmap(pixmap1);
 
-    QPixmap pixmap2 = QPixmap(QString(":/res/weather_icons/lightgrey/%1.png").arg(data.cond_code_n));
+    QPixmap pixmap2 = QPixmap(QString(":/res/weather_icons/darkgrey/%1.png").arg(data.cond_code_n));
     pixmap2 = pixmap2.scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     m_nIconLabel->setPixmap(pixmap2);
 
@@ -167,14 +167,14 @@ void ToolTip::popupTip(QPoint point)
     }
     point_Y = point.ry();
     this->move(QPoint(point_X, point_Y));
+//    this->show();
     QFrame::show();
-
     QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect(this->m_frame);
     opacityEffect->setOpacity(1);
 //    this->m_frame->setGraphicsEffect(opacityEffect);
 
     QPropertyAnimation *animation = new QPropertyAnimation(opacityEffect, "opacity");
-    animation->setDuration(1000);
+    animation->setDuration(200);
     animation->setStartValue(0);
     animation->setKeyValueAt(0.25, 1);
     animation->setKeyValueAt(0.5, 1);
@@ -183,6 +183,8 @@ void ToolTip::popupTip(QPoint point)
     animation->start();
 
     connect(animation, &QPropertyAnimation::finished, this, [=] {
+        animation->deleteLater();
+        this->show();
 //        this->m_frame->setGraphicsEffect(NULL);
 //        this->hide();
     });

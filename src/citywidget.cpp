@@ -175,7 +175,15 @@ void CityWidget::loadCityItems()
         info.id = m_preferences->m_cities.at(i).id;
         info.name = m_preferences->m_cities.at(i).name;
         info.temperature = (m_preferences->m_currentCityId == m_preferences->m_cities.at(i).id) ? m_preferences->weather.tmp + "°C" : "";
-        info.icon = (m_preferences->m_currentCityId == m_preferences->m_cities.at(i).id) ? QString(":/res/weather_icons/darkgrey/%1.png").arg(m_preferences->weather.cond_code) : ":/res/weather_icons/darkgrey/999.png";
+
+
+        if (m_preferences->weather.cond_code.isEmpty()) {
+            info.icon = ":/res/weather_icons/darkgrey/999.png";
+        }
+        else {
+            info.icon = (m_preferences->m_currentCityId == m_preferences->m_cities.at(i).id) ? QString(":/res/weather_icons/darkgrey/%1.png").arg(m_preferences->weather.cond_code) : ":/res/weather_icons/darkgrey/999.png";
+
+        }
         addCityItem(info);
     }
 }
@@ -266,7 +274,21 @@ void CityWidget::refreshListWeatherStatus()
     QList<CityItemWidget *> items = findChildren<CityItemWidget*>();
     for (CityItemWidget *item : items) {
         if (item->getCityId() == m_preferences->m_currentCityId) {
-            item->setItemWeather(m_preferences->weather.tmp + "°C", QString(":/res/weather_icons/darkgrey/%1.png").arg(m_preferences->weather.cond_code));
+            QString icon;
+            QString temp;
+            if (m_preferences->weather.cond_code.isEmpty()) {
+                temp = "";
+            }
+            else {
+                temp = m_preferences->weather.tmp + "°C";
+            }
+            if (m_preferences->weather.cond_code.isEmpty()) {
+                icon = ":/res/weather_icons/darkgrey/999.png";
+            }
+            else {
+                icon = QString(":/res/weather_icons/darkgrey/%1.png").arg(m_preferences->weather.cond_code);
+            }
+            item->setItemWeather(temp, icon);
         } else {
             item->setItemWeather("", ":/res/weather_icons/darkgrey/999.png");
         }

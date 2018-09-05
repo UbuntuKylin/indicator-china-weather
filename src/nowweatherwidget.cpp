@@ -90,6 +90,44 @@ inline QString convertTemperatureToString(int temp)
     }
 }
 
+//it must be consistent with the function named convertCodeToBackgroud() which in MainWindow
+inline QString convertCodeToStyleSheet(int code)
+{
+    if (code == 100 || code == 900) {//#ee613f
+        return "QFrame{border:none;background-color:rgba(238,97,63,85%);color:rgb(255,255,255);}";
+    }
+    else if (code <= 103 && code >= 101) {//#0c69c3
+        return "QFrame{border:none;background-color:rgba(12,105,195,85%);color:rgb(255,255,255);}";
+    }
+    else if (code == 104 || code == 901) {//#404b5b
+        return "QFrame{border:none;background-color:rgba(64,75,91,85%);color:rgb(255,255,255);}";
+    }
+    else if (code <= 204 && code >= 200) {//#ee613f
+        return "QFrame{border:none;background-color:rgba(238,97,63,85%);color:rgb(255,255,255);}";
+    }
+    else if (code <= 213 && code >= 205) {//#404b5b
+        return "QFrame{border:none;background-color:rgba(64,75,91,85%);color:rgb(255,255,255);}";
+    }
+    else if (code <= 399 && code >= 300) {//#5336bf
+        return "QFrame{border:none;background-color:rgba(83,54,191,85%);color:rgb(255,255,255);}";
+    }
+    else if (code <= 499 && code >= 400) {//#4f88b3
+        return "QFrame{border:none;background-color:rgba(79,136,179,85%);color:rgb(255,255,255);}";
+    }
+    else if (code <= 502 && code >= 500) {//#312e33
+        return "QFrame{border:none;background-color:rgba(49,46,51,85%);color:rgb(255,255,255);}";
+    }
+    else if (code <= 508 && code >= 503) {//#98733f
+        return "QFrame{border:none;background-color:rgba(152,115,63,85%);color:rgb(255,255,255);}";
+    }
+    else if (code <= 515 && code >= 509) {//#312e33
+        return "QFrame{border:none;background-color:rgba(49,46,51,85%);color:rgb(255,255,255);}";
+    }
+    else {//#ee613f
+        return "QFrame{border:none;background-color:rgba(238,97,63,85%);color:rgb(255,255,255);}";
+    }
+}
+
 NowWeatherWidget::NowWeatherWidget(QFrame *parent) :
     QFrame(parent)
     , m_tipTimer(new QTimer(this))
@@ -194,7 +232,12 @@ NowWeatherWidget::NowWeatherWidget(QFrame *parent) :
                 return;
             }
             m_ariWidget->resetData(m_preferences->air);
-            m_ariWidget->animationShow();
+            if (m_preferences->weather.cond_code.contains(QChar('n'))) {//#063638
+                m_ariWidget->animationShow("QFrame{border:none;background-color:rgba(6,54,56,85%);color:rgb(255,255,255);}");
+            }
+            else {
+                m_ariWidget->animationShow(convertCodeToStyleSheet(m_preferences->weather.cond_code.toInt()));
+            }
         }
     });
 
