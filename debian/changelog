@@ -1,4 +1,4 @@
-indicator-china-weather (3.0.0) bionic; urgency=low
+indicator-china-weather (3.0.0) cosmic; urgency=low
 
   * Used the latest version of heweather API.
   * New UI with Qt5.
