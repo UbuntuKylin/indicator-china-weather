@@ -37,7 +37,7 @@ ActiveButton::ActiveButton(const QString &text, QWidget *parent) :
     m_btn->setText(text);
     QFont font = m_btn->font();
     const QFontMetrics fm(font);
-    m_btn->setFixedWidth(fm.width(m_btn->text()));
+    m_btn->setFixedWidth(fm.width(m_btn->text()) + 10);
 
     m_label = new QLabel(this);
     m_label->setFixedSize(m_btn->width(), 2);

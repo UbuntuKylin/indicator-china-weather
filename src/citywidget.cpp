@@ -86,8 +86,8 @@ CityWidget::CityWidget(QWidget *parent)
     m_dataList.clear();
     this->loadCityItems();
 
-    m_timer->setSingleShot(true);
-    m_timer->setInterval(15);
+    m_timer->setSingleShot(false);
+    m_timer->setInterval(30);
     connect(m_timer, &QTimer::timeout, this, &CityWidget::refreshListWeatherStatus, Qt::QueuedConnection);
 }
 
@@ -190,7 +190,8 @@ void CityWidget::loadCityItems()
 
 void CityWidget::addCityItem(const CitySettingData &info)
 {
-    if (m_dataList.count() > 10) {
+//    if (m_dataList.count() > 10) {
+    if (m_preferences->isCitiesCountOverMax()) {
         emit responseCityError(QString(tr("Only 10 cities can be added at most!")));//最多只能添加10个城市
         return;
     }
@@ -214,7 +215,8 @@ void CityWidget::addCityItem(const CitySettingData &info)
     m_cityListWidget->appendItem(item);
 //    connect(item, SIGNAL(enter()), this, SLOT(onMouseEnter()));
     connect(item, &CityItemWidget::requestDeleteCity, this, [=] (const QString id) {
-        if (this->m_dataList.count() == 1) {
+//        if (this->m_dataList.count() == 1) {
+        if (m_preferences->citiesCount() == 1) {
             qDebug() << "At least there must be a city!!!";
             emit responseCityError(QString(tr("At least one city needs to be preserved!")));//至少需要保留一个城市
             return;
@@ -231,7 +233,9 @@ void CityWidget::addCityItem(const CitySettingData &info)
 
                 if (line.active) {
                     m_preferences->setDefaultCity();
+
                 }
+
                 this->refreshCityList(m_preferences->m_currentCityId);
                 m_preferences->removeCityInfoFromPref(id, line.active);//remove and update m_cityList, m_cities, m_currentCity and m_currentCityId
 
@@ -245,6 +249,15 @@ void CityWidget::addCityItem(const CitySettingData &info)
         for (CityItemWidget *cityItem : cityItems) {
             if (cityItem->getCityId() == id) {
                 cityItem->setItemAction(true);
+
+                QList<CitySettingData>::iterator iter = m_dataList.begin();
+                for (; iter != m_dataList.end(); iter++) {
+                    if (iter->id == id)
+                        iter->setActive(true);
+                    else
+                        iter->setActive(false);
+                }
+
                 emit this->requestRefreshWeatherById(id);
             }
             else {

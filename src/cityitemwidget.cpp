@@ -47,13 +47,13 @@ CityItemWidget::CityItemWidget(CitySettingData info, QWidget *parent) : QWidget(
     m_temperatureLabel = new QLabel(this);
     m_defaultBtn = new QPushButton(this);
     m_defaultBtn->setFocusPolicy(Qt::NoFocus);
-    m_defaultBtn->setStyleSheet("QPushButton{border:none;text-align:center;background:transparent;color:#0a9ff5;font-size:14px;}");
+    m_defaultBtn->setStyleSheet("QPushButton{border:none;text-align:center;background:transparent;background-color:transparent;color:#0a9ff5;font-size:14px;}");
     m_defaultBtn->setText(tr("Set as default"));
     m_defaultBtn->setCursor(QCursor(Qt::PointingHandCursor));
     m_defaultBtn->setVisible(false);
     QFont font = m_defaultBtn->font();
     const QFontMetrics fm(font);
-    m_defaultBtn->setFixedWidth(fm.width(m_defaultBtn->text()));
+    m_defaultBtn->setFixedWidth(fm.width(m_defaultBtn->text()) + 10);
 
     m_deleteBtn = new QPushButton(this);
     m_deleteBtn->setFocusPolicy(Qt::NoFocus);

@@ -130,7 +130,7 @@ public:
     QString icon;
 
 public:
-    void setActive(bool b) { this->active = b; }
+    void setActive(bool b) { active = b; }
 };
 
 inline bool operator ==(const City &data, const City &other) {

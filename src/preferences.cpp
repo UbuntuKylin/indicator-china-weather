@@ -591,7 +591,6 @@ void Preferences::removeCityInfoFromPref(const QString &id, bool isActive)
         int pos = m_cities.indexOf(city);
         if (pos != -1 && city.id == id) {
             m_cities.removeAt(pos);
-
             this->reloadCityList();
             break;
         }
