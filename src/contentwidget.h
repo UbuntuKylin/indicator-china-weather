@@ -29,14 +29,13 @@ class NowWeatherWidget;
 class ForecastWeatherWidget;
 class NetworkErrorWidget;
 //class IndexWeatherWidget;
-class WeatherWorker;
 
 class ContentWidget : public QFrame
 {
     Q_OBJECT
 
 public:
-    explicit ContentWidget(WeatherWorker *weatherWorker, QWidget *parent = 0);
+    explicit ContentWidget(QWidget *parent = 0);
     ~ContentWidget();
 
     void setNetworkErrorPages();

@@ -31,13 +31,12 @@ namespace {
 
 const QStringList LIFESTYLE = {"comf", "drsg", "flu", "sport", "trav", "uv", "cw", "air"};
 //const QStringList LIFESTYLE = {QString(QObject::tr("comf")), QString(QObject::tr("drsg")), QString(QObject::tr("flu")), QString(QObject::tr("sport")), QString(QObject::tr("trav")), QString(QObject::tr("uv")), QString(QObject::tr("cw")), QString(QObject::tr("air"))};
-const QStringList LIFESTYLEICON = {":/res/cash_wash_index.png", ":/res/clothe_index.png", ":/res/cash_wash_index.png", ":/res/cash_wash_index.png", ":/res/cash_wash_index.png", ":/res/ultraviolet_rays.png", ":/res/cash_wash_index.png", ":/res/cash_wash_index.png"};
+const QStringList LIFESTYLEICON = {":/res/comf_index.png", ":/res/clothe_index.png", ":/res/flu_index.png", ":/res/sport_index.png", ":/res/trav_index.png", ":/res/ultraviolet_rays.png", ":/res/cash_wash_index.png", ":/res/air_index.png"};
 
 }
 
-ForecastWeatherWidget::ForecastWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent) :
+ForecastWeatherWidget::ForecastWeatherWidget(QFrame *parent) :
     QFrame(parent)
-    , m_weatherWorker(weatherWorker)
     , m_tipModule(new TipModule)
 {
     this->setFixedSize(355, 340);

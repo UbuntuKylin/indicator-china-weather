@@ -90,12 +90,12 @@ void WeatherWorker::netWorkOnlineOrNot()
 void WeatherWorker::networkLookedUp(const QHostInfo &host)
 {
     if(host.error() != QHostInfo::NoError) {
-        qDebug() << "test network failed, errorCode:" << host.error();
-        emit this->nofityNetworkStatus(false);
+        //qDebug() << "test network failed, errorCode:" << host.error();
+        emit this->nofityNetworkStatus(host.errorString());
     }
     else {
         //qDebug() << "test network success, the server's ip:" << host.addresses().first().toString();
-        emit this->nofityNetworkStatus(true);
+        emit this->nofityNetworkStatus("OK");
     }
 }
 

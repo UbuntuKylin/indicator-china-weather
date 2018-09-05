@@ -79,14 +79,14 @@ inline QString convertCodeToBackgroud(int code)
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , m_mousePressed(false)
-    , m_weatherWorker(new WeatherWorker(this))
     , m_centralWidget(new QWidget(this))
     , m_titleBar(new TitleBar(this))
-    , m_contentWidget(new ContentWidget(m_weatherWorker, this))
+    , m_contentWidget(new ContentWidget(this))
     , m_pingbackTimer(new QTimer(this))
     , m_tipTimer(new QTimer(this))
     , m_autoRefreshTimer(new QTimer(this))
     , m_actualizationTime(0)
+    , m_weatherWorker(new WeatherWorker(this))
 {
     this->setFixedSize(355, 552);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//需要加上Qt::WindowMinimizeButtonHint，否则showMinimized无效
@@ -142,13 +142,26 @@ MainWindow::MainWindow(QWidget *parent)
         m_autoRefreshTimer->stop();
     }
     else {
-        m_weatherWorker->requestPostHostInfoToWeatherServer();
-        this->startGetWeather();
+        m_weatherWorker->netWorkOnlineOrNot();//ping www.baidu.com
+//        m_weatherWorker->requestPostHostInfoToWeatherServer();
+//        this->startGetWeather();
     }
 
     connect(m_contentWidget, &ContentWidget::requestRetryWeather, this, [=] {
         m_weatherWorker->requestPostHostInfoToWeatherServer();
         this->startGetWeather();
+    });
+
+
+    connect(m_weatherWorker, &WeatherWorker::nofityNetworkStatus, this, [=] (const QString &status) {
+        if (status == "OK") {
+            m_weatherWorker->requestPostHostInfoToWeatherServer();
+            this->startGetWeather();
+        }
+        else {
+            m_hintWidget->setIconAndText(":/res/network_warn.png", status);
+            m_contentWidget->setNetworkErrorPages();
+        }
     });
 
     connect(m_weatherWorker, &WeatherWorker::responseFailure, this, [=] (int code) {
@@ -163,6 +176,7 @@ MainWindow::MainWindow(QWidget *parent)
         }
         m_contentWidget->setNetworkErrorPages();
     });
+
     connect(m_weatherWorker, &WeatherWorker::requestDiplayServerNotify, this, [=] (const QString &notifyInfo) {
         if (!notifyInfo.isEmpty() && m_preferences->m_serverNotify)
             m_contentWidget->showServerNotifyInfo(notifyInfo);

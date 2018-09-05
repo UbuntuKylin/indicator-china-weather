@@ -90,9 +90,8 @@ inline QString convertTemperatureToString(int temp)
     }
 }
 
-NowWeatherWidget::NowWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent) :
+NowWeatherWidget::NowWeatherWidget(QFrame *parent) :
     QFrame(parent)
-    , m_weatherWorker(weatherWorker)
     , m_tipTimer(new QTimer(this))
 //    , m_tipModule(new TipModule)
 //    , m_tip(new TextTip(QString(), this))

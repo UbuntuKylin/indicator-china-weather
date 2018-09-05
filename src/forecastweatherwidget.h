@@ -25,7 +25,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 
-#include "weatherworker.h"
+#include "data.h"
 
 class ForecastItemWidget;
 class IndexItemWidget;
@@ -39,7 +39,7 @@ class ForecastWeatherWidget : public QFrame
     Q_OBJECT
 
 public:
-    explicit ForecastWeatherWidget(WeatherWorker *weatherWorker, QFrame *parent = 0);
+    explicit ForecastWeatherWidget(QFrame *parent = 0);
     ~ForecastWeatherWidget();
 
     void initForecastWidget();
@@ -74,7 +74,6 @@ private:
     ForecastItemWidget *m_firstDay = nullptr;
     ForecastItemWidget *m_secondDay = nullptr;
     ForecastItemWidget *m_thirdDay = nullptr;
-    WeatherWorker *m_weatherWorker = nullptr;
     VSeparator *m_leftVSeparator = nullptr;
     VSeparator *m_rightVSeparator = nullptr;
     HSeparator *m_topHseperator = nullptr;

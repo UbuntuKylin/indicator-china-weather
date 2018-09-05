@@ -61,7 +61,7 @@ public:
 signals:
     void observeDataRefreshed(const ObserveWeather &data);
     void forecastDataRefreshed(const QList<ForecastWeather> &datas, LifeStyle data);
-    void nofityNetworkStatus(bool status);
+    void nofityNetworkStatus(const QString &status);
     void responseFailure(int code);
     void requestDiplayServerNotify(const QString &notifyInfo);
 

@@ -15,8 +15,8 @@ isEqual(QT_MAJOR_VERSION, 5) {
 TARGET = indicator-china-weather
 TEMPLATE = app
 
-target.files += indicator-china-wether
-target.path = /usr/bin/
+target.source  += $$TARGET
+target.path = /usr/bin
 
 icons.files += res/indicator-china-wether.png
 icons.path = /usr/share/pixmaps/
@@ -24,7 +24,10 @@ icons.path = /usr/share/pixmaps/
 desktop.files += indicator-china-wether.desktop
 desktop.path = /usr/share/applications/
 
-INSTALLS += target icons desktop
+startdesktop.files += indicator-china-wether.desktop
+startdesktop.path = /etc/xdg/autostart/
+
+INSTALLS += target icons desktop startdesktop
 
 CONFIG += c++14
 CONFIG += qt warn_on

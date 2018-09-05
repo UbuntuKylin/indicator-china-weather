@@ -210,6 +210,11 @@
         <file>res/weather_icons/white/901.png</file>
         <file>res/weather_icons/white/999.png</file>
         <file>res/prefs.png</file>
+        <file>res/air_index.png</file>
+        <file>res/comf_index.png</file>
+        <file>res/flu_index.png</file>
+        <file>res/sport_index.png</file>
+        <file>res/trav_index.png</file>
     </qresource>
     <qresource prefix="/data">
         <file>data/china-city-list.csv</file>

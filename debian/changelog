@@ -1,0 +1,6 @@
+kydroid-activation (3.0.0) bionic; urgency=low
+
+  * Used the latest version of heweather API.
+  * New UI with Qt5.
+
+ -- lixiang <lixiang@kylinos.cn>  Tue, 04 Sep 2018 17:56:39 +0800
