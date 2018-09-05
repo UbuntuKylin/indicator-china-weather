@@ -15,7 +15,7 @@ override_dh_auto_configure:
                 indicator-china-weather.pro
 
 %:
-	dh $@ 
+	dh $@
 
 override_dh_missing:
 	dh_missing --fail-missing
@@ -28,4 +28,3 @@ override_dh_auto_clean:
 
 override_dh_auto_build:
 	dh_auto_build -- $(MAKE_OPTS)
-
