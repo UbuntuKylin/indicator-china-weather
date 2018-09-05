@@ -25,7 +25,7 @@
 #include <QDebug>
 
 TextTip::TextTip(const QString &txt, QWidget *parent) : QFrame(parent)
-  , m_radius(5)
+  , m_radius(1)
   , m_background(QBrush(QColor(255,255,255,255)))
   , m_borderColor(QColor(224,224,224,130))
 {

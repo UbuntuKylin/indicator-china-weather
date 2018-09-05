@@ -38,7 +38,8 @@ void DbusAdaptor::showMainWindow()
     // handle method call com.kylin.weather.showMainWindow
     //edited the code manually by lixiang
     //parent()->showMainWindow();
-    parent()->raise();
-    parent()->show();
+    parent()->showNormal();
+//    parent()->raise();
+//    parent()->show();
 }
 

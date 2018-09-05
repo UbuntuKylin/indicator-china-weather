@@ -34,6 +34,7 @@
 #include <QShortcut>
 #include <QDebug>
 #include <QTimer>
+#include <math.h>
 
 #include "preferences.h"
 #include "global.h"
@@ -89,7 +90,8 @@ MainWindow::MainWindow(QWidget *parent)
     , m_weatherWorker(new WeatherWorker(this))
 {
     this->setFixedSize(355, 552);
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//需要加上Qt::WindowMinimizeButtonHint，否则showMinimized无效
+    this->setWindowFlags(Qt::FramelessWindowHint);
+    //this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//ubuntu 16.04 可能需要加上Qt::WindowMinimizeButtonHint，否则showMinimized无效
     this->setWindowTitle(tr("Kylin Weather"));
     this->setWindowIcon(QIcon(":/res/indicator-china-weather.png"));
     this->setStyleSheet("QMainWindow{color:white;background-image:url(':/res/background/weather-clear.png');background-repeat:no-repeat;}");
