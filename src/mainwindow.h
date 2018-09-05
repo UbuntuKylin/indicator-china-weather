@@ -36,7 +36,7 @@ class WeatherWorker;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
+    friend class DbusAdaptor;
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();

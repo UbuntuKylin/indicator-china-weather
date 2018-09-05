@@ -18,6 +18,8 @@
  */
 
 #include "mainwindow.h"
+#include "dbusadaptor.h"
+
 #include <QApplication>
 #include <QTranslator>
 #include <QLibraryInfo>
@@ -46,6 +48,19 @@ int main(int argc, char *argv[])
 //    a.installTranslator(&qtTranslator);
 
     MainWindow w;
+    DbusAdaptor adaptor(&w);
+    Q_UNUSED(adaptor);
+    auto connection = QDBusConnection::sessionBus();
+    if (!connection.registerService("com.kylin.weather") || !connection.registerObject("/com/kylin/weather", &w/*, QDBusConnection::ExportAllSlots | QDBusConnection::ExportAllSignals*/)) {
+        //qCritical() << "QDbus register service failed reason:" << connection.lastError();
+        QDBusInterface iface("com.kylin.weather",
+                                       "/com/kylin/weather",
+                                       "com.kylin.weather",
+                                       connection);
+        iface.call("showMainWindow");
+
+        return 0;
+    }//QDBusConnection::sessionBus().unregisterService("com.kylin.weather");
     w.show();
 
     return a.exec();

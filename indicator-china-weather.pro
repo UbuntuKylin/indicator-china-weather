@@ -9,7 +9,7 @@ QT       += network
 #greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 isEqual(QT_MAJOR_VERSION, 5) {
-    QT += widgets gui core
+    QT += widgets gui core dbus
 }
 
 TARGET = indicator-china-weather
@@ -81,7 +81,8 @@ SOURCES += src/main.cpp \
     src/texttip.cpp \
     src/tipmodule.cpp \
     src/promptwidget.cpp \
-    src/airwidget.cpp
+    src/airwidget.cpp \
+    src/dbusadaptor.cpp
 
 HEADERS  += src/mainwindow.h \
     src/titlebar.h \
@@ -120,7 +121,8 @@ HEADERS  += src/mainwindow.h \
     src/texttip.h \
     src/tipmodule.h \
     src/promptwidget.h \
-    src/airwidget.h
+    src/airwidget.h \
+    src/dbusadaptor.h
 
 RESOURCES += \
     res.qrc

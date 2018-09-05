@@ -56,6 +56,7 @@ CityWidget::CityWidget(QWidget *parent)
                                              "QScrollBar::add-line:vertical{subcontrol-origin:margin;border:1px solid green;height:18px;}");
 
     m_addBtn->setFocusPolicy(Qt::NoFocus);
+    m_addBtn->setCursor(QCursor(Qt::PointingHandCursor));
     m_addBtn->setStyleSheet("QPushButton{padding-left:10px;font-size:12px;color:#808080;border:none;background:transparent;text-align:left;}QPushButton:hover{background-color:#f5fbff;}");//margin-left:18px;border:1px solid rgba(0, 0, 0, 0.08);
     m_addBtn->setFixedWidth(this->width());
     m_addBtn->setText(tr("Add City"));
