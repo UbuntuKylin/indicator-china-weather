@@ -401,7 +401,6 @@ void MainWindow::createSettingDialog()
         }
     });
     connect(m_setttingDialog, &SettingDialog::requestRefreshWeatherById, this, [this] (const QString &id) {
-        qDebug() << "AAAAA" << id;
         m_preferences->resetCurrentCityNameById(id);
         this->refreshCityActions();
         this->startGetWeather();

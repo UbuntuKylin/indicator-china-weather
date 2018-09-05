@@ -34,7 +34,6 @@ void WorkerThread::run()
     if (!m_worker)
         return;
 
-    //TODO: read from DB, now test reading from txt file
     /*QFile file(":/data/data/china-city-list.csv");
     if (file.open(QFile::ReadOnly | QFile::Text)) {
         QString content = file.readAll();

@@ -23,13 +23,12 @@
 #include <QDebug>
 #include <QPainter>
 #include <QPropertyAnimation>
-#include <QGraphicsDropShadowEffect>
 #include <QGraphicsOpacityEffect>
 
 ToolTip::ToolTip(QWidget *parent) :
     QFrame(parent)
     , m_radius(0)
-    , m_background(QBrush(QColor(255,255,255,255)))
+    , m_background(QBrush(QColor(255,255,255,230)))
     , m_borderColor(QColor(224,224,224,130))
 {
     this->setWindowFlags(Qt::ToolTip | Qt::FramelessWindowHint);
@@ -118,7 +117,7 @@ void ToolTip::resetData(const ForecastWeather &data, const QString &week)
 {
     m_dateLabel->setText(QString("%1 %2").arg(week).arg(data.forcast_date));
 
-    QPixmap pixmap1 = QPixmap(QString(":/res/weather_icons/lightgrey/%1.png").arg(data.cond_code_d));
+    QPixmap pixmap1 = QPixmap(QString(":/res/weather_icons/darkgrey/%1.png").arg(data.cond_code_d));
     pixmap1 = pixmap1.scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     m_dIconLabel->setPixmap(pixmap1);
 

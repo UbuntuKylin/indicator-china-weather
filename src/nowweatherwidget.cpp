@@ -298,7 +298,12 @@ void NowWeatherWidget::refreshData(const ObserveWeather &data)
     m_weatherLabel->setText(data.cond_txt);
 
     m_tempLabel->setText(data.tmp);
-    m_humidityValueLabel->setText(data.hum);
+    if (data.hum.isEmpty()) {
+        m_humidityValueLabel->setText("-");
+    }
+    else {
+        m_humidityValueLabel->setText(data.hum + "%");
+    }
     m_windLabel->setText(data.wind_dir);
     int wind_sc = data.wind_sc.toInt();
     if (wind_sc == 0) {

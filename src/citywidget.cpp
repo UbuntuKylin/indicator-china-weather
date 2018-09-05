@@ -145,7 +145,6 @@ bool CityWidget::event(QEvent *event)
 
 void CityWidget::loadCityItems()
 {
-    //TODO
     //test data;
     /*CitySettingData info;
     info.active = true;
