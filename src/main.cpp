@@ -41,9 +41,9 @@ int main(int argc, char *argv[])
             a.installTranslator(&translator);
     }
 
-    QTranslator qtTranslator;
-    qtTranslator.load("qt_" + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    a.installTranslator(&qtTranslator);
+//    QTranslator qtTranslator;
+//    qtTranslator.load("qt_" + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+//    a.installTranslator(&qtTranslator);
 
     MainWindow w;
     w.show();

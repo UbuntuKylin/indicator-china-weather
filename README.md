@@ -33,3 +33,8 @@ lupdate indicator-china-weather.pro
 linguist translation/indicator-china-weather_zh_CN.ts
 
 lrelease indicator-china-weather.pro
+
+
+### Lintian
+
+lintian -i -EvIL +pedantic --verbose ../indicator-china-weather_3.0.0_amd64.changes

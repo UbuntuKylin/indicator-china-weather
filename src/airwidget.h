@@ -46,8 +46,8 @@ protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 private:
-    QGraphicsOpacityEffect *m_opacityEffect;
-    QPropertyAnimation *m_animation;
+    QGraphicsOpacityEffect *m_opacityEffect = nullptr;
+    QPropertyAnimation *m_animation = nullptr;
 
     QLabel *m_aqiLabel = nullptr;
     QLabel *m_qltyLabel = nullptr;
@@ -60,7 +60,6 @@ private:
     QLabel *m_o3Label = nullptr;
 
     QTimer *m_timer = nullptr;
-
     QVBoxLayout *m_layout = nullptr;
 };
 

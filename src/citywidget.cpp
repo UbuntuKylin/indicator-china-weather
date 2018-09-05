@@ -58,7 +58,7 @@ CityWidget::CityWidget(QWidget *parent)
     m_addBtn->setFocusPolicy(Qt::NoFocus);
     m_addBtn->setStyleSheet("QPushButton{padding-left:10px;font-size:12px;color:#808080;border:none;background:transparent;text-align:left;}QPushButton:hover{background-color:#f5fbff;}");//margin-left:18px;border:1px solid rgba(0, 0, 0, 0.08);
     m_addBtn->setFixedWidth(this->width());
-    m_addBtn->setText("Add City");
+    m_addBtn->setText(tr("Add City"));
     m_addBtn->setIconSize(QSize(24, 24));
     m_addBtn->setIcon(QIcon(":/res/add.png"));
 

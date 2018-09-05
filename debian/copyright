@@ -1,13 +1,14 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: kydroid-activation
-Source: https://code.launchpad.dev/~lixiang/kydroid-activation/trunk
+Upstream-Name: indicator-china-weather
+Upstream-Contact: lixiang <lixiang@kylinos.cn>
+Source: https://github.com/ukui/indicator-china-weather
 
 Files: *
-Copyright: 2018, National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+Copyright: 2018, lixiang <lixiang@kylinos.cn>
 License: GPL-3.0+
 
 Files: debian/*
-Copyright: 2018 lixiang <lixiang@kylinos.cn>
+Copyright: 2018, lixiang <lixiang@kylinos.cn>
 License: GPL-3.0+
 
 License: GPL-3.0+
@@ -26,8 +27,3 @@ License: GPL-3.0+
  .
  On Debian systems, the complete text of the GNU General
  Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
-
-# Please also look if there are files or directories which have a
-# different copyright/license attached and list them here.
-# Please avoid picking licenses with terms that are more restrictive than the
-# packaged work, as it may make Debian's contributions unacceptable upstream.

@@ -2,10 +2,11 @@ Source: indicator-china-weather
 Section: utils
 Priority: optional
 Maintainer: lixiang <lixiang@kylinos.cn>
-Build-Depends: debhelper (>=11),
+Build-Depends: debhelper (>=9),
                qtbase5-dev (>= 5.1),
                qt5-qmake,
-               qt5-default,
+               qtchooser,
+               qtbase5-dev-tools,
                qtscript5-dev
 Standards-Version: 4.1.5
 Homepage: https://github.com/ukui/indicator-china-weather
@@ -13,9 +14,9 @@ Vcs-Git: https://github.com/ukui/indicator-china-weather.git
 Vcs-Browser: https://github.com/ukui/indicator-china-weather
 
 Package: indicator-china-weather
-Architecture: all
-Depends: ${misc:Depends},
-         ${shlibs:Depends}
+Architecture: any
+Depends: ${misc:Depends},${shlibs:Depends}
 Description: Indicator that displays China weather information
- Kylin Weather displays information for one place, and you
+ Kylin Weather displays detail weather information for one place, 
+ including weather forecast and observe weather, and you
  can change it.
