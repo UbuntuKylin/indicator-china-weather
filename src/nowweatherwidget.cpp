@@ -188,24 +188,24 @@ NowWeatherWidget::NowWeatherWidget(QFrame *parent) :
 
     m_humidityValueLabel = new QLabel(this);
     m_humidityValueLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:12x;}");
-    m_humidityValueLabel->setGeometry(m_humidityLabel->x(), m_humidityLabel->y() + m_humidityLabel->height(), 40, 20);
-    m_humidityValueLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+    m_humidityValueLabel->setGeometry(m_humidityLabel->x(), m_humidityLabel->y() + m_humidityLabel->height() + 5, 40, 20);
+    m_humidityValueLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 
     //-----------------------------
     QLabel *windIcon = new QLabel(this);
-    windIcon->setGeometry(m_humidityLabel->x() + m_humidityLabel->width() + 10, m_humidityLabel->y(), 20, 20);
+    windIcon->setGeometry(m_humidityLabel->x() + m_humidityLabel->width() + 15, m_humidityLabel->y(), 20, 20);
     windIcon->setStyleSheet("QLabel{border:none;background-color:transparent;}");
     windIcon->setPixmap(QPixmap(":/res/current_wind.png"));
 
     m_windLabel = new QLabel(this);
     m_windLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:12x;}");
     m_windLabel->setGeometry(windIcon->x() + windIcon->width(), windIcon->y(), 70, 20);
-    m_windLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+    m_windLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 
     m_windPowerLabel = new QLabel(this);
     m_windPowerLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:12x;}");
-    m_windPowerLabel->setGeometry(m_windLabel->x(), m_windLabel->y() + m_windLabel->height(), 90, 20);
-    m_windPowerLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+    m_windPowerLabel->setGeometry(m_windLabel->x(), m_humidityValueLabel->y(), 90, 20);
+    m_windPowerLabel->setAlignment(Qt::AlignBottom | Qt::AlignLeft);
 
     m_weatherIcon = new QLabel(this);
     m_weatherIcon->setGeometry(this->width() - 64 - 20, m_tempLabel->y(), 64, 64);
