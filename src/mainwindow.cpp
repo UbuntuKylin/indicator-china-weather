@@ -109,6 +109,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->setCentralWidget(m_centralWidget);
 
     this->initMenuAndTray();
+    m_titleBar->setCityName(m_preferences->m_currentCity);
 
     this->moveTopRight();
 
@@ -270,7 +271,10 @@ void MainWindow::updateTimeTip()
             m_updateTimeStr = QString(tr("Refresh time:%1 minutes ago")).arg(QString::number(ut));
         }
     }
-    m_actualizationTime = timeIntValue;
+
+    if (QDateTime::currentDateTime().toTime_t()-m_actualizationTime > m_preferences->m_updateFrequency*1000*60) {
+        m_actualizationTime = QDateTime::currentDateTime().toTime_t();
+    }
 
     m_updateTimeAction->setText(m_updateTimeStr);
 
@@ -461,9 +465,9 @@ void MainWindow::refreshTrayMenuWeather(const ObserveWeather &data)
         m_aqiAction->setText(QString(tr("Air quality:%1")).arg(data.air));
     }
     m_releaseTimeAction->setText(QString(tr("Release time:%1")).arg(data.updatetime));
-    m_updateTimeStr = QString(tr("Refresh time:Just updated"));
+
     m_actualizationTime = 0;
-    m_updateTimeAction->setText(m_updateTimeStr);
+    this->updateTimeTip();
     m_tipTimer->start();
 }
 

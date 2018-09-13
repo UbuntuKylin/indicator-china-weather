@@ -2,6 +2,7 @@ indicator-china-weather (3.0.0-0ubuntu1) cosmic; urgency=low
 
   * Used the latest version of heweather API.
   * New UI with Qt5.
+  * Fixed the bug that Refresh time error.
 
  -- handsome_feng <jianfengli@ubuntukylin.com>  Wed, 05 Sep 2018 16:06:50 +0800
 
