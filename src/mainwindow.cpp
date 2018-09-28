@@ -111,7 +111,20 @@ MainWindow::MainWindow(QWidget *parent)
     this->initMenuAndTray();
     m_titleBar->setCityName(m_preferences->m_currentCity);
 
-    this->moveTopRight();
+    m_currentDesktop = qgetenv("XDG_CURRENT_DESKTOP");
+    if (m_currentDesktop.isEmpty()) {
+        m_currentDesktop = qgetenv("XDG_SESSION_DESKTOP");
+    }
+    if (m_currentDesktop.isEmpty())
+        this->moveTopRight();
+    else {
+        if (m_currentDesktop.toLower() == "ukui") {
+            this->moveBottomRight();
+        }
+        else {
+            this->moveTopRight();
+        }
+    }
 
     if (m_preferences->weather.cond_code.contains(QChar('n'))) {
         this->setStyleSheet("QMainWindow{color:white;background-image:url(':/res/background/weather-clear-night.png');background-repeat:no-repeat;}");
@@ -512,6 +525,25 @@ void MainWindow::moveTopRight()
     }
 
     this->move(primaryGeometry.x() + primaryGeometry.width() - this->width(), primaryGeometry.y());
+    this->show();
+    this->raise();
+}
+
+void MainWindow::moveBottomRight()
+{
+    QPoint pos = QCursor::pos();
+    QRect primaryGeometry;
+    for (QScreen *screen : qApp->screens()) {
+        if (screen->geometry().contains(pos)) {
+            primaryGeometry = screen->geometry();
+        }
+    }
+
+    if (primaryGeometry.isEmpty()) {
+        primaryGeometry = qApp->primaryScreen()->geometry();
+    }
+
+    this->move(primaryGeometry.x() + primaryGeometry.width() - this->width(), primaryGeometry.height() - this->height());
     this->show();
     this->raise();
 }

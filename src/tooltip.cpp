@@ -178,7 +178,7 @@ void ToolTip::popupTip(QPoint point)
     animation->setKeyValueAt(0.25, 1);
     animation->setKeyValueAt(0.5, 1);
     animation->setKeyValueAt(0.75, 1);
-    animation->setEndValue(0);
+    animation->setEndValue(0);//1
     animation->start();
 
     connect(animation, &QPropertyAnimation::finished, this, [=] {

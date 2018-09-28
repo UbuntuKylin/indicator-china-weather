@@ -44,6 +44,7 @@ public:
     void initMenuAndTray();
     void resetWeatherBackgroud(const QString &imgPath);
     void moveTopRight();
+    void moveBottomRight();
     void createSettingDialog();
     void refreshCityActions();
 
@@ -95,6 +96,7 @@ private:
     QString m_updateTimeStr;
 
     QTimer *m_autoRefreshTimer = nullptr;
+    QString m_currentDesktop;
 
     //test
     //bool m_isDN;

@@ -1,3 +1,10 @@
+indicator-china-weather (3.0.0-0ubuntu2) cosmic; urgency=low
+
+  * When the desktop environment is ukui, the UI is displayed on the bottomright of the screen.
+  * Modified the CSS style of cityitemwidget.
+
+ -- lixiang <lixiang@kylinos.cn>  Fri, 28 Sep 2018 09:58:46 +0800
+
 indicator-china-weather (3.0.0-0ubuntu1) cosmic; urgency=low
 
   * Used the latest version of heweather API.

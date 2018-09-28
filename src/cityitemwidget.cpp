@@ -41,10 +41,12 @@ CityItemWidget::CityItemWidget(CitySettingData info, QWidget *parent) : QWidget(
 
     m_iconLabel = new QLabel(this);
     m_iconLabel->setFixedSize(24, 24);
+    m_iconLabel->setStyleSheet("QLabel{border:none;background-color:transparent;}");
 //    m_iconLabel->setScaledContents(true);//自动缩放,显示图像大小自动调整为Qlabel大小
     m_cityLabel = new QLabel(this);
     m_cityLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:14px;}");
     m_temperatureLabel = new QLabel(this);
+    m_temperatureLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:14px;}");
     m_defaultBtn = new QPushButton(this);
     m_defaultBtn->setFocusPolicy(Qt::NoFocus);
     m_defaultBtn->setStyleSheet("QPushButton{border:none;text-align:center;background:transparent;background-color:transparent;color:#0a9ff5;font-size:14px;}");
