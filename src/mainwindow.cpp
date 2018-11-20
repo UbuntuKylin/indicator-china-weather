@@ -115,7 +115,7 @@ MainWindow::MainWindow(QWidget *parent)
     if (m_currentDesktop.isEmpty()) {
         m_currentDesktop = qgetenv("XDG_SESSION_DESKTOP");
     }
-    if (m_currentDesktop.isEmpty())
+    /*if (m_currentDesktop.isEmpty())
         this->moveTopRight();
     else {
         if (m_currentDesktop.toLower() == "ukui") {
@@ -124,7 +124,7 @@ MainWindow::MainWindow(QWidget *parent)
         else {
             this->moveTopRight();
         }
-    }
+    }*/
 
     if (m_preferences->weather.cond_code.contains(QChar('n'))) {
         this->setStyleSheet("QMainWindow{color:white;background-image:url(':/res/background/weather-clear-night.png');background-repeat:no-repeat;}");
@@ -256,6 +256,8 @@ MainWindow::MainWindow(QWidget *parent)
         m_preferences->m_opacity = 60;
     }
     this->setOpacity(value);
+
+    this->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -346,8 +348,19 @@ void MainWindow::initMenuAndTray()
 
     QAction *m_forecastAction = m_mainMenu->addAction(tr("Weather Forecast"));
     connect(m_forecastAction, &QAction::triggered, this, [=] {
-        if (!this->isVisible())
-            this->showNormal();
+        if (!this->isVisible()) {
+            if (m_currentDesktop.isEmpty())
+                this->moveTopRight();
+            else {
+                if (m_currentDesktop.toLower() == "ukui") {
+                    this->moveBottomRight();
+                }
+                else {
+                    this->moveTopRight();
+                }
+            }
+            //this->showNormal();
+        }
     });
 
     m_mainMenu->addSeparator();
@@ -503,7 +516,30 @@ void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
     switch(reason) {
     case QSystemTrayIcon::Trigger:
     case QSystemTrayIcon::DoubleClick:
-        this->show();
+    {
+        QRect rect = m_systemTray->geometry();
+        QMenu *currentMenu = m_systemTray->contextMenu();
+        if (currentMenu->isHidden()) {
+            currentMenu->popup(QPoint(rect.x()+8, rect.y()));
+        }
+    }
+        break;
+    case QSystemTrayIcon::MiddleClick:
+        if (this->isVisible()) {
+            this->setVisible(false);
+        }
+        else {
+            if (m_currentDesktop.isEmpty())
+                this->moveTopRight();
+            else {
+                if (m_currentDesktop.toLower() == "ukui") {
+                    this->moveBottomRight();
+                }
+                else {
+                    this->moveTopRight();
+                }
+            }
+        }
         break;
     default:
         break;
@@ -525,8 +561,9 @@ void MainWindow::moveTopRight()
     }
 
     this->move(primaryGeometry.x() + primaryGeometry.width() - this->width(), primaryGeometry.y());
-    this->show();
+    this->showNormal();//this->show();
     this->raise();
+    this->activateWindow();
 }
 
 void MainWindow::moveBottomRight()
@@ -544,8 +581,9 @@ void MainWindow::moveBottomRight()
     }
 
     this->move(primaryGeometry.x() + primaryGeometry.width() - this->width(), primaryGeometry.height() - this->height());
-    this->show();
+    this->showNormal();//this->show();
     this->raise();
+    this->activateWindow();
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
@@ -582,4 +620,16 @@ void MainWindow::showEvent(QShowEvent *event)
     QWidget::showEvent(event);
 
     //m_weatherWorker->refreshForecastWeatherData(m_preferences->m_currentCityId);
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Escape) {
+        if (this->isVisible()) {
+            this->setVisible(false);
+        }
+        event->accept();
+    }
+
+    QMainWindow::keyPressEvent(event);
 }

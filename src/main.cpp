@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 
         return 0;
     }//QDBusConnection::sessionBus().unregisterService("com.kylin.weather");
-    w.show();
+    //w.show();
 
     return a.exec();
 }

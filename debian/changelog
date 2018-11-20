@@ -1,3 +1,9 @@
+indicator-china-weather (3.0.1-0ubuntu2) cosmic; urgency=low
+  
+  * Handling mouse events on pallets.
+
+ -- lixiang <lixiang@kylinos.cn>  Tue, 20 Nov 2018 09:18:09 +0800
+
 indicator-china-weather (3.0.1-0ubuntu1) cosmic; urgency=low
 
   * Used the latest version of heweather API.
