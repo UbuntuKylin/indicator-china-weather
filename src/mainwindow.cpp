@@ -90,7 +90,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_weatherWorker(new WeatherWorker(this))
 {
     this->setFixedSize(355, 552);
-    this->setWindowFlags(Qt::FramelessWindowHint);
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
     //this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//ubuntu 16.04 可能需要加上Qt::WindowMinimizeButtonHint，否则showMinimized无效
     this->setWindowTitle(tr("Kylin Weather"));
     this->setWindowIcon(QIcon(":/res/indicator-china-weather.png"));
@@ -412,8 +412,20 @@ void MainWindow::initMenuAndTray()
 
 void MainWindow::showSettingDialog()
 {
-    m_setttingDialog->move((width() - m_setttingDialog->width()) / 2 + mapToGlobal(QPoint(0, 0)).x(),
-                               (window()->height() - m_setttingDialog->height()) / 2 + mapToGlobal(QPoint(0, 0)).y());
+    int w_x, w_y;
+    w_x = (width() - m_setttingDialog->width()) / 2 + mapToGlobal(QPoint(0, 0)).x();
+    w_y = (window()->height() - m_setttingDialog->height()) / 2 + mapToGlobal(QPoint(0, 0)).y();
+
+    if (w_x + m_setttingDialog->width() > qApp->primaryScreen()->geometry().width()) {
+        w_x = qApp->primaryScreen()->geometry().width() - m_setttingDialog->width();//m_setttingDialog->move(qApp->primaryScreen()->geometry().width() - m_setttingDialog->width(), y);
+    }
+    if (w_y + m_setttingDialog->height() > qApp->primaryScreen()->availableGeometry().width()) {
+        w_y = qApp->primaryScreen()->availableGeometry().width() - m_setttingDialog->height();
+    }
+
+    m_setttingDialog->move(w_x, w_y);
+//    m_setttingDialog->move((width() - m_setttingDialog->width()) / 2 + mapToGlobal(QPoint(0, 0)).x(),
+//                               (window()->height() - m_setttingDialog->height()) / 2 + mapToGlobal(QPoint(0, 0)).y());
     m_setttingDialog->show();
 }
 
@@ -514,8 +526,7 @@ void MainWindow::resetWeatherBackgroud(const QString &imgPath)
 void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
     switch(reason) {
-    case QSystemTrayIcon::Trigger:
-    case QSystemTrayIcon::DoubleClick:
+    /*case QSystemTrayIcon::DoubleClick:
     {
         QRect rect = m_systemTray->geometry();
         QMenu *currentMenu = m_systemTray->contextMenu();
@@ -523,7 +534,8 @@ void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
             currentMenu->popup(QPoint(rect.x()+8, rect.y()));
         }
     }
-        break;
+        break;*/
+    case QSystemTrayIcon::Trigger:
     case QSystemTrayIcon::MiddleClick:
         if (this->isVisible()) {
             this->setVisible(false);
@@ -548,7 +560,7 @@ void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 
 void MainWindow::moveTopRight()
 {
-    QPoint pos = QCursor::pos();
+    /*QPoint pos = QCursor::pos();
     QRect primaryGeometry;
     for (QScreen *screen : qApp->screens()) {
         if (screen->geometry().contains(pos)) {
@@ -560,6 +572,9 @@ void MainWindow::moveTopRight()
         primaryGeometry = qApp->primaryScreen()->geometry();
     }
 
+    this->move(primaryGeometry.x() + primaryGeometry.width() - this->width(), primaryGeometry.y());*/
+
+    QRect primaryGeometry = qApp->primaryScreen()->availableGeometry();
     this->move(primaryGeometry.x() + primaryGeometry.width() - this->width(), primaryGeometry.y());
     this->showNormal();//this->show();
     this->raise();
@@ -568,18 +583,40 @@ void MainWindow::moveTopRight()
 
 void MainWindow::moveBottomRight()
 {
-    QPoint pos = QCursor::pos();
+    //QApplication::desktop()->availableGeometry();//桌面除去任务栏的区域
+    //QApplication::desktop()->screenGeometry();//获取包括任务栏的区域
+    /*QPoint pos = QCursor::pos();
     QRect primaryGeometry;
     for (QScreen *screen : qApp->screens()) {
-        if (screen->geometry().contains(pos)) {
-            primaryGeometry = screen->geometry();
+//        if (screen->geometry().contains(pos)) {
+//            primaryGeometry = screen->geometry();
+//        }
+        if (screen->geometry().contains(pos)) {//判断鼠标点击时，使用包括任务栏在内的整个屏幕区域
+            primaryGeometry = screen->availableGeometry();//显示区域需要去掉任务栏的区域
         }
     }
-
     if (primaryGeometry.isEmpty()) {
-        primaryGeometry = qApp->primaryScreen()->geometry();
-    }
+        primaryGeometry = qApp->primaryScreen()->availableGeometry();//primaryGeometry = qApp->primaryScreen()->geometry();
+    }*/
 
+
+    /*QRect primaryGeometry = qApp->primaryScreen()->geometry();
+    const qreal ratio = qApp->devicePixelRatio();
+    const QScreen *screen;
+    for (const auto *s : qApp->screens()) {
+        const QRect &g(s->geometry());
+        const QRect rect(g.topLeft()/ratio, g.size());
+        if (rect.contains(primaryGeometry.center())) {
+            screen = s;
+            break;
+        }
+    }
+    if  (screen) {
+        const QRect screenRect = screen->geometry();
+        primaryGeometry.moveTopLeft(screenRect.topLeft() + (primaryGeometry.topLeft() - screenRect.topLeft()) / screen->devicePixelRatio());
+    }*/
+
+    QRect primaryGeometry = qApp->primaryScreen()->availableGeometry();
     this->move(primaryGeometry.x() + primaryGeometry.width() - this->width(), primaryGeometry.height() - this->height());
     this->showNormal();//this->show();
     this->raise();

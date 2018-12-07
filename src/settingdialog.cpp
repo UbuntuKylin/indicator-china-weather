@@ -49,7 +49,7 @@ SettingDialog::SettingDialog(QWidget *parent):
     , m_stackedWidget(new QStackedWidget)
 //    , m_okBtn(new QPushButton(this))
 {
-    this->setWindowFlags(Qt::FramelessWindowHint);
+    this->setWindowFlags(/*Qt::FramelessWindowHint*/Qt::Tool | Qt::X11BypassWindowManagerHint);
     this->setFixedSize(479, 421);
     this->setFocusPolicy(Qt::ClickFocus);
     this->setWindowTitle(tr("Kylin Weather - Setting"));
