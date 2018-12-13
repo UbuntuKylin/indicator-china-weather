@@ -38,7 +38,7 @@ const int CONTENT_MARGIN = 0;
 SearchDialog::SearchDialog(QWidget *parent):
     QDialog(parent)
 {
-    this->setWindowFlags(/*Qt::FramelessWindowHint |*/Qt::Tool | Qt::X11BypassWindowManagerHint);
+    this->setWindowFlags(Qt::FramelessWindowHint);
     this->setStyleSheet("QDialog{border:1px solid #000000;border-radius:2px;background:rgba(255, 255, 255, 0.7);}QDialog:hover{background: rgba(255, 255, 255, 1.0);}");
     this->setFixedSize(479, 421);
     this->setFocusPolicy(Qt::ClickFocus);
