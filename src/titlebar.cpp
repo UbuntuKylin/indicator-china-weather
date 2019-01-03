@@ -78,7 +78,7 @@ void TitleBar::initLeftContent()
 
 void TitleBar::initRightContent()
 {
-    QWidget *w = new QWidget;
+    /*QWidget *w = new QWidget;
     m_rLayout = new QHBoxLayout(w);
     m_rLayout->setContentsMargins(0, 0, 5, 0);
     m_rLayout->setSpacing(0);
@@ -111,7 +111,7 @@ void TitleBar::initRightContent()
 //            parentWidget()->parentWidget()->showMinimized();
             parentWidget()->parentWidget()->hide();
         }
-    });
+    });*/
 }
 
 void TitleBar::initWidgets()

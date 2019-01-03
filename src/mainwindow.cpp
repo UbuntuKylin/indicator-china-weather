@@ -79,7 +79,7 @@ inline QString convertCodeToBackgroud(int code)
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , m_mousePressed(false)
+//    , m_mousePressed(false)
     , m_centralWidget(new QWidget(this))
     , m_titleBar(new TitleBar(this))
     , m_contentWidget(new ContentWidget(this))
@@ -90,7 +90,9 @@ MainWindow::MainWindow(QWidget *parent)
     , m_weatherWorker(new WeatherWorker(this))
 {
     this->setFixedSize(355, 552);
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint);
+//    this->setAttribute(Qt::WA_TranslucentBackground, true);
+    this->setFocusPolicy(Qt::ClickFocus);//Qt::StrongFocus
     //this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//ubuntu 16.04 可能需要加上Qt::WindowMinimizeButtonHint，否则showMinimized无效
     this->setWindowTitle(tr("Kylin Weather"));
     this->setWindowIcon(QIcon(":/res/indicator-china-weather.png"));
@@ -349,7 +351,7 @@ void MainWindow::initMenuAndTray()
     QAction *m_forecastAction = m_mainMenu->addAction(tr("Weather Forecast"));
     connect(m_forecastAction, &QAction::triggered, this, [=] {
         if (!this->isVisible()) {
-            if (m_currentDesktop.isEmpty())
+            /*if (m_currentDesktop.isEmpty())
                 this->moveTopRight();
             else {
                 if (m_currentDesktop.toLower() == "ukui") {
@@ -358,8 +360,12 @@ void MainWindow::initMenuAndTray()
                 else {
                     this->moveTopRight();
                 }
-            }
+            }*/
+            this->movePosition();
             //this->showNormal();
+        }
+        else {
+            this->hide();
         }
     });
 
@@ -541,7 +547,7 @@ void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
             this->setVisible(false);
         }
         else {
-            if (m_currentDesktop.isEmpty())
+            /*if (m_currentDesktop.isEmpty())
                 this->moveTopRight();
             else {
                 if (m_currentDesktop.toLower() == "ukui") {
@@ -550,11 +556,34 @@ void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
                 else {
                     this->moveTopRight();
                 }
-            }
+            }*/
+            this->movePosition();
         }
         break;
     default:
         break;
+    }
+}
+
+void MainWindow::movePosition()
+{
+    QPoint pos = QCursor::pos();
+    /*qDebug() << "pos=" << pos;//QPoint(1720,236)
+    qDebug() << "mapFromGlobal(pos)=" << mapFromGlobal(pos);//QPoint(1709,249)
+    QPoint mousePos = mapToParent(mapFromGlobal(pos));
+    qDebug() << "mousePos=" << mousePos;//QPoint(1709,249)*/
+    QRect primaryGeometry = qApp->primaryScreen()->availableGeometry();
+    qDebug() << "primaryGeometry=" << primaryGeometry;//QRect(65,24 1855x1056)
+    qDebug() << "geometry=" << qApp->primaryScreen()->geometry();//QRect(0,0 1920x1080)
+    /*for (QScreen *screen : qApp->screens()) {
+        if (screen->geometry().contains(pos)) {
+        }
+    }*/
+    if (primaryGeometry.contains(pos)) {
+        this->move(primaryGeometry.x() + primaryGeometry.width() - this->width(), primaryGeometry.y());
+        this->showNormal();//this->show();
+        this->raise();
+        this->activateWindow();
     }
 }
 
@@ -623,7 +652,7 @@ void MainWindow::moveBottomRight()
     this->activateWindow();
 }
 
-void MainWindow::mousePressEvent(QMouseEvent *event)
+/*void MainWindow::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         this->m_dragPosition = event->globalPos() - frameGeometry().topLeft();
@@ -657,7 +686,7 @@ void MainWindow::showEvent(QShowEvent *event)
     QWidget::showEvent(event);
 
     //m_weatherWorker->refreshForecastWeatherData(m_preferences->m_currentCityId);
-}
+}*/
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
@@ -669,4 +698,13 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
 
     QMainWindow::keyPressEvent(event);
+}
+
+void MainWindow::focusOutEvent(QFocusEvent *event)
+{
+    if (event->reason() == Qt::ActiveWindowFocusReason) {
+        this->hide();
+    }
+
+    return QMainWindow::focusOutEvent(event);
 }

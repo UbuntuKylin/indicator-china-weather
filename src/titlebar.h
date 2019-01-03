@@ -49,12 +49,12 @@ private:
 private:
     QHBoxLayout *m_layout = nullptr;
     QHBoxLayout *m_lLayout = nullptr;
-    QHBoxLayout *m_rLayout = nullptr;
+//    QHBoxLayout *m_rLayout = nullptr;
     QWidget *m_leftWidget = nullptr;
     QPushButton *m_setCityBtn = nullptr;
     QLabel *m_cityLabel = nullptr;
-    QPushButton *m_minBtn = nullptr;
-    QPushButton *m_closeBtn = nullptr;
+//    QPushButton *m_minBtn = nullptr;
+//    QPushButton *m_closeBtn = nullptr;
 };
 
 #endif // TITLEBAR_H

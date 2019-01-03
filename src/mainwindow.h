@@ -45,6 +45,7 @@ public:
     void resetWeatherBackgroud(const QString &imgPath);
     void moveTopRight();
     void moveBottomRight();
+    void movePosition();
     void createSettingDialog();
     void refreshCityActions();
 
@@ -54,11 +55,12 @@ public:
     void setOpacity(double opacity);
 
 protected:
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
+//    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+//    void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+//    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+//    void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
+    void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
 
 public slots:
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
@@ -67,8 +69,8 @@ public slots:
     void updateTimeTip();
 
 private:
-    QPoint m_dragPosition;
-    bool m_mousePressed;
+//    QPoint m_dragPosition;
+//    bool m_mousePressed;
 
     QVBoxLayout *m_layout = nullptr;
     QWidget *m_centralWidget = nullptr;
