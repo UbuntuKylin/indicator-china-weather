@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2018 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ * Copyright (C) 2013 ~ 2019 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    lixiang@kylinos.cn/kobe24_lixiang@126.com
@@ -362,10 +362,9 @@ void MainWindow::initMenuAndTray()
                 }
             }*/
             this->movePosition();
-            //this->showNormal();
         }
         else {
-            this->hide();
+            this->setVisible(false);
         }
     });
 
@@ -462,8 +461,6 @@ void MainWindow::createSettingDialog()
         this->setOpacity(value);
     });
 
-
-
     /*connect(m_setttingDialog, &SettingDialog::requestSetDefaultCity, this, [=] {
         m_preferences->setDefaultCity();
         m_setttingDialog->refreshCityList(m_preferences->m_currentCityId);
@@ -547,16 +544,6 @@ void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
             this->setVisible(false);
         }
         else {
-            /*if (m_currentDesktop.isEmpty())
-                this->moveTopRight();
-            else {
-                if (m_currentDesktop.toLower() == "ukui") {
-                    this->moveBottomRight();
-                }
-                else {
-                    this->moveTopRight();
-                }
-            }*/
             this->movePosition();
         }
         break;
@@ -568,23 +555,31 @@ void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 void MainWindow::movePosition()
 {
     QPoint pos = QCursor::pos();
-    /*qDebug() << "pos=" << pos;//QPoint(1720,236)
-    qDebug() << "mapFromGlobal(pos)=" << mapFromGlobal(pos);//QPoint(1709,249)
-    QPoint mousePos = mapToParent(mapFromGlobal(pos));
-    qDebug() << "mousePos=" << mousePos;//QPoint(1709,249)*/
-    QRect primaryGeometry = qApp->primaryScreen()->availableGeometry();
-    qDebug() << "primaryGeometry=" << primaryGeometry;//QRect(65,24 1855x1056)
-    qDebug() << "geometry=" << qApp->primaryScreen()->geometry();//QRect(0,0 1920x1080)
+    //qDebug() << "mapFromGlobal(pos)=" << mapFromGlobal(pos);//QPoint(1709,249)
+    QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
+//    qDebug() << "availableGeometry=" << availableGeometry;//QRect(65,24 1855x1056)      QRect(0,0 1366x728)
+    QRect screenGeometry = qApp->primaryScreen()->geometry();
+//    qDebug() << "screenGeometry=" << screenGeometry;//QRect(0,0 1920x1080)        QRect(0,0 1366x768)
+
+    if (screenGeometry.contains(pos)) {
+        if (pos.x() > screenGeometry.width()/2 && pos.y() > screenGeometry.height()/2) {//panel bottom or right
+//            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenGeometry.height() - (screenGeometry.height() - availableGeometry.height()) - this->height());
+            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), availableGeometry.height() - this->height());
+        }
+        else if (pos.x() > screenGeometry.width()/2 && pos.y() <= screenGeometry.height()/2) {//panel top
+             this->move(availableGeometry.x() + availableGeometry.width() - this->width(), availableGeometry.y());
+        }
+        else if (pos.x() <= screenGeometry.width()/2 && pos.y() > screenGeometry.height()/2) {//panel left
+            this->move(availableGeometry.x(), availableGeometry.height() - this->height());
+        }
+        this->showNormal();
+        this->raise();
+        this->activateWindow();
+    }
     /*for (QScreen *screen : qApp->screens()) {
         if (screen->geometry().contains(pos)) {
         }
     }*/
-    if (primaryGeometry.contains(pos)) {
-        this->move(primaryGeometry.x() + primaryGeometry.width() - this->width(), primaryGeometry.y());
-        this->showNormal();//this->show();
-        this->raise();
-        this->activateWindow();
-    }
 }
 
 void MainWindow::moveTopRight()
@@ -703,7 +698,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 void MainWindow::focusOutEvent(QFocusEvent *event)
 {
     if (event->reason() == Qt::ActiveWindowFocusReason) {
-        this->hide();
+        this->setVisible(false);
     }
 
     return QMainWindow::focusOutEvent(event);
