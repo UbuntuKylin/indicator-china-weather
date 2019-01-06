@@ -417,7 +417,7 @@ void MainWindow::initMenuAndTray()
 
 void MainWindow::showSettingDialog()
 {
-    int w_x, w_y;
+    /*int w_x, w_y;
     w_x = (width() - m_setttingDialog->width()) / 2 + mapToGlobal(QPoint(0, 0)).x();
     w_y = (window()->height() - m_setttingDialog->height()) / 2 + mapToGlobal(QPoint(0, 0)).y();
 
@@ -431,7 +431,8 @@ void MainWindow::showSettingDialog()
     m_setttingDialog->move(w_x, w_y);
 //    m_setttingDialog->move((width() - m_setttingDialog->width()) / 2 + mapToGlobal(QPoint(0, 0)).x(),
 //                               (window()->height() - m_setttingDialog->height()) / 2 + mapToGlobal(QPoint(0, 0)).y());
-    m_setttingDialog->show();
+    m_setttingDialog->show();*/
+    m_setttingDialog->moveToCenter();
 }
 
 void MainWindow::createSettingDialog()

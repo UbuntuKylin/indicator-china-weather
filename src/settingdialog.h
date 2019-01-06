@@ -29,11 +29,14 @@
 class QVBoxLayout;
 class QStackedWidget;
 class SettingTitleBar;
-//class CityListWidget;
 class CityWidget;
 class SpinBox;
 class QSlider;
 class QGroupBox;
+class SearchTitleBar;
+class SearchView;
+class SearchDelegate;
+class SearchModel;
 
 class SettingDialog : public QDialog
 {
@@ -45,6 +48,10 @@ public:
 
     void setData();
     void refreshCityList(const QString &id);
+    void initSettings();
+    void initSearch();
+    QRect getParentGeometry() const;
+    void moveToCenter();
 
 public slots:
     virtual void accept();
@@ -56,6 +63,7 @@ signals:
     void requestRefreshWeatherById(const QString &id);
     //void requestSetDefaultCity();
     void requestChangeOpacity(int opacity);
+    void requestAddCityToMenu(const LocationData &data);
 
 protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
@@ -67,20 +75,28 @@ private:
     QPoint m_dragPosition;
     bool m_mousePressed;
 
-    QVBoxLayout *m_mainLayout = nullptr;
-    SettingTitleBar *m_titleBar = nullptr;
-    QStackedWidget *m_stackedWidget = nullptr;
+    QVBoxLayout *m_settingLayout = nullptr;
 
+    QFrame *m_settingFrame = nullptr;
+    SettingTitleBar *m_settingTitleBar = nullptr;
+    QStackedWidget *m_stackedWidget = nullptr;
     CityWidget *m_cityWidget = nullptr;
     /*QWidget *m_cityWidget = nullptr;
     CityListWidget *m_cityListWidget = nullptr;
     QPushButton *m_addCityBtn = nullptr;*/
-
     QWidget *m_systemWidget = nullptr;
     QGroupBox *m_variableGroup = nullptr;
     QGroupBox *m_fixedGroup = nullptr;
     SpinBox *m_spinBox = nullptr;
     QSlider *m_opacitySlider = nullptr;
+
+    QFrame *m_searchFrame = nullptr;
+    SearchTitleBar *m_searchTitleBar = nullptr;
+    QWidget *m_displayWidget = nullptr;
+    QLabel *m_noResultLabel = nullptr;
+    SearchModel *m_searchModel = nullptr;
+    SearchView *m_searchView = nullptr;
+    SearchDelegate *m_searchDelegate = nullptr;
 
 //    QPushButton *m_okBtn = nullptr;
 };

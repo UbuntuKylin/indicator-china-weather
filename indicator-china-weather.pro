@@ -58,7 +58,7 @@ SOURCES += src/main.cpp \
     src/settingdialog.cpp \
     src/settingtitlebar.cpp \
     src/activebutton.cpp \
-    src/searchdialog.cpp \
+#    src/searchdialog.cpp \
     src/searchtitlebar.cpp \
     src/searchinputedit.cpp \
     src/searchview.cpp \
@@ -97,7 +97,7 @@ HEADERS  += src/mainwindow.h \
     src/settingdialog.h \
     src/settingtitlebar.h \
     src/activebutton.h \
-    src/searchdialog.h \
+#    src/searchdialog.h \
     src/searchtitlebar.h \
     src/searchinputedit.h \
     src/searchview.h \

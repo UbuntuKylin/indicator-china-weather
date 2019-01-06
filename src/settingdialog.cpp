@@ -19,10 +19,12 @@
 
 #include "settingdialog.h"
 #include "settingtitlebar.h"
-#include "searchdialog.h"
-//#include "citylistwidget.h"
 #include "citywidget.h"
 #include "spinbox.h"
+#include "searchtitlebar.h"
+#include "searchmodel.h"
+#include "searchview.h"
+#include "searchdelegate.h"
 
 #include <QApplication>
 #include <QDesktopServices>
@@ -33,6 +35,19 @@
 #include <QGroupBox>
 #include <QDebug>
 #include <QPainter>
+#include <QStackedLayout>
+#include <QScreen>
+
+#include <QMatrix3x3>
+#include <QImage>
+#include <QGraphicsScene>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsBlurEffect>
+#include <QPropertyAnimation>
+#include <QGraphicsOpacityEffect>
+#include <QPainter>
+#include <QWidget>
+#include <QStyleFactory>
 
 #include "preferences.h"
 #include "global.h"
@@ -41,12 +56,136 @@ using namespace Global;
 namespace {
 const int BUTTON_WIDGET_HEIGHT = 30;
 const int GROUP_BOX_MARGIN = 20;
+const int ANIMATION_DELAY_TIME_INTERVAL = 300;
+const int CONTENT_MARGIN = 0;
+
+void animationFromBottomToTop(QWidget *topWidget, QWidget *bottomWidget)
+{
+    bottomWidget->setVisible(true);
+    topWidget->setVisible(true);
+
+    QRect topStartRect = QRect(0, 0, topWidget->width(), topWidget->height());
+    QRect topEndRect = topStartRect;
+    topEndRect.moveTop(-topWidget->height());
+
+    QPropertyAnimation *topAnim = new QPropertyAnimation(topWidget, "geometry");
+    topAnim->connect(topAnim, &QPropertyAnimation::finished, topAnim, &QPropertyAnimation::deleteLater);
+    topAnim->connect(topAnim, &QPropertyAnimation::finished, topWidget, &QWidget::hide);
+    topAnim->setDuration(ANIMATION_DELAY_TIME_INTERVAL);
+    topAnim->setEasingCurve(QEasingCurve::InOutCubic);
+    topAnim->setStartValue(topStartRect);
+    topAnim->setEndValue(topEndRect);
+    topAnim->start();
+
+    QRect bottomStartRect = QRect(0, topWidget->height(), bottomWidget->width(), bottomWidget->height());
+    QRect bottomEndRect = bottomStartRect;
+    bottomEndRect.moveTo(0, 0);
+
+    QPropertyAnimation *bottomAnim = new QPropertyAnimation(bottomWidget, "geometry");
+    bottomAnim->connect(bottomAnim, &QPropertyAnimation::finished, bottomAnim, &QPropertyAnimation::deleteLater);
+    bottomAnim->setEasingCurve(QEasingCurve::InOutCubic);
+    bottomAnim->setDuration(ANIMATION_DELAY_TIME_INTERVAL);
+    bottomAnim->setStartValue(bottomStartRect);
+    bottomAnim->setEndValue(bottomEndRect);
+    bottomAnim->start();
+
+    QGraphicsOpacityEffect *bottomOpacity = new QGraphicsOpacityEffect(bottomWidget);
+    bottomWidget->setGraphicsEffect(bottomOpacity);
+    bottomOpacity->setOpacity(0);
+
+    QPropertyAnimation *bottomOpacityAnim = new QPropertyAnimation(bottomOpacity, "opacity");
+    bottomOpacityAnim->connect(bottomOpacityAnim, &QPropertyAnimation::finished, bottomOpacityAnim, &QPropertyAnimation::deleteLater);
+    bottomOpacityAnim->connect(bottomOpacityAnim, &QPropertyAnimation::finished, bottomWidget, [ = ] () {
+        bottomWidget->setGraphicsEffect(nullptr);
+    });
+    bottomOpacityAnim->setEasingCurve(QEasingCurve::InCubic);
+    bottomOpacityAnim->setDuration(ANIMATION_DELAY_TIME_INTERVAL);
+    bottomOpacityAnim->setStartValue(0.0);
+    bottomOpacityAnim->setEndValue(1.0);
+    bottomOpacityAnim->start();
+
+    QGraphicsOpacityEffect *topOpacity = new QGraphicsOpacityEffect(topWidget);
+    topWidget->setGraphicsEffect(topOpacity);
+    topOpacity->setOpacity(1.0);
+
+    QPropertyAnimation *topOpacityAnim = new QPropertyAnimation(topOpacity, "opacity");
+    topOpacityAnim->connect(topOpacityAnim, &QPropertyAnimation::finished, topOpacityAnim, &QPropertyAnimation::deleteLater);
+    topOpacityAnim->connect(topOpacityAnim, &QPropertyAnimation::finished, topWidget, [ = ] () {
+        topWidget->setGraphicsEffect(nullptr);
+    });
+    topOpacityAnim->setEasingCurve(QEasingCurve::InCubic);
+    topOpacityAnim->setDuration(ANIMATION_DELAY_TIME_INTERVAL);
+    topOpacityAnim->setStartValue(1.0);
+    topOpacityAnim->setEndValue(0.0);
+    topOpacityAnim->start();
+}
+
+void animationFromTopToBottom(QWidget *topWidget, QWidget *bottomWidget)
+{
+    bottomWidget->setVisible(true);
+    topWidget->setVisible(true);
+
+    QRect topStartRect = QRect(0, 0, topWidget->width(), topWidget->height());
+    QRect topEndRect = topStartRect;
+    topEndRect.moveTo(0, topWidget->height());
+
+    QPropertyAnimation *topAnim = new QPropertyAnimation(topWidget, "geometry");
+    topAnim->connect(topAnim, &QPropertyAnimation::finished, topAnim, &QPropertyAnimation::deleteLater);
+    topAnim->connect(topAnim, &QPropertyAnimation::finished, topWidget, &QWidget::hide);
+    topAnim->setDuration(ANIMATION_DELAY_TIME_INTERVAL);
+    topAnim->setEasingCurve(QEasingCurve::InOutCubic);
+    topAnim->setStartValue(topStartRect);
+    topAnim->setEndValue(topEndRect);
+    topAnim->start();
+
+    QRect bottomStartRect = QRect(0, -topWidget->height(), bottomWidget->width(), bottomWidget->height());
+    QRect bottomEndRect = bottomStartRect;
+    bottomEndRect.moveBottom(topWidget->height() - 1);
+
+    QPropertyAnimation *bottomAnim = new QPropertyAnimation(bottomWidget, "geometry");
+    bottomAnim->connect(bottomAnim, &QPropertyAnimation::finished, bottomAnim, &QPropertyAnimation::deleteLater);
+    bottomAnim->setEasingCurve(QEasingCurve::InOutCubic);
+    bottomAnim->setDuration(ANIMATION_DELAY_TIME_INTERVAL);
+    bottomAnim->setStartValue(bottomStartRect);
+    bottomAnim->setEndValue(bottomEndRect);
+    bottomAnim->start();
+
+    QGraphicsOpacityEffect *bottomOpacity = new QGraphicsOpacityEffect(bottomWidget);
+    bottomWidget->setGraphicsEffect(bottomOpacity);
+    bottomOpacity->setOpacity(0);
+
+    QPropertyAnimation *bottomOpacityAnim = new QPropertyAnimation(bottomOpacity, "opacity");
+    bottomOpacityAnim->connect(bottomOpacityAnim, &QPropertyAnimation::finished, bottomOpacityAnim, &QPropertyAnimation::deleteLater);
+    bottomOpacityAnim->connect(bottomOpacityAnim, &QPropertyAnimation::finished, bottomWidget, [ = ]() {
+        bottomWidget->setGraphicsEffect(nullptr);
+    });
+    bottomOpacityAnim->setEasingCurve(QEasingCurve::InCubic);
+    bottomOpacityAnim->setDuration(ANIMATION_DELAY_TIME_INTERVAL);
+    bottomOpacityAnim->setStartValue(0.0);
+    bottomOpacityAnim->setEndValue(1.0);
+    bottomOpacityAnim->start();
+
+    QGraphicsOpacityEffect *topOpacity = new QGraphicsOpacityEffect(topWidget);
+    topWidget->setGraphicsEffect(topOpacity);
+    topOpacity->setOpacity(1.0);
+
+    QPropertyAnimation *topOpacityAnim = new QPropertyAnimation(topOpacity, "opacity");
+    topOpacityAnim->connect(topOpacityAnim, &QPropertyAnimation::finished, topOpacityAnim, &QPropertyAnimation::deleteLater);
+    topOpacityAnim->connect(topOpacityAnim, &QPropertyAnimation::finished, bottomWidget, [ = ] () {
+        topWidget->setGraphicsEffect(nullptr);
+    });
+    topOpacityAnim->setEasingCurve(QEasingCurve::InCubic);
+    topOpacityAnim->setDuration(ANIMATION_DELAY_TIME_INTERVAL);
+    topOpacityAnim->setStartValue(1.0);
+    topOpacityAnim->setEndValue(0.0);
+    topOpacityAnim->start();
+}
 }
 
 SettingDialog::SettingDialog(QWidget *parent):
     QDialog(parent)
-    , m_mainLayout(new QVBoxLayout(this))
-    , m_stackedWidget(new QStackedWidget)
+//    , m_settingLayout(new QVBoxLayout(this))
+//    , m_stackedWidget(new QStackedWidget)
 //    , m_okBtn(new QPushButton(this))
 {
     this->setWindowFlags(Qt::FramelessWindowHint);
@@ -57,20 +196,92 @@ SettingDialog::SettingDialog(QWidget *parent):
     //Why????? setStyleSheet将导致添加城市后，列表没有自动拉伸，出现重叠，但是qDebug打印的高度确实增加了，但是使用paintEvent可以
     //this->setStyleSheet("QDialog{border:1px solid #000000;border-radius:2px;background:rgba(255, 255, 255, 0.7);}QDialog:hover{background: rgba(255, 255, 255, 1.0);}");
 
-    m_mainLayout->setContentsMargins(1, 1, 1, 1);
-    m_mainLayout->setSpacing(0);
 
-    m_titleBar = new SettingTitleBar;
-    m_titleBar->setFixedHeight(100);
-    m_cityWidget = new CityWidget;//m_cityWidget = new QWidget;
+    initSettings();
+    initSearch();
+
+    QStackedLayout *contentLayout = new QStackedLayout(this);
+    contentLayout->setContentsMargins(20, 20, 20, 20);
+    contentLayout->setMargin(0);
+    contentLayout->setSpacing(0);
+    contentLayout->addWidget(m_settingFrame);
+    contentLayout->addWidget(m_searchFrame);
+    m_settingFrame->setVisible(true);
+}
+
+SettingDialog::~SettingDialog()
+{
+    if (m_settingFrame) {
+        delete m_settingFrame;
+        m_settingFrame = nullptr;
+    }
+    if (m_searchFrame) {
+        delete m_searchFrame;
+        m_searchFrame = nullptr;
+    }
+
+    QLayoutItem *child;
+    while ((child = m_settingLayout->takeAt(0)) != 0) {
+        if (child->widget())
+            child->widget()->deleteLater();
+        delete child;
+    }
+
+    delete m_searchTitleBar;
+    delete m_noResultLabel;
+    delete m_searchModel;
+    delete m_searchView;
+    delete m_searchDelegate;
+}
+
+QRect SettingDialog::getParentGeometry() const
+{
+    if (this->parentWidget()) {
+        return this->parentWidget()->window()->geometry();
+    } else {
+        QPoint pos = QCursor::pos();
+
+        for (QScreen *screen : qApp->screens()) {
+            if (screen->geometry().contains(pos)) {
+                return screen->geometry();
+            }
+        }
+    }
+
+    return qApp->primaryScreen()->geometry();
+}
+
+void SettingDialog::moveToCenter()
+{
+    QRect qr = geometry();
+    qr.moveCenter(this->getParentGeometry().center());
+    move(qr.topLeft());
+    this->show();
+}
+
+void SettingDialog::initSettings()
+{
+    m_settingFrame = new QFrame;
+    m_settingFrame->setFixedSize(this->size());
+    m_settingFrame->setContentsMargins(0, 0, 0, 0);
+
+    m_settingLayout = new QVBoxLayout(m_settingFrame);
+    m_stackedWidget = new QStackedWidget;
+    m_settingLayout->setContentsMargins(1, 1, 1, 1);
+    m_settingLayout->setSpacing(0);
+
+
+    m_settingTitleBar = new SettingTitleBar(m_settingFrame);
+    m_settingTitleBar->setFixedHeight(100);
+    m_cityWidget = new CityWidget(m_settingFrame);//m_cityWidget = new QWidget;
 //    m_cityWidget->setContentsMargins(0, 0, 0, 0);
-    m_cityWidget->setFixedHeight(this->height() - m_titleBar->height() - 2/* - BUTTON_WIDGET_HEIGHT*/);
+    m_cityWidget->setFixedHeight(this->height() - m_settingTitleBar->height() - 2/* - BUTTON_WIDGET_HEIGHT*/);
     m_cityWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_systemWidget = new QWidget;
+    m_systemWidget = new QWidget(m_settingFrame);
     m_systemWidget->setStyleSheet("QWidget{border-radius: 0px; background-color:#ffffff;}");
-    m_systemWidget->setFixedHeight(this->height() - m_titleBar->height() - 2/* - BUTTON_WIDGET_HEIGHT*/);
+    m_systemWidget->setFixedHeight(this->height() - m_settingTitleBar->height() - 2/* - BUTTON_WIDGET_HEIGHT*/);
     m_systemWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    connect(m_cityWidget, &CityWidget::responseCityError, m_titleBar, &SettingTitleBar::showWarnInfo);
+    connect(m_cityWidget, &CityWidget::responseCityError, m_settingTitleBar, &SettingTitleBar::showWarnInfo);
 
     /*m_okBtn->setFixedSize(90, 25);
     m_okBtn->setFocusPolicy(Qt::NoFocus);
@@ -99,7 +310,7 @@ SettingDialog::SettingDialog(QWidget *parent):
     m_variableGroup->setFixedWidth(this->width() - 2*GROUP_BOX_MARGIN);
 //    m_variableGroup->setContentsMargins(10, 10, 10, 10);
 
-    QLabel *updateFreqLabel = new QLabel;
+    QLabel *updateFreqLabel = new QLabel(m_systemWidget);
     updateFreqLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
     updateFreqLabel->setStyleSheet("QLabel{color:#808080;font-size:14px;text-align:left;}");
     updateFreqLabel->setText(tr("Update frequency") + "(15-60)");
@@ -180,42 +391,17 @@ SettingDialog::SettingDialog(QWidget *parent):
     m_stackedWidget->addWidget(m_systemWidget);
     m_stackedWidget->setCurrentWidget(m_cityWidget);
 
-    m_mainLayout->addWidget(m_titleBar, 0, Qt::AlignTop);
-    m_mainLayout->addWidget(m_stackedWidget, 1, Qt::AlignVCenter);
-//    m_mainLayout->addWidget(m_okBtn, 0, Qt::AlignRight);
-    m_mainLayout->addStretch();
+    m_settingLayout->addWidget(m_settingTitleBar, 0, Qt::AlignTop);
+    m_settingLayout->addWidget(m_stackedWidget, 1, Qt::AlignVCenter);
+//    m_settingLayout->addWidget(m_okBtn, 0, Qt::AlignRight);
+    m_settingLayout->addStretch();
 
-    connect(m_titleBar, &SettingTitleBar::requestCloseDialog, this, [=] {
-        this->reject();
+    connect(m_settingTitleBar, &SettingTitleBar::requestCloseDialog, this, [=] {
+        this->accept();
     });
     connect(m_cityWidget, &CityWidget::requestAddCity, this, [=] {
-        SearchDialog dlg;
-        connect(&dlg, &SearchDialog::requestAddCityToMenu, this, [this] (const LocationData &data) {   
-            if (m_preferences->isCitiesCountOverMax()) {
-                m_titleBar->showWarnInfo(tr("Only 10 cities can be added at most!"));//最多只能添加10个城市
-                return;
-            }
-            if (m_preferences->isCityIdExist(data.id)) {
-                m_titleBar->showWarnInfo(tr("The city already exists!"));//该城市已存在
-                return;
-            }
-
-            CitySettingData info;
-            info.active = false;
-            info.id = data.id;
-            info.name = data.city;
-            info.icon = ":/res/weather_icons/darkgrey/100.png";
-            m_cityWidget->addCityItem(info);
-
-            City city;
-            city.id = data.id;
-            city.name = data.city;
-
-            m_preferences->addCityInfoToPref(city);
-
-            emit this->requestRefreshCityMenu(info.active);
-        });
-        dlg.exec();
+        this->setWindowTitle(tr("Kylin Weather - Search"));
+        animationFromBottomToTop(m_settingFrame, m_searchFrame);
     });
 
     connect(m_cityWidget, &CityWidget::requestRefreshCityMenu, this, &SettingDialog::requestRefreshCityMenu);
@@ -239,7 +425,7 @@ SettingDialog::SettingDialog(QWidget *parent):
     /*connect(m_okBtn, &QPushButton::clicked, this, [=] {
         this->accept();
     });*/
-    connect(m_titleBar, &SettingTitleBar::requestSwitchPage, this, [=] (bool b) {
+    connect(m_settingTitleBar, &SettingTitleBar::requestSwitchPage, this, [=] (bool b) {
         if (b) {
             m_stackedWidget->setCurrentWidget(m_cityWidget);
 //            m_cityListWidget->resetData();
@@ -260,14 +446,104 @@ SettingDialog::SettingDialog(QWidget *parent):
     });
 }
 
-SettingDialog::~SettingDialog()
+void SettingDialog::initSearch()
 {
-    QLayoutItem *child;
-    while ((child = m_mainLayout->takeAt(0)) != 0) {
-        if (child->widget())
-            child->widget()->deleteLater();
-        delete child;
-    }
+    m_searchFrame = new QFrame;
+    m_searchFrame->setStyleSheet("QFrame{background:rgba(255, 255, 255, 0.7);}");
+    m_searchFrame->setFixedSize(this->size());
+    m_searchFrame->setContentsMargins(0, 0, 0, 0);
+
+    m_searchTitleBar = new SearchTitleBar(m_searchFrame);
+    m_searchTitleBar->setFixedHeight(150);
+    m_displayWidget = new QWidget(m_searchFrame);
+//    m_displayWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+//    m_displayWidget->setContentsMargins(0, m_searchTitleBar->height(), 0, 0);
+
+    m_searchModel = new SearchModel;
+    m_searchView = new SearchView;
+    m_searchDelegate = new SearchDelegate;
+    m_searchView->setFixedWidth(m_searchFrame->width() - 2*CONTENT_MARGIN);
+    m_searchView->setItemDelegate(m_searchDelegate);
+    m_searchView->setModel(m_searchModel);
+    m_searchView->setVisible(false);
+
+    m_noResultLabel = new QLabel(m_searchFrame);
+    m_noResultLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
+    m_noResultLabel->setAlignment(Qt::AlignCenter);
+    m_noResultLabel->setText(tr("No Result"));
+    m_noResultLabel->setVisible(false);
+    QFont font = m_noResultLabel->font();
+    const QFontMetrics fm(font);
+    m_noResultLabel->setFixedWidth(fm.width(m_noResultLabel->text()));
+
+    QVBoxLayout *layout = new QVBoxLayout(m_searchFrame);
+    layout->setContentsMargins(1, 1, 1, 1);
+    layout->setSpacing(0);
+    layout->addWidget(m_searchTitleBar);
+    layout->addWidget(m_displayWidget);
+
+    QHBoxLayout *contentLayout = new QHBoxLayout(m_displayWidget);
+    contentLayout->setContentsMargins(CONTENT_MARGIN, 0, CONTENT_MARGIN, 0);
+    contentLayout->setSpacing(0);
+    contentLayout->addWidget(m_searchView, 1, Qt::AlignHCenter);
+    contentLayout->addWidget(m_noResultLabel, 1, Qt::AlignCenter);
+
+    connect(m_searchView, &SearchView::clicked, this, [this](const QModelIndex &index) {
+        QVariant data = index.data(Qt::UserRole);//SearchModel::data Qt::UserRole
+        QString selectCityId = data.value<QString>();
+        for (const LocationData &line : m_searchModel->locationList()) {//it must exits.
+            if (line.id == selectCityId) {
+                //emit this->requestAddCityToMenu(line);
+                if (m_preferences->isCitiesCountOverMax()) {
+                    m_settingTitleBar->showWarnInfo(tr("Only 10 cities can be added at most!"));//最多只能添加10个城市
+                    break;
+                }
+                if (m_preferences->isCityIdExist(line.id)) {
+                    m_settingTitleBar->showWarnInfo(tr("The city already exists!"));//该城市已存在
+                    break;
+                }
+
+                CitySettingData info;
+                info.active = false;
+                info.id = line.id;
+                info.name = line.city;
+                info.icon = ":/res/weather_icons/darkgrey/100.png";
+                m_cityWidget->addCityItem(info);
+
+                City city;
+                city.id = line.id;
+                city.name = line.city;
+
+                m_preferences->addCityInfoToPref(city);
+
+                emit this->requestRefreshCityMenu(info.active);
+
+                this->setWindowTitle(tr("Kylin Weather - Setting"));
+                animationFromTopToBottom(m_searchFrame, m_settingFrame);
+                break;
+            }
+        }
+    });
+
+    connect(m_searchTitleBar, &SearchTitleBar::requestCloseDialog, this, [=] {
+        this->setWindowTitle(tr("Kylin Weather - Setting"));
+        animationFromTopToBottom(m_searchFrame, m_settingFrame);
+    });
+
+    connect(m_searchTitleBar, &SearchTitleBar::requestShowNoResultLabel, this, [=] {
+        m_noResultLabel->setVisible(true);
+    });
+    connect(m_searchTitleBar, &SearchTitleBar::requestResetViewAndModel, this, [=] {
+        m_searchView->setVisible(false);
+        m_noResultLabel->setVisible(false);
+        m_searchModel->setLocationData(QList<LocationData>());
+    });
+
+    connect(m_searchTitleBar, &SearchTitleBar::sendSearchResults, this, [=] (QList<LocationData> results) {
+        m_searchModel->setLocationData(results);
+        m_searchView->setVisible(true);
+        m_noResultLabel->setVisible(false);
+    });
 }
 
 void SettingDialog::mousePressEvent(QMouseEvent *event)

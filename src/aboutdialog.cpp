@@ -100,7 +100,7 @@ AboutDialog::AboutDialog(QWidget *parent)
 
     m_copyrightLabel = new QLabel();
     m_copyrightLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#00609a;font-size:12px;}");
-    m_copyrightLabel->setText("Copyright © 2013-2018 Ubuntu Kylin Team, lixiang@kylinos.cn");
+    m_copyrightLabel->setText("Copyright © 2013-2019 Ubuntu Kylin Team, lixiang@kylinos.cn");
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(1, 1, 1, 20);
