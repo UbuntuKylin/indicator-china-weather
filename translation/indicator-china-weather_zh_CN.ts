@@ -66,13 +66,13 @@
 <context>
     <name>CityItemWidget</name>
     <message>
-        <location filename="../src/cityitemwidget.cpp" line="51"/>
+        <location filename="../src/cityitemwidget.cpp" line="53"/>
         <source>Set as default</source>
         <translation>设为默认</translation>
     </message>
     <message>
-        <location filename="../src/cityitemwidget.cpp" line="84"/>
-        <location filename="../src/cityitemwidget.cpp" line="109"/>
+        <location filename="../src/cityitemwidget.cpp" line="86"/>
+        <location filename="../src/cityitemwidget.cpp" line="111"/>
         <source>%1 [Default]</source>
         <translation>%1 [默认]</translation>
     </message>
@@ -80,22 +80,22 @@
 <context>
     <name>CityWidget</name>
     <message>
-        <location filename="../src/citywidget.cpp" line="61"/>
+        <location filename="../src/citywidget.cpp" line="62"/>
         <source>Add City</source>
         <translation>添加城市</translation>
     </message>
     <message>
-        <location filename="../src/citywidget.cpp" line="194"/>
+        <location filename="../src/citywidget.cpp" line="195"/>
         <source>Only 10 cities can be added at most!</source>
         <translation>最多只能添加10个城市！</translation>
     </message>
     <message>
-        <location filename="../src/citywidget.cpp" line="200"/>
+        <location filename="../src/citywidget.cpp" line="201"/>
         <source>The city already exists!</source>
         <translation>该城市已存在！</translation>
     </message>
     <message>
-        <location filename="../src/citywidget.cpp" line="219"/>
+        <location filename="../src/citywidget.cpp" line="221"/>
         <source>At least one city needs to be preserved!</source>
         <translation>至少需要保留一个城市！</translation>
     </message>
@@ -162,105 +162,104 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="93"/>
-        <location filename="../src/mainwindow.cpp" line="371"/>
+        <location filename="../src/mainwindow.cpp" line="97"/>
+        <location filename="../src/mainwindow.cpp" line="408"/>
         <source>Kylin Weather</source>
         <translation>麒麟天气</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="99"/>
+        <location filename="../src/mainwindow.cpp" line="103"/>
         <source>Refresh time</source>
         <translation>刷新时间</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="130"/>
+        <location filename="../src/mainwindow.cpp" line="148"/>
         <source>Network not connected</source>
         <translation>网络未连接</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="134"/>
+        <location filename="../src/mainwindow.cpp" line="152"/>
         <source>Getting data</source>
         <translation>正在获取数据</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="172"/>
+        <location filename="../src/mainwindow.cpp" line="190"/>
         <source>Incorrect access address</source>
         <translation>访问地址异常</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="175"/>
+        <location filename="../src/mainwindow.cpp" line="193"/>
         <source>Network error code:%1</source>
         <translation>网络错误代码：%1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="261"/>
-        <location filename="../src/mainwindow.cpp" line="463"/>
+        <location filename="../src/mainwindow.cpp" line="281"/>
         <source>Refresh time:Just updated</source>
         <translation>刷新时间：刚刚</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="265"/>
+        <location filename="../src/mainwindow.cpp" line="285"/>
         <source>Refresh time:%1 minute ago</source>
         <translation>刷新时间：%1 分钟之前</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="268"/>
+        <location filename="../src/mainwindow.cpp" line="288"/>
         <source>Refresh time:%1 minutes ago</source>
         <translation>刷新时间：%1 分钟之前</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="296"/>
+        <location filename="../src/mainwindow.cpp" line="319"/>
         <source>City</source>
         <translation>城市</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="319"/>
+        <location filename="../src/mainwindow.cpp" line="342"/>
         <source>Release time</source>
         <translation>发布时间</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="328"/>
+        <location filename="../src/mainwindow.cpp" line="351"/>
         <source>Weather Forecast</source>
         <translation>天气预报</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="335"/>
+        <location filename="../src/mainwindow.cpp" line="372"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="337"/>
+        <location filename="../src/mainwindow.cpp" line="374"/>
         <source>Kylin Weather - About</source>
         <translation>麒麟天气 - 关于</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="339"/>
+        <location filename="../src/mainwindow.cpp" line="376"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="454"/>
+        <location filename="../src/mainwindow.cpp" line="501"/>
         <source>Temperature:%1˚C</source>
         <translation>温度：%1˚C</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="455"/>
+        <location filename="../src/mainwindow.cpp" line="502"/>
         <source>Relative humidity:%1</source>
         <translation>相对湿度：%1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="457"/>
-        <location filename="../src/mainwindow.cpp" line="460"/>
+        <location filename="../src/mainwindow.cpp" line="504"/>
+        <location filename="../src/mainwindow.cpp" line="507"/>
         <source>Air quality:%1</source>
         <translation>空气质量：%1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="457"/>
+        <location filename="../src/mainwindow.cpp" line="504"/>
         <source>Unknown</source>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="462"/>
+        <location filename="../src/mainwindow.cpp" line="509"/>
         <source>Release time:%1</source>
         <translation>发布时间：%1</translation>
     </message>
@@ -290,17 +289,17 @@
         <translation type="vanished">更新失败</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="305"/>
+        <location filename="../src/nowweatherwidget.cpp" line="310"/>
         <source>Static wind</source>
         <translation>静风</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="308"/>
+        <location filename="../src/nowweatherwidget.cpp" line="313"/>
         <source>%1stage wind</source>
         <translation>%1级风</translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="312"/>
+        <location filename="../src/nowweatherwidget.cpp" line="317"/>
         <source>Unknown</source>
         <translation>未知</translation>
     </message>
@@ -468,14 +467,12 @@
 <context>
     <name>SearchDialog</name>
     <message>
-        <location filename="../src/searchdialog.cpp" line="45"/>
         <source>Kylin Weather - Search</source>
-        <translation>麒麟天气 - 查找城市</translation>
+        <translation type="vanished">麒麟天气 - 查找城市</translation>
     </message>
     <message>
-        <location filename="../src/searchdialog.cpp" line="65"/>
         <source>No Result</source>
-        <translation>没有结果</translation>
+        <translation type="vanished">没有结果</translation>
     </message>
 </context>
 <context>
@@ -497,47 +494,59 @@
 <context>
     <name>SettingDialog</name>
     <message>
-        <location filename="../src/settingdialog.cpp" line="55"/>
+        <location filename="../src/settingdialog.cpp" line="194"/>
+        <location filename="../src/settingdialog.cpp" line="521"/>
+        <location filename="../src/settingdialog.cpp" line="529"/>
         <source>Kylin Weather - Setting</source>
         <translation>麒麟天气 - 设置</translation>
     </message>
     <message>
-        <location filename="../src/settingdialog.cpp" line="98"/>
+        <location filename="../src/settingdialog.cpp" line="309"/>
         <source>Variable configuration</source>
         <translation>可变配置</translation>
     </message>
     <message>
-        <location filename="../src/settingdialog.cpp" line="105"/>
+        <location filename="../src/settingdialog.cpp" line="316"/>
         <source>Update frequency</source>
         <translation>更新周期</translation>
     </message>
     <message>
-        <location filename="../src/settingdialog.cpp" line="120"/>
+        <location filename="../src/settingdialog.cpp" line="331"/>
         <source>Background transparency</source>
         <translation>背景透明度</translation>
     </message>
     <message>
-        <location filename="../src/settingdialog.cpp" line="153"/>
+        <location filename="../src/settingdialog.cpp" line="364"/>
         <source>Fixed configuration</source>
         <translation>固定配置</translation>
     </message>
     <message>
-        <location filename="../src/settingdialog.cpp" line="159"/>
+        <location filename="../src/settingdialog.cpp" line="370"/>
         <source>Temperature standard</source>
         <translation>温度标准</translation>
     </message>
     <message>
-        <location filename="../src/settingdialog.cpp" line="163"/>
+        <location filename="../src/settingdialog.cpp" line="374"/>
         <source>Source of weather: heweather</source>
         <translation>天气来源：和风天气</translation>
     </message>
     <message>
-        <location filename="../src/settingdialog.cpp" line="195"/>
+        <location filename="../src/settingdialog.cpp" line="403"/>
+        <source>Kylin Weather - Search</source>
+        <translation>麒麟天气 - 查找城市</translation>
+    </message>
+    <message>
+        <location filename="../src/settingdialog.cpp" line="473"/>
+        <source>No Result</source>
+        <translation>没有结果</translation>
+    </message>
+    <message>
+        <location filename="../src/settingdialog.cpp" line="498"/>
         <source>Only 10 cities can be added at most!</source>
         <translation>最多只能添加10个城市！</translation>
     </message>
     <message>
-        <location filename="../src/settingdialog.cpp" line="199"/>
+        <location filename="../src/settingdialog.cpp" line="502"/>
         <source>The city already exists!</source>
         <translation>该城市已存在！</translation>
     </message>
@@ -567,57 +576,57 @@
 <context>
     <name>ToolTip</name>
     <message>
-        <location filename="../src/tooltip.cpp" line="136"/>
+        <location filename="../src/tooltip.cpp" line="135"/>
         <source>Sunrise: %1 sunset: %2</source>
         <translation>日出： %1  日落： %2</translation>
     </message>
     <message>
-        <location filename="../src/tooltip.cpp" line="139"/>
+        <location filename="../src/tooltip.cpp" line="138"/>
         <source>Sunrise and sunset: %1</source>
         <translation>日出日落：%1</translation>
     </message>
     <message>
-        <location filename="../src/tooltip.cpp" line="143"/>
+        <location filename="../src/tooltip.cpp" line="142"/>
         <source>Moonrise: %1 moonset: %2</source>
         <translation>月升：%1  月降：%2</translation>
     </message>
     <message>
-        <location filename="../src/tooltip.cpp" line="146"/>
+        <location filename="../src/tooltip.cpp" line="145"/>
         <source>Moonrise and moonset: %1</source>
         <translation>月升月降：%1</translation>
     </message>
     <message>
-        <location filename="../src/tooltip.cpp" line="149"/>
+        <location filename="../src/tooltip.cpp" line="148"/>
         <source>Relative humidity:%1</source>
         <translation>相对湿度：%1</translation>
     </message>
     <message>
-        <location filename="../src/tooltip.cpp" line="150"/>
+        <location filename="../src/tooltip.cpp" line="149"/>
         <source>Precipitation:%1 mm</source>
         <translation>降水量：%1 mm</translation>
     </message>
     <message>
-        <location filename="../src/tooltip.cpp" line="151"/>
+        <location filename="../src/tooltip.cpp" line="150"/>
         <source>Probability of precipitation:%1</source>
         <translation>降水概率：%1</translation>
     </message>
     <message>
-        <location filename="../src/tooltip.cpp" line="152"/>
+        <location filename="../src/tooltip.cpp" line="151"/>
         <source>Atmospheric pressure:%1 hPa</source>
         <translation>大气压强：%1 hPa</translation>
     </message>
     <message>
-        <location filename="../src/tooltip.cpp" line="153"/>
+        <location filename="../src/tooltip.cpp" line="152"/>
         <source>UV intensity index:%1</source>
         <translation>紫外线强度指数：%1</translation>
     </message>
     <message>
-        <location filename="../src/tooltip.cpp" line="154"/>
+        <location filename="../src/tooltip.cpp" line="153"/>
         <source>Visibility:%1 km</source>
         <translation>能见度：%1 km</translation>
     </message>
     <message>
-        <location filename="../src/tooltip.cpp" line="155"/>
+        <location filename="../src/tooltip.cpp" line="154"/>
         <source>Wind:%1 %2stage  direction %3  speed %4 km/h</source>
         <translation>风：%1 %2级  风向 %3  风速 %4 km/h</translation>
     </message>
