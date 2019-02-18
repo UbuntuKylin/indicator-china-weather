@@ -1,3 +1,9 @@
+indicator-china-weather (3.0.1-0ubuntu4) cosmic; urgency=low
+
+  * Fixed weekly error.
+
+ -- lixiang <lixiang@kylinos.cn>  Mon, 18 Feb 2019 11:32:46 +0800
+
 indicator-china-weather (3.0.1-0ubuntu3) cosmic; urgency=low
   
   * Handling mouse events on pallets.

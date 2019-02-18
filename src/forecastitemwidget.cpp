@@ -4,49 +4,8 @@
 #include <QDebug>
 #include <QEvent>
 #include <QCursor>
-
-inline QString covertDateToWeek(QString dateStr)
-{
-    //星期使用基姆拉尔森计算公式
-    if (dateStr.contains(QChar('-'))) {
-        QStringList dateList= dateStr.split(QChar('-'));
-        if (dateList.length() == 3) {
-            bool ok;
-            int year = dateList.at(0).toInt(&ok, 10);
-            int month = dateList.at(1).toInt(&ok, 10);
-            int day = dateList.at(2).toInt(&ok, 10);
-
-            int week = (day + 2*month + 3*(month+1)/5 + year + year/4 - year/100 + year/400)%7;
-            switch (week) {
-            case 0:
-                return QString(QObject::tr("Monday"));//星期一
-                break;
-            case 1:
-                return QString(QObject::tr("Tuesday"));//星期二
-                break;
-            case 2:
-                return QString(QObject::tr("Wednesday"));//星期三
-                break;
-            case 3:
-                return QString(QObject::tr("Thursday"));//星期四
-                break;
-            case 4:
-                return QString(QObject::tr("Friday"));//星期五
-                break;
-            case 5:
-                return QString(QObject::tr("Saturday"));//星期六
-                break;
-            case 6:
-                return QString(QObject::tr("Sunday"));//星期日
-                break;
-            default:
-                break;
-            }
-        }
-    }
-
-    return "--";
-}
+#include <QDate>
+#include <QDateTime>
 
 ForecastItemWidget::ForecastItemWidget(QWidget *parent) :
     QWidget(parent)
@@ -83,7 +42,16 @@ void ForecastItemWidget::resetForecastData(const ForecastWeather &data, int inde
         m_weekLabel->setText(tr("Today"));
     }
     else {
-        m_weekLabel->setText(covertDateToWeek(data.forcast_date));
+        if (data.forcast_date.isEmpty()) {
+            m_weekLabel->setText("--");
+        }
+        else {
+            QDateTime dt = QDateTime::fromString(data.forcast_date,"yyyy-MM-dd");
+    //        QDateTime dt;
+    //        dt.setTime_t(str.toInt());
+            QDate m_date = dt.date();//qDebug() << QDate::currentDate().toString("ddd");
+            m_weekLabel->setText(m_date.toString("ddd"));
+        }
     }
 
     m_dateLabel->setText(data.forcast_date);
