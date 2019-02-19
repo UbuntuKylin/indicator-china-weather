@@ -2,16 +2,16 @@ Source: indicator-china-weather
 Section: utils
 Priority: optional
 Maintainer: lixiang <lixiang@kylinos.cn>
-Build-Depends: debhelper (>=11),
+Build-Depends: debhelper (>=12),
                qtbase5-dev (>= 5.1),
                qt5-qmake,
                qtchooser,
                qtbase5-dev-tools,
                qtscript5-dev
-Standards-Version: 4.2.1
-Homepage: https://github.com/ukui/indicator-china-weather
-Vcs-Git: https://github.com/ukui/indicator-china-weather.git
-Vcs-Browser: https://github.com/ukui/indicator-china-weather
+Standards-Version: 4.3.0
+Homepage: https://github.com/ubuntukylin/indicator-china-weather
+Vcs-Git: https://github.com/ubuntukylin/indicator-china-weather.git
+Vcs-Browser: https://github.com/ubuntukylin/indicator-china-weather
 
 Package: indicator-china-weather
 Architecture: any

@@ -1,19 +1,14 @@
-indicator-china-weather (3.0.1-0ubuntu4) cosmic; urgency=low
+indicator-china-weather (3.0.2-0ubuntu1) disco; urgency=medium
 
-  * Fixed weekly error.
-
- -- lixiang <lixiang@kylinos.cn>  Mon, 18 Feb 2019 11:32:46 +0800
-
-indicator-china-weather (3.0.1-0ubuntu3) cosmic; urgency=low
-  
   * Handling mouse events on pallets.
   * PrimaryScreen display.
   * Hide window when focusOutEvent occurred.
   * Mainwindow moves with the position of panel.
+  * Fixed weekly error.
 
- -- lixiang <lixiang@kylinos.cn>  Tue, 20 Nov 2018 09:18:09 +0800
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Tue, 19 Feb 2019 13:53:36 +0800
 
-indicator-china-weather (3.0.1-0ubuntu1) cosmic; urgency=low
+indicator-china-weather (3.0.1-0ubuntu1) UNRELEASED; urgency=medium
 
   * Used the latest version of heweather API.
   * New UI with Qt5.
