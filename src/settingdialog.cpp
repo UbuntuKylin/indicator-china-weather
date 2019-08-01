@@ -581,6 +581,11 @@ void SettingDialog::refreshCityList(const QString &id)
     }
 }
 
+void SettingDialog::addCityItem(const CitySettingData &info)
+{
+    m_cityWidget->addCityItem(info);
+}
+
 void SettingDialog::accept()
 {
     hide();

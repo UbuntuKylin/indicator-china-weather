@@ -24,6 +24,7 @@
 #include "aboutdialog.h"
 #include "promptwidget.h"
 #include "weatherworker.h"
+#include "maskwidget.h"
 
 #include <QApplication>
 #include <QDesktopWidget>
@@ -88,6 +89,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_autoRefreshTimer(new QTimer(this))
     , m_actualizationTime(0)
     , m_weatherWorker(new WeatherWorker(this))
+    , m_maskWidget(new MaskWidget(this))//MaskWidget::Instance();
 {
     this->setFixedSize(355, 552);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint);
@@ -99,6 +101,8 @@ MainWindow::MainWindow(QWidget *parent)
     this->setStyleSheet("QMainWindow{color:white;background-image:url(':/res/background/weather-clear.png');background-repeat:no-repeat;}");
 
     global_init();
+
+    this->createSettingDialog();
 
     m_updateTimeStr = QString(tr("Refresh time"));
 
@@ -153,36 +157,35 @@ MainWindow::MainWindow(QWidget *parent)
     m_movieWidget->move((this->width() - m_hintWidget->width())/2, (this->height() - m_hintWidget->height())/2);
     m_movieWidget->setVisible(false);
 
-    this->createSettingDialog();
-
-    if (!m_weatherWorker->isNetWorkSettingsGood()) {
+    if (!m_weatherWorker->isNetWorkSettingsGood()) {//无网络连接
         m_contentWidget->setNetworkErrorPages();
         m_autoRefreshTimer->stop();
     }
-    else {
+    else {//有网络连接，开始检查互联网是否可以ping通
         m_weatherWorker->netWorkOnlineOrNot();//ping www.baidu.com
-//        m_weatherWorker->requestPostHostInfoToWeatherServer();
-//        this->startGetWeather();
     }
 
-    connect(m_contentWidget, &ContentWidget::requestRetryWeather, this, [=] {
-        m_weatherWorker->requestPostHostInfoToWeatherServer();
-        this->startGetWeather();
-    });
-
-
     connect(m_weatherWorker, &WeatherWorker::nofityNetworkStatus, this, [=] (const QString &status) {
-        if (status == "OK") {
+        if (status == "OK") {//互联网可以ping通
             m_weatherWorker->requestPostHostInfoToWeatherServer();
-            this->startGetWeather();
+
+            m_weatherWorker->startAutoLocationTask();//开始自动定位城市
+//            this->startGetWeather();
         }
-        else {
+        else {//互联网无法ping通
             m_hintWidget->setIconAndText(":/res/network_warn.png", status);
             m_contentWidget->setNetworkErrorPages();
         }
     });
 
+    connect(m_contentWidget, &ContentWidget::requestRetryWeather, this, [=] {
+        m_weatherWorker->requestPostHostInfoToWeatherServer();
+        m_weatherWorker->startAutoLocationTask();//开始自动定位城市
+//        this->startGetWeather();
+    });
+
     connect(m_weatherWorker, &WeatherWorker::responseFailure, this, [=] (int code) {
+        m_maskWidget->hide();
         m_autoRefreshTimer->stop();
         m_movieWidget->setVisible(false);
         m_hintWidget->setVisible(true);
@@ -201,6 +204,7 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
     connect(m_weatherWorker, &WeatherWorker::observeDataRefreshed, this, [=] (const ObserveWeather &data) {
+        m_maskWidget->hide();
         m_autoRefreshTimer->start(m_preferences->m_updateFrequency * 1000 * 60);
         if (m_preferences->m_currentCity.isEmpty()) {
             m_preferences->m_currentCity = data.city;
@@ -226,6 +230,7 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
     connect(m_weatherWorker, &WeatherWorker::forecastDataRefreshed, this, [=] (const QList<ForecastWeather> &datas, const LifeStyle &data) {
+        m_maskWidget->hide();
         if (!m_autoRefreshTimer->isActive()) {
             m_autoRefreshTimer->start(m_preferences->m_updateFrequency * 1000 * 60);
         }
@@ -242,6 +247,21 @@ MainWindow::MainWindow(QWidget *parent)
 
         m_contentWidget->refreshLifestyleUI(data);
     });
+
+    //自动定位成功后，更新各个控件的默认城市数据，并开始获取天气数据
+    connect(m_weatherWorker, &WeatherWorker::requestAutoLocationData, this, [=] (const CitySettingData &info, bool success) {
+        if (success) {//自动定位城市成功后，更新各个ui，然后获取天气数据
+            m_setttingDialog->addCityItem(info);
+            m_setttingDialog->refreshCityList(m_preferences->m_currentCity);
+            this->refreshCityActions();
+            m_cityMenu->menuAction()->setText(info.name);
+            this->startGetWeather();
+        }
+        else {//自动定位城市失败后，获取天气数据
+            this->startGetWeather();
+        }
+    });
+
 
     m_tipTimer->setInterval(60*1000);
     m_tipTimer->setSingleShot(false);
@@ -260,6 +280,8 @@ MainWindow::MainWindow(QWidget *parent)
     this->setOpacity(value);
 
     this->setVisible(false);
+
+
 }
 
 MainWindow::~MainWindow()
@@ -305,6 +327,7 @@ void MainWindow::setOpacity(double opacity)
 
 void MainWindow::startGetWeather()
 {
+    m_maskWidget->showMask();
     m_tipTimer->stop();
     m_movieWidget->setVisible(true);
     m_titleBar->setCityName(m_preferences->m_currentCity);
@@ -555,20 +578,32 @@ void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 
 void MainWindow::movePosition()
 {
-    QPoint pos = QCursor::pos();
+    //QPoint pos = QCursor::pos();
     //qDebug() << "mapFromGlobal(pos)=" << mapFromGlobal(pos);//QPoint(1709,249)
     QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
-//    qDebug() << "availableGeometry=" << availableGeometry;//QRect(65,24 1855x1056)      QRect(0,0 1366x728)
+    //qDebug() << "availableGeometry=" << availableGeometry;//QRect(65,24 1855x1056)      QRect(0,0 1366x728)
     QRect screenGeometry = qApp->primaryScreen()->geometry();
-//    qDebug() << "screenGeometry=" << screenGeometry;//QRect(0,0 1920x1080)        QRect(0,0 1366x768)
+    //qDebug() << "screenGeometry=" << screenGeometry;//QRect(0,0 1920x1080)        QRect(0,0 1366x768)
 
+    //panel in bottom or right, then show on topRight
+    if (availableGeometry.x() == screenGeometry.x() && availableGeometry.y() == screenGeometry.y()) {
+        this->move(availableGeometry.x() + availableGeometry.width() - this->width(), availableGeometry.height() - this->height());
+    }
+    else {//panel in top or left, then show on bottomRight
+        this->move(availableGeometry.x() + availableGeometry.width() - this->width(), availableGeometry.y());
+    }
+    this->showNormal();
+    this->raise();
+    this->activateWindow();
+
+    /*
     if (screenGeometry.contains(pos)) {
         if (pos.x() > screenGeometry.width()/2 && pos.y() > screenGeometry.height()/2) {//panel bottom or right
 //            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenGeometry.height() - (screenGeometry.height() - availableGeometry.height()) - this->height());
             this->move(availableGeometry.x() + availableGeometry.width() - this->width(), availableGeometry.height() - this->height());
         }
         else if (pos.x() > screenGeometry.width()/2 && pos.y() <= screenGeometry.height()/2) {//panel top
-             this->move(availableGeometry.x() + availableGeometry.width() - this->width(), availableGeometry.y());
+            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), availableGeometry.y());
         }
         else if (pos.x() <= screenGeometry.width()/2 && pos.y() > screenGeometry.height()/2) {//panel left
             this->move(availableGeometry.x(), availableGeometry.height() - this->height());
@@ -577,6 +612,7 @@ void MainWindow::movePosition()
         this->raise();
         this->activateWindow();
     }
+    */
     /*for (QScreen *screen : qApp->screens()) {
         if (screen->geometry().contains(pos)) {
         }

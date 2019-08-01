@@ -53,6 +53,8 @@ public:
     QRect getParentGeometry() const;
     void moveToCenter();
 
+    void addCityItem(const CitySettingData &info);
+
 public slots:
     virtual void accept();
     virtual void reject();

@@ -46,11 +46,26 @@ void ForecastItemWidget::resetForecastData(const ForecastWeather &data, int inde
             m_weekLabel->setText("--");
         }
         else {
+            QLocale locale;
+            locale = locale.language();
+    //        if (locale.language() == QLocale::Chinese) {
+    //            qDebug() << "CH";
+    //        }
+    //        else if (locale.language() == QLocale::English) {
+    //            qDebug() << "EN";
+    //            locale = QLocale::English;
+    //        }
+            QDateTime dt = QDateTime::fromString(data.forcast_date,"yyyy-MM-dd");
+            QDate m_date = dt.date();
+            m_weekLabel->setText(locale.toString(m_date, "ddd"));
+
+            /*
             QDateTime dt = QDateTime::fromString(data.forcast_date,"yyyy-MM-dd");
     //        QDateTime dt;
     //        dt.setTime_t(str.toInt());
             QDate m_date = dt.date();//qDebug() << QDate::currentDate().toString("ddd");
             m_weekLabel->setText(m_date.toString("ddd"));
+            */
         }
     }
 

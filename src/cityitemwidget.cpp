@@ -73,7 +73,7 @@ CityItemWidget::CityItemWidget(CitySettingData info, QWidget *parent) : QWidget(
     m_layout->addSpacing(15);
 
     connect(m_defaultBtn, &QPushButton::clicked, this, [=] {
-        emit this->requestRefreshDefaultCity(this->getCityId());
+        emit this->requestSetDefaultCityById(this->getCityId());
     });
     connect(m_deleteBtn, &QPushButton::clicked, this, [=] {
         emit this->requestDeleteCity(this->getCityId());

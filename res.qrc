@@ -215,6 +215,7 @@
         <file>res/flu_index.png</file>
         <file>res/sport_index.png</file>
         <file>res/trav_index.png</file>
+        <file>res/move.gif</file>
     </qresource>
     <qresource prefix="/data">
         <file>data/china-city-list.csv</file>

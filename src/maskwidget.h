@@ -17,36 +17,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CITYLISTWIDGET_H
-#define CITYLISTWIDGET_H
+#ifndef MASKWIDGET_H
+#define MASKWIDGET_H
 
-#include "cityitemwidget.h"
+#include <QWidget>
+#include <QMutex>
 
-class CityListWidget : public QWidget
+class QMovie;
+class QLabel;
+
+class MaskWidget : public QWidget
 {
     Q_OBJECT
-
 public:
-    explicit CityListWidget(QWidget *parent = 0);
-    ~CityListWidget();
+    explicit MaskWidget(QWidget *parent = 0);
+    ~MaskWidget();
+    static MaskWidget *Instance()
+    {
+        static QMutex mutex;
+        if (!self) {
+            QMutexLocker locker(&mutex);
+            if (!self) {
+                self = new MaskWidget;
+            }
+        }
+        return self;
+    }
 
-    CityItemWidget* getItem(int index);
+    void showMask();
 
-    void appendItem(CityItemWidget *item);
-    void removeItem(CityItemWidget *item);
-
-    int itemCount() const;
-    void clearUI();
-
-public slots:
-    void updateCityListHeight();
+protected:
+    void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
+    void hideEvent(QHideEvent* event) Q_DECL_OVERRIDE;
 
 private:
-    bool eventFilter(QObject *obj, QEvent *event) Q_DECL_OVERRIDE;
-
-private:
-    QVBoxLayout *m_layout = nullptr;
-    QTimer *m_timer = nullptr;
+    static MaskWidget *self;
+    QMovie *m_movie = nullptr;
+    QLabel *m_iconLabel = nullptr;
+    QLabel *m_textLabel = nullptr;
 };
 
-#endif // CITYLISTWIDGET_H
+#endif // MASKWIDGET_H

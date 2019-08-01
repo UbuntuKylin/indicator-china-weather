@@ -18,6 +18,7 @@
  */
 
 #include "weatherworker.h"
+#include "automaticlocation.h"
 
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -67,11 +68,19 @@ WeatherWorker::WeatherWorker(QObject *parent) :
     connect(m_networkManager, &QNetworkAccessManager::finished, this, [] (QNetworkReply *reply) {
         reply->deleteLater();
     });
+
+    m_automatic = new AutomaticLocation(this);
+    connect(m_automatic, &AutomaticLocation::autoFinished, this, &WeatherWorker::setAutoCity);
 }
 
 WeatherWorker::~WeatherWorker()
 {
 
+}
+
+void WeatherWorker::startAutoLocationTask()
+{
+    m_automatic->start();
 }
 
 bool WeatherWorker::isNetWorkSettingsGood()
@@ -576,5 +585,89 @@ QString WeatherWorker::getErrorCodeDescription(QString errorCode)
     }
     else {
         return tr("Unknown");
+    }
+}
+
+
+void WeatherWorker::setAutoCity(const QString &cityName)
+{
+    //qDebug() << "auto city: " << cityName;
+    bool autoSuccess = false;
+    CitySettingData info;
+    City city;
+
+    if (cityName.isEmpty()) {
+        emit this->requestAutoLocationData(info, false);
+        return;
+    }
+    //CN101250101,changsha,长沙,CN,China,中国,hunan,湖南,changsha,长沙,28.19409,112.98228,"430101,430100,430000",
+    QFile file(":/data/data/china-city-list.csv");
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QString line = file.readLine();
+        line = line.replace("\n", "");
+        while (!line.isEmpty()) {
+            QStringList resultList = line.split(",");
+            if (resultList.length() < 10) {
+                line = file.readLine();
+                line = line.replace("\n", "");
+                continue;
+            }
+
+            QString id = resultList.at(0);
+            if (!id.startsWith("CN")) {
+                line = file.readLine();
+                line = line.replace("\n", "");
+                continue;
+            }
+
+            if (resultList.at(1).compare(cityName, Qt::CaseInsensitive) == 0) {
+                qDebug() << "id=" << id;//id.remove(0, 2);//remove "CN"
+                qDebug() << "city=" << resultList.at(2);
+
+                id.remove(0, 2);//remove "CN"
+                QString name = resultList.at(2);
+
+                if (m_preferences->isCitiesCountOverMax()) {
+                    if (m_preferences->isCityIdExist(id)) {
+                        //从已有列表中将自动定位的城市设置为默认城市
+                        m_preferences->setCurrentCityIdAndName(name);
+                    }
+                    else {
+                        break;
+                    }
+                }
+                else {
+                    if (m_preferences->isCityIdExist(id)) {
+                        m_preferences->setCurrentCityIdAndName(name);
+                    }
+                    else {
+                        m_preferences->setCurrentCityIdAndName(name);
+                        m_preferences->addCityInfoToPref(city);
+                    }
+                }
+
+                info.active = false;
+                info.id = id;
+                info.name = name;
+                info.icon = ":/res/weather_icons/darkgrey/100.png";
+
+                city.id = id;
+                city.name = name;
+
+                autoSuccess = true;
+                break;
+            }
+
+            line = file.readLine();
+            line = line.replace("\n", "");
+        }
+        file.close();
+    }
+
+    if (autoSuccess) {
+        emit this->requestAutoLocationData(info, true);
+    }
+    else {
+        emit this->requestAutoLocationData(info, false);
     }
 }

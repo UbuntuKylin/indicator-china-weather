@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     a.setOrganizationName("kylin");
     a.setApplicationName("Kylin Weather (indication-china-weather)");
-    a.setApplicationVersion("3.0.1");
+    a.setApplicationVersion("3.0.2");
     a.setQuitOnLastWindowClosed(false);//Avoid that after hiding mainwindow, close the sub window would cause the program exit
 
     QString locale = QLocale::system().name();
@@ -43,16 +43,12 @@ int main(int argc, char *argv[])
             a.installTranslator(&translator);
     }
 
-//    QTranslator qtTranslator;
-//    qtTranslator.load("qt_" + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-//    a.installTranslator(&qtTranslator);
-
     MainWindow w;
     DbusAdaptor adaptor(&w);
     Q_UNUSED(adaptor);
     auto connection = QDBusConnection::sessionBus();
     if (!connection.registerService("com.kylin.weather") || !connection.registerObject("/com/kylin/weather", &w/*, QDBusConnection::ExportAllSlots | QDBusConnection::ExportAllSignals*/)) {
-        //qCritical() << "QDbus register service failed reason:" << connection.lastError();
+        qCritical() << "QDbus register service failed reason:" << connection.lastError();
         QDBusInterface iface("com.kylin.weather",
                                        "/com/kylin/weather",
                                        "com.kylin.weather",
@@ -61,7 +57,6 @@ int main(int argc, char *argv[])
 
         return 0;
     }//QDBusConnection::sessionBus().unregisterService("com.kylin.weather");
-    //w.show();
 
     return a.exec();
 }

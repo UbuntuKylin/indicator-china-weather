@@ -51,8 +51,8 @@ TranslucentLabel::TranslucentLabel(bool showTip, QWidget *parent)
     m_text->setStyleSheet("QLabel{border:none;background:transparent;background-color:transparent;color:#ffffff;font-size:12px;}");
 
     QHBoxLayout *m_layout = new QHBoxLayout(this);
-    m_layout->setContentsMargins(5, 0, 5, 0);
-    m_layout->setSpacing(5);
+    m_layout->setContentsMargins(5, 0, 1, 0);
+    m_layout->setSpacing(2);
 
     m_layout->addWidget(m_icon, 0, Qt::AlignLeft | Qt::AlignVCenter);
     m_layout->addWidget(m_text, 1, Qt::AlignLeft | Qt::AlignVCenter);
@@ -69,7 +69,7 @@ void TranslucentLabel::setLabelText(const QString &text)
 {
     QFont font = m_text->font();
     const QFontMetrics fm(font);
-    QString elided_text = fm.elidedText(text, Qt::ElideRight, this->width() - m_icon->width() - 10);
+    QString elided_text = fm.elidedText(text, Qt::ElideRight, this->width() - m_icon->width() - 8);
     m_text->setText(elided_text);
 
 }

@@ -219,6 +219,7 @@ NowWeatherWidget::NowWeatherWidget(QFrame *parent) :
 
     m_aqiLabel = new TranslucentLabel(true, this);
     m_aqiLabel->setLabelIcon(":/res/aqi.png");
+    m_aqiLabel->setToolTip(tr("Click to see details of air quality"));
     m_aqiLabel->move(m_weatherIcon->x() - 10, m_windLabel->y());
     connect(m_aqiLabel, &TranslucentLabel::clicked, this, [=] {
         if (m_ariWidget->isVisible()) {

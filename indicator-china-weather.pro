@@ -32,6 +32,8 @@ INSTALLS += target icons desktop startdesktop
 CONFIG += c++14
 CONFIG += qt warn_on
 CONFIG += release
+CONFIG += link_pkgconfig
+PKGCONFIG += geoip
 
 QMAKE_CPPFLAGS *= $(shell dpkg-buildflags --get CPPFLAGS)
 QMAKE_CFLAGS   *= $(shell dpkg-buildflags --get CFLAGS)
@@ -82,7 +84,9 @@ SOURCES += src/main.cpp \
     src/tipmodule.cpp \
     src/promptwidget.cpp \
     src/airwidget.cpp \
-    src/dbusadaptor.cpp
+    src/dbusadaptor.cpp \
+    src/automaticlocation.cpp \
+    src/maskwidget.cpp
 
 HEADERS  += src/mainwindow.h \
     src/titlebar.h \
@@ -122,7 +126,9 @@ HEADERS  += src/mainwindow.h \
     src/tipmodule.h \
     src/promptwidget.h \
     src/airwidget.h \
-    src/dbusadaptor.h
+    src/dbusadaptor.h \
+    src/automaticlocation.h \
+    src/maskwidget.h
 
 RESOURCES += \
     res.qrc

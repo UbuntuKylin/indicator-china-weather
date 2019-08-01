@@ -3,11 +3,13 @@ Section: utils
 Priority: optional
 Maintainer: lixiang <lixiang@kylinos.cn>
 Build-Depends: debhelper (>=11),
+               build-essential,
                qtbase5-dev (>= 5.1),
                qt5-qmake,
                qtchooser,
                qtbase5-dev-tools,
-               qtscript5-dev
+               qtscript5-dev,
+               libgeoip-dev,
 Standards-Version: 4.2.1
 Homepage: https://github.com/ukui/indicator-china-weather
 Vcs-Git: https://github.com/ukui/indicator-china-weather.git

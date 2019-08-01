@@ -32,6 +32,7 @@ class ContentWidget;
 class SettingDialog;
 class PromptWidget;
 class WeatherWorker;
+class MaskWidget;
 
 class MainWindow : public QMainWindow
 {
@@ -100,6 +101,8 @@ private:
 
     QTimer *m_autoRefreshTimer = nullptr;
     QString m_currentDesktop;
+
+    MaskWidget *m_maskWidget = nullptr;
 
     //test
     //bool m_isDN;

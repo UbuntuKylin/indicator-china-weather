@@ -28,6 +28,8 @@
 
 #include "data.h"
 
+class AutomaticLocation;
+
 class WeatherWorker : public QObject
 {
     Q_OBJECT
@@ -58,22 +60,27 @@ public:
 
     QString getErrorCodeDescription(QString errorCode);
 
+    void startAutoLocationTask();
+
 signals:
     void observeDataRefreshed(const ObserveWeather &data);
     void forecastDataRefreshed(const QList<ForecastWeather> &datas, LifeStyle data);
     void nofityNetworkStatus(const QString &status);
     void responseFailure(int code);
     void requestDiplayServerNotify(const QString &notifyInfo);
+    void requestAutoLocationData(const CitySettingData & info, bool success);
 
 public slots:
     void onWeatherObserveReply();
     void onWeatherForecastReply();
     void onPingBackPostReply();
     void networkLookedUp(const QHostInfo &host);
+    void setAutoCity(const QString& cityName);
 
 private:
     QNetworkAccessManager *m_networkManager = nullptr;
     QString m_hostInfoParameters;
+    AutomaticLocation *m_automatic = nullptr;
 };
 
 #endif // WEATHERWORKER_H

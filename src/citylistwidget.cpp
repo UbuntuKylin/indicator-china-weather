@@ -117,11 +117,6 @@ void CityListWidget::updateCityListHeight()
     this->setFixedHeight(m_layout->sizeHint().height());
 }
 
-void CityListWidget::resetData()
-{
-
-}
-
 bool CityListWidget::eventFilter(QObject *obj, QEvent *event)
 {
     switch (event->type())

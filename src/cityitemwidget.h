@@ -45,7 +45,7 @@ public:
     void setItemWeather(const QString &temp, const QString &iconPath);
 
 signals:
-    void requestRefreshDefaultCity(const QString &id);
+    void requestSetDefaultCityById(const QString &id);
     void requestDeleteCity(const QString &id);
     void enter();
 

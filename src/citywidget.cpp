@@ -215,9 +215,7 @@ void CityWidget::addCityItem(const CitySettingData &info)
     m_cityListWidget->appendItem(item);
 //    connect(item, SIGNAL(enter()), this, SLOT(onMouseEnter()));
     connect(item, &CityItemWidget::requestDeleteCity, this, [=] (const QString id) {
-//        if (this->m_dataList.count() == 1) {
         if (m_preferences->citiesCount() == 1) {
-            qDebug() << "At least there must be a city!!!";
             emit responseCityError(QString(tr("At least one city needs to be preserved!")));//至少需要保留一个城市
             return;
         }
@@ -231,20 +229,16 @@ void CityWidget::addCityItem(const CitySettingData &info)
                 }
                 this->removeCityItemById(id);
 
-                if (line.active) {
-                    m_preferences->setDefaultCity();
-
-                }
-
-                this->refreshCityList(m_preferences->m_currentCityId);
+                //如果删除的城市是默认城市，则需要设置新的默认城市
                 m_preferences->removeCityInfoFromPref(id, line.active);//remove and update m_cityList, m_cities, m_currentCity and m_currentCityId
-
+                this->refreshCityList(m_preferences->m_currentCityId);
                 emit this->requestRefreshCityMenu(line.active);
             }
         }
     });
 
-    connect(item, &CityItemWidget::requestRefreshDefaultCity, this, [=] (const QString id) {
+    //根据城市id设置该城市为默认选中的当前城市
+    connect(item, &CityItemWidget::requestSetDefaultCityById, this, [=] (const QString id) {
         QList<CityItemWidget *> cityItems = findChildren<CityItemWidget*>();
         for (CityItemWidget *cityItem : cityItems) {
             if (cityItem->getCityId() == id) {
