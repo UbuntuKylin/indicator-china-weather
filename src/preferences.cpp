@@ -233,19 +233,13 @@ void Preferences::load()
     if (m_currentCityId.isEmpty()) {
         m_currentCityId = "101250101";
         m_currentCity = "长沙";
-        //this->addCityToStringList("长沙");
 
         City city;
         city.id = m_currentCityId;
         city.name = m_currentCity;
-
-        //this->addCityInfoToPref(city);
     }
 
     m_currentCity = set->value("current_city", m_currentCity).toString();
-
-    //qDebug() << "init load:" << m_currentCityId << m_currentCity;
-    //this->loadCityesToStringList(set->value("city_list2", this->getCitiesList()).toStringList());
 
     int cityCount = set->beginReadArray("city_list");
     if (cityCount == 0) {
@@ -264,6 +258,16 @@ void Preferences::load()
         city2.id = "101020100";
         city2.name = "上海";
         m_cities.append(city2);
+
+        City city3;
+        city3.id = "101280101";
+        city3.name = "广州";
+        m_cities.append(city3);
+
+        City city4;
+        city4.id = "101280601";
+        city4.name = "深圳";
+        m_cities.append(city4);
     }
     else {
         for (int i = 0; i < cityCount; ++i) {
@@ -271,7 +275,6 @@ void Preferences::load()
             City city;
             city.id = set->value("id").toString();
             city.name = set->value("name").toString();
-            //qDebug() << "load:" <<city.id << city.name;
             m_cities.append(city);
         }
     }
@@ -539,14 +542,10 @@ QStringList Preferences::getCitiesList()
 int Preferences::citiesCount()
 {
     return m_cityList.count();
-//    return m_cities.count();
 }
 
 void Preferences::setCurrentCityIdAndName(const QString &cityName/*int index*/)
 {
-//    this->m_currentCityId = m_cities.at(index).id;
-//    this->m_currentCity = m_cities.at(index).name;
-
     this->m_currentCity = cityName;
     for (int i = 0; i < m_cities.size(); ++i) {
         if (m_cities.at(i).name == cityName) {

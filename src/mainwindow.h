@@ -44,8 +44,6 @@ public:
 
     void initMenuAndTray();
     void resetWeatherBackgroud(const QString &imgPath);
-    void moveTopRight();
-    void moveBottomRight();
     void movePosition();
     void createSettingDialog();
     void refreshCityActions();

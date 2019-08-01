@@ -33,7 +33,7 @@ public:
     explicit AutomaticLocation(QObject* parent = 0);
 
 signals:
-    void autoFinished(const QString& cityName);
+    void automaticLocationFinished(const QString& cityName);
 
 protected:
     void run();

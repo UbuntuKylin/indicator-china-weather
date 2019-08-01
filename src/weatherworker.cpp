@@ -70,7 +70,7 @@ WeatherWorker::WeatherWorker(QObject *parent) :
     });
 
     m_automatic = new AutomaticLocation(this);
-    connect(m_automatic, &AutomaticLocation::autoFinished, this, &WeatherWorker::setAutoCity);
+    connect(m_automatic, &AutomaticLocation::automaticLocationFinished, this, &WeatherWorker::setAutomaticCity);
 }
 
 WeatherWorker::~WeatherWorker()
@@ -589,12 +589,10 @@ QString WeatherWorker::getErrorCodeDescription(QString errorCode)
 }
 
 
-void WeatherWorker::setAutoCity(const QString &cityName)
+void WeatherWorker::setAutomaticCity(const QString &cityName)
 {
-    //qDebug() << "auto city: " << cityName;
     bool autoSuccess = false;
     CitySettingData info;
-    City city;
 
     if (cityName.isEmpty()) {
         emit this->requestAutoLocationData(info, false);
@@ -621,9 +619,6 @@ void WeatherWorker::setAutoCity(const QString &cityName)
             }
 
             if (resultList.at(1).compare(cityName, Qt::CaseInsensitive) == 0) {
-                qDebug() << "id=" << id;//id.remove(0, 2);//remove "CN"
-                qDebug() << "city=" << resultList.at(2);
-
                 id.remove(0, 2);//remove "CN"
                 QString name = resultList.at(2);
 
@@ -641,6 +636,9 @@ void WeatherWorker::setAutoCity(const QString &cityName)
                         m_preferences->setCurrentCityIdAndName(name);
                     }
                     else {
+                        City city;
+                        city.id = id;
+                        city.name = name;
                         m_preferences->setCurrentCityIdAndName(name);
                         m_preferences->addCityInfoToPref(city);
                     }
@@ -650,9 +648,6 @@ void WeatherWorker::setAutoCity(const QString &cityName)
                 info.id = id;
                 info.name = name;
                 info.icon = ":/res/weather_icons/darkgrey/100.png";
-
-                city.id = id;
-                city.name = name;
 
                 autoSuccess = true;
                 break;

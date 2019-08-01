@@ -3,6 +3,7 @@ indicator-china-weather (3.0.2-0ubuntu2) cosmic; urgency=low
   * Support for Auto-Location of Cities.
   * Add the masking layer when acquiring data.
   * Fixed the bug that display location error.
+  * Update translations.
 
  -- lixiang <lixiang@kylinos.cn>  Thu, 01 Aug 2019 16:12:13 +0800
 

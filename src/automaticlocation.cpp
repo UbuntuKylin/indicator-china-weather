@@ -96,11 +96,10 @@ const QString getCityFromIPAddr(const QString &ip)
 const QString automaicCity()
 {
     QString publicIP = getPublicIpAddrByUrl("http://whois.pconline.com.cn/");
-    qDebug() << "publicIP=" << publicIP;
     return getCityFromIPAddr(publicIP);
 }
-}
 
+}
 
 AutomaticLocation::AutomaticLocation(QObject *parent)
     :QThread(parent)
@@ -111,5 +110,5 @@ AutomaticLocation::AutomaticLocation(QObject *parent)
 void AutomaticLocation::run()
 {
     QString cityName = automaicCity();
-    emit autoFinished(cityName);
+    emit automaticLocationFinished(cityName);
 }

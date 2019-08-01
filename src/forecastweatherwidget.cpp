@@ -30,7 +30,6 @@
 namespace {
 
 const QStringList LIFESTYLE = {"comf", "drsg", "flu", "sport", "trav", "uv", "cw", "air"};
-//const QStringList LIFESTYLE = {QString(QObject::tr("comf")), QString(QObject::tr("drsg")), QString(QObject::tr("flu")), QString(QObject::tr("sport")), QString(QObject::tr("trav")), QString(QObject::tr("uv")), QString(QObject::tr("cw")), QString(QObject::tr("air"))};
 const QStringList LIFESTYLEICON = {":/res/comf_index.png", ":/res/clothe_index.png", ":/res/flu_index.png", ":/res/sport_index.png", ":/res/trav_index.png", ":/res/ultraviolet_rays.png", ":/res/cash_wash_index.png", ":/res/air_index.png"};
 
 }
@@ -119,7 +118,6 @@ void ForecastWeatherWidget::initForecastWidget()
     m_firstDay = new ForecastItemWidget(this);
     m_secondDay = new ForecastItemWidget(this);
     m_thirdDay = new ForecastItemWidget(this);
-//    m_thirdDay->setTextData();
 
     m_leftVSeparator = new VSeparator;
     m_rightVSeparator = new VSeparator;

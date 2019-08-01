@@ -28,10 +28,10 @@ TranslucentLabel::TranslucentLabel(bool showTip, QWidget *parent)
     : QLabel(parent), m_showTip(showTip)
 {
     //使用颜色值设置背景
-    //this->setStyleSheet("QLabel{border-radius:4px;background-color:rgba(0,0,0,0.2);color:rgb(255,255,255);}");
+    this->setStyleSheet("QLabel{border-radius:4px;background-color:rgba(0,0,0,0.2);color:rgb(255,255,255);}");
     //使用图片设置背景
-    this->setStyleSheet("QLabel{background:transparent;background-image:url(':/res/min_bg.png');}");//border-image
-    this->setFixedSize(69, 26);
+//    this->setStyleSheet("QLabel{background:transparent;background-image:url(':/res/min_bg.png');}");//border-image
+    this->setFixedSize(89, 26);
     this->setFocusPolicy(Qt::NoFocus);
 
     if (m_showTip) {

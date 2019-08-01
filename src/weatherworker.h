@@ -75,7 +75,7 @@ public slots:
     void onWeatherForecastReply();
     void onPingBackPostReply();
     void networkLookedUp(const QHostInfo &host);
-    void setAutoCity(const QString& cityName);
+    void setAutomaticCity(const QString& cityName);
 
 private:
     QNetworkAccessManager *m_networkManager = nullptr;

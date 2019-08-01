@@ -24,12 +24,17 @@
 #include <QTranslator>
 #include <QLibraryInfo>
 #include <QDebug>
+#include <QObject>
+
+#include <signal.h>
 
 int main(int argc, char *argv[])
 {
+    signal(SIGINT, [](int) { QApplication::quit(); });// 设置退出信号
+
     QApplication a(argc, argv);
     a.setOrganizationName("kylin");
-    a.setApplicationName("Kylin Weather (indication-china-weather)");
+    a.setApplicationName(QObject::tr("Kylin Weather (indicator-china-weather)"));
     a.setApplicationVersion("3.0.2");
     a.setQuitOnLastWindowClosed(false);//Avoid that after hiding mainwindow, close the sub window would cause the program exit
 

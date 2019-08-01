@@ -154,11 +154,6 @@ NowWeatherWidget::NowWeatherWidget(QFrame *parent) :
     m_tempLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff; font-size:65px;}");
     m_tempLabel->setGeometry(10, 14, 100, 70);
     m_tempLabel->setAlignment(Qt::AlignCenter);
-//    QFont font;
-//    font.setPointSize(65);
-//    const QFontMetrics fm(font);
-//    m_tempLabel->move(10, 0);
-//    qDebug() << fm.width(temp) << fm.height();
 
     QLabel *tempUnit = new QLabel(this);
     tempUnit->setAlignment(Qt::AlignLeft | Qt::AlignTop);
@@ -246,24 +241,10 @@ NowWeatherWidget::NowWeatherWidget(QFrame *parent) :
     m_temperatureLabel->setLabelIcon(":/res/temp.png");
     m_temperatureLabel->move(m_aqiLabel->x(), m_aqiLabel->y() + m_aqiLabel->height() + 8);
 
-//    QFont ft;
-//    QFontMetrics fm(ft);
-//    QString elided_text = fm.elidedText(name, Qt::ElideRight, 260);
-//    name_label->setText(elided_text);
-//    elided_text = fm.elidedText(desc, Qt::ElideRight, 260);
-//    description_label->setText(elided_text);
-//    if(elided_text.endsWith("…"))
-//        description_label->setToolTip(desc);
-
-    //	QFont &text_font = const_cast<QFont &>(font());
-    //	text_font.setWeight(QFont::Bold);
-
-
     connect(m_tipTimer, &QTimer::timeout, this, [=] {
         m_tipTimer->stop();
         m_tipWidget->setVisible(false);
     });
-    //this->displayTip(tr("Update failure"));
 }
 
 NowWeatherWidget::~NowWeatherWidget()

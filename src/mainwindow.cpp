@@ -102,8 +102,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     global_init();
 
-    this->createSettingDialog();
-
     m_updateTimeStr = QString(tr("Refresh time"));
 
     m_layout = new QVBoxLayout(m_centralWidget);
@@ -121,16 +119,6 @@ MainWindow::MainWindow(QWidget *parent)
     if (m_currentDesktop.isEmpty()) {
         m_currentDesktop = qgetenv("XDG_SESSION_DESKTOP");
     }
-    /*if (m_currentDesktop.isEmpty())
-        this->moveTopRight();
-    else {
-        if (m_currentDesktop.toLower() == "ukui") {
-            this->moveBottomRight();
-        }
-        else {
-            this->moveTopRight();
-        }
-    }*/
 
     if (m_preferences->weather.cond_code.contains(QChar('n'))) {
         this->setStyleSheet("QMainWindow{color:white;background-image:url(':/res/background/weather-clear-night.png');background-repeat:no-repeat;}");
@@ -168,9 +156,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_weatherWorker, &WeatherWorker::nofityNetworkStatus, this, [=] (const QString &status) {
         if (status == "OK") {//互联网可以ping通
             m_weatherWorker->requestPostHostInfoToWeatherServer();
-
             m_weatherWorker->startAutoLocationTask();//开始自动定位城市
-//            this->startGetWeather();
         }
         else {//互联网无法ping通
             m_hintWidget->setIconAndText(":/res/network_warn.png", status);
@@ -181,7 +167,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_contentWidget, &ContentWidget::requestRetryWeather, this, [=] {
         m_weatherWorker->requestPostHostInfoToWeatherServer();
         m_weatherWorker->startAutoLocationTask();//开始自动定位城市
-//        this->startGetWeather();
     });
 
     connect(m_weatherWorker, &WeatherWorker::responseFailure, this, [=] (int code) {
@@ -251,8 +236,10 @@ MainWindow::MainWindow(QWidget *parent)
     //自动定位成功后，更新各个控件的默认城市数据，并开始获取天气数据
     connect(m_weatherWorker, &WeatherWorker::requestAutoLocationData, this, [=] (const CitySettingData &info, bool success) {
         if (success) {//自动定位城市成功后，更新各个ui，然后获取天气数据
-            m_setttingDialog->addCityItem(info);
-            m_setttingDialog->refreshCityList(m_preferences->m_currentCity);
+            if (m_setttingDialog) {
+                m_setttingDialog->addCityItem(info);
+                m_setttingDialog->refreshCityList(m_preferences->m_currentCity);
+            }
             this->refreshCityActions();
             m_cityMenu->menuAction()->setText(info.name);
             this->startGetWeather();
@@ -261,7 +248,6 @@ MainWindow::MainWindow(QWidget *parent)
             this->startGetWeather();
         }
     });
-
 
     m_tipTimer->setInterval(60*1000);
     m_tipTimer->setSingleShot(false);
@@ -280,8 +266,6 @@ MainWindow::MainWindow(QWidget *parent)
     this->setOpacity(value);
 
     this->setVisible(false);
-
-
 }
 
 MainWindow::~MainWindow()
@@ -348,7 +332,9 @@ void MainWindow::initMenuAndTray()
 
             m_preferences->setCurrentCityIdAndName(cur_cityName/*index*/);
 
-            m_setttingDialog->refreshCityList(m_preferences->m_currentCity);
+            if (m_setttingDialog) {
+                m_setttingDialog->refreshCityList(m_preferences->m_currentCity);
+            }
             this->startGetWeather();
         }
     });
@@ -374,16 +360,6 @@ void MainWindow::initMenuAndTray()
     QAction *m_forecastAction = m_mainMenu->addAction(tr("Weather Forecast"));
     connect(m_forecastAction, &QAction::triggered, this, [=] {
         if (!this->isVisible()) {
-            /*if (m_currentDesktop.isEmpty())
-                this->moveTopRight();
-            else {
-                if (m_currentDesktop.toLower() == "ukui") {
-                    this->moveBottomRight();
-                }
-                else {
-                    this->moveTopRight();
-                }
-            }*/
             this->movePosition();
         }
         else {
@@ -440,21 +416,9 @@ void MainWindow::initMenuAndTray()
 
 void MainWindow::showSettingDialog()
 {
-    /*int w_x, w_y;
-    w_x = (width() - m_setttingDialog->width()) / 2 + mapToGlobal(QPoint(0, 0)).x();
-    w_y = (window()->height() - m_setttingDialog->height()) / 2 + mapToGlobal(QPoint(0, 0)).y();
-
-    if (w_x + m_setttingDialog->width() > qApp->primaryScreen()->geometry().width()) {
-        w_x = qApp->primaryScreen()->geometry().width() - m_setttingDialog->width();//m_setttingDialog->move(qApp->primaryScreen()->geometry().width() - m_setttingDialog->width(), y);
+    if (!m_setttingDialog) {
+        createSettingDialog();
     }
-    if (w_y + m_setttingDialog->height() > qApp->primaryScreen()->availableGeometry().width()) {
-        w_y = qApp->primaryScreen()->availableGeometry().width() - m_setttingDialog->height();
-    }
-
-    m_setttingDialog->move(w_x, w_y);
-//    m_setttingDialog->move((width() - m_setttingDialog->width()) / 2 + mapToGlobal(QPoint(0, 0)).x(),
-//                               (window()->height() - m_setttingDialog->height()) / 2 + mapToGlobal(QPoint(0, 0)).y());
-    m_setttingDialog->show();*/
     m_setttingDialog->moveToCenter();
 }
 
@@ -485,12 +449,6 @@ void MainWindow::createSettingDialog()
         this->setOpacity(value);
     });
 
-    /*connect(m_setttingDialog, &SettingDialog::requestSetDefaultCity, this, [=] {
-        m_preferences->setDefaultCity();
-        m_setttingDialog->refreshCityList(m_preferences->m_currentCityId);
-        this->startGetWeather();
-    });*/
-
     QApplication::restoreOverrideCursor();
 }
 
@@ -503,7 +461,6 @@ void MainWindow::refreshCityActions()
     int i = 0;
     int currentIndex = 0;
     foreach (QString city, m_preferences->getCitiesList()) {
-//        m_cityMenu->addAction(city);
         if (city == m_preferences->m_currentCity) {
             currentIndex = i;
         }
@@ -578,12 +535,8 @@ void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 
 void MainWindow::movePosition()
 {
-    //QPoint pos = QCursor::pos();
-    //qDebug() << "mapFromGlobal(pos)=" << mapFromGlobal(pos);//QPoint(1709,249)
     QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
-    //qDebug() << "availableGeometry=" << availableGeometry;//QRect(65,24 1855x1056)      QRect(0,0 1366x728)
     QRect screenGeometry = qApp->primaryScreen()->geometry();
-    //qDebug() << "screenGeometry=" << screenGeometry;//QRect(0,0 1920x1080)        QRect(0,0 1366x768)
 
     //panel in bottom or right, then show on topRight
     if (availableGeometry.x() == screenGeometry.x() && availableGeometry.y() == screenGeometry.y()) {
@@ -596,92 +549,10 @@ void MainWindow::movePosition()
     this->raise();
     this->activateWindow();
 
-    /*
-    if (screenGeometry.contains(pos)) {
-        if (pos.x() > screenGeometry.width()/2 && pos.y() > screenGeometry.height()/2) {//panel bottom or right
-//            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenGeometry.height() - (screenGeometry.height() - availableGeometry.height()) - this->height());
-            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), availableGeometry.height() - this->height());
-        }
-        else if (pos.x() > screenGeometry.width()/2 && pos.y() <= screenGeometry.height()/2) {//panel top
-            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), availableGeometry.y());
-        }
-        else if (pos.x() <= screenGeometry.width()/2 && pos.y() > screenGeometry.height()/2) {//panel left
-            this->move(availableGeometry.x(), availableGeometry.height() - this->height());
-        }
-        this->showNormal();
-        this->raise();
-        this->activateWindow();
-    }
-    */
     /*for (QScreen *screen : qApp->screens()) {
         if (screen->geometry().contains(pos)) {
         }
     }*/
-}
-
-void MainWindow::moveTopRight()
-{
-    /*QPoint pos = QCursor::pos();
-    QRect primaryGeometry;
-    for (QScreen *screen : qApp->screens()) {
-        if (screen->geometry().contains(pos)) {
-            primaryGeometry = screen->geometry();
-        }
-    }
-
-    if (primaryGeometry.isEmpty()) {
-        primaryGeometry = qApp->primaryScreen()->geometry();
-    }
-
-    this->move(primaryGeometry.x() + primaryGeometry.width() - this->width(), primaryGeometry.y());*/
-
-    QRect primaryGeometry = qApp->primaryScreen()->availableGeometry();
-    this->move(primaryGeometry.x() + primaryGeometry.width() - this->width(), primaryGeometry.y());
-    this->showNormal();//this->show();
-    this->raise();
-    this->activateWindow();
-}
-
-void MainWindow::moveBottomRight()
-{
-    //QApplication::desktop()->availableGeometry();//桌面除去任务栏的区域
-    //QApplication::desktop()->screenGeometry();//获取包括任务栏的区域
-    /*QPoint pos = QCursor::pos();
-    QRect primaryGeometry;
-    for (QScreen *screen : qApp->screens()) {
-//        if (screen->geometry().contains(pos)) {
-//            primaryGeometry = screen->geometry();
-//        }
-        if (screen->geometry().contains(pos)) {//判断鼠标点击时，使用包括任务栏在内的整个屏幕区域
-            primaryGeometry = screen->availableGeometry();//显示区域需要去掉任务栏的区域
-        }
-    }
-    if (primaryGeometry.isEmpty()) {
-        primaryGeometry = qApp->primaryScreen()->availableGeometry();//primaryGeometry = qApp->primaryScreen()->geometry();
-    }*/
-
-
-    /*QRect primaryGeometry = qApp->primaryScreen()->geometry();
-    const qreal ratio = qApp->devicePixelRatio();
-    const QScreen *screen;
-    for (const auto *s : qApp->screens()) {
-        const QRect &g(s->geometry());
-        const QRect rect(g.topLeft()/ratio, g.size());
-        if (rect.contains(primaryGeometry.center())) {
-            screen = s;
-            break;
-        }
-    }
-    if  (screen) {
-        const QRect screenRect = screen->geometry();
-        primaryGeometry.moveTopLeft(screenRect.topLeft() + (primaryGeometry.topLeft() - screenRect.topLeft()) / screen->devicePixelRatio());
-    }*/
-
-    QRect primaryGeometry = qApp->primaryScreen()->availableGeometry();
-    this->move(primaryGeometry.x() + primaryGeometry.width() - this->width(), primaryGeometry.height() - this->height());
-    this->showNormal();//this->show();
-    this->raise();
-    this->activateWindow();
 }
 
 /*void MainWindow::mousePressEvent(QMouseEvent *event)

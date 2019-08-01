@@ -32,7 +32,6 @@ SettingTitleBar::SettingTitleBar(QWidget *parent) : QWidget(parent)
   , m_bgBrush(QBrush(QColor("#1374e8")))
   , m_timer(new QTimer(this))
 {
-//    this->setFixedHeight(100);
     this->initWidgets();
 
     m_timer->setSingleShot(true);

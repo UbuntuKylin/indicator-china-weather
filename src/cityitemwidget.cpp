@@ -90,13 +90,6 @@ CityItemWidget::CityItemWidget(CitySettingData info, QWidget *parent) : QWidget(
     }
 
     m_temperatureLabel->setText(info.temperature);
-
-    //test data
-    /*QPixmap pixmap = QPixmap(":/res/weather_icons/lightgrey/100.png");
-    pixmap = pixmap.scaled(24, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    m_iconLabel->setPixmap(pixmap);
-    m_cityLabel->setText("长沙");
-    m_temperatureLabel->setText("33");*/
 }
 
 //QListWidgetItem *CityItemWidget::getCityItem()

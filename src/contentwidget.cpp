@@ -21,7 +21,6 @@
 #include "nowweatherwidget.h"
 #include "forecastweatherwidget.h"
 #include "networkerrorwidget.h"
-//#include "indexweatherwidget.h"
 
 #include <QVBoxLayout>
 
@@ -86,7 +85,6 @@ void ContentWidget::setNetworkErrorPages()
     m_nowWidget->setVisible(false);
     m_forecastWidget->setVisible(false);
     m_networkErrorWidget->setVisible(true);
-    //m_networkErrorWidget->setErrorInfo("");
 }
 
 void ContentWidget::setDayStyleSheets()

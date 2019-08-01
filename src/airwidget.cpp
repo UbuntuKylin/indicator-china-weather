@@ -32,7 +32,6 @@ AirWidget::AirWidget(QWidget *parent)
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
     this->setContentsMargins(10, 2, 10, 2);
 //    this->setStyleSheet("QFrame{border:none;background-color:rgba(0,0,0,0.9);color:rgb(255,255,255);}");
-
 //    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     //this->setStyleSheet("QFrame{border:1px solid #e0e0e0;border-radius:2px;background-color:rgba(255, 255, 255, 0.8);}");
     this->setFixedSize(160, 150);
@@ -57,16 +56,6 @@ AirWidget::AirWidget(QWidget *parent)
     m_so2Label = new QLabel;
     m_coLabel = new QLabel;
     m_o3Label = new QLabel;
-
-//    m_aqiLabel->setStyleSheet("QLabel{border-radius:3px;background-color:rgba(0,0,0,0.2);color:#808080;font-size:12px;}");
-//    m_qltyLabel->setStyleSheet("QLabel{border-radius:3px;background-color:rgba(0,0,0,0.2);color:#808080;font-size:12px;}");
-//    m_mainLabel->setStyleSheet("QLabel{border-radius:3px;background-color:rgba(0,0,0,0.2);color:#808080;font-size:12px;}");
-//    m_pm25Label->setStyleSheet("QLabel{border-radius:3px;background-color:rgba(0,0,0,0.2);color:#808080;font-size:12px;}");
-//    m_pm10Label->setStyleSheet("QLabel{border-radius:3px;background-color:rgba(0,0,0,0.2);color:#808080;font-size:12px;}");
-//    m_no2Label->setStyleSheet("QLabel{border-radius:3px;background-color:rgba(0,0,0,0.2);color:#808080;font-size:12px;}");
-//    m_so2Label->setStyleSheet("QLabel{border-radius:3px;background-color:rgba(0,0,0,0.2);color:#808080;font-size:12px;}");
-//    m_coLabel->setStyleSheet("QLabel{border-radius:3px;background-color:rgba(0,0,0,0.2);color:#808080;font-size:12px;}");
-//    m_o3Label->setStyleSheet("QLabel{border-radius:3px;background-color:rgba(0,0,0,0.2);color:#808080;font-size:12px;}");
 
     m_aqiLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:12px;}");
     m_qltyLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:12px;}");

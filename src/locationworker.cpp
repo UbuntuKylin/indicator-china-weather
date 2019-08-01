@@ -34,16 +34,7 @@ void WorkerThread::run()
     if (!m_worker)
         return;
 
-    /*QFile file(":/data/data/china-city-list.csv");
-    if (file.open(QFile::ReadOnly | QFile::Text)) {
-        QString content = file.readAll();
-        QStringList resultList = content.split("\n");
-        qDebug() << resultList.length();
-        file.close();
-    }*/
-
     //CN101250101,changsha,长沙,CN,China,中国,hunan,湖南,changsha,长沙,28.19409,112.98228,"430101,430100,430000",
-
     QFile file(":/data/data/china-city-list.csv");
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QString line = file.readLine();

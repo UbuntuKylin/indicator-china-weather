@@ -97,7 +97,7 @@ AboutDialog::AboutDialog(QWidget *parent)
     m_descriptionLabel->setAlignment(Qt::AlignHCenter);
     m_descriptionLabel->setWordWrap(true);
     m_descriptionLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    m_descriptionLabel->setText(tr("Real-time and three-day weather forecast information is obtained from Ubuntu Kylin weather server, which supports multi-city switching and automatic data updating.") + "\n");
+    m_descriptionLabel->setText(tr("Real-time and three-day weather forecast information is obtained from Ubuntu Kylin weather server, which supports automatic positioning, multi-city switching and automatic data updating.") + "\n");
 
     m_copyrightLabel = new QLabel();
     m_copyrightLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#00609a;font-size:12px;}");

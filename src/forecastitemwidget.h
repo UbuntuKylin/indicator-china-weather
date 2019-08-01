@@ -36,10 +36,8 @@ class ForecastItemWidget : public QWidget
 public:
     explicit ForecastItemWidget(QWidget *parent = 0);
 
-    void setLabelText(const QString &name, const QString &desc);
     void resetForecastData(const ForecastWeather &data, int index);
     void setDefaultData();
-    void setTextData();
 
     void setDayStyleSheets();
     void setNightStyleSheets();

@@ -107,11 +107,6 @@ void ForecastItemWidget::setNightStyleSheets()
     m_tempLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#d9d9d9;font-size:12px;}");
 }
 
-void ForecastItemWidget::setTextData()
-{
-//    m_weekLabel->setText("星期五");
-}
-
 void ForecastItemWidget::setDefaultData()
 {
     m_weekLabel->setText("-");
@@ -121,18 +116,6 @@ void ForecastItemWidget::setDefaultData()
     pixmap = pixmap.scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     m_iconLabel->setPixmap(pixmap);
     m_tempLabel->setText("-°C");
-}
-
-void ForecastItemWidget::setLabelText(const QString &name, const QString &desc)
-{
-//    QFont ft;
-//    QFontMetrics fm(ft);
-//    QString elided_text = fm.elidedText(name, Qt::ElideRight, 260);
-//    name_label->setText(elided_text);
-//    elided_text = fm.elidedText(desc, Qt::ElideRight, 260);
-//    description_label->setText(elided_text);
-//    if(elided_text.endsWith("…"))
-//        description_label->setToolTip(desc);
 }
 
 bool ForecastItemWidget::event(QEvent *event)

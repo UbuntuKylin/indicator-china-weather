@@ -145,30 +145,6 @@ bool CityWidget::event(QEvent *event)
 
 void CityWidget::loadCityItems()
 {
-    //test data;
-    /*CitySettingData info;
-    info.active = true;
-    info.id = "101010100";
-    info.name = "北京";
-    info.temperature = "33";
-    info.icon = ":/res/weather_icons/lightgrey/100.png";
-    CitySettingData info1;
-    info1.active = false;
-    info1.id = "101020100";
-    info1.name = "上海";
-    info1.temperature = "34";
-    info1.icon = ":/res/weather_icons/lightgrey/100.png";
-    CitySettingData info2;
-    info2.active = false;
-    info2.id = "101250101";
-    info2.name = "长沙";
-    info2.temperature = "35";
-    info2.icon = ":/res/weather_icons/lightgrey/100.png";
-
-    addCityItem(info);
-    addCityItem(info1);
-    addCityItem(info2);*/
-
     for (int i = 0; i < m_preferences->m_cities.size(); ++i) {
         CitySettingData info;
         info.active = (m_preferences->m_currentCityId == m_preferences->m_cities.at(i).id) ? true : false;
@@ -190,7 +166,6 @@ void CityWidget::loadCityItems()
 
 void CityWidget::addCityItem(const CitySettingData &info)
 {
-//    if (m_dataList.count() > 10) {
     if (m_preferences->isCitiesCountOverMax()) {
         emit responseCityError(QString(tr("Only 10 cities can be added at most!")));//最多只能添加10个城市
         return;
@@ -204,12 +179,6 @@ void CityWidget::addCityItem(const CitySettingData &info)
     }
 
     m_dataList.append(info);
-
-//    City city;
-//    city.id = info.id;
-//    city.name = info.name;
-//    m_preferences->addCityInfoToPref(city);
-
 
     CityItemWidget *item = new CityItemWidget(info);
     m_cityListWidget->appendItem(item);
