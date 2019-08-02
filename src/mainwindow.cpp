@@ -92,9 +92,10 @@ MainWindow::MainWindow(QWidget *parent)
     , m_maskWidget(new MaskWidget(this))//MaskWidget::Instance();
 {
     this->setFixedSize(355, 552);
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint);
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
+    this->setFocusPolicy(Qt::StrongFocus);//this->setFocusPolicy(Qt::NoFocus);
+    //this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint);
 //    this->setAttribute(Qt::WA_TranslucentBackground, true);
-    this->setFocusPolicy(Qt::ClickFocus);//Qt::StrongFocus
     //this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//ubuntu 16.04 可能需要加上Qt::WindowMinimizeButtonHint，否则showMinimized无效
     this->setWindowTitle(tr("Kylin Weather"));
     this->setWindowIcon(QIcon(":/res/indicator-china-weather.png"));

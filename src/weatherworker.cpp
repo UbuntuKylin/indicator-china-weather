@@ -75,7 +75,7 @@ WeatherWorker::WeatherWorker(QObject *parent) :
 
 WeatherWorker::~WeatherWorker()
 {
-
+    m_networkManager->deleteLater();
 }
 
 void WeatherWorker::startAutoLocationTask()
@@ -641,6 +641,7 @@ void WeatherWorker::setAutomaticCity(const QString &cityName)
                         city.name = name;
                         m_preferences->setCurrentCityIdAndName(name);
                         m_preferences->addCityInfoToPref(city);
+                        m_preferences->save();
                     }
                 }
 
