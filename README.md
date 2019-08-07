@@ -2,6 +2,7 @@
 
 The weather data are from the heweather API s6 version.
 
+![](./doc/weather_zh_CN.png)
 
 ### Author's Home Page
  

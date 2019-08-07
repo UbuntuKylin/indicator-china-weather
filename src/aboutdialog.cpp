@@ -74,7 +74,8 @@ AboutDialog::AboutDialog(QWidget *parent)
 
     m_nameLabel = new QLabel();
     m_nameLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:16px;}");
-    m_nameLabel->setText(qApp->applicationName());
+    //m_nameLabel->setText(qApp->applicationName());
+    m_nameLabel->setText(tr("Kylin Weather"));
 
     m_versionLabel = new QLabel();
     m_versionLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#00609a;font-size:12px;}");
@@ -83,14 +84,11 @@ AboutDialog::AboutDialog(QWidget *parent)
     m_appWebsiteLabel = new QLabel();
     m_appWebsiteLabel->setStyleSheet("QLabel{border:none;background-color:transparent;font-size:12px;}");//color:#808080;
     m_appWebsiteLabel->setContextMenuPolicy(Qt::NoContextMenu);
-    m_appWebsiteLabel->setOpenExternalLinks(false);
-    m_appWebsiteLabel->setText(QString(m_websiteLinkString).arg("https://github.com/ukui/indicator-china-weather").arg("https://github.com/ukui/indicator-china-weather"));
-
-    m_companyLabel = new QLabel();
-    m_companyLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
-    m_companyLabel->setContextMenuPolicy(Qt::NoContextMenu);
-    m_companyLabel->setOpenExternalLinks(false);
-    m_companyLabel->setText(QString(m_websiteLinkString).arg("https://www.ubuntukylin.com").arg("www.ubuntukylin.com"));
+    m_appWebsiteLabel->setOpenExternalLinks(true);
+//    m_appWebsiteLabel->setText(QString(m_websiteLinkString).arg("https://github.com/UbuntuKylin/indicator-china-weather").arg("https://github.com/UbuntuKylin/indicator-china-weather"));
+    m_appWebsiteLabel->setText(tr("Code website:") + " " + this->linkWebsite("https://github.com/UbuntuKylin/indicator-china-weather") + "<br><br>" +
+                               tr("UbuntuKylin official website:") + " " + this->linkWebsite("https://www.ubuntukylin.com") + "<br><br>" +
+                               tr("Developer's personal home page:") + " " + this->linkWebsite("https://eightplus.github.io") + "<br>");
 
     m_descriptionLabel = new QLabel();
     m_descriptionLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
@@ -111,17 +109,25 @@ AboutDialog::AboutDialog(QWidget *parent)
     mainLayout->addWidget(m_nameLabel, 0, Qt::AlignHCenter);
     mainLayout->addWidget(m_versionLabel, 0, Qt::AlignHCenter);
     mainLayout->addWidget(m_appWebsiteLabel, 0, Qt::AlignHCenter);
-    mainLayout->addWidget(m_companyLabel, 0, Qt::AlignHCenter);
     mainLayout->addWidget(m_descriptionLabel, 0, Qt::AlignHCenter);
     mainLayout->addWidget(m_copyrightLabel, 0, Qt::AlignHCenter);
 
-    connect(m_appWebsiteLabel, &QLabel::linkActivated, this, &AboutDialog::onLinkActivated);
-    connect(m_companyLabel, &QLabel::linkActivated, this, &AboutDialog::onLinkActivated);
+//    connect(m_appWebsiteLabel, &QLabel::linkActivated, this, &AboutDialog::onLinkActivated);
 }
 
 AboutDialog::~AboutDialog()
 {
 
+}
+
+QString AboutDialog::linkWebsite(const QString &url, QString name)
+{
+    if (name.isEmpty()) {
+        name = url;
+    }
+
+//    return QString("<a href=\"" + url + "style='text-decoration:none;font-size:14px;color:#1374e8;'\">" + name + "</a>");
+    return QString("<a href=\"" + url + "\">" + name + "</a>");
 }
 
 void AboutDialog::onLinkActivated(const QString &link)

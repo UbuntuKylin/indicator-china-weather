@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
     a.setOrganizationName("kylin");
-    a.setApplicationName(QObject::tr("Kylin Weather (indicator-china-weather)"));
+    a.setApplicationName("Kylin Weather (indicator-china-weather)");
     a.setApplicationVersion("3.0.2");
     a.setQuitOnLastWindowClosed(false);//Avoid that after hiding mainwindow, close the sub window would cause the program exit
 

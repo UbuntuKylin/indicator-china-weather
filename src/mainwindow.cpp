@@ -92,7 +92,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_maskWidget(new MaskWidget(this))//MaskWidget::Instance();
 {
     this->setFixedSize(355, 552);
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::Tool);
     this->setFocusPolicy(Qt::StrongFocus);//this->setFocusPolicy(Qt::NoFocus);
     //this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint);
 //    this->setAttribute(Qt::WA_TranslucentBackground, true);

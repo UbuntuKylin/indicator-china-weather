@@ -37,6 +37,8 @@ public:
     QRect getParentGeometry() const;
     void moveToCenter();
 
+    QString linkWebsite(const QString &url, QString name = "");
+
 public slots:
     void onLinkActivated(const QString &link);
 
@@ -59,7 +61,6 @@ private:
     QLabel *m_versionLabel = nullptr;
     QLabel *m_descriptionLabel = nullptr;
     QLabel *m_appWebsiteLabel = nullptr;
-    QLabel *m_companyLabel = nullptr;
     QLabel *m_copyrightLabel = nullptr;
 };
 

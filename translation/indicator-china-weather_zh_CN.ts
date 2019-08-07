@@ -10,7 +10,27 @@
         <translation>麒麟天气 - 关于</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="100"/>
+        <location filename="../src/aboutdialog.cpp" line="78"/>
+        <source>Kylin Weather</source>
+        <translation>麒麟天气</translation>
+    </message>
+    <message>
+        <location filename="../src/aboutdialog.cpp" line="89"/>
+        <source>Code website:</source>
+        <translation>代码托管：</translation>
+    </message>
+    <message>
+        <location filename="../src/aboutdialog.cpp" line="90"/>
+        <source>UbuntuKylin official website:</source>
+        <translation>优麒麟官网：</translation>
+    </message>
+    <message>
+        <location filename="../src/aboutdialog.cpp" line="91"/>
+        <source>Developer&apos;s personal home page:</source>
+        <translation>开发者个人主页：</translation>
+    </message>
+    <message>
+        <location filename="../src/aboutdialog.cpp" line="98"/>
         <source>Real-time and three-day weather forecast information is obtained from Ubuntu Kylin weather server, which supports automatic positioning, multi-city switching and automatic data updating.</source>
         <translation>从麒麟天气服务器实时获取天气实况和三天天气预报，支持自动定位、多城市切换和天气自动更新。</translation>
     </message>
@@ -166,104 +186,104 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="99"/>
-        <location filename="../src/mainwindow.cpp" line="407"/>
+        <location filename="../src/mainwindow.cpp" line="100"/>
+        <location filename="../src/mainwindow.cpp" line="408"/>
         <source>Kylin Weather</source>
         <translation>麒麟天气</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="105"/>
+        <location filename="../src/mainwindow.cpp" line="106"/>
         <source>Refresh time</source>
         <translation>刷新时间</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="140"/>
+        <location filename="../src/mainwindow.cpp" line="141"/>
         <source>Network not connected</source>
         <translation>网络未连接</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="144"/>
+        <location filename="../src/mainwindow.cpp" line="145"/>
         <source>Getting data</source>
         <translation>正在获取数据</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="178"/>
+        <location filename="../src/mainwindow.cpp" line="179"/>
         <source>Incorrect access address</source>
         <translation>访问地址异常</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="181"/>
+        <location filename="../src/mainwindow.cpp" line="182"/>
         <source>Network error code:%1</source>
         <translation>网络错误代码：%1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="287"/>
+        <location filename="../src/mainwindow.cpp" line="288"/>
         <source>Refresh time:Just updated</source>
         <translation>刷新时间：刚刚</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="291"/>
+        <location filename="../src/mainwindow.cpp" line="292"/>
         <source>Refresh time:%1 minute ago</source>
         <translation>刷新时间：%1 分钟之前</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="294"/>
+        <location filename="../src/mainwindow.cpp" line="295"/>
         <source>Refresh time:%1 minutes ago</source>
         <translation>刷新时间：%1 分钟之前</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="326"/>
+        <location filename="../src/mainwindow.cpp" line="327"/>
         <source>City</source>
         <translation>城市</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="351"/>
+        <location filename="../src/mainwindow.cpp" line="352"/>
         <source>Release time</source>
         <translation>发布时间</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="360"/>
+        <location filename="../src/mainwindow.cpp" line="361"/>
         <source>Weather Forecast</source>
         <translation>天气预报</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="371"/>
+        <location filename="../src/mainwindow.cpp" line="372"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="373"/>
+        <location filename="../src/mainwindow.cpp" line="374"/>
         <source>Kylin Weather - About</source>
         <translation>麒麟天气 - 关于</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="375"/>
+        <location filename="../src/mainwindow.cpp" line="376"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="481"/>
+        <location filename="../src/mainwindow.cpp" line="482"/>
         <source>Temperature:%1˚C</source>
         <translation>温度：%1˚C</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="482"/>
+        <location filename="../src/mainwindow.cpp" line="483"/>
         <source>Relative humidity:%1</source>
         <translation>相对湿度：%1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="484"/>
-        <location filename="../src/mainwindow.cpp" line="487"/>
+        <location filename="../src/mainwindow.cpp" line="485"/>
+        <location filename="../src/mainwindow.cpp" line="488"/>
         <source>Air quality:%1</source>
         <translation>空气质量：%1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="484"/>
+        <location filename="../src/mainwindow.cpp" line="485"/>
         <source>Unknown</source>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="489"/>
+        <location filename="../src/mainwindow.cpp" line="490"/>
         <source>Release time:%1</source>
         <translation>发布时间：%1</translation>
     </message>
@@ -478,9 +498,8 @@
         <translation type="vanished">麒麟天气 (国内天气插件)</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="37"/>
         <source>Kylin Weather (indicator-china-weather)</source>
-        <translation>麒麟天气 (中国天气插件)</translation>
+        <translation type="vanished">麒麟天气 (中国天气插件)</translation>
     </message>
 </context>
 <context>
