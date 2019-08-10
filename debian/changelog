@@ -2,6 +2,7 @@ indicator-china-weather (3.0.2-0ubuntu3) cosmic; urgency=low
 
   * Modify the AboutDialog.
   * Update translations for MainWindow.
+  * Access icon from theme.
 
  -- lixiang <lixiang@kylinos.cn>  Wed, 07 Aug 2019 16:56:43 +0800
 

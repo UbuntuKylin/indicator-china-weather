@@ -126,7 +126,8 @@ void SearchTitleBar::initMiddleContent()
 
     QLabel *m_iconLabel = new QLabel;
     m_iconLabel->setContentsMargins(0, 0, 0, 0);
-    QPixmap iconPixmap = QPixmap(":/res/indicator-china-weather_min.png");
+
+    QPixmap iconPixmap = QPixmap(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/indicator-china-weather_min.png")).pixmap(QSize(16, 16)));
     m_iconLabel->setPixmap(iconPixmap);
     m_iconLabel->setFixedSize(iconPixmap.size());
 

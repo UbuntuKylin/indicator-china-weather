@@ -192,7 +192,7 @@ SettingDialog::SettingDialog(QWidget *parent):
     this->setFixedSize(479, 421);
     this->setFocusPolicy(Qt::ClickFocus);
     this->setWindowTitle(tr("Kylin Weather - Setting"));
-    this->setWindowIcon(QIcon(":/res/indicator-china-weather.png"));
+    this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/indicator-china-weather.png")));
     //Why????? setStyleSheet将导致添加城市后，列表没有自动拉伸，出现重叠，但是qDebug打印的高度确实增加了，但是使用paintEvent可以
     //this->setStyleSheet("QDialog{border:1px solid #000000;border-radius:2px;background:rgba(255, 255, 255, 0.7);}QDialog:hover{background: rgba(255, 255, 255, 1.0);}");
 

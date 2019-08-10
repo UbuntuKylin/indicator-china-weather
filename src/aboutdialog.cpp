@@ -29,13 +29,14 @@
 AboutDialog::AboutDialog(QWidget *parent)
     : QDialog(parent)
     , mousePressed(false)
-    , m_pixmap(QPixmap(":/res/indicator-china-weather.png"))
+    , m_pixmap(QPixmap(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/indicator-china-weather.png")).pixmap(QSize(64, 64))))
+//    , m_pixmap(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/indicator-china-weather.png")).pixmap(QSize(64, 64)).scaled(QSize(64, 64), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation))
     , m_websiteLinkString("<a href='%1' style='text-decoration:none;font-size:14px;color:#1374e8;'>%2</a>")
-{
+{ 
     this->setStyleSheet("QDialog{border:1px solid #000000;border-radius:2px;background:rgba(255, 255, 255, 0.7);}QDialog:hover{background: rgba(255, 255, 255, 1.0);}");
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
     this->setWindowTitle(tr("Kylin Weather - About"));
-    this->setWindowIcon(QIcon(":/res/indicator-china-weather.png"));
+    this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/indicator-china-weather.png")));
     this->setFixedWidth(456);
 
     //边框阴影效果
