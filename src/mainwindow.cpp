@@ -99,7 +99,7 @@ MainWindow::MainWindow(QWidget *parent)
     //this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//ubuntu 16.04 可能需要加上Qt::WindowMinimizeButtonHint，否则showMinimized无效
     this->setWindowTitle(tr("Kylin Weather"));
     //const auto ratio = qApp->devicePixelRatio();
-    this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/indicator-china-weather.png"))/*.pixmap(QSize(48, 48) * * ratio)*/);
+    this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/indicator-china-weather.png"))/*.pixmap(QSize(64, 64) * ratio)*/);
     this->setStyleSheet("QMainWindow{color:white;background-image:url(':/res/background/weather-clear.png');background-repeat:no-repeat;}");
 
     global_init();
@@ -408,7 +408,7 @@ void MainWindow::initMenuAndTray()
     m_systemTray = new QSystemTrayIcon(this);
     m_systemTray->setToolTip(QString(tr("Kylin Weather")));
     m_systemTray->setIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/indicator-china-weather.png")));
-    connect(m_systemTray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
+    connect(m_systemTray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
     m_systemTray->show();
     m_systemTray->setContextMenu(m_mainMenu);
 

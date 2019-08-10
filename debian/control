@@ -7,8 +7,9 @@ Build-Depends: debhelper (>=12),
                qtbase5-dev (>= 5.1),
                qt5-qmake,
                qtchooser,
-               qtbase5-dev-tools,
                qtscript5-dev,
+               qttools5-dev-tools,
+               qtbase5-dev-tools,
                libgeoip-dev,
 Standards-Version: 4.3.0
 Homepage: https://github.com/ubuntukylin/indicator-china-weather
