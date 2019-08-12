@@ -62,7 +62,6 @@ SOURCES += src/main.cpp \
     src/contentwidget.cpp \
     src/nowweatherwidget.cpp \
     src/forecastweatherwidget.cpp \
-#    src/indexweatherwidget.cpp \
     src/translucentlabel.cpp \
     src/forecastitemwidget.cpp \
     src/tooltip.cpp \
@@ -70,7 +69,6 @@ SOURCES += src/main.cpp \
     src/settingdialog.cpp \
     src/settingtitlebar.cpp \
     src/activebutton.cpp \
-#    src/searchdialog.cpp \
     src/searchtitlebar.cpp \
     src/searchinputedit.cpp \
     src/searchview.cpp \
@@ -103,7 +101,6 @@ HEADERS  += src/mainwindow.h \
     src/contentwidget.h \
     src/nowweatherwidget.h \
     src/forecastweatherwidget.h \
-#    src/indexweatherwidget.h \
     src/translucentlabel.h \
     src/forecastitemwidget.h \
     src/tooltip.h \
@@ -111,7 +108,6 @@ HEADERS  += src/mainwindow.h \
     src/settingdialog.h \
     src/settingtitlebar.h \
     src/activebutton.h \
-#    src/searchdialog.h \
     src/searchtitlebar.h \
     src/searchinputedit.h \
     src/searchview.h \
@@ -145,8 +141,3 @@ RESOURCES += \
 
 TRANSLATIONS += \
     translation/indicator-china-weather_zh_CN.ts
-
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
