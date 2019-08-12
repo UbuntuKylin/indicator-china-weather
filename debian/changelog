@@ -1,41 +1,32 @@
-indicator-china-weather (3.0.2-0ubuntu3) eoan; urgency=low
+indicator-china-weather (3.0.2-0ubuntu1) eoan; urgency=medium
 
+  [ Li Xiang ]
   * Modify the AboutDialog.
   * Update translations for MainWindow.
   * Access icon from theme.
   * Change `PKGCONFIG += geoip` to `LIBS += -lGeoIP` for 19.10.
-  * lintian check.
-
- -- lixiang <lixiang@kylinos.cn>  Wed, 07 Aug 2019 16:56:43 +0800
-
-indicator-china-weather (3.0.2-0ubuntu2) cosmic; urgency=low
-
   * Support for Auto-Location of Cities.
   * Add the masking layer when acquiring data.
   * Fixed the bug that display location error.
   * Update translations.
-
- -- lixiang <lixiang@kylinos.cn>  Thu, 01 Aug 2019 16:12:13 +0800
-
-indicator-china-weather (3.0.2-0ubuntu1) disco; urgency=medium
-
   * Handling mouse events on pallets.
   * PrimaryScreen display.
   * Hide window when focusOutEvent occurred.
   * Mainwindow moves with the position of panel.
   * Fixed weekly error.
-
- -- handsome_feng <jianfengli@ubuntukylin.com>  Tue, 19 Feb 2019 13:53:36 +0800
-
-indicator-china-weather (3.0.1-0ubuntu1) UNRELEASED; urgency=medium
-
   * Used the latest version of heweather API.
   * New UI with Qt5.
   * Fixed the bug that Refresh time error.
   * Show on the bottom right of the screen when on UKUI.
   * Modified the CSS style of cityitemwidget.
 
- -- handsome_feng <jianfengli@ubuntukylin.com>  Mon, 15 Oct 2018 15:55:00 +0800
+  [ handsome_feng ]
+  * debian/compat: 11 -> 12
+  * debian/control:
+    - Bump standards-vertion to 4.4.0.
+    - Bump debhelper requirement for compat
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Mon, 12 Aug 2019 15:24:19 +0800
 
 indicator-china-weather (2.2.8-0ubuntu1) bionic; urgency=medium
 
