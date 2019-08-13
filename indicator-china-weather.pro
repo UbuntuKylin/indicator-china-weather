@@ -19,13 +19,13 @@ target.path = /usr/bin
 qm_files.files = translations/*.qm
 qm_files.path = /usr/share/indicator-china-weather/translations/
 
-icons.files += res/indicator-china-wether.png
+icons.files += res/indicator-china-weather.png
 icons.path = /usr/share/pixmaps/
 
-appdesktop.files += indicator-china-wether.desktop
+appdesktop.files += indicator-china-weather.desktop
 appdesktop.path = /usr/share/applications/
 
-startdesktop.files += indicator-china-wether.desktop
+startdesktop.files += indicator-china-weather.desktop
 startdesktop.path = /etc/xdg/autostart/
 
 INSTALLS += target icons qm_files appdesktop startdesktop

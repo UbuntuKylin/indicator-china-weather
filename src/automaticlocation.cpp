@@ -193,16 +193,17 @@ const QString getCityFromIPAddr(const QString &ip)
 
     uint32_t ipnum = _GeoIP_lookupaddress(ip.toStdString().c_str());
     if (ipnum == 0) {
-        printf("%s: can't resolve hostname ( %s )\n", GeoIPDBDescription[GEOIP_CITY_EDITION_REV1], ip.toStdString().c_str());
+        printf("%s: can't resolve ip ( %s )\n", GeoIPDBDescription[GEOIP_CITY_EDITION_REV1], ip.toStdString().c_str());
         return QString();
     }
-    GeoIPRecord *gir = GeoIP_record_by_ipnum(gi, ipnum);//GeoIP_record_by_ipnum_v6
+    GeoIPRecord *gir = GeoIP_record_by_ipnum(gi, ipnum);
     if (gir) {
-        const char *region = GeoIP_region_name_by_code(gir->country_code, gir->region);
+        //const char *region = GeoIP_region_name_by_code(gir->country_code, gir->region);
         //qDebug() << "country_name=" << gir->country_name << ",region=" << region << ",gir->city=" << gir->city << ",gir->latitude=" << gir->latitude << ",gir->longitude=" << gir->longitude;
+        QString cityName = QString(gir->city);
         GeoIPRecord_delete(gir);
         GeoIP_delete(gi);
-        return QString(gir->city);
+        return cityName;
     }
 
     GeoIP_delete(gi);
