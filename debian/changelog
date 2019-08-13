@@ -19,6 +19,7 @@ indicator-china-weather (3.0.2-0ubuntu1) eoan; urgency=medium
   * Fixed the bug that Refresh time error.
   * Show on the bottom right of the screen when on UKUI.
   * Modified the CSS style of cityitemwidget.
+  * Modified the path of translated pm files and the timing of generation.
 
   [ handsome_feng ]
   * debian/compat: 11 -> 12

@@ -23,14 +23,31 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QEventLoop>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonValue>
 
-#include <GeoIP.h>
-#include <GeoIPCity.h>
+//#include <GeoIP.h>
+//#include <GeoIPCity.h>
+//#ifdef   __cplusplus
+//extern "C" {
+//#endif
+
+//GEOIP_API unsigned long _GeoIP_lookupaddress(const char *host); //_GeoIP_lookupaddress定义在GeoIP_internal.h中，但libgeoip-dev安装时并没有拷贝GeoIP_internal.h文件
+
+//#ifdef   __cplusplus
+//}
+//#endif
+
+#include "GeoIP.h"
+#include "GeoIPCity.h"
+
 #ifdef   __cplusplus
 extern "C" {
 #endif
 
-GEOIP_API unsigned long _GeoIP_lookupaddress(const char *host); //_GeoIP_lookupaddress定义在GeoIP_internal.h中，但libgeoip-dev安装时并没有拷贝GeoIP_internal.h文件
+GEOIP_API unsigned long _GeoIP_lookupaddress(const char *host);
 
 #ifdef   __cplusplus
 }
@@ -75,28 +92,113 @@ const QString getPublicIpAddrByUrl(const QString &url)
     return QString("0.0.0.0");
 }
 
+const QString getCityFromIpByAmap(const QString &ip)
+{
+    // https://lbs.amap.com/api/webservice/guide/api/ipconfig/
+    //amap json
+    //http://restapi.amap.com/v3/ip?key=44a80558982f0c3031fae15aa8711a92&ip=218.76.23.26
+
+    //amap xml
+    //https://restapi.amap.com/v3/ip?ip=218.76.23.26&output=xml&key=44a80558982f0c3031fae15aa8711a92
+
+//    QString url = QString("http://ip.taobao.com/service/getIpInfo.php?ip=%1").arg(ip);
+    QString url = QString("http://restapi.amap.com/v3/ip?key=44a80558982f0c3031fae15aa8711a92&ip=%1").arg(ip);
+    QNetworkAccessManager *manager = new QNetworkAccessManager();
+    QNetworkReply *reply = manager->get(QNetworkRequest(QUrl(url)));
+    QEventLoop loop;
+    QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &loop, SLOT(quit()));
+    loop.exec();
+
+    int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if(reply->error() != QNetworkReply::NoError || statusCode != 200) {//200 is normal status
+        reply->close();
+        reply->deleteLater();
+        manager->deleteLater();
+        return QString();
+    }
+
+    QByteArray ba = reply->readAll();
+    //QString reply_content = QString::fromUtf8(ba);
+    reply->close();
+    reply->deleteLater();
+    manager->deleteLater();
+
+    QJsonParseError err;
+    QJsonDocument jsonDocument = QJsonDocument::fromJson(ba, &err);
+    if (err.error != QJsonParseError::NoError) {// Json type error
+        return QString();
+    }
+    if (jsonDocument.isNull() || jsonDocument.isEmpty()) {
+        return QString();
+    }
+
+    QJsonObject jsonObject = jsonDocument.object();
+    if (jsonObject.isEmpty() || jsonObject.size() == 0) {
+        return QString();
+    }
+
+    //for taobao service
+    /*if (jsonObject.contains("data")) {
+        QJsonObject dataObj = jsonObject.value("data").toObject();
+        if (dataObj.isEmpty() || dataObj.size() == 0) {
+            return QString();
+        }
+        if (dataObj.contains("city")) {
+            qDebug() << "dataObj city:" << dataObj.value("city").toString();
+            return dataObj.value("city").toString();
+        }
+    }*/
+
+    // for amap service
+    if (jsonObject.contains("city")) {
+        return jsonObject.value("city").toString();
+    }
+
+    return QString();
+}
+
 const QString getCityFromIPAddr(const QString &ip)
 {
+    int charset = GEOIP_CHARSET_UTF8;
+//    charset = GEOIP_CHARSET_ISO_8859_1;
+
+
     GeoIP *gi = GeoIP_open_type(GEOIP_CITY_EDITION_REV1, GEOIP_STANDARD | GEOIP_SILENCE);
     if (NULL == gi) {
         return QString();
     }
+//    gi->charset = charset;
 
     uint32_t ipnum = _GeoIP_lookupaddress(ip.toStdString().c_str());
+    if (ipnum == 0) {
+        printf("%s: can't resolve hostname ( %s )\n", GeoIPDBDescription[GEOIP_CITY_EDITION_REV1], ip.toStdString().c_str());
+        return QString();
+    }
     GeoIPRecord *gir = GeoIP_record_by_ipnum(gi, ipnum);//GeoIP_record_by_ipnum_v6
     if (gir) {
         const char *region = GeoIP_region_name_by_code(gir->country_code, gir->region);
         //qDebug() << "country_name=" << gir->country_name << ",region=" << region << ",gir->city=" << gir->city << ",gir->latitude=" << gir->latitude << ",gir->longitude=" << gir->longitude;
+        GeoIPRecord_delete(gir);
+        GeoIP_delete(gi);
         return QString(gir->city);
     }
+
+    GeoIP_delete(gi);
 
     return QString();
 }
 
 const QString automaicCity()
 {
+    QString city;
     QString publicIP = getPublicIpAddrByUrl("http://whois.pconline.com.cn/");
-    return getCityFromIPAddr(publicIP);
+    //qDebug() << "publicIP:" << publicIP;
+    city = getCityFromIPAddr(publicIP);
+    if (city.isEmpty()) {
+        city = getCityFromIpByAmap(publicIP);
+    }
+
+    return city;
 }
 
 }

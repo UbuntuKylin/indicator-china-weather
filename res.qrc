@@ -220,7 +220,4 @@
     <qresource prefix="/data">
         <file>data/china-city-list.csv</file>
     </qresource>
-    <qresource prefix="/qm">
-        <file>translation/indicator-china-weather_zh_CN.qm</file>
-    </qresource>
 </RCC>

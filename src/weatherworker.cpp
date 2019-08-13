@@ -178,9 +178,14 @@ void WeatherWorker::requestPingBackWeatherServer()
         }
 
         QJsonObject jsonObject = jsonDocument.object();
-        QString notifyInfo = jsonObject.value("info").toString();
-        if (!notifyInfo.isEmpty() && !notifyInfo.isNull()) {
-            emit requestDiplayServerNotify(notifyInfo);
+        if (jsonObject.isEmpty() || jsonObject.size() == 0) {
+            return;
+        }
+        if (jsonObject.contains("info")) {
+            QString notifyInfo = jsonObject.value("info").toString();
+            if (!notifyInfo.isEmpty() && !notifyInfo.isNull()) {
+                emit requestDiplayServerNotify(notifyInfo);
+            }
         }
     });
 }
@@ -285,61 +290,59 @@ void WeatherWorker::onWeatherObserveReply()
 
     QJsonObject jsonObject = jsonDocument.object();
     //qDebug() << "jsonObject" << jsonObject;
+    if (jsonObject.isEmpty() || jsonObject.size() == 0) {
+        emit responseFailure(0);
+        return;
+    }
+    if (jsonObject.contains("KylinWeather")) {
+        QJsonObject mainObj = jsonObject.value("KylinWeather").toObject();
+        if (mainObj.isEmpty() || mainObj.size() == 0) {
+            emit responseFailure(0);
+            return;
+        }
 
-    QJsonObject mainObj = jsonObject.value("KylinWeather").toObject();
-    QJsonObject airObj = mainObj.value("air").toObject();
-    QJsonObject weatherObj = mainObj.value("weather").toObject();
-    //qDebug() << "airObj" << airObj;
+        if (mainObj.contains("air")) {
+            QJsonObject airObj = mainObj.value("air").toObject();
+            if (!airObj.isEmpty() && airObj.size() > 0) {
+                m_preferences->air.aqi = airObj.value("aqi").toString();
+                m_preferences->air.qlty = airObj.value("qlty").toString();
+                m_preferences->air.main = airObj.value("main").toString();
+                m_preferences->air.pm25 = airObj.value("pm25").toString();
+                m_preferences->air.pm10 = airObj.value("pm10").toString();
+                m_preferences->air.no2 = airObj.value("no2").toString();
+                m_preferences->air.so2 = airObj.value("so2").toString();
+                m_preferences->air.co = airObj.value("co").toString();
+                m_preferences->air.o3 = airObj.value("o3").toString();
 
-    m_preferences->air.id = weatherObj.value("id").toString();
-    m_preferences->air.aqi = airObj.value("aqi").toString();
-    m_preferences->air.qlty = airObj.value("qlty").toString();
-    m_preferences->air.main = airObj.value("main").toString();
-    m_preferences->air.pm25 = airObj.value("pm25").toString();
-    m_preferences->air.pm10 = airObj.value("pm10").toString();
-    m_preferences->air.no2 = airObj.value("no2").toString();
-    m_preferences->air.so2 = airObj.value("so2").toString();
-    m_preferences->air.co = airObj.value("co").toString();
-    m_preferences->air.o3 = airObj.value("o3").toString();
+                m_preferences->weather.air = QString("%1(%2)").arg(airObj.value("aqi").toString()).arg(airObj.value("qlty").toString());
+            }
+        }
+        if (mainObj.contains("weather")) {
+            QJsonObject weatherObj = mainObj.value("weather").toObject();
+            if (!weatherObj.isEmpty() && weatherObj.size() > 0) {
+                m_preferences->air.id = weatherObj.value("id").toString();//如果有weather，则给id赋值
 
-    m_preferences->weather.id = weatherObj.value("id").toString();
-    m_preferences->weather.city = weatherObj.value("location").toString();
-    m_preferences->weather.updatetime = weatherObj.value("update_loc").toString();
-    m_preferences->weather.air = QString("%1(%2)").arg(airObj.value("aqi").toString()).arg(airObj.value("qlty").toString());
-    m_preferences->weather.cloud = weatherObj.value("cloud").toString();
-    m_preferences->weather.cond_code = weatherObj.value("cond_code").toString();
-    m_preferences->weather.cond_txt = weatherObj.value("cond_txt").toString();
-    m_preferences->weather.fl = weatherObj.value("fl").toString();
-    m_preferences->weather.hum = weatherObj.value("hum").toString();
-    m_preferences->weather.pcpn = weatherObj.value("pcpn").toString();
-    m_preferences->weather.pres = weatherObj.value("pres").toString();
-    m_preferences->weather.tmp = weatherObj.value("tmp").toString();
-    m_preferences->weather.vis = weatherObj.value("vis").toString();
-    m_preferences->weather.wind_deg = weatherObj.value("wind_deg").toString();
-    m_preferences->weather.wind_dir = weatherObj.value("wind_dir").toString();
-    m_preferences->weather.wind_sc = weatherObj.value("wind_sc").toString();
-    m_preferences->weather.wind_spd = weatherObj.value("wind_spd").toString();
+                m_preferences->weather.id = weatherObj.value("id").toString();
+                m_preferences->weather.city = weatherObj.value("location").toString();
+                m_preferences->weather.updatetime = weatherObj.value("update_loc").toString();
+                m_preferences->weather.cloud = weatherObj.value("cloud").toString();
+                m_preferences->weather.cond_code = weatherObj.value("cond_code").toString();
+                m_preferences->weather.cond_txt = weatherObj.value("cond_txt").toString();
+                m_preferences->weather.fl = weatherObj.value("fl").toString();
+                m_preferences->weather.hum = weatherObj.value("hum").toString();
+                m_preferences->weather.pcpn = weatherObj.value("pcpn").toString();
+                m_preferences->weather.pres = weatherObj.value("pres").toString();
+                m_preferences->weather.tmp = weatherObj.value("tmp").toString();
+                m_preferences->weather.vis = weatherObj.value("vis").toString();
+                m_preferences->weather.wind_deg = weatherObj.value("wind_deg").toString();
+                m_preferences->weather.wind_dir = weatherObj.value("wind_dir").toString();
+                m_preferences->weather.wind_sc = weatherObj.value("wind_sc").toString();
+                m_preferences->weather.wind_spd = weatherObj.value("wind_spd").toString();
+            }
+        }
 
-    /*ObserveWeather observeData;
-    observeData.id = weatherObj.value("id").toString();
-    observeData.city = weatherObj.value("location").toString();
-    observeData.updatetime = weatherObj.value("update_loc").toString();
-    observeData.air = QString("%1(%2)").arg(airObj.value("aqi").toString()).arg(airObj.value("qlty").toString());
-    observeData.cloud = weatherObj.value("cloud").toString();
-    observeData.cond_code = weatherObj.value("cond_code").toString();
-    observeData.cond_txt = weatherObj.value("cond_txt").toString();
-    observeData.fl = weatherObj.value("fl").toString();
-    observeData.hum = weatherObj.value("hum").toString();
-    observeData.pcpn = weatherObj.value("pcpn").toString();
-    observeData.pres = weatherObj.value("pres").toString();
-    observeData.tmp = weatherObj.value("tmp").toString();
-    observeData.vis = weatherObj.value("vis").toString();
-    observeData.wind_deg = weatherObj.value("wind_deg").toString();
-    observeData.wind_dir = weatherObj.value("wind_dir").toString();
-    observeData.wind_sc = weatherObj.value("wind_sc").toString();
-    observeData.wind_spd = weatherObj.value("wind_spd").toString();*/
-
-    emit this->observeDataRefreshed(m_preferences->weather);
+        emit this->observeDataRefreshed(m_preferences->weather);
+    }
 }
 
 void WeatherWorker::onWeatherForecastReply()
@@ -384,147 +387,113 @@ void WeatherWorker::onWeatherForecastReply()
 
     QJsonObject jsonObject = jsonDocument.object();
     //qDebug() << "jsonObject" << jsonObject;
+    if (jsonObject.isEmpty() || jsonObject.size() == 0) {
+        emit responseFailure(0);
+        return;
+    }
+    if (jsonObject.contains("KylinWeather")) {
+        QJsonObject mainObj = jsonObject.value("KylinWeather").toObject();
+        if (mainObj.isEmpty() || mainObj.size() == 0) {
+            emit responseFailure(0);
+            return;
+        }
 
-    QJsonObject mainObj = jsonObject.value("KylinWeather").toObject();
-    QJsonObject forecastObj = mainObj.value("forecast").toObject();
-    QJsonObject lifestyleObj = mainObj.value("lifestyle").toObject();
+        QList<ForecastWeather> forecastDatas;
 
-    m_preferences->forecast0.forcast_date = forecastObj.value("forcast_date0").toString();
-    m_preferences->forecast0.cond_code_d = forecastObj.value("cond_code_d0").toString();
-    m_preferences->forecast0.cond_code_n = forecastObj.value("cond_code_n0").toString();
-    m_preferences->forecast0.cond_txt_d = forecastObj.value("cond_txt_d0").toString();
-    m_preferences->forecast0.cond_txt_n = forecastObj.value("cond_txt_n0").toString();
-    m_preferences->forecast0.hum = forecastObj.value("hum0").toString();
-    m_preferences->forecast0.mr_ms = forecastObj.value("mr_ms0").toString();
-    m_preferences->forecast0.pcpn = forecastObj.value("pcpn0").toString();
-    m_preferences->forecast0.pop = forecastObj.value("pop0").toString();
-    m_preferences->forecast0.pres = forecastObj.value("pres0").toString();
-    m_preferences->forecast0.sr_ss = forecastObj.value("sr_ss0").toString();
-    m_preferences->forecast0.tmp_max = forecastObj.value("tmp_max0").toString();
-    m_preferences->forecast0.tmp_min = forecastObj.value("tmp_min0").toString();
-    m_preferences->forecast0.uv_index = forecastObj.value("uv_index0").toString();
-    m_preferences->forecast0.vis = forecastObj.value("vis0").toString();
-    m_preferences->forecast0.wind_deg = forecastObj.value("wind_deg0").toString();
-    m_preferences->forecast0.wind_dir = forecastObj.value("wind_dir0").toString();
-    m_preferences->forecast0.wind_sc = forecastObj.value("wind_sc0").toString();
-    m_preferences->forecast0.wind_spd = forecastObj.value("wind_spd0").toString();
+        if (mainObj.contains("forecast")) {
+            QJsonObject forecastObj = mainObj.value("forecast").toObject();
+            if (!forecastObj.isEmpty() && forecastObj.size() > 0) {
+                m_preferences->forecast0.forcast_date = forecastObj.value("forcast_date0").toString();
+                m_preferences->forecast0.cond_code_d = forecastObj.value("cond_code_d0").toString();
+                m_preferences->forecast0.cond_code_n = forecastObj.value("cond_code_n0").toString();
+                m_preferences->forecast0.cond_txt_d = forecastObj.value("cond_txt_d0").toString();
+                m_preferences->forecast0.cond_txt_n = forecastObj.value("cond_txt_n0").toString();
+                m_preferences->forecast0.hum = forecastObj.value("hum0").toString();
+                m_preferences->forecast0.mr_ms = forecastObj.value("mr_ms0").toString();
+                m_preferences->forecast0.pcpn = forecastObj.value("pcpn0").toString();
+                m_preferences->forecast0.pop = forecastObj.value("pop0").toString();
+                m_preferences->forecast0.pres = forecastObj.value("pres0").toString();
+                m_preferences->forecast0.sr_ss = forecastObj.value("sr_ss0").toString();
+                m_preferences->forecast0.tmp_max = forecastObj.value("tmp_max0").toString();
+                m_preferences->forecast0.tmp_min = forecastObj.value("tmp_min0").toString();
+                m_preferences->forecast0.uv_index = forecastObj.value("uv_index0").toString();
+                m_preferences->forecast0.vis = forecastObj.value("vis0").toString();
+                m_preferences->forecast0.wind_deg = forecastObj.value("wind_deg0").toString();
+                m_preferences->forecast0.wind_dir = forecastObj.value("wind_dir0").toString();
+                m_preferences->forecast0.wind_sc = forecastObj.value("wind_sc0").toString();
+                m_preferences->forecast0.wind_spd = forecastObj.value("wind_spd0").toString();
 
-    m_preferences->forecast1.forcast_date = forecastObj.value("forcast_date1").toString();
-    m_preferences->forecast1.cond_code_d = forecastObj.value("cond_code_d1").toString();
-    m_preferences->forecast1.cond_code_n = forecastObj.value("cond_code_n1").toString();
-    m_preferences->forecast1.cond_txt_d = forecastObj.value("cond_txt_d1").toString();
-    m_preferences->forecast1.cond_txt_n = forecastObj.value("cond_txt_n1").toString();
-    m_preferences->forecast1.hum = forecastObj.value("hum1").toString();
-    m_preferences->forecast1.mr_ms = forecastObj.value("mr_ms1").toString();
-    m_preferences->forecast1.pcpn = forecastObj.value("pcpn1").toString();
-    m_preferences->forecast1.pop = forecastObj.value("pop1").toString();
-    m_preferences->forecast1.pres = forecastObj.value("pres1").toString();
-    m_preferences->forecast1.sr_ss = forecastObj.value("sr_ss1").toString();
-    m_preferences->forecast1.tmp_max = forecastObj.value("tmp_max1").toString();
-    m_preferences->forecast1.tmp_min = forecastObj.value("tmp_min1").toString();
-    m_preferences->forecast1.uv_index = forecastObj.value("uv_index1").toString();
-    m_preferences->forecast1.vis = forecastObj.value("vis1").toString();
-    m_preferences->forecast1.wind_deg = forecastObj.value("wind_deg1").toString();
-    m_preferences->forecast1.wind_dir = forecastObj.value("wind_dir1").toString();
-    m_preferences->forecast1.wind_sc = forecastObj.value("wind_sc1").toString();
-    m_preferences->forecast1.wind_spd = forecastObj.value("wind_spd1").toString();
+                m_preferences->forecast1.forcast_date = forecastObj.value("forcast_date1").toString();
+                m_preferences->forecast1.cond_code_d = forecastObj.value("cond_code_d1").toString();
+                m_preferences->forecast1.cond_code_n = forecastObj.value("cond_code_n1").toString();
+                m_preferences->forecast1.cond_txt_d = forecastObj.value("cond_txt_d1").toString();
+                m_preferences->forecast1.cond_txt_n = forecastObj.value("cond_txt_n1").toString();
+                m_preferences->forecast1.hum = forecastObj.value("hum1").toString();
+                m_preferences->forecast1.mr_ms = forecastObj.value("mr_ms1").toString();
+                m_preferences->forecast1.pcpn = forecastObj.value("pcpn1").toString();
+                m_preferences->forecast1.pop = forecastObj.value("pop1").toString();
+                m_preferences->forecast1.pres = forecastObj.value("pres1").toString();
+                m_preferences->forecast1.sr_ss = forecastObj.value("sr_ss1").toString();
+                m_preferences->forecast1.tmp_max = forecastObj.value("tmp_max1").toString();
+                m_preferences->forecast1.tmp_min = forecastObj.value("tmp_min1").toString();
+                m_preferences->forecast1.uv_index = forecastObj.value("uv_index1").toString();
+                m_preferences->forecast1.vis = forecastObj.value("vis1").toString();
+                m_preferences->forecast1.wind_deg = forecastObj.value("wind_deg1").toString();
+                m_preferences->forecast1.wind_dir = forecastObj.value("wind_dir1").toString();
+                m_preferences->forecast1.wind_sc = forecastObj.value("wind_sc1").toString();
+                m_preferences->forecast1.wind_spd = forecastObj.value("wind_spd1").toString();
 
-    m_preferences->forecast2.forcast_date = forecastObj.value("forcast_date2").toString();
-    m_preferences->forecast2.cond_code_d = forecastObj.value("cond_code_d2").toString();
-    m_preferences->forecast2.cond_code_n = forecastObj.value("cond_code_n2").toString();
-    m_preferences->forecast2.cond_txt_d = forecastObj.value("cond_txt_d2").toString();
-    m_preferences->forecast2.cond_txt_n = forecastObj.value("cond_txt_n2").toString();
-    m_preferences->forecast2.hum = forecastObj.value("hum2").toString();
-    m_preferences->forecast2.mr_ms = forecastObj.value("mr_ms2").toString();
-    m_preferences->forecast2.pcpn = forecastObj.value("pcpn2").toString();
-    m_preferences->forecast2.pop = forecastObj.value("pop2").toString();
-    m_preferences->forecast2.pres = forecastObj.value("pres2").toString();
-    m_preferences->forecast2.sr_ss = forecastObj.value("sr_ss2").toString();
-    m_preferences->forecast2.tmp_max = forecastObj.value("tmp_max2").toString();
-    m_preferences->forecast2.tmp_min = forecastObj.value("tmp_min2").toString();
-    m_preferences->forecast2.uv_index = forecastObj.value("uv_index2").toString();
-    m_preferences->forecast2.vis = forecastObj.value("vis2").toString();
-    m_preferences->forecast2.wind_deg = forecastObj.value("wind_deg2").toString();
-    m_preferences->forecast2.wind_dir = forecastObj.value("wind_dir2").toString();
-    m_preferences->forecast2.wind_sc = forecastObj.value("wind_sc2").toString();
-    m_preferences->forecast2.wind_spd = forecastObj.value("wind_spd2").toString();
-
-    m_preferences->lifestyle.air_brf = lifestyleObj.value("air_brf").toString();
-    m_preferences->lifestyle.air_txt = lifestyleObj.value("air_txt").toString();
-    m_preferences->lifestyle.comf_brf = lifestyleObj.value("comf_brf").toString();
-    m_preferences->lifestyle.comf_txt = lifestyleObj.value("comf_txt").toString();
-    m_preferences->lifestyle.cw_brf = lifestyleObj.value("cw_brf").toString();
-    m_preferences->lifestyle.cw_txt = lifestyleObj.value("cw_txt").toString();
-    m_preferences->lifestyle.drsg_brf = lifestyleObj.value("drsg_brf").toString();
-    m_preferences->lifestyle.drsg_txt = lifestyleObj.value("drsg_txt").toString();
-    m_preferences->lifestyle.flu_brf = lifestyleObj.value("flu_brf").toString();
-    m_preferences->lifestyle.flu_txt = lifestyleObj.value("flu_txt").toString();
-    m_preferences->lifestyle.sport_brf = lifestyleObj.value("sport_brf").toString();
-    m_preferences->lifestyle.sport_txt = lifestyleObj.value("sport_txt").toString();
-    m_preferences->lifestyle.trav_brf = lifestyleObj.value("trav_brf").toString();
-    m_preferences->lifestyle.trav_txt = lifestyleObj.value("trav_txt").toString();
-    m_preferences->lifestyle.uv_brf = lifestyleObj.value("uv_brf").toString();
-    m_preferences->lifestyle.uv_txt = lifestyleObj.value("uv_txt").toString();
-
-    QList<ForecastWeather> forecastDatas;
-    forecastDatas.append(m_preferences->forecast0);
-    forecastDatas.append(m_preferences->forecast1);
-    forecastDatas.append(m_preferences->forecast2);
-    emit this->forecastDataRefreshed(forecastDatas, m_preferences->lifestyle);
+                m_preferences->forecast2.forcast_date = forecastObj.value("forcast_date2").toString();
+                m_preferences->forecast2.cond_code_d = forecastObj.value("cond_code_d2").toString();
+                m_preferences->forecast2.cond_code_n = forecastObj.value("cond_code_n2").toString();
+                m_preferences->forecast2.cond_txt_d = forecastObj.value("cond_txt_d2").toString();
+                m_preferences->forecast2.cond_txt_n = forecastObj.value("cond_txt_n2").toString();
+                m_preferences->forecast2.hum = forecastObj.value("hum2").toString();
+                m_preferences->forecast2.mr_ms = forecastObj.value("mr_ms2").toString();
+                m_preferences->forecast2.pcpn = forecastObj.value("pcpn2").toString();
+                m_preferences->forecast2.pop = forecastObj.value("pop2").toString();
+                m_preferences->forecast2.pres = forecastObj.value("pres2").toString();
+                m_preferences->forecast2.sr_ss = forecastObj.value("sr_ss2").toString();
+                m_preferences->forecast2.tmp_max = forecastObj.value("tmp_max2").toString();
+                m_preferences->forecast2.tmp_min = forecastObj.value("tmp_min2").toString();
+                m_preferences->forecast2.uv_index = forecastObj.value("uv_index2").toString();
+                m_preferences->forecast2.vis = forecastObj.value("vis2").toString();
+                m_preferences->forecast2.wind_deg = forecastObj.value("wind_deg2").toString();
+                m_preferences->forecast2.wind_dir = forecastObj.value("wind_dir2").toString();
+                m_preferences->forecast2.wind_sc = forecastObj.value("wind_sc2").toString();
+                m_preferences->forecast2.wind_spd = forecastObj.value("wind_spd2").toString();
 
 
-    /*ForecastWeather forecastData[3];
-    for (int i = 0; i < 3; i++) {
-        forecastData[i].cond_code_d = "N/A";
-        forecastData[i].cond_code_n = "N/A";
-        forecastData[i].cond_txt_d = "N/A";
-        forecastData[i].cond_txt_n = "N/A";
-        forecastData[i].forcast_date = "N/A";
-        forecastData[i].hum = "N/A";
-        forecastData[i].mr_ms = "N/A";
-        forecastData[i].pcpn = "N/A";
-        forecastData[i].pop = "N/A";
-        forecastData[i].pres = "N/A";
-        forecastData[i].sr_ss = "N/A";
-        forecastData[i].tmp_max = "N/A";
-        forecastData[i].tmp_min = "N/A";
-        forecastData[i].uv_index = "N/A";
-        forecastData[i].vis = "N/A";
-        forecastData[i].wind_deg = "N/A";
-        forecastData[i].wind_dir = "N/A";
-        forecastData[i].wind_sc = "N/A";
-        forecastData[i].wind_spd = "N/A";
-    }*/
+                forecastDatas.append(m_preferences->forecast0);
+                forecastDatas.append(m_preferences->forecast1);
+                forecastDatas.append(m_preferences->forecast2);
+            }
+        }
 
-    /*QList<ForecastWeather> forecastDatas;
-    ForecastWeather data0;
-    data0.forcast_date = forecastObj.value("forcast_date0").toString();
-    data0.cond_code_d = forecastObj.value("cond_code_d0").toString();
-    data0.cond_code_n = forecastObj.value("cond_code_n0").toString();
-    data0.cond_txt_d = forecastObj.value("cond_txt_d0").toString();
-    data0.cond_txt_n = forecastObj.value("cond_txt_n0").toString();
-    data0.hum = forecastObj.value("hum0").toString();
-    data0.mr_ms = forecastObj.value("mr_ms0").toString();
-    data0.pcpn = forecastObj.value("pcpn0").toString();
-    data0.pop = forecastObj.value("pop0").toString();
-    data0.pres = forecastObj.value("pres0").toString();
-    data0.sr_ss = forecastObj.value("sr_ss0").toString();
-    data0.tmp_max = forecastObj.value("tmp_max0").toString();
-    data0.tmp_min = forecastObj.value("tmp_min0").toString();
-    data0.uv_index = forecastObj.value("uv_index0").toString();
-    data0.vis = forecastObj.value("vis0").toString();
-    data0.wind_deg = forecastObj.value("wind_deg0").toString();
-    data0.wind_dir = forecastObj.value("wind_dir0").toString();
-    data0.wind_sc = forecastObj.value("wind_sc0").toString();
-    data0.wind_spd = forecastObj.value("wind_spd0").toString();
-    ForecastWeather data1;
-    data1.forcast_date = forecastObj.value("forcast_date1").toString();
-    ForecastWeather data2;
-    data2.forcast_date = forecastObj.value("forcast_date2").toString();
-    forecastDatas.append(data0);
-    forecastDatas.append(data1);
-    forecastDatas.append(data2);
-    emit this->forecastDataRefreshed(forecastDatas);*/
+        if (mainObj.contains("lifestyle")) {
+            QJsonObject lifestyleObj = mainObj.value("lifestyle").toObject();
+            if (!lifestyleObj.isEmpty() && lifestyleObj.size() > 0) {
+                m_preferences->lifestyle.air_brf = lifestyleObj.value("air_brf").toString();
+                m_preferences->lifestyle.air_txt = lifestyleObj.value("air_txt").toString();
+                m_preferences->lifestyle.comf_brf = lifestyleObj.value("comf_brf").toString();
+                m_preferences->lifestyle.comf_txt = lifestyleObj.value("comf_txt").toString();
+                m_preferences->lifestyle.cw_brf = lifestyleObj.value("cw_brf").toString();
+                m_preferences->lifestyle.cw_txt = lifestyleObj.value("cw_txt").toString();
+                m_preferences->lifestyle.drsg_brf = lifestyleObj.value("drsg_brf").toString();
+                m_preferences->lifestyle.drsg_txt = lifestyleObj.value("drsg_txt").toString();
+                m_preferences->lifestyle.flu_brf = lifestyleObj.value("flu_brf").toString();
+                m_preferences->lifestyle.flu_txt = lifestyleObj.value("flu_txt").toString();
+                m_preferences->lifestyle.sport_brf = lifestyleObj.value("sport_brf").toString();
+                m_preferences->lifestyle.sport_txt = lifestyleObj.value("sport_txt").toString();
+                m_preferences->lifestyle.trav_brf = lifestyleObj.value("trav_brf").toString();
+                m_preferences->lifestyle.trav_txt = lifestyleObj.value("trav_txt").toString();
+                m_preferences->lifestyle.uv_brf = lifestyleObj.value("uv_brf").toString();
+                m_preferences->lifestyle.uv_txt = lifestyleObj.value("uv_txt").toString();
+            }
+        }
+
+        emit this->forecastDataRefreshed(forecastDatas, m_preferences->lifestyle);
+    }
 }
 
 void WeatherWorker::onPingBackPostReply()
@@ -618,9 +587,15 @@ void WeatherWorker::setAutomaticCity(const QString &cityName)
                 continue;
             }
 
-            if (resultList.at(1).compare(cityName, Qt::CaseInsensitive) == 0) {
+            if (resultList.at(1).compare(cityName, Qt::CaseInsensitive) == 0 ||
+                resultList.at(2).compare(cityName, Qt::CaseInsensitive) == 0 ||
+                QString(resultList.at(2) + "市").compare(cityName, Qt::CaseInsensitive) == 0 ||
+                QString(resultList.at(2) + "区").compare(cityName, Qt::CaseInsensitive) == 0 ||
+                QString(resultList.at(2) + "县").compare(cityName, Qt::CaseInsensitive) == 0) {
                 id.remove(0, 2);//remove "CN"
                 QString name = resultList.at(2);
+
+                qDebug() << "cityName:" << cityName;
 
                 if (m_preferences->isCitiesCountOverMax()) {
                     if (m_preferences->isCityIdExist(id)) {

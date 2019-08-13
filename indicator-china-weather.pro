@@ -15,6 +15,10 @@ TEMPLATE = app
 target.source  += $$TARGET
 target.path = /usr/bin
 
+!system($$PWD/translations/generate_translations_pm.sh): error("Failed to generate pm")
+qm_files.files = translations/*.qm
+qm_files.path = /usr/share/indicator-china-wether/translations/
+
 icons.files += res/indicator-china-wether.png
 icons.path = /usr/share/pixmaps/
 
@@ -24,7 +28,7 @@ desktop.path = /usr/share/applications/
 startdesktop.files += indicator-china-wether.desktop
 startdesktop.path = /etc/xdg/autostart/
 
-INSTALLS += target icons desktop startdesktop
+INSTALLS += target icons qm_files desktop startdesktop
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -40,7 +44,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++14
 CONFIG += qt warn_on
 CONFIG += release
-#CONFIG += link_pkgconfig
+CONFIG += link_pkgconfig
 #PKGCONFIG += geoip
 
 LIBS += -lGeoIP
