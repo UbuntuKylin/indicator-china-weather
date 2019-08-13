@@ -1,4 +1,4 @@
-indicator-china-weather (3.0.2-0ubuntu1) eoan; urgency=medium
+indicator-china-weather (3.0.3-0ubuntu1) eoan; urgency=medium
 
   [ Li Xiang ]
   * Modify the AboutDialog.
