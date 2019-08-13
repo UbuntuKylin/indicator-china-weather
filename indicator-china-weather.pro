@@ -17,18 +17,18 @@ target.path = /usr/bin
 
 !system($$PWD/translations/generate_translations_pm.sh): error("Failed to generate pm")
 qm_files.files = translations/*.qm
-qm_files.path = /usr/share/indicator-china-wether/translations/
+qm_files.path = /usr/share/indicator-china-weather/translations/
 
 icons.files += res/indicator-china-wether.png
 icons.path = /usr/share/pixmaps/
 
-desktop.files += indicator-china-wether.desktop
-desktop.path = /usr/share/applications/
+appdesktop.files += indicator-china-wether.desktop
+appdesktop.path = /usr/share/applications/
 
 startdesktop.files += indicator-china-wether.desktop
 startdesktop.path = /etc/xdg/autostart/
 
-INSTALLS += target icons qm_files desktop startdesktop
+INSTALLS += target icons qm_files appdesktop startdesktop
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings

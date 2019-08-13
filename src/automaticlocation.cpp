@@ -28,31 +28,17 @@
 #include <QJsonArray>
 #include <QJsonValue>
 
-//#include <GeoIP.h>
-//#include <GeoIPCity.h>
-//#ifdef   __cplusplus
-//extern "C" {
-//#endif
-
-//GEOIP_API unsigned long _GeoIP_lookupaddress(const char *host); //_GeoIP_lookupaddress定义在GeoIP_internal.h中，但libgeoip-dev安装时并没有拷贝GeoIP_internal.h文件
-
-//#ifdef   __cplusplus
-//}
-//#endif
-
-#include "GeoIP.h"
-#include "GeoIPCity.h"
-
+#include <GeoIP.h>
+#include <GeoIPCity.h>
 #ifdef   __cplusplus
 extern "C" {
 #endif
 
-GEOIP_API unsigned long _GeoIP_lookupaddress(const char *host);
+GEOIP_API unsigned long _GeoIP_lookupaddress(const char *host); //_GeoIP_lookupaddress定义在GeoIP_internal.h中，但libgeoip-dev安装时并没有拷贝GeoIP_internal.h文件
 
 #ifdef   __cplusplus
 }
 #endif
-
 
 namespace {
 
@@ -95,13 +81,13 @@ const QString getPublicIpAddrByUrl(const QString &url)
 const QString getCityFromIpByAmap(const QString &ip)
 {
     // https://lbs.amap.com/api/webservice/guide/api/ipconfig/
+
     //amap json
     //http://restapi.amap.com/v3/ip?key=44a80558982f0c3031fae15aa8711a92&ip=218.76.23.26
 
     //amap xml
     //https://restapi.amap.com/v3/ip?ip=218.76.23.26&output=xml&key=44a80558982f0c3031fae15aa8711a92
 
-//    QString url = QString("http://ip.taobao.com/service/getIpInfo.php?ip=%1").arg(ip);
     QString url = QString("http://restapi.amap.com/v3/ip?key=44a80558982f0c3031fae15aa8711a92&ip=%1").arg(ip);
     QNetworkAccessManager *manager = new QNetworkAccessManager();
     QNetworkReply *reply = manager->get(QNetworkRequest(QUrl(url)));
@@ -137,21 +123,57 @@ const QString getCityFromIpByAmap(const QString &ip)
         return QString();
     }
 
-    //for taobao service
-    /*if (jsonObject.contains("data")) {
+    if (jsonObject.contains("city")) {
+        return jsonObject.value("city").toString();
+    }
+
+    return QString();
+}
+
+const QString getCityFromIpByTaobao(const QString &ip)
+{
+    QString url = QString("http://ip.taobao.com/service/getIpInfo.php?ip=%1").arg(ip);
+    QNetworkAccessManager *manager = new QNetworkAccessManager();
+    QNetworkReply *reply = manager->get(QNetworkRequest(QUrl(url)));
+    QEventLoop loop;
+    QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &loop, SLOT(quit()));
+    loop.exec();
+
+    int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if(reply->error() != QNetworkReply::NoError || statusCode != 200) {//200 is normal status
+        reply->close();
+        reply->deleteLater();
+        manager->deleteLater();
+        return QString();
+    }
+
+    QByteArray ba = reply->readAll();
+    reply->close();
+    reply->deleteLater();
+    manager->deleteLater();
+
+    QJsonParseError err;
+    QJsonDocument jsonDocument = QJsonDocument::fromJson(ba, &err);
+    if (err.error != QJsonParseError::NoError) {// Json type error
+        return QString();
+    }
+    if (jsonDocument.isNull() || jsonDocument.isEmpty()) {
+        return QString();
+    }
+
+    QJsonObject jsonObject = jsonDocument.object();
+    if (jsonObject.isEmpty() || jsonObject.size() == 0) {
+        return QString();
+    }
+
+    if (jsonObject.contains("data")) {
         QJsonObject dataObj = jsonObject.value("data").toObject();
         if (dataObj.isEmpty() || dataObj.size() == 0) {
             return QString();
         }
         if (dataObj.contains("city")) {
-            qDebug() << "dataObj city:" << dataObj.value("city").toString();
             return dataObj.value("city").toString();
         }
-    }*/
-
-    // for amap service
-    if (jsonObject.contains("city")) {
-        return jsonObject.value("city").toString();
     }
 
     return QString();
@@ -193,9 +215,12 @@ const QString automaicCity()
     QString city;
     QString publicIP = getPublicIpAddrByUrl("http://whois.pconline.com.cn/");
     //qDebug() << "publicIP:" << publicIP;
-    city = getCityFromIPAddr(publicIP);
+    city = getCityFromIPAddr(publicIP);//根据ip从geoip库定位城市
     if (city.isEmpty()) {
-        city = getCityFromIpByAmap(publicIP);
+        city = getCityFromIpByAmap(publicIP);//根据ip从高德API定位城市，该方式使用高德key，访问次数有限
+    }
+    if (city.isEmpty()) {
+        city = getCityFromIpByTaobao(publicIP);//根据ip从淘宝service定位城市，该方式访问速度慢，可能访问失败
     }
 
     return city;
