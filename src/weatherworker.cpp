@@ -252,13 +252,49 @@ void WeatherWorker::onWeatherObserveReply()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    bool redirection = false;
+    if (statusCode == 301 || statusCode == 302) {//redirect
+        bool redirection = false;
+        QVariant redirectionUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
+        //qDebug() << "Weather: redirectionUrl=" << redirectionUrl.toString();
+        redirection = AccessDedirectUrl(redirectionUrl.toString(), WeatherType::Type_Observe);//AccessDedirectUrl(reply->rawHeader("Location"));
+        reply->close();
+        reply->deleteLater();
+        if (!redirection) {
+            emit responseFailure(statusCode);
+        }
+        return;
+    }
+    else if (statusCode == 400) {
+        qDebug() << "Weather: Network error (HTTP400/Bad Request)";
+        emit responseFailure(statusCode);
+        return;
+    }
+    else if (statusCode == 403) {
+        qDebug() << "Weather: Username or password invalid (permission denied)";
+        emit responseFailure(statusCode);
+        return;
+    }
+    else if (statusCode == 200) {
+        // 200 is normal status
+    }
+    else {
+        emit responseFailure(statusCode);
+        return;
+    }
 
-    if(reply->error() != QNetworkReply::NoError || statusCode != 200) {//200 is normal status
+    if(reply->error() != QNetworkReply::NoError) {
         //qDebug() << "weather request error:" << reply->error() << ", statusCode=" << statusCode;
+        emit responseFailure(statusCode);
+        return;
+    }
+
+/*
+    bool redirection = false;
+    if(reply->error() != QNetworkReply::NoError || statusCode != 200) {//200 is normal status
+        qDebug() << "weather request error:" << reply->error() << ", statusCode=" << statusCode;
         if (statusCode == 301 || statusCode == 302) {//redirect
             QVariant redirectionUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
-            //qDebug() << "redirectionUrl=" << redirectionUrl.toString();
+            qDebug() << "redirectionUrl=" << redirectionUrl.toString();
             redirection = AccessDedirectUrl(redirectionUrl.toString(), WeatherType::Type_Observe);//AccessDedirectUrl(reply->rawHeader("Location"));
             reply->close();
             reply->deleteLater();
@@ -266,8 +302,10 @@ void WeatherWorker::onWeatherObserveReply()
         if (!redirection) {
             emit responseFailure(statusCode);
         }
+
         return;
     }
+    */
 
     QByteArray ba = reply->readAll();
     //QString reply_content = QString::fromUtf8(ba);
@@ -349,13 +387,49 @@ void WeatherWorker::onWeatherForecastReply()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    bool redirection = false;
+    if (statusCode == 301 || statusCode == 302) {//redirect
+        bool redirection = false;
+        QVariant redirectionUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
+        //qDebug() << "Forecast: redirectionUrl=" << redirectionUrl.toString();
+        redirection = AccessDedirectUrl(redirectionUrl.toString(), WeatherType::Type_Forecast);//AccessDedirectUrl(reply->rawHeader("Location"));
+        reply->close();
+        reply->deleteLater();
+        if (!redirection) {
+            emit responseFailure(statusCode);
+        }
+        return;
+    }
+    else if (statusCode == 400) {
+        qDebug() << "Forecast: Network error (HTTP400/Bad Request)";
+        emit responseFailure(statusCode);
+        return;
+    }
+    else if (statusCode == 403) {
+        qDebug() << "Forecast: Username or password invalid (permission denied)";
+        emit responseFailure(statusCode);
+        return;
+    }
+    else if (statusCode == 200) {
+        // 200 is normal status
+    }
+    else {
+        emit responseFailure(statusCode);
+        return;
+    }
 
-    if(reply->error() != QNetworkReply::NoError || statusCode != 200) {//200 is normal status
+    if(reply->error() != QNetworkReply::NoError) {
         //qDebug() << "weather forecast request error:" << reply->error() << ", statusCode=" << statusCode;
+        emit responseFailure(statusCode);
+        return;
+    }
+
+    /*
+    bool redirection = false;
+    if(reply->error() != QNetworkReply::NoError || statusCode != 200) {//200 is normal status
+        qDebug() << "weather forecast request error:" << reply->error() << ", statusCode=" << statusCode;
         if (statusCode == 301 || statusCode == 302) {//redirect
             QVariant redirectionUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
-            //qDebug() << "redirectionUrl=" << redirectionUrl.toString();
+            qDebug() << "redirectionUrl=" << redirectionUrl.toString();
             redirection = AccessDedirectUrl(redirectionUrl.toString(), WeatherType::Type_Forecast);//AccessDedirectUrl(reply->rawHeader("Location"));
             reply->close();
             reply->deleteLater();
@@ -365,6 +439,7 @@ void WeatherWorker::onWeatherForecastReply()
         }
         return;
     }
+    */
 
     QByteArray ba = reply->readAll();
     //QString reply_content = QString::fromUtf8(ba);

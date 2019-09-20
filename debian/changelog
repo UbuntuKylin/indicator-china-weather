@@ -1,3 +1,10 @@
+indicator-china-weather (3.0.3-0ubuntu2) eoan; urgency=medium
+
+  [ Li Xiang ]
+  * Handling QNetworkReply Error Code.
+
+ -- lixiang <lixiang@kylinos.cn>  Fri, 20 Sep 2019 10:00:24 +0800
+
 indicator-china-weather (3.0.3-0ubuntu1) eoan; urgency=medium
 
   [ Li Xiang ]
