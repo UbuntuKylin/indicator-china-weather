@@ -145,4 +145,4 @@ RESOURCES += \
 
 TRANSLATIONS += \
     translations/indicator-china-weather_zh_CN.ts \
-    translations/indicator-chian-weather_bo.ts
+    translations/indicator-china-weather_bo.ts
