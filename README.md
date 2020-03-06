@@ -29,6 +29,8 @@ The weather data are from the heweather API s6 version.
 
 + https://free-api.heweather.com/s6/weather?location=CN101250101&key=xxxx
 
++ https://free-api.heweather.net/s6/air/now?location=101250101&key=xxxx
+
 ### Internationalization
 
 1. lupdate indicator-china-weather.pro
@@ -43,17 +45,17 @@ lintian -i -EvIL +pedantic --verbose ../indicator-china-weather_3.0.0_amd64.chan
 
 
 
-###和风天气图标
+### 和风天气图标
 [官方地址](https://dev.heweather.com/docs/refer/condition)
 
-####下载
+#### 下载
 [图片打包下载](https://cdn.heweather.com/cond-icon-heweather.zip)
 
-####使用
+#### 使用
 * 图标文件名为天气代码，后缀为.png
 * 图标文件名中有字母`n`的，为夜间天气图标，例如[100n.png](https://cdn.heweather.com/cond_icon/100n.png "晴天图标")
 
-####天气代码对照表
+#### 天气代码对照表
 | 代码 | 中文 | 英文 | 图标 |
 |---|---|---|---|
 | 100 | 晴 | Sunny/Clear |[100.png](https://cdn.heweather.com/cond_icon/100.png "晴天图标")|

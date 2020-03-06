@@ -125,7 +125,7 @@ void AirWidget::animationHide()
     m_animation->setStartValue(QPoint(100, 0));
     m_animation->setEndValue(QPoint(335, 0));//QPoint(0, 0)
     m_animation->start();
-    QTimer::singleShot(m_animation->duration(), [=] {
+    QTimer::singleShot(m_animation->duration(), this, [=] {
         setAttribute(Qt::WA_TransparentForMouseEvents, false);
         QWidget::hide();
     });

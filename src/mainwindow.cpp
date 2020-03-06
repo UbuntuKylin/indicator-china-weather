@@ -26,6 +26,9 @@
 #include "weatherworker.h"
 #include "maskwidget.h"
 #include "weathermanager.h"
+#include "preferences.h"
+#include "global.h"
+using namespace Global;
 
 #include <QApplication>
 #include <QDesktopWidget>
@@ -37,10 +40,6 @@
 #include <QDebug>
 #include <QTimer>
 #include <math.h>
-
-#include "preferences.h"
-#include "global.h"
-using namespace Global;
 
 inline bool testParameterPassingValue(QString &str)
 {
@@ -90,11 +89,11 @@ MainWindow::MainWindow(QWidget *parent)
     , m_centralWidget(new QWidget(this))
     , m_titleBar(new TitleBar(this))
     , m_contentWidget(new ContentWidget(this))
-    , m_pingbackTimer(new QTimer(this))
     , m_tipTimer(new QTimer(this))
+    , m_trayTimer(new QTimer(this))
     , m_autoRefreshTimer(new QTimer(this))
     , m_actualizationTime(0)
-//    , m_weatherWorker(new WeatherWorker(this))
+    , dataHadRefreshed(false)
     , m_maskWidget(new MaskWidget(this))//MaskWidget::Instance();
     , m_weatherManager(new WeatherManager(this))
 {
@@ -103,13 +102,13 @@ MainWindow::MainWindow(QWidget *parent)
     qRegisterMetaType<QList<ForecastWeather>>();
     qRegisterMetaType<LifeStyle>();
 
-    QString appName;
+    /*QString appName;
     if (testParameterPassingValue(appName)) {
         qDebug() << "appName:" << appName;
     }
     else {
         qWarning() << "Read appName failed!";
-    }
+    }*/
 
     this->setFixedSize(355, 552);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::Tool);
@@ -130,9 +129,6 @@ MainWindow::MainWindow(QWidget *parent)
     m_layout->addWidget(m_titleBar);//height:32
     m_layout->addWidget(m_contentWidget);//height:520
     this->setCentralWidget(m_centralWidget);
-
-    this->initMenuAndTray();
-    m_titleBar->setCityName(m_preferences->m_currentCity);
 
     m_currentDesktop = qgetenv("XDG_CURRENT_DESKTOP");
     if (m_currentDesktop.isEmpty()) {
@@ -164,6 +160,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_movieWidget->move((this->width() - m_hintWidget->width())/2, (this->height() - m_hintWidget->height())/2);
     m_movieWidget->setVisible(false);
 
+    m_titleBar->setCityName(m_preferences->m_currentCity);
     double value = m_preferences->m_opacity*0.01;
     if (value < 0.6) {
         value = 0.60;
@@ -175,105 +172,46 @@ MainWindow::MainWindow(QWidget *parent)
     m_tipTimer->setInterval(60*1000);
     m_tipTimer->setSingleShot(false);
     connect(m_tipTimer, &QTimer::timeout, this, static_cast<void (MainWindow::*)()>(&MainWindow::updateTimeTip));
+
+    m_trayTimer->setInterval(800);
+    m_tipTimer->setSingleShot(false);
+    connect(m_trayTimer, SIGNAL(timeout()), this, SLOT(changeTrayIcon()));
+
     connect(m_autoRefreshTimer, &QTimer::timeout, this, [=] {
         this->startGetWeather();
     });
 
+    this->initMenuAndTray();
+
     //开始测试网络情况
     m_weatherManager->startTestNetwork();
 
-    //lixiang kobe 2020
-    /*if (!m_weatherWorker->isNetWorkSettingsGood()) {//无网络连接
-        m_contentWidget->setNetworkErrorPages();
-        m_autoRefreshTimer->stop();
-    }
-    else {//有网络连接，开始检查互联网是否可以ping通
-        m_weatherWorker->netWorkOnlineOrNot();//ping www.baidu.com
-    }
-
-    connect(m_weatherWorker, &WeatherWorker::nofityNetworkStatus, this, [=] (const QString &status) {
-        if (status == "OK") {//互联网可以ping通
-            m_weatherManager->startAutoLocationTask();
-            //m_weatherWorker->requestPostHostInfoToWeatherServer();
-            //m_weatherWorker->startAutoLocationTask();//开始自动定位城市
-        }
-        else {//互联网无法ping通
-            m_hintWidget->setIconAndText(":/res/network_warn.png", status);
-            m_contentWidget->setNetworkErrorPages();
-        }
-    });
-
-    connect(m_contentWidget, &ContentWidget::requestRetryWeather, this, [=] {
-        //m_weatherWorker->requestPostHostInfoToWeatherServer();
-        //m_weatherWorker->startAutoLocationTask();//开始自动定位城市
-    });
-
-    connect(m_weatherWorker, &WeatherWorker::responseFailure, this, [=] (int code) {
-        m_maskWidget->hide();
-        m_autoRefreshTimer->stop();
-        m_movieWidget->setVisible(false);
-        m_hintWidget->setVisible(true);
-        if (code == 0) {
-            m_hintWidget->setIconAndText(":/res/network_warn.png", tr("Incorrect access address"));
+    //已获取到网络探测的结果
+    connect(m_weatherManager, &WeatherManager::nofityNetworkStatus, this, [=] (const QString &status) {
+        if (status == "OK") {//互联网可以ping通的情况下，继续开始定位城市
+            this->startTrayFlashing(QString(tr("Start to locate the city automatically...")), false);
+            m_weatherManager->postSystemInfoToServer();
+            m_weatherManager->startAutoLocationTask();//开始自动定位城市
         }
         else {
-            m_hintWidget->setIconAndText(":/res/network_warn.png", QString(tr("Network error code:%1")).arg(QString::number(code)));
-        }
-        m_contentWidget->setNetworkErrorPages();
-    });
+            this->stopTrayFlashing();
 
-    connect(m_weatherWorker, &WeatherWorker::requestDiplayServerNotify, this, [=] (const QString &notifyInfo) {
-        if (!notifyInfo.isEmpty() && m_preferences->m_serverNotify)
-            m_contentWidget->showServerNotifyInfo(notifyInfo);
-    });
-
-    connect(m_weatherWorker, &WeatherWorker::observeDataRefreshed, this, [=] (const ObserveWeather &data) {
-        m_maskWidget->hide();
-        m_autoRefreshTimer->start(m_preferences->m_updateFrequency * 1000 * 60);
-        if (m_preferences->m_currentCity.isEmpty()) {
-            m_preferences->m_currentCity = data.city;
-        }
-        m_movieWidget->setVisible(false);
-        m_titleBar->setCityName(data.city);
-        m_contentWidget->refreshObserveUI(data);
-        this->refreshTrayMenuWeather(data);
-        QString condCodeStr = data.cond_code;
-        if (!condCodeStr.isEmpty()) {
-            if (condCodeStr.contains(QChar('n'))) {
-                this->setStyleSheet("QMainWindow{color:white;background-image:url(':/res/background/weather-clear-night.png');background-repeat:no-repeat;}");
-                m_contentWidget->setNightStyleSheets();
-                m_titleBar->setNightStyleSheets();
+            if (status == "Fail") {//物理网线未连接
+                m_contentWidget->setNetworkErrorPages();
+                m_hintWidget->setIconAndText(":/res/network_warn.png", status);
+                m_autoRefreshTimer->stop();
             }
-            else {
-                QString styleSheetStr = QString("QMainWindow{color:white;background-image:url('%1');background-repeat:no-repeat;}").arg(convertCodeToBackgroud(condCodeStr.toInt()));
-                this->setStyleSheet(styleSheetStr);
-                m_contentWidget->setDayStyleSheets();
-                m_titleBar->setDayStyleSheets();
+            else {//互联网无法ping通
+                m_contentWidget->setNetworkErrorPages();
+                m_hintWidget->setIconAndText(":/res/network_warn.png", status);
+                m_autoRefreshTimer->stop();
             }
         }
     });
-
-    connect(m_weatherWorker, &WeatherWorker::forecastDataRefreshed, this, [=] (const QList<ForecastWeather> &datas, const LifeStyle &data) {
-        m_maskWidget->hide();
-        if (!m_autoRefreshTimer->isActive()) {
-            m_autoRefreshTimer->start(m_preferences->m_updateFrequency * 1000 * 60);
-        }
-
-        m_movieWidget->setVisible(false);
-
-        int len = datas.size();
-        if (len > 3) {
-            len = 3;
-        }
-        for (int i = 0; i < len; ++i) {
-            m_contentWidget->refreshForecastUI(datas[i], i);
-        }
-
-        m_contentWidget->refreshLifestyleUI(data);
-    });*/
 
     //自动定位成功后，更新各个控件的默认城市数据，并开始获取天气数据
     connect(m_weatherManager, &WeatherManager::requestAutoLocationData, this, [=] (const CitySettingData &info, bool success) {
+        this->startTrayFlashing(QString(tr("Start getting weather data...")), false);
         if (success) {//自动定位城市成功后，更新各个ui，然后获取天气数据
             if (m_setttingDialog) {
                 m_setttingDialog->addCityItem(info);
@@ -288,31 +226,15 @@ MainWindow::MainWindow(QWidget *parent)
         }
     });
 
-    connect(m_weatherManager, &WeatherManager::nofityNetworkStatus, this, [=] (const QString &status) {
-        if (status == "OK") {//互联网可以ping通
-            m_weatherManager->postSystemInfoToServer();
-            m_weatherManager->startAutoLocationTask();//开始自动定位城市
-        }
-        else if (status == "Fail") {//物理网线未连接
-            m_contentWidget->setNetworkErrorPages();
-            m_autoRefreshTimer->stop();
-        }
-        else {//互联网无法ping通
-            m_hintWidget->setIconAndText(":/res/network_warn.png", status);
-            m_contentWidget->setNetworkErrorPages();
-        }
-    });
-
-    connect(m_contentWidget, &ContentWidget::requestRetryWeather, this, [=] {
-        m_weatherManager->postSystemInfoToServer();
-        m_weatherManager->startAutoLocationTask();//开始自动定位城市
-    });
-
+    //获取天气数据时发生了异常
     connect(m_weatherManager, &WeatherManager::responseFailure, this, [=] (int code) {
+        this->stopTrayFlashing();
+
         m_maskWidget->hide();
         m_autoRefreshTimer->stop();
         m_movieWidget->setVisible(false);
         m_hintWidget->setVisible(true);
+
         if (code == 0) {
             m_hintWidget->setIconAndText(":/res/network_warn.png", tr("Incorrect access address"));
         }
@@ -322,18 +244,31 @@ MainWindow::MainWindow(QWidget *parent)
         m_contentWidget->setNetworkErrorPages();
     });
 
+    connect(m_contentWidget, &ContentWidget::requestRetryWeather, this, [=] {
+        this->startTrayFlashing(QString(tr("Start to locate the city automatically...")), true);
+        m_weatherManager->postSystemInfoToServer();
+        m_weatherManager->startAutoLocationTask();//开始自动定位城市
+    });
+
     connect(m_weatherManager, &WeatherManager::requestDiplayServerNotify, this, [=] (const QString &notifyInfo) {
         if (!notifyInfo.isEmpty() && m_preferences->m_serverNotify)
             m_contentWidget->showServerNotifyInfo(notifyInfo);
     });
 
     connect(m_weatherManager, &WeatherManager::observeDataRefreshed, this, [=] (const ObserveWeather &data) {
-        m_maskWidget->hide();
-        m_autoRefreshTimer->start(m_preferences->m_updateFrequency * 1000 * 60);
+        if (!dataHadRefreshed) {
+            dataHadRefreshed = true;
+            this->stopTrayFlashing();
+            m_maskWidget->hide();
+            m_movieWidget->setVisible(false);
+        }
+
+        if (!m_autoRefreshTimer->isActive()) {
+            m_autoRefreshTimer->start(m_preferences->m_updateFrequency * 1000 * 60);
+        }
         if (m_preferences->m_currentCity.isEmpty()) {
             m_preferences->m_currentCity = data.city;
         }
-        m_movieWidget->setVisible(false);
         m_titleBar->setCityName(data.city);
         m_contentWidget->refreshObserveUI(data);
         this->refreshTrayMenuWeather(data);
@@ -354,12 +289,16 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
     connect(m_weatherManager, &WeatherManager::forecastDataRefreshed, this, [=] (const QList<ForecastWeather> &datas, const LifeStyle &data) {
-        m_maskWidget->hide();
+        if (!dataHadRefreshed) {
+            dataHadRefreshed = true;
+            this->stopTrayFlashing();
+            m_maskWidget->hide();
+            m_movieWidget->setVisible(false);
+        }
+
         if (!m_autoRefreshTimer->isActive()) {
             m_autoRefreshTimer->start(m_preferences->m_updateFrequency * 1000 * 60);
         }
-
-        m_movieWidget->setVisible(false);
 
         int len = datas.size();
         if (len > 3) {
@@ -375,12 +314,38 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    if (m_autoRefreshTimer->isActive()) {
+        m_autoRefreshTimer->stop();
+        delete m_autoRefreshTimer;
+    }
     if (m_tipTimer->isActive()) {
         m_tipTimer->stop();
         delete m_tipTimer;
     }
+    if (m_trayTimer->isActive()) {
+        m_trayTimer->stop();
+        delete m_trayTimer;
+    }
 
     global_end();
+}
+
+void MainWindow::startTrayFlashing(const QString &msg, bool restart)
+{
+    if (restart) {
+        if (m_trayTimer->isActive()) {
+            m_trayTimer->stop();
+        }
+        m_trayTimer->start();
+    }
+    m_systemTray->setToolTip(msg);
+}
+
+void MainWindow::stopTrayFlashing()
+{
+    m_trayTimer->stop();
+    m_systemTray->setToolTip(QString(tr("Kylin Weather")));
+    m_systemTray->setIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/indicator-china-weather.png")));
 }
 
 void MainWindow::updateTimeTip()
@@ -422,6 +387,7 @@ void MainWindow::startGetWeather()
     m_movieWidget->setVisible(true);
     m_titleBar->setCityName(m_preferences->m_currentCity);
 
+    dataHadRefreshed = false;
     m_weatherManager->startRefresheWeatherData(m_preferences->m_currentCityId);
 }
 
@@ -455,13 +421,18 @@ void MainWindow::initMenuAndTray()
     m_sdAction = new QAction("N/A",this);
     m_aqiAction = new QAction("N/A",this);
     m_releaseTimeAction = new QAction(tr("Release time"),this);
-    m_updateTimeAction = new QAction(m_updateTimeStr,this);
+    m_updateTimeAction = new QAction(m_updateTimeStr, this);
     m_mainMenu->addAction(m_weatherAction);
     m_mainMenu->addAction(m_temperatureAction);
     m_mainMenu->addAction(m_sdAction);
     m_mainMenu->addAction(m_aqiAction);
     m_mainMenu->addAction(m_releaseTimeAction);
     m_mainMenu->addAction(m_updateTimeAction);
+
+    connect(m_updateTimeAction, &QAction::triggered, this, [=] {
+        this->startGetWeather();
+    });
+
 
     QAction *m_forecastAction = m_mainMenu->addAction(tr("Weather Forecast"));
     connect(m_forecastAction, &QAction::triggered, this, [=] {
@@ -481,25 +452,6 @@ void MainWindow::initMenuAndTray()
     QAction *m_quitAction = m_mainMenu->addAction(tr("Exit"));
     m_quitAction->setIcon(QIcon(":/res/quit_normal.png"));
 
-    //for test change weather background
-    /*m_isDN = true;
-    connect(m_switchAciton, &QAction::triggered, this, [=] {
-        if (m_isDN) {
-            m_isDN = false;
-            QString currentBg = QString("QMainWindow{color:white;background-image:url('%1');background-repeat:no-repeat;}").arg(":/res/background/weather-clear-night.png");
-            this->setStyleSheet(currentBg);
-            m_contentWidget->setNightStyleSheets();
-            m_titleBar->setNightStyleSheets();
-        }
-        else {
-            m_isDN = true;
-            QString currentBg = QString("QMainWindow{color:white;background-image:url('%1');background-repeat:no-repeat;}").arg(":/res/background/weather-clear.png");
-            this->setStyleSheet(currentBg);
-            m_contentWidget->setDayStyleSheets();
-            m_titleBar->setDayStyleSheets();
-        }
-    });*/
-
     connect(m_settingAction, &QAction::triggered, this, [=] {
         this->showSettingDialog();
     });
@@ -518,6 +470,8 @@ void MainWindow::initMenuAndTray()
 
     QShortcut *m_quitShortCut = new QShortcut(QKeySequence("Ctrl+Q"), this);
     connect(m_quitShortCut, SIGNAL(activated()), qApp, SLOT(quit()));
+
+    this->startTrayFlashing(QString(tr("Detecting network...")), true);
 }
 
 void MainWindow::showSettingDialog()
@@ -584,13 +538,12 @@ void MainWindow::refreshTrayMenuWeather(const ObserveWeather &data)
 {
     QPixmap iconPix = QPixmap(QString(":/res/weather_icons/white/%1.png").arg(data.cond_code));
     if (iconPix.isNull()) {
-        iconPix = QPixmap(":/res/weather_icons/white/999.png");
+        iconPix = QPixmap(":/res/weather_icons/white/999.png");//TODO:或者使用软件logo?
     }
     //Q_ASSERT(!iconPix.isNull());
     m_systemTray->setIcon(iconPix);
-    //m_systemTray->setIcon(QIcon(QString(":/res/weather_icons/white/%1.png").arg(data.cond_code)));
     m_weatherAction->setText(data.cond_txt);
-    m_temperatureAction->setText(QString(tr("Temperature:%1˚C")).arg(data.tmp));
+    m_temperatureAction->setText(QString(tr("Temperature:%1")).arg(data.tmp) + "˚C");
     m_sdAction->setText(QString(tr("Relative humidity:%1")).arg(data.hum));
     if (data.air.isEmpty() || data.air.contains("Unknown")) {
         m_aqiAction->setText(QString(tr("Air quality:%1")).arg(QString(tr("Unknown"))));
@@ -617,6 +570,18 @@ void MainWindow::resetWeatherBackgroud(const QString &imgPath)
         weatherBg = ":/res/background/weather-clear.png";
     QString currentBg = QString("QMainWindow{color:white;background-image:url('%1');background-repeat:no-repeat;}").arg(weatherBg);
     this->setStyleSheet(currentBg);
+}
+
+void MainWindow::changeTrayIcon()
+{
+    static bool changed = false;
+    if (changed) {
+        m_systemTray->setIcon(QIcon(":/res/statusBusy1.png"));
+    }
+    else {
+        m_systemTray->setIcon(QIcon(":/res/statusBusy2.png"));
+    }
+    changed = !changed;
 }
 
 void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)

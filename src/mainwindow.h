@@ -27,13 +27,12 @@
 #include "menuactiongroup.h"
 #include "data.h"
 
+class WeatherManager;
 class TitleBar;
 class ContentWidget;
 class SettingDialog;
 class PromptWidget;
-//class WeatherWorker;
 class MaskWidget;
-class WeatherManager;
 
 class MainWindow : public QMainWindow
 {
@@ -44,32 +43,33 @@ public:
     ~MainWindow();
 
     void initMenuAndTray();
-    void resetWeatherBackgroud(const QString &imgPath);
-    void movePosition();
     void createSettingDialog();
+    void resetWeatherBackgroud(const QString &imgPath);
     void refreshCityActions();
-
     void refreshTrayMenuWeather(const ObserveWeather &data);
     void startGetWeather();
-
+    void startTrayFlashing(const QString &msg, bool restart);
+    void stopTrayFlashing();
     void setOpacity(double opacity);
-
-protected:
-    void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
-    void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
+    void movePosition();
 
 public slots:
+    void changeTrayIcon();
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
     void showSettingDialog();
     void applySettings();
     void updateTimeTip();
 
+protected:
+    void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
+    void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
+
 private:
+    WeatherManager* m_weatherManager = nullptr;
     QVBoxLayout *m_layout = nullptr;
     QWidget *m_centralWidget = nullptr;
     TitleBar *m_titleBar = nullptr;
     ContentWidget *m_contentWidget = nullptr;
-
     QMenu *m_mainMenu = nullptr;
     QMenu *m_cityMenu = nullptr;
     MenuActionGroup *m_cityActionGroup = nullptr;
@@ -83,22 +83,14 @@ private:
     SettingDialog *m_setttingDialog = nullptr;
     PromptWidget *m_hintWidget = nullptr;
     PromptWidget *m_movieWidget = nullptr;
-
-//    WeatherWorker *m_weatherWorker = nullptr;
-
-    QTimer *m_pingbackTimer = nullptr;
+    QTimer *m_trayTimer = nullptr;
     QTimer *m_tipTimer = nullptr;
+    QTimer *m_autoRefreshTimer = nullptr;
     int m_actualizationTime;
     QString m_updateTimeStr;
-
-    QTimer *m_autoRefreshTimer = nullptr;
     QString m_currentDesktop;
-
     MaskWidget *m_maskWidget = nullptr;
-
-    WeatherManager* m_weatherManager = nullptr;
-    //test
-    //bool m_isDN;
+    bool dataHadRefreshed;
 };
 
 #endif // MAINWINDOW_H

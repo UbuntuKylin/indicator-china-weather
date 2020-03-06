@@ -288,6 +288,8 @@
         <file>res/weather_icons/white/513.png</file>
         <file>res/weather_icons/white/514.png</file>
         <file>res/weather_icons/white/515.png</file>
+        <file>res/statusBusy1.png</file>
+        <file>res/statusBusy2.png</file>
     </qresource>
     <qresource prefix="/data">
         <file>data/china-city-list.csv</file>
