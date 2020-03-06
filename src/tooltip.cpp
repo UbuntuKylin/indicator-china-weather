@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2019 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ * Copyright (C) 2013 ~ 2020 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    lixiang@kylinos.cn/kobe24_lixiang@126.com
@@ -118,10 +118,18 @@ void ToolTip::resetData(const ForecastWeather &data, const QString &week)
     m_dateLabel->setText(QString("%1 %2").arg(week).arg(data.forcast_date));
 
     QPixmap pixmap1 = QPixmap(QString(":/res/weather_icons/darkgrey/%1.png").arg(data.cond_code_d));
+    if (pixmap1.isNull()) {
+        pixmap1 = QPixmap(":/res/weather_icons/darkgrey/999.png");
+    }
+    //Q_ASSERT(!pixmap1.isNull());
     pixmap1 = pixmap1.scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     m_dIconLabel->setPixmap(pixmap1);
 
     QPixmap pixmap2 = QPixmap(QString(":/res/weather_icons/darkgrey/%1.png").arg(data.cond_code_n));
+    if (pixmap2.isNull()) {
+        pixmap2 = QPixmap(":/res/weather_icons/darkgrey/999.png");
+    }
+    //Q_ASSERT(!pixmap2.isNull());
     pixmap2 = pixmap2.scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     m_nIconLabel->setPixmap(pixmap2);
 

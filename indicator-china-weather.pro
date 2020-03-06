@@ -98,7 +98,9 @@ SOURCES += src/main.cpp \
     src/airwidget.cpp \
     src/dbusadaptor.cpp \
     src/automaticlocation.cpp \
-    src/maskwidget.cpp
+    src/maskwidget.cpp \
+    src/weathermanager.cpp \
+    src/geoipworker.cpp
 
 HEADERS  += src/mainwindow.h \
     src/titlebar.h \
@@ -138,7 +140,9 @@ HEADERS  += src/mainwindow.h \
     src/airwidget.h \
     src/dbusadaptor.h \
     src/automaticlocation.h \
-    src/maskwidget.h
+    src/maskwidget.h \
+    src/weathermanager.h \
+    src/geoipworker.h
 
 RESOURCES += \
     res.qrc

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2019 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ * Copyright (C) 2013 ~ 2020 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    lixiang@kylinos.cn/kobe24_lixiang@126.com
@@ -151,7 +151,6 @@ void CityWidget::loadCityItems()
         info.id = m_preferences->m_cities.at(i).id;
         info.name = m_preferences->m_cities.at(i).name;
         info.temperature = (m_preferences->m_currentCityId == m_preferences->m_cities.at(i).id) ? m_preferences->weather.tmp + "°C" : "";
-
 
         if (m_preferences->weather.cond_code.isEmpty()) {
             info.icon = ":/res/weather_icons/darkgrey/999.png";

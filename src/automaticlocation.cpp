@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 ~ 2019 kobe24_lixiang@126.com
+ * Copyright (C) 2018 ~ 2020 kobe24_lixiang@126.com
  *
  * Authors:
  *  lixiang    kobe24_lixiang@126.com
@@ -203,6 +203,8 @@ const QString getCityFromIPAddr(const QString &ip)
         QString cityName = QString(gir->city);
         GeoIPRecord_delete(gir);
         GeoIP_delete(gi);
+
+        qDebug() << "cityName:" << cityName;
         return cityName;
     }
 

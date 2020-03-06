@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2019 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ * Copyright (C) 2013 ~ 2020 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    lixiang@kylinos.cn/kobe24_lixiang@126.com
@@ -28,14 +28,11 @@
 
 #include "data.h"
 
-class AutomaticLocation;
-
 class WeatherWorker : public QObject
 {
     Q_OBJECT
 
 public:
-
     enum WeatherType
     {
         Type_Observe,
@@ -45,42 +42,35 @@ public:
     explicit WeatherWorker(QObject *parent = 0);
     ~WeatherWorker();
 
-
-    bool isNetWorkSettingsGood();
-    void netWorkOnlineOrNot();
-
     void refreshObserveWeatherData(const QString &cityId);
     void refreshForecastWeatherData(const QString &cityId);
-
     void requestPingBackWeatherServer();
-    void requestPostHostInfoToWeatherServer();
-
     bool AccessDedirectUrl(const QString &redirectUrl, WeatherType weatherType);
     void AccessDedirectUrlWithPost(const QString &redirectUrl);
-
     QString getErrorCodeDescription(QString errorCode);
 
-    void startAutoLocationTask();
-
 signals:
+    void requestTestNetwork();
+    void nofityNetworkStatus(const QString &status);
     void observeDataRefreshed(const ObserveWeather &data);
     void forecastDataRefreshed(const QList<ForecastWeather> &datas, LifeStyle data);
-    void nofityNetworkStatus(const QString &status);
+    void requestPostHostInfoToWeatherServer();
     void responseFailure(int code);
     void requestDiplayServerNotify(const QString &notifyInfo);
-    void requestAutoLocationData(const CitySettingData & info, bool success);
+    void requestRefresheWeatherData(const QString &cityId);
 
 public slots:
     void onWeatherObserveReply();
     void onWeatherForecastReply();
     void onPingBackPostReply();
     void networkLookedUp(const QHostInfo &host);
-    void setAutomaticCity(const QString& cityName);
+    void onPostHostInfoToWeatherServer();
+    void onResponseTestNetwork();
+    void onResponseRefresheWeatherData(const QString &cityId);
 
 private:
     QNetworkAccessManager *m_networkManager = nullptr;
     QString m_hostInfoParameters;
-    AutomaticLocation *m_automatic = nullptr;
 };
 
 #endif // WEATHERWORKER_H

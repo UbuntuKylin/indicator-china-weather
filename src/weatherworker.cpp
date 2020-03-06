@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2019 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ * Copyright (C) 2013 ~ 2020 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    lixiang@kylinos.cn/kobe24_lixiang@126.com
@@ -18,7 +18,7 @@
  */
 
 #include "weatherworker.h"
-#include "automaticlocation.h"
+//#include "automaticlocation.h"
 
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -69,8 +69,16 @@ WeatherWorker::WeatherWorker(QObject *parent) :
         reply->deleteLater();
     });
 
-    m_automatic = new AutomaticLocation(this);
-    connect(m_automatic, &AutomaticLocation::automaticLocationFinished, this, &WeatherWorker::setAutomaticCity);
+    connect(this, &WeatherWorker::requestTestNetwork, this, &WeatherWorker::onResponseTestNetwork);
+    connect(this, &WeatherWorker::requestPostHostInfoToWeatherServer, this, &WeatherWorker::onPostHostInfoToWeatherServer);
+    connect(this, &WeatherWorker::requestRefresheWeatherData, this, &WeatherWorker::onResponseRefresheWeatherData);
+
+
+
+
+
+//    m_automatic = new AutomaticLocation(this);
+//    connect(m_automatic, &AutomaticLocation::automaticLocationFinished, this, &WeatherWorker::setAutomaticCity);
 }
 
 WeatherWorker::~WeatherWorker()
@@ -78,23 +86,41 @@ WeatherWorker::~WeatherWorker()
     m_networkManager->deleteLater();
 }
 
-void WeatherWorker::startAutoLocationTask()
-{
-    m_automatic->start();
-}
+//void WeatherWorker::startAutoLocationTask()
+//{
+//    m_automatic->start();
+//}
 
-bool WeatherWorker::isNetWorkSettingsGood()
+void WeatherWorker::onResponseTestNetwork()
 {
-    //判断网络是否有连接，不一定能上网
     QNetworkConfigurationManager mgr;
-    return mgr.isOnline();
+    if (mgr.isOnline()) {//判断网络是否有连接，不一定能上网，如果连接了，则开始检查互联网是否可以ping通
+        //http://service.ubuntukylin.com:8001/weather/pingnetwork/
+        QHostInfo::lookupHost("www.baidu.com", this, SLOT(networkLookedUp(QHostInfo)));
+    }
+    else {
+        emit nofityNetworkStatus("Fail");//物理网线未连接
+    }
 }
 
-void WeatherWorker::netWorkOnlineOrNot()
+void WeatherWorker::onResponseRefresheWeatherData(const QString &cityId)
 {
-    //http://service.ubuntukylin.com:8001/weather/pingnetwork/
-    QHostInfo::lookupHost("www.baidu.com", this, SLOT(networkLookedUp(QHostInfo)));
+    refreshObserveWeatherData(m_preferences->m_currentCityId);
+    refreshForecastWeatherData(m_preferences->m_currentCityId);
 }
+
+//bool WeatherWorker::isNetWorkSettingsGood()
+//{
+//    //判断网络是否有连接，不一定能上网
+//    QNetworkConfigurationManager mgr;
+//    return mgr.isOnline();
+//}
+
+//void WeatherWorker::netWorkOnlineOrNot()
+//{
+//    //http://service.ubuntukylin.com:8001/weather/pingnetwork/
+//    QHostInfo::lookupHost("www.baidu.com", this, SLOT(networkLookedUp(QHostInfo)));
+//}
 
 void WeatherWorker::networkLookedUp(const QHostInfo &host)
 {
@@ -190,7 +216,7 @@ void WeatherWorker::requestPingBackWeatherServer()
     });
 }
 
-void WeatherWorker::requestPostHostInfoToWeatherServer()
+void WeatherWorker::onPostHostInfoToWeatherServer()
 {
     QString osInfo = readOsInfo();
     QString hostInfo = QString("%1&version_weather=%2&city=%3").arg(osInfo).arg(qApp->applicationVersion()).arg(m_preferences->m_currentCity);
@@ -633,85 +659,85 @@ QString WeatherWorker::getErrorCodeDescription(QString errorCode)
 }
 
 
-void WeatherWorker::setAutomaticCity(const QString &cityName)
-{
-    bool autoSuccess = false;
-    CitySettingData info;
+//void WeatherWorker::setAutomaticCity(const QString &cityName)
+//{
+//    bool autoSuccess = false;
+//    CitySettingData info;
 
-    if (cityName.isEmpty()) {
-        emit this->requestAutoLocationData(info, false);
-        return;
-    }
-    //CN101250101,changsha,长沙,CN,China,中国,hunan,湖南,changsha,长沙,28.19409,112.98228,"430101,430100,430000",
-    QFile file(":/data/data/china-city-list.csv");
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QString line = file.readLine();
-        line = line.replace("\n", "");
-        while (!line.isEmpty()) {
-            QStringList resultList = line.split(",");
-            if (resultList.length() < 10) {
-                line = file.readLine();
-                line = line.replace("\n", "");
-                continue;
-            }
+//    if (cityName.isEmpty()) {
+//        emit this->requestAutoLocationData(info, false);
+//        return;
+//    }
+//    //CN101250101,changsha,长沙,CN,China,中国,hunan,湖南,changsha,长沙,28.19409,112.98228,"430101,430100,430000",
+//    QFile file(":/data/data/china-city-list.csv");
+//    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+//        QString line = file.readLine();
+//        line = line.replace("\n", "");
+//        while (!line.isEmpty()) {
+//            QStringList resultList = line.split(",");
+//            if (resultList.length() < 10) {
+//                line = file.readLine();
+//                line = line.replace("\n", "");
+//                continue;
+//            }
 
-            QString id = resultList.at(0);
-            if (!id.startsWith("CN")) {
-                line = file.readLine();
-                line = line.replace("\n", "");
-                continue;
-            }
+//            QString id = resultList.at(0);
+//            if (!id.startsWith("CN")) {
+//                line = file.readLine();
+//                line = line.replace("\n", "");
+//                continue;
+//            }
 
-            if (resultList.at(1).compare(cityName, Qt::CaseInsensitive) == 0 ||
-                resultList.at(2).compare(cityName, Qt::CaseInsensitive) == 0 ||
-                QString(resultList.at(2) + "市").compare(cityName, Qt::CaseInsensitive) == 0 ||
-                QString(resultList.at(2) + "区").compare(cityName, Qt::CaseInsensitive) == 0 ||
-                QString(resultList.at(2) + "县").compare(cityName, Qt::CaseInsensitive) == 0) {
-                id.remove(0, 2);//remove "CN"
-                QString name = resultList.at(2);
+//            if (resultList.at(1).compare(cityName, Qt::CaseInsensitive) == 0 ||
+//                resultList.at(2).compare(cityName, Qt::CaseInsensitive) == 0 ||
+//                QString(resultList.at(2) + "市").compare(cityName, Qt::CaseInsensitive) == 0 ||
+//                QString(resultList.at(2) + "区").compare(cityName, Qt::CaseInsensitive) == 0 ||
+//                QString(resultList.at(2) + "县").compare(cityName, Qt::CaseInsensitive) == 0) {
+//                id.remove(0, 2);//remove "CN"
+//                QString name = resultList.at(2);
 
-                if (m_preferences->isCitiesCountOverMax()) {
-                    if (m_preferences->isCityIdExist(id)) {
-                        //从已有列表中将自动定位的城市设置为默认城市
-                        m_preferences->setCurrentCityIdAndName(name);
-                    }
-                    else {
-                        break;
-                    }
-                }
-                else {
-                    if (m_preferences->isCityIdExist(id)) {
-                        m_preferences->setCurrentCityIdAndName(name);
-                    }
-                    else {
-                        City city;
-                        city.id = id;
-                        city.name = name;
-                        m_preferences->setCurrentCityIdAndName(name);
-                        m_preferences->addCityInfoToPref(city);
-                        m_preferences->save();
-                    }
-                }
+//                if (m_preferences->isCitiesCountOverMax()) {
+//                    if (m_preferences->isCityIdExist(id)) {
+//                        //从已有列表中将自动定位的城市设置为默认城市
+//                        m_preferences->setCurrentCityIdAndName(name);
+//                    }
+//                    else {
+//                        break;
+//                    }
+//                }
+//                else {
+//                    if (m_preferences->isCityIdExist(id)) {
+//                        m_preferences->setCurrentCityIdAndName(name);
+//                    }
+//                    else {
+//                        City city;
+//                        city.id = id;
+//                        city.name = name;
+//                        m_preferences->setCurrentCityIdAndName(name);
+//                        m_preferences->addCityInfoToPref(city);
+//                        m_preferences->save();
+//                    }
+//                }
 
-                info.active = false;
-                info.id = id;
-                info.name = name;
-                info.icon = ":/res/weather_icons/darkgrey/100.png";
+//                info.active = false;
+//                info.id = id;
+//                info.name = name;
+//                info.icon = ":/res/weather_icons/darkgrey/100.png";
 
-                autoSuccess = true;
-                break;
-            }
+//                autoSuccess = true;
+//                break;
+//            }
 
-            line = file.readLine();
-            line = line.replace("\n", "");
-        }
-        file.close();
-    }
+//            line = file.readLine();
+//            line = line.replace("\n", "");
+//        }
+//        file.close();
+//    }
 
-    if (autoSuccess) {
-        emit this->requestAutoLocationData(info, true);
-    }
-    else {
-        emit this->requestAutoLocationData(info, false);
-    }
-}
+//    if (autoSuccess) {
+//        emit this->requestAutoLocationData(info, true);
+//    }
+//    else {
+//        emit this->requestAutoLocationData(info, false);
+//    }
+//}

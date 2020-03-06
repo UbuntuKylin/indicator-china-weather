@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="zh_CN">
+<TS version="2.1" language="zh_CN">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -264,7 +264,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="483"/>
         <source>Temperature:%1ËC</source>
-        <translation type="unfinished"></translation>
+        <translation>温度：%1˚C</translation>
     </message>
     <message>
         <source>Temperature:%1˚C</source>

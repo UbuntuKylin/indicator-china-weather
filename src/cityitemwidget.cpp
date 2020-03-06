@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2019 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ * Copyright (C) 2013 ~ 2020 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    lixiang@kylinos.cn/kobe24_lixiang@126.com
@@ -79,9 +79,13 @@ CityItemWidget::CityItemWidget(CitySettingData info, QWidget *parent) : QWidget(
         emit this->requestDeleteCity(this->getCityId());
     });
 
-    QPixmap pixmap = QPixmap(info.icon);
-    pixmap = pixmap.scaled(24, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    m_iconLabel->setPixmap(pixmap);
+    QPixmap iconPix = QPixmap(info.icon);
+    if (iconPix.isNull()) {
+        iconPix = QPixmap(":/res/weather_icons/darkgrey/999.png");
+    }
+    //Q_ASSERT(!iconPix.isNull());
+    iconPix = iconPix.scaled(24, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    m_iconLabel->setPixmap(iconPix);
     if (info.active) {
         m_cityLabel->setText(QString(tr("%1 [Default]")).arg(info.name));
     }
@@ -114,9 +118,13 @@ void CityItemWidget::setItemWeather(const QString &temp, const QString &iconPath
     m_data.icon = iconPath;
     m_data.temperature = temp;
     m_temperatureLabel->setText(m_data.temperature);
-    QPixmap pixmap = QPixmap(m_data.icon);
-    pixmap = pixmap.scaled(24, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    m_iconLabel->setPixmap(pixmap);
+    QPixmap iconPix = QPixmap(m_data.icon);
+    if (iconPix.isNull()) {
+        iconPix = QPixmap(":/res/weather_icons/darkgrey/999.png");
+    }
+    //Q_ASSERT(!iconPix.isNull());
+    iconPix = iconPix.scaled(24, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    m_iconLabel->setPixmap(iconPix);
 }
 
 void CityItemWidget::setItemHovered()

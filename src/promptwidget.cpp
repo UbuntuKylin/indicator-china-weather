@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2019 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ * Copyright (C) 2013 ~ 2020 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    lixiang@kylinos.cn/kobe24_lixiang@126.com
@@ -120,11 +120,14 @@ void PromptWidget::setIconAndText(const QString &iconPath, const QString &text)
 {
     const qreal ratio = qApp->devicePixelRatio();
     QIcon icon = QIcon(iconPath);
-    QPixmap pixmap = icon.pixmap(m_iconLabel->width()*ratio, m_iconLabel->height()*ratio);
-    pixmap = pixmap.scaled(m_iconLabel->width()*ratio, m_iconLabel->height()*ratio, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
-    pixmap.setDevicePixelRatio(ratio);
-    m_iconLabel->setPixmap(pixmap);
-
+    QPixmap iconPix = icon.pixmap(m_iconLabel->width()*ratio, m_iconLabel->height()*ratio);
+    if (iconPix.isNull()) {
+        iconPix = QPixmap(":/res/network_warn.png");
+    }
+    //Q_ASSERT(!iconPix.isNull());
+    iconPix = iconPix.scaled(m_iconLabel->width()*ratio, m_iconLabel->height()*ratio, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
+    iconPix.setDevicePixelRatio(ratio);
+    m_iconLabel->setPixmap(iconPix);
     m_textLabel->setText(text);
 }
 

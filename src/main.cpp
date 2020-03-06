@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2019 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ * Copyright (C) 2013 ~ 2020 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    lixiang@kylinos.cn/kobe24_lixiang@126.com
@@ -35,9 +35,8 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     a.setOrganizationName("kylin");
     a.setApplicationName("Kylin Weather (indicator-china-weather)");
-    a.setApplicationVersion("3.0.3");
+    a.setApplicationVersion("3.1.0");
     a.setQuitOnLastWindowClosed(false);//Avoid that after hiding mainwindow, close the sub window would cause the program exit
-
 
     QTranslator app_trans;
     QTranslator qt_trans;

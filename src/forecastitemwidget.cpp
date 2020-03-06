@@ -73,15 +73,22 @@ void ForecastItemWidget::resetForecastData(const ForecastWeather &data, int inde
     m_weatherLabel->setText(data.cond_txt_d);
 
     //darkgrey or lightgrey
-    QPixmap pixmap;
+    QPixmap iconPix;
     if (m_isDayOrNight) {
-        pixmap = QPixmap(QString(":/res/weather_icons/darkgrey/%1.png").arg(data.cond_code_d));
+        iconPix = QPixmap(QString(":/res/weather_icons/darkgrey/%1.png").arg(data.cond_code_d));
+        if (iconPix.isNull()) {
+            iconPix = QPixmap(":/res/weather_icons/darkgrey/999.png");
+        }
     }
     else {
-        pixmap = QPixmap(QString(":/res/weather_icons/lightgrey/%1.png").arg(data.cond_code_d));
+        iconPix = QPixmap(QString(":/res/weather_icons/lightgrey/%1.png").arg(data.cond_code_d));
+        if (iconPix.isNull()) {
+            iconPix = QPixmap(":/res/weather_icons/lightgrey/999.png");
+        }
     }
-    pixmap = pixmap.scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    m_iconLabel->setPixmap(pixmap);
+    //Q_ASSERT(!iconPix.isNull());
+    iconPix = iconPix.scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    m_iconLabel->setPixmap(iconPix);
     m_tempLabel->setText(QString("%1°C~%2°C").arg(data.tmp_min).arg(data.tmp_max));
 
     m_toolTip->resetData(data, m_weekLabel->text());
@@ -112,9 +119,10 @@ void ForecastItemWidget::setDefaultData()
     m_weekLabel->setText("-");
     m_dateLabel->setText("-");
     m_weatherLabel->setText("-");
-    QPixmap pixmap = QPixmap(":/res/weather_icons/darkgrey/999.png");
-    pixmap = pixmap.scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    m_iconLabel->setPixmap(pixmap);
+    QPixmap iconPix = QPixmap(":/res/weather_icons/darkgrey/999.png");
+    //Q_ASSERT(!iconPix.isNull());
+    iconPix = iconPix.scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    m_iconLabel->setPixmap(iconPix);
     m_tempLabel->setText("-°C");
 }
 

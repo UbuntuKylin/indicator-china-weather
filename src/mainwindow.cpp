@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2019 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ * Copyright (C) 2013 ~ 2020 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    lixiang@kylinos.cn/kobe24_lixiang@126.com
@@ -25,6 +25,7 @@
 #include "promptwidget.h"
 #include "weatherworker.h"
 #include "maskwidget.h"
+#include "weathermanager.h"
 
 #include <QApplication>
 #include <QDesktopWidget>
@@ -40,6 +41,12 @@
 #include "preferences.h"
 #include "global.h"
 using namespace Global;
+
+inline bool testParameterPassingValue(QString &str)
+{
+    str = QApplication::applicationName();
+    return (!str.isEmpty());
+}
 
 inline QString convertCodeToBackgroud(int code)
 {
@@ -80,7 +87,6 @@ inline QString convertCodeToBackgroud(int code)
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-//    , m_mousePressed(false)
     , m_centralWidget(new QWidget(this))
     , m_titleBar(new TitleBar(this))
     , m_contentWidget(new ContentWidget(this))
@@ -88,15 +94,26 @@ MainWindow::MainWindow(QWidget *parent)
     , m_tipTimer(new QTimer(this))
     , m_autoRefreshTimer(new QTimer(this))
     , m_actualizationTime(0)
-    , m_weatherWorker(new WeatherWorker(this))
+//    , m_weatherWorker(new WeatherWorker(this))
     , m_maskWidget(new MaskWidget(this))//MaskWidget::Instance();
+    , m_weatherManager(new WeatherManager(this))
 {
+    //将以下类型注册中MetaType系统中
+    qRegisterMetaType<ObserveWeather>();
+    qRegisterMetaType<QList<ForecastWeather>>();
+    qRegisterMetaType<LifeStyle>();
+
+    QString appName;
+    if (testParameterPassingValue(appName)) {
+        qDebug() << "appName:" << appName;
+    }
+    else {
+        qWarning() << "Read appName failed!";
+    }
+
     this->setFixedSize(355, 552);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::Tool);
     this->setFocusPolicy(Qt::StrongFocus);//this->setFocusPolicy(Qt::NoFocus);
-    //this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint);
-//    this->setAttribute(Qt::WA_TranslucentBackground, true);
-    //this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//ubuntu 16.04 可能需要加上Qt::WindowMinimizeButtonHint，否则showMinimized无效
     this->setWindowTitle(tr("Kylin Weather"));
     //const auto ratio = qApp->devicePixelRatio();
     this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/indicator-china-weather.png"))/*.pixmap(QSize(64, 64) * ratio)*/);
@@ -147,7 +164,26 @@ MainWindow::MainWindow(QWidget *parent)
     m_movieWidget->move((this->width() - m_hintWidget->width())/2, (this->height() - m_hintWidget->height())/2);
     m_movieWidget->setVisible(false);
 
-    if (!m_weatherWorker->isNetWorkSettingsGood()) {//无网络连接
+    double value = m_preferences->m_opacity*0.01;
+    if (value < 0.6) {
+        value = 0.60;
+        m_preferences->m_opacity = 60;
+    }
+    this->setOpacity(value);
+    this->setVisible(false);
+
+    m_tipTimer->setInterval(60*1000);
+    m_tipTimer->setSingleShot(false);
+    connect(m_tipTimer, &QTimer::timeout, this, static_cast<void (MainWindow::*)()>(&MainWindow::updateTimeTip));
+    connect(m_autoRefreshTimer, &QTimer::timeout, this, [=] {
+        this->startGetWeather();
+    });
+
+    //开始测试网络情况
+    m_weatherManager->startTestNetwork();
+
+    //lixiang kobe 2020
+    /*if (!m_weatherWorker->isNetWorkSettingsGood()) {//无网络连接
         m_contentWidget->setNetworkErrorPages();
         m_autoRefreshTimer->stop();
     }
@@ -157,8 +193,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(m_weatherWorker, &WeatherWorker::nofityNetworkStatus, this, [=] (const QString &status) {
         if (status == "OK") {//互联网可以ping通
-            m_weatherWorker->requestPostHostInfoToWeatherServer();
-            m_weatherWorker->startAutoLocationTask();//开始自动定位城市
+            m_weatherManager->startAutoLocationTask();
+            //m_weatherWorker->requestPostHostInfoToWeatherServer();
+            //m_weatherWorker->startAutoLocationTask();//开始自动定位城市
         }
         else {//互联网无法ping通
             m_hintWidget->setIconAndText(":/res/network_warn.png", status);
@@ -167,8 +204,8 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
     connect(m_contentWidget, &ContentWidget::requestRetryWeather, this, [=] {
-        m_weatherWorker->requestPostHostInfoToWeatherServer();
-        m_weatherWorker->startAutoLocationTask();//开始自动定位城市
+        //m_weatherWorker->requestPostHostInfoToWeatherServer();
+        //m_weatherWorker->startAutoLocationTask();//开始自动定位城市
     });
 
     connect(m_weatherWorker, &WeatherWorker::responseFailure, this, [=] (int code) {
@@ -233,10 +270,10 @@ MainWindow::MainWindow(QWidget *parent)
         }
 
         m_contentWidget->refreshLifestyleUI(data);
-    });
+    });*/
 
     //自动定位成功后，更新各个控件的默认城市数据，并开始获取天气数据
-    connect(m_weatherWorker, &WeatherWorker::requestAutoLocationData, this, [=] (const CitySettingData &info, bool success) {
+    connect(m_weatherManager, &WeatherManager::requestAutoLocationData, this, [=] (const CitySettingData &info, bool success) {
         if (success) {//自动定位城市成功后，更新各个ui，然后获取天气数据
             if (m_setttingDialog) {
                 m_setttingDialog->addCityItem(info);
@@ -251,23 +288,89 @@ MainWindow::MainWindow(QWidget *parent)
         }
     });
 
-    m_tipTimer->setInterval(60*1000);
-    m_tipTimer->setSingleShot(false);
-    connect(m_tipTimer, &QTimer::timeout, this, static_cast<void (MainWindow::*)()>(&MainWindow::updateTimeTip));
-
-    connect(m_autoRefreshTimer, &QTimer::timeout, this, [=] {
-        this->startGetWeather();
+    connect(m_weatherManager, &WeatherManager::nofityNetworkStatus, this, [=] (const QString &status) {
+        if (status == "OK") {//互联网可以ping通
+            m_weatherManager->postSystemInfoToServer();
+            m_weatherManager->startAutoLocationTask();//开始自动定位城市
+        }
+        else if (status == "Fail") {//物理网线未连接
+            m_contentWidget->setNetworkErrorPages();
+            m_autoRefreshTimer->stop();
+        }
+        else {//互联网无法ping通
+            m_hintWidget->setIconAndText(":/res/network_warn.png", status);
+            m_contentWidget->setNetworkErrorPages();
+        }
     });
 
+    connect(m_contentWidget, &ContentWidget::requestRetryWeather, this, [=] {
+        m_weatherManager->postSystemInfoToServer();
+        m_weatherManager->startAutoLocationTask();//开始自动定位城市
+    });
 
-    double value = m_preferences->m_opacity*0.01;
-    if (value < 0.6) {
-        value = 0.60;
-        m_preferences->m_opacity = 60;
-    }
-    this->setOpacity(value);
+    connect(m_weatherManager, &WeatherManager::responseFailure, this, [=] (int code) {
+        m_maskWidget->hide();
+        m_autoRefreshTimer->stop();
+        m_movieWidget->setVisible(false);
+        m_hintWidget->setVisible(true);
+        if (code == 0) {
+            m_hintWidget->setIconAndText(":/res/network_warn.png", tr("Incorrect access address"));
+        }
+        else {
+            m_hintWidget->setIconAndText(":/res/network_warn.png", QString(tr("Network error code:%1")).arg(QString::number(code)));
+        }
+        m_contentWidget->setNetworkErrorPages();
+    });
 
-    this->setVisible(false);
+    connect(m_weatherManager, &WeatherManager::requestDiplayServerNotify, this, [=] (const QString &notifyInfo) {
+        if (!notifyInfo.isEmpty() && m_preferences->m_serverNotify)
+            m_contentWidget->showServerNotifyInfo(notifyInfo);
+    });
+
+    connect(m_weatherManager, &WeatherManager::observeDataRefreshed, this, [=] (const ObserveWeather &data) {
+        m_maskWidget->hide();
+        m_autoRefreshTimer->start(m_preferences->m_updateFrequency * 1000 * 60);
+        if (m_preferences->m_currentCity.isEmpty()) {
+            m_preferences->m_currentCity = data.city;
+        }
+        m_movieWidget->setVisible(false);
+        m_titleBar->setCityName(data.city);
+        m_contentWidget->refreshObserveUI(data);
+        this->refreshTrayMenuWeather(data);
+        QString condCodeStr = data.cond_code;
+        if (!condCodeStr.isEmpty()) {
+            if (condCodeStr.contains(QChar('n'))) {
+                this->setStyleSheet("QMainWindow{color:white;background-image:url(':/res/background/weather-clear-night.png');background-repeat:no-repeat;}");
+                m_contentWidget->setNightStyleSheets();
+                m_titleBar->setNightStyleSheets();
+            }
+            else {
+                QString styleSheetStr = QString("QMainWindow{color:white;background-image:url('%1');background-repeat:no-repeat;}").arg(convertCodeToBackgroud(condCodeStr.toInt()));
+                this->setStyleSheet(styleSheetStr);
+                m_contentWidget->setDayStyleSheets();
+                m_titleBar->setDayStyleSheets();
+            }
+        }
+    });
+
+    connect(m_weatherManager, &WeatherManager::forecastDataRefreshed, this, [=] (const QList<ForecastWeather> &datas, const LifeStyle &data) {
+        m_maskWidget->hide();
+        if (!m_autoRefreshTimer->isActive()) {
+            m_autoRefreshTimer->start(m_preferences->m_updateFrequency * 1000 * 60);
+        }
+
+        m_movieWidget->setVisible(false);
+
+        int len = datas.size();
+        if (len > 3) {
+            len = 3;
+        }
+        for (int i = 0; i < len; ++i) {
+            m_contentWidget->refreshForecastUI(datas[i], i);
+        }
+
+        m_contentWidget->refreshLifestyleUI(data);
+    });
 }
 
 MainWindow::~MainWindow()
@@ -303,7 +406,8 @@ void MainWindow::updateTimeTip()
 
     m_updateTimeAction->setText(m_updateTimeStr);
 
-    m_weatherWorker->requestPingBackWeatherServer();
+    //TODO
+    //m_weatherWorker->requestPingBackWeatherServer();
 }
 
 void MainWindow::setOpacity(double opacity)
@@ -317,8 +421,8 @@ void MainWindow::startGetWeather()
     m_tipTimer->stop();
     m_movieWidget->setVisible(true);
     m_titleBar->setCityName(m_preferences->m_currentCity);
-    m_weatherWorker->refreshObserveWeatherData(m_preferences->m_currentCityId);
-    m_weatherWorker->refreshForecastWeatherData(m_preferences->m_currentCityId);
+
+    m_weatherManager->startRefresheWeatherData(m_preferences->m_currentCityId);
 }
 
 void MainWindow::initMenuAndTray()
@@ -478,7 +582,13 @@ void MainWindow::refreshCityActions()
 
 void MainWindow::refreshTrayMenuWeather(const ObserveWeather &data)
 {
-    m_systemTray->setIcon(QIcon(QString(":/res/weather_icons/white/%1.png").arg(data.cond_code)));
+    QPixmap iconPix = QPixmap(QString(":/res/weather_icons/white/%1.png").arg(data.cond_code));
+    if (iconPix.isNull()) {
+        iconPix = QPixmap(":/res/weather_icons/white/999.png");
+    }
+    //Q_ASSERT(!iconPix.isNull());
+    m_systemTray->setIcon(iconPix);
+    //m_systemTray->setIcon(QIcon(QString(":/res/weather_icons/white/%1.png").arg(data.cond_code)));
     m_weatherAction->setText(data.cond_txt);
     m_temperatureAction->setText(QString(tr("Temperature:%1˚C")).arg(data.tmp));
     m_sdAction->setText(QString(tr("Relative humidity:%1")).arg(data.hum));
@@ -540,6 +650,18 @@ void MainWindow::movePosition()
     QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
     QRect screenGeometry = qApp->primaryScreen()->geometry();
 
+    /*QRect primaryGeometry;
+    for (QScreen *screen : qApp->screens()) {
+        if (screen->geometry().contains(QCursor::pos())) {
+            primaryGeometry = screen->geometry();
+        }
+    }
+    if (primaryGeometry.isEmpty()) {
+        primaryGeometry = qApp->primaryScreen()->geometry();
+    }
+    this->move(primaryGeometry.x() + primaryGeometry.width() - this->width(), primaryGeometry.y());
+    */
+
     //panel in bottom or right, then show on topRight
     if (availableGeometry.x() == screenGeometry.x() && availableGeometry.y() == screenGeometry.y()) {
         this->move(availableGeometry.x() + availableGeometry.width() - this->width(), availableGeometry.height() - this->height());
@@ -550,48 +672,7 @@ void MainWindow::movePosition()
     this->showNormal();
     this->raise();
     this->activateWindow();
-
-    /*for (QScreen *screen : qApp->screens()) {
-        if (screen->geometry().contains(pos)) {
-        }
-    }*/
 }
-
-/*void MainWindow::mousePressEvent(QMouseEvent *event)
-{
-    if (event->button() == Qt::LeftButton) {
-        this->m_dragPosition = event->globalPos() - frameGeometry().topLeft();
-        this->m_mousePressed = true;
-    }
-
-    if (m_hintWidget->isVisible())
-        m_hintWidget->setVisible(false);
-
-    QMainWindow::mousePressEvent(event);
-}
-
-void MainWindow::mouseReleaseEvent(QMouseEvent *event)
-{
-    this->m_mousePressed = false;
-
-    QMainWindow::mouseReleaseEvent(event);
-}
-
-void MainWindow::mouseMoveEvent(QMouseEvent *event)
-{
-    if (this->m_mousePressed) {
-        move(event->globalPos() - this->m_dragPosition);
-    }
-
-    QMainWindow::mouseMoveEvent(event);
-}
-
-void MainWindow::showEvent(QShowEvent *event)
-{
-    QWidget::showEvent(event);
-
-    //m_weatherWorker->refreshForecastWeatherData(m_preferences->m_currentCityId);
-}*/
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {

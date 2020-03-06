@@ -1,3 +1,12 @@
+indicator-china-weather (3.1.0-1) unstable; urgency=medium
+
+  * Fixed display problems when the weather icon does not exist.
+  * Added some weather icons.
+  * Added thread processing module.
+  * Access ip and city from geoip.ubuntu.com.
+
+ -- lixiang <lixiang@kylinos.cn>  Fri, 06 Mar 2020 11:57:02 +0800
+
 indicator-china-weather (3.0.3-0ubuntu2) eoan; urgency=medium
 
   [ Li Xiang ]

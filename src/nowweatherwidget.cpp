@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2019 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ * Copyright (C) 2013 ~ 2020 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    lixiang@kylinos.cn/kobe24_lixiang@126.com
@@ -269,9 +269,13 @@ void NowWeatherWidget::displayTip(const QString &info)
 
 void NowWeatherWidget::setWeatherIcon(const QString &iconPath)
 {
-    QPixmap pixmap = QPixmap(iconPath);
-    pixmap = pixmap.scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    m_weatherIcon->setPixmap(pixmap);
+    QPixmap iconPix = QPixmap(iconPath);
+    if (iconPix.isNull()) {
+        iconPix = QPixmap(":/res/weather_icons/white/999.png");
+    }
+    //Q_ASSERT(!iconPix.isNull());
+    iconPix = iconPix.scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    m_weatherIcon->setPixmap(iconPix);
 }
 
 void NowWeatherWidget::refreshData(const ObserveWeather &data)

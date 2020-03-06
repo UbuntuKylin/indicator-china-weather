@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2019 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ * Copyright (C) 2013 ~ 2020 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    lixiang@kylinos.cn/kobe24_lixiang@126.com
@@ -111,9 +111,14 @@ void IndexItemWidget::paintEvent(QPaintEvent *e)
     const qreal ratio = qApp->devicePixelRatio();
 
     painter.setRenderHint(QPainter::Antialiasing, true);
-    QPixmap icon = QPixmap(this->m_iconPath);
-    QRect iconRect(20, 2, icon.width()/ratio, icon.height()/ratio);
-    painter.drawPixmap(iconRect, icon);
+    QPixmap iconPix = QPixmap(this->m_iconPath);
+    if (iconPix.isNull()) {
+        iconPix = QPixmap(":/res/air_index.png");
+    }
+    //Q_ASSERT(!iconPix.isNull());
+
+    QRect iconRect(20, 2, iconPix.width()/ratio, iconPix.height()/ratio);
+    painter.drawPixmap(iconRect, iconPix);
 
     painter.setRenderHint(QPainter::Antialiasing, false);
 
@@ -129,7 +134,7 @@ void IndexItemWidget::paintEvent(QPaintEvent *e)
     painter.drawText(valueRect, Qt::AlignVCenter | Qt::AlignLeft, this->m_brf);
 
     font.setPixelSize(10);//font.setPointSize(12);
-    QRect titleRect(valueRect.x(), valueRect.bottom(), this->width() - icon.width()/ratio - 5*2, 20);
+    QRect titleRect(valueRect.x(), valueRect.bottom(), this->width() - iconPix.width()/ratio - 5*2, 20);
     painter.setPen(QPen(m_titleColor));
     painter.drawText(titleRect, Qt::AlignVCenter | Qt::AlignLeft, this->m_indexName);
 }

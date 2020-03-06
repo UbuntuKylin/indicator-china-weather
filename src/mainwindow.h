@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2019 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ * Copyright (C) 2013 ~ 2020 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    lixiang@kylinos.cn/kobe24_lixiang@126.com
@@ -31,8 +31,9 @@ class TitleBar;
 class ContentWidget;
 class SettingDialog;
 class PromptWidget;
-class WeatherWorker;
+//class WeatherWorker;
 class MaskWidget;
+class WeatherManager;
 
 class MainWindow : public QMainWindow
 {
@@ -54,10 +55,6 @@ public:
     void setOpacity(double opacity);
 
 protected:
-//    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-//    void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-//    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-//    void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
     void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
 
@@ -68,9 +65,6 @@ public slots:
     void updateTimeTip();
 
 private:
-//    QPoint m_dragPosition;
-//    bool m_mousePressed;
-
     QVBoxLayout *m_layout = nullptr;
     QWidget *m_centralWidget = nullptr;
     TitleBar *m_titleBar = nullptr;
@@ -90,7 +84,7 @@ private:
     PromptWidget *m_hintWidget = nullptr;
     PromptWidget *m_movieWidget = nullptr;
 
-    WeatherWorker *m_weatherWorker = nullptr;
+//    WeatherWorker *m_weatherWorker = nullptr;
 
     QTimer *m_pingbackTimer = nullptr;
     QTimer *m_tipTimer = nullptr;
@@ -102,6 +96,7 @@ private:
 
     MaskWidget *m_maskWidget = nullptr;
 
+    WeatherManager* m_weatherManager = nullptr;
     //test
     //bool m_isDN;
 };

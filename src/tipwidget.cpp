@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2019 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ * Copyright (C) 2013 ~ 2020 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    lixiang@kylinos.cn/kobe24_lixiang@126.com
@@ -68,7 +68,12 @@ TipWidget::~TipWidget()
 
 void TipWidget::setLabelIcon(const QString &iconPath)
 {
-    m_icon->setPixmap(QPixmap(iconPath));
+    QPixmap iconPix = QPixmap(iconPath);
+    if (iconPix.isNull()) {
+        iconPix = QPixmap(":/res/update_warn.png");
+    }
+    //Q_ASSERT(!iconPix.isNull());
+    m_icon->setPixmap(iconPix);
 }
 
 void TipWidget::setLabelText(const QString &text)
