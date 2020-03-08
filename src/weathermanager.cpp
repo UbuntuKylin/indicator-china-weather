@@ -83,8 +83,7 @@ void WeatherManager::initConnections()
     connect(m_weatherWorker, &WeatherWorker::nofityNetworkStatus, this, &WeatherManager::nofityNetworkStatus);
     connect(m_weatherWorker, &WeatherWorker::responseFailure, this, &WeatherManager::responseFailure);
     connect(m_weatherWorker, &WeatherWorker::requestDiplayServerNotify, this, &WeatherManager::requestDiplayServerNotify);
-    connect(m_weatherWorker, &WeatherWorker::observeDataRefreshed, this, &WeatherManager::observeDataRefreshed);
-    connect(m_weatherWorker, &WeatherWorker::forecastDataRefreshed, this, &WeatherManager::forecastDataRefreshed);
+    connect(m_weatherWorker, &WeatherWorker::requesUiRefreshed, this, &WeatherManager::requesUiRefreshed);
 }
 
 void WeatherManager::postSystemInfoToServer()

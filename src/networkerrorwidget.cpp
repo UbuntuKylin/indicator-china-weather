@@ -37,7 +37,7 @@ NetworkErrorWidget::NetworkErrorWidget(QFrame *parent) :
     const QFontMetrics fm(font);
     m_retryBtn->setFixedWidth(fm.width(m_retryBtn->text()));*/
 
-    connect(m_retryBtn, &QPushButton::clicked, this, [=] {
+    connect(m_retryBtn, &QPushButton::clicked, this, [=] () {
         emit this->requestRetryAccessWeather();
     });
 

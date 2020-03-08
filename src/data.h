@@ -30,7 +30,7 @@ struct City
 };
 
 
-struct Air
+struct AqiAir
 {
     QString id;
     QString aqi;
@@ -73,11 +73,15 @@ struct ForecastWeather
     QString cond_txt_n;//晚间天气状况描述 	晴
     QString forcast_date;//预报日期 	2013-12-30
     QString hum;//相对湿度 	37
-    QString mr_ms;//月升时间 	04:47   月落时间 	14:59
+//    QString mr_ms;//月升时间 	04:47   月落时间 	14:59
+    QString mr;//月升时间 	04:47
+    QString ms;//月落时间 	14:59
     QString pcpn;//降水量 	0
     QString pop;//降水概率 	0
     QString pres;//大气压强 	1018
-    QString sr_ss;//日出时间 	07:36   日落时间 	16:58
+//    QString sr_ss;//日出时间 	07:36   日落时间 	16:58
+    QString sr;//日出时间 	07:36   日落时间 	16:58
+    QString ss;//日出时间 	07:36   日落时间 	16:58
     QString tmp_max;//最高温度 	4
     QString tmp_min;//最低温度 	-5
     QString uv_index;//紫外线强度指数 	3

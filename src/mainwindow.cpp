@@ -93,7 +93,6 @@ MainWindow::MainWindow(QWidget *parent)
     , m_trayTimer(new QTimer(this))
     , m_autoRefreshTimer(new QTimer(this))
     , m_actualizationTime(0)
-    , dataHadRefreshed(false)
     , m_maskWidget(new MaskWidget(this))//MaskWidget::Instance();
     , m_weatherManager(new WeatherManager(this))
 {
@@ -135,19 +134,19 @@ MainWindow::MainWindow(QWidget *parent)
         m_currentDesktop = qgetenv("XDG_SESSION_DESKTOP");
     }
 
-    if (m_preferences->weather.cond_code.contains(QChar('n'))) {
+    if (m_preferences->m_observerWeather.cond_code.contains(QChar('n'))) {
         this->setStyleSheet("QMainWindow{color:white;background-image:url(':/res/background/weather-clear-night.png');background-repeat:no-repeat;}");
         m_contentWidget->setNightStyleSheets();
         m_titleBar->setNightStyleSheets();
     }
     else {
-        QString styleSheetStr = QString("QMainWindow{color:white;background-image:url('%1');background-repeat:no-repeat;}").arg(convertCodeToBackgroud(m_preferences->weather.cond_code.toInt()));
+        QString styleSheetStr = QString("QMainWindow{color:white;background-image:url('%1');background-repeat:no-repeat;}").arg(convertCodeToBackgroud(m_preferences->m_observerWeather.cond_code.toInt()));
         this->setStyleSheet(styleSheetStr);
         m_contentWidget->setDayStyleSheets();
         m_titleBar->setDayStyleSheets();
     }
 
-    connect(m_titleBar, &TitleBar::requestShowSettingDialog, this, [=] {
+    connect(m_titleBar, &TitleBar::requestShowSettingDialog, this, [=] () {
         this->showSettingDialog();
     });
 
@@ -177,7 +176,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_tipTimer->setSingleShot(false);
     connect(m_trayTimer, SIGNAL(timeout()), this, SLOT(changeTrayIcon()));
 
-    connect(m_autoRefreshTimer, &QTimer::timeout, this, [=] {
+    connect(m_autoRefreshTimer, &QTimer::timeout, this, [=] () {
         this->startGetWeather();
     });
 
@@ -244,7 +243,7 @@ MainWindow::MainWindow(QWidget *parent)
         m_contentWidget->setNetworkErrorPages();
     });
 
-    connect(m_contentWidget, &ContentWidget::requestRetryWeather, this, [=] {
+    connect(m_contentWidget, &ContentWidget::requestRetryWeather, this, [=] () {
         this->startTrayFlashing(QString(tr("Start to locate the city automatically...")), true);
         m_weatherManager->postSystemInfoToServer();
         m_weatherManager->startAutoLocationTask();//开始自动定位城市
@@ -255,24 +254,23 @@ MainWindow::MainWindow(QWidget *parent)
             m_contentWidget->showServerNotifyInfo(notifyInfo);
     });
 
-    connect(m_weatherManager, &WeatherManager::observeDataRefreshed, this, [=] (const ObserveWeather &data) {
-        if (!dataHadRefreshed) {
-            dataHadRefreshed = true;
-            this->stopTrayFlashing();
-            m_maskWidget->hide();
-            m_movieWidget->setVisible(false);
-        }
+
+
+    connect(m_weatherManager, &WeatherManager::requesUiRefreshed, this, [=] () {
+        this->stopTrayFlashing();
+        m_maskWidget->hide();
+        m_movieWidget->setVisible(false);
 
         if (!m_autoRefreshTimer->isActive()) {
             m_autoRefreshTimer->start(m_preferences->m_updateFrequency * 1000 * 60);
         }
         if (m_preferences->m_currentCity.isEmpty()) {
-            m_preferences->m_currentCity = data.city;
+            m_preferences->m_currentCity = m_preferences->m_observerWeather.city;
         }
-        m_titleBar->setCityName(data.city);
-        m_contentWidget->refreshObserveUI(data);
-        this->refreshTrayMenuWeather(data);
-        QString condCodeStr = data.cond_code;
+        m_titleBar->setCityName(m_preferences->m_observerWeather.city);
+        m_contentWidget->refreshObserveUI(m_preferences->m_observerWeather);
+        this->refreshTrayMenuWeather(m_preferences->m_observerWeather);
+        QString condCodeStr = m_preferences->m_observerWeather.cond_code;
         if (!condCodeStr.isEmpty()) {
             if (condCodeStr.contains(QChar('n'))) {
                 this->setStyleSheet("QMainWindow{color:white;background-image:url(':/res/background/weather-clear-night.png');background-repeat:no-repeat;}");
@@ -286,29 +284,17 @@ MainWindow::MainWindow(QWidget *parent)
                 m_titleBar->setDayStyleSheets();
             }
         }
-    });
 
-    connect(m_weatherManager, &WeatherManager::forecastDataRefreshed, this, [=] (const QList<ForecastWeather> &datas, const LifeStyle &data) {
-        if (!dataHadRefreshed) {
-            dataHadRefreshed = true;
-            this->stopTrayFlashing();
-            m_maskWidget->hide();
-            m_movieWidget->setVisible(false);
-        }
 
-        if (!m_autoRefreshTimer->isActive()) {
-            m_autoRefreshTimer->start(m_preferences->m_updateFrequency * 1000 * 60);
-        }
-
-        int len = datas.size();
+        int len = m_preferences->m_forecastList.size();
         if (len > 3) {
             len = 3;
         }
         for (int i = 0; i < len; ++i) {
-            m_contentWidget->refreshForecastUI(datas[i], i);
+            m_contentWidget->refreshForecastUI(m_preferences->m_forecastList[i], i);
         }
 
-        m_contentWidget->refreshLifestyleUI(data);
+        m_contentWidget->refreshLifestyleUI(m_preferences->m_lifestyle);
     });
 }
 
@@ -386,8 +372,6 @@ void MainWindow::startGetWeather()
     m_tipTimer->stop();
     m_movieWidget->setVisible(true);
     m_titleBar->setCityName(m_preferences->m_currentCity);
-
-    dataHadRefreshed = false;
     m_weatherManager->startRefresheWeatherData(m_preferences->m_currentCityId);
 }
 
@@ -429,13 +413,13 @@ void MainWindow::initMenuAndTray()
     m_mainMenu->addAction(m_releaseTimeAction);
     m_mainMenu->addAction(m_updateTimeAction);
 
-    connect(m_updateTimeAction, &QAction::triggered, this, [=] {
+    connect(m_updateTimeAction, &QAction::triggered, this, [=] () {
         this->startGetWeather();
     });
 
 
     QAction *m_forecastAction = m_mainMenu->addAction(tr("Weather Forecast"));
-    connect(m_forecastAction, &QAction::triggered, this, [=] {
+    connect(m_forecastAction, &QAction::triggered, this, [=] () {
         if (!this->isVisible()) {
             this->movePosition();
         }
@@ -452,10 +436,10 @@ void MainWindow::initMenuAndTray()
     QAction *m_quitAction = m_mainMenu->addAction(tr("Exit"));
     m_quitAction->setIcon(QIcon(":/res/quit_normal.png"));
 
-    connect(m_settingAction, &QAction::triggered, this, [=] {
+    connect(m_settingAction, &QAction::triggered, this, [=] (){
         this->showSettingDialog();
     });
-    connect(m_aboutAction, &QAction::triggered, this, [=] {
+    connect(m_aboutAction, &QAction::triggered, this, [=] () {
         AboutDialog dlg;
         dlg.exec();
     });
@@ -545,7 +529,7 @@ void MainWindow::refreshTrayMenuWeather(const ObserveWeather &data)
     m_weatherAction->setText(data.cond_txt);
     m_temperatureAction->setText(QString(tr("Temperature:%1")).arg(data.tmp) + "˚C");
     m_sdAction->setText(QString(tr("Relative humidity:%1")).arg(data.hum));
-    if (data.air.isEmpty() || data.air.contains("Unknown")) {
+    if (data.air.isEmpty() || data.air == "-") {
         m_aqiAction->setText(QString(tr("Air quality:%1")).arg(QString(tr("Unknown"))));
     }
     else {

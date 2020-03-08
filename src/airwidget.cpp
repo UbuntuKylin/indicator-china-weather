@@ -131,7 +131,7 @@ void AirWidget::animationHide()
     });
 }
 
-void AirWidget::resetData(const Air &data)
+void AirWidget::resetData(const AqiAir &data)
 {
     m_aqiLabel->setText(QString(tr("aqi:%1")).arg(data.aqi));//空气质量指数
     m_qltyLabel->setText(QString(tr("qlty:%1")).arg(data.qlty));//空气质量

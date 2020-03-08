@@ -49,8 +49,7 @@ signals:
     void nofityNetworkStatus(const QString &status);
     void responseFailure(int code);
     void requestDiplayServerNotify(const QString &notifyInfo);
-    void observeDataRefreshed(const ObserveWeather &data);
-    void forecastDataRefreshed(const QList<ForecastWeather> &datas, LifeStyle data);
+    void requesUiRefreshed();
 
 private:
     GeoIpWorker *m_geoipWorker = nullptr;

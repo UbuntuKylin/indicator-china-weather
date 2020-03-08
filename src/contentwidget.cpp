@@ -37,7 +37,7 @@ ContentWidget::ContentWidget(QWidget *parent) :
     m_networkErrorWidget = new NetworkErrorWidget(this);
     m_networkErrorWidget->setVisible(false);
 
-    connect(m_networkErrorWidget, &NetworkErrorWidget::requestRetryAccessWeather, this, [=] {
+    connect(m_networkErrorWidget, &NetworkErrorWidget::requestRetryAccessWeather, this, [=] () {
         m_networkErrorWidget->setVisible(false);
         m_nowWidget->setVisible(true);
         m_forecastWidget->setVisible(true);

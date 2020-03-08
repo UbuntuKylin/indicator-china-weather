@@ -43,7 +43,9 @@ public:
     void setNightStyleSheets();
 
 protected:
-    bool event(QEvent *event);
+    bool event(QEvent *event) Q_DECL_OVERRIDE;
+//    void enterEvent(QEvent *event) Q_DECL_OVERRIDE;
+//    void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
 
 private:
     QLabel *m_weekLabel = nullptr;

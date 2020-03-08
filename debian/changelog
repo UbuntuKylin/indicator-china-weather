@@ -5,6 +5,7 @@ indicator-china-weather (3.1.0-1) unstable; urgency=medium
   * Added thread processing module.
   * Access ip and city from geoip.ubuntu.com.
   * Make tray icon blink dynamically during data acquisition.
+  * Using the new API interface (V3.0).
 
  -- lixiang <lixiang@kylinos.cn>  Fri, 06 Mar 2020 11:57:02 +0800
 

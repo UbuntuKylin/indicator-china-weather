@@ -137,3 +137,15 @@ bool ForecastItemWidget::event(QEvent *event)
 
     return QWidget::event(event);
 }
+
+//void ForecastItemWidget::enterEvent(QEvent *event)
+//{
+//    m_toolTip->popupTip(QCursor::pos());
+//    QWidget::enterEvent(event);
+//}
+
+//void ForecastItemWidget::leaveEvent(QEvent *event)
+//{
+//    m_toolTip->hide();
+//    QWidget::leaveEvent(event);
+//}

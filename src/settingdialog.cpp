@@ -407,7 +407,7 @@ void SettingDialog::initSettings()
     connect(m_cityWidget, &CityWidget::requestRefreshCityMenu, this, &SettingDialog::requestRefreshCityMenu);
     //connect(m_cityWidget, &CityWidget::requestSetDefaultCity, this, &SettingDialog::requestSetDefaultCity);
     connect(m_cityWidget, &CityWidget::requestRefreshWeatherById, this, &SettingDialog::requestRefreshWeatherById);
-    /*connect(m_addCityBtn, &QPushButton::clicked, this, [=] {
+    /*connect(m_addCityBtn, &QPushButton::clicked, this, [=] () {
         SearchDialog dlg;
         connect(&dlg, &SearchDialog::requestAddCityToMenu, this, [this] (const LocationData &data) {
             qDebug() << "set city's id=" << data.id;
@@ -422,7 +422,7 @@ void SettingDialog::initSettings()
         dlg.exec();
     });*/
 
-    /*connect(m_okBtn, &QPushButton::clicked, this, [=] {
+    /*connect(m_okBtn, &QPushButton::clicked, this, [=] (){
         this->accept();
     });*/
     connect(m_settingTitleBar, &SettingTitleBar::requestSwitchPage, this, [=] (bool b) {
@@ -525,15 +525,15 @@ void SettingDialog::initSearch()
         }
     });
 
-    connect(m_searchTitleBar, &SearchTitleBar::requestCloseDialog, this, [=] {
+    connect(m_searchTitleBar, &SearchTitleBar::requestCloseDialog, this, [=] () {
         this->setWindowTitle(tr("Kylin Weather - Setting"));
         animationFromTopToBottom(m_searchFrame, m_settingFrame);
     });
 
-    connect(m_searchTitleBar, &SearchTitleBar::requestShowNoResultLabel, this, [=] {
+    connect(m_searchTitleBar, &SearchTitleBar::requestShowNoResultLabel, this, [=] (){
         m_noResultLabel->setVisible(true);
     });
-    connect(m_searchTitleBar, &SearchTitleBar::requestResetViewAndModel, this, [=] {
+    connect(m_searchTitleBar, &SearchTitleBar::requestResetViewAndModel, this, [=] () {
         m_searchView->setVisible(false);
         m_noResultLabel->setVisible(false);
         m_searchModel->setLocationData(QList<LocationData>());

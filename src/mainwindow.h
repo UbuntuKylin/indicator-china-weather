@@ -90,7 +90,7 @@ private:
     QString m_updateTimeStr;
     QString m_currentDesktop;
     MaskWidget *m_maskWidget = nullptr;
-    bool dataHadRefreshed;
+//    bool dataHadRefreshed;
 };
 
 #endif // MAINWINDOW_H

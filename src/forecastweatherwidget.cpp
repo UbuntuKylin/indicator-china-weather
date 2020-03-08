@@ -221,7 +221,7 @@ void ForecastWeatherWidget::refershLifeIndexGridLayout()
     const int count = m_lifeIndexList.size();
     for (int i = 0; i != count; ++i, ++index) {
         IndexItemWidget *item = new IndexItemWidget(m_lifeIndexList[i], m_lifeIndexIconList[i]);
-        connect(item, SIGNAL(requestShowMsg(QString)), this, SLOT(showLifeStyleIndex(QString)));
+        connect(item, SIGNAL(requestShowMsg(const QString &)), this, SLOT(showLifeStyleIndex(const QString &)));
         m_indexGridLayout->addWidget(item, index / 3, index % 3);
         TextTip *tip = this->setTipWidget(item, "");
         m_tips.append(tip);

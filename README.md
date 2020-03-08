@@ -21,7 +21,7 @@ The weather data are from the heweather API s6 version.
 + http://service.ubuntukylin.com:8001/weather/pinginformation/
 
 
-### v3.0 test url
+### v2.0 test url
 
 + http://service.ubuntukylin.com:8001/weather/api/2.0/heweather_observe_s6/101250101
 
@@ -29,7 +29,17 @@ The weather data are from the heweather API s6 version.
 
 + https://free-api.heweather.com/s6/weather?location=CN101250101&key=xxxx
 
-+ https://free-api.heweather.net/s6/air/now?location=101250101&key=xxxx
++ https://free-api.heweather.com/s6/air/now?location=CN101250101&key=xxxx
+
+
+### v3.0 test url
+
++ http://service.ubuntukylin.com:8001/weather/api/3.0/heweather_data_s6/101250101
+
++ https://free-api.heweather.net/s6/weather?location=CN101250101&key=xxxx
+
++ https://free-api.heweather.net/s6/air/now?location=CN101250101&key=xxxx
+
 
 ### Internationalization
 

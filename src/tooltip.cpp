@@ -138,20 +138,22 @@ void ToolTip::resetData(const ForecastWeather &data, const QString &week)
 
     m_tempLabel->setText(QString("%1°C~%2°C").arg(data.tmp_min).arg(data.tmp_max));
 
-    if (data.sr_ss.contains(QChar('+'))) {
-        QStringList sunList= data.sr_ss.split(QChar('+'));
-        m_srssLabel->setText(QString(tr("Sunrise: %1 sunset: %2")).arg(sunList.at(0)).arg(sunList.at(1)));
-    }
-    else {
-        m_srssLabel->setText(QString(tr("Sunrise and sunset: %1")).arg(data.sr_ss));
-    }
-    if (data.mr_ms.contains(QChar('+'))) {
-        QStringList moonList= data.mr_ms.split(QChar('+'));
-        m_mrmsLabel->setText(QString(tr("Moonrise: %1 moonset: %2")).arg(moonList.at(0)).arg(moonList.at(1)));
-    }
-    else {
-        m_mrmsLabel->setText(QString(tr("Moonrise and moonset: %1")).arg(data.mr_ms));
-    }
+    m_srssLabel->setText(QString(tr("Sunrise: %1 sunset: %2")).arg(data.sr).arg(data.ss));
+    m_mrmsLabel->setText(QString(tr("Moonrise: %1 moonset: %2")).arg(data.mr).arg(data.ms));
+//    if (data.sr_ss.contains(QChar('+'))) {
+//        QStringList sunList= data.sr_ss.split(QChar('+'));
+//        m_srssLabel->setText(QString(tr("Sunrise: %1 sunset: %2")).arg(sunList.at(0)).arg(sunList.at(1)));
+//    }
+//    else {
+//        m_srssLabel->setText(QString(tr("Sunrise and sunset: %1")).arg(data.sr_ss));
+//    }
+//    if (data.mr_ms.contains(QChar('+'))) {
+//        QStringList moonList= data.mr_ms.split(QChar('+'));
+//        m_mrmsLabel->setText(QString(tr("Moonrise: %1 moonset: %2")).arg(moonList.at(0)).arg(moonList.at(1)));
+//    }
+//    else {
+//        m_mrmsLabel->setText(QString(tr("Moonrise and moonset: %1")).arg(data.mr_ms));
+//    }
 
     m_humLabel->setText(QString(tr("Relative humidity:%1")).arg(data.hum) + "%");//相对湿度
     m_pcpnLabel->setText(QString(tr("Precipitation:%1 mm")).arg(data.pcpn));//降水量
@@ -189,7 +191,7 @@ void ToolTip::popupTip(QPoint point)
     animation->setEndValue(0);//1
     animation->start();
 
-    connect(animation, &QPropertyAnimation::finished, this, [=] {
+    connect(animation, &QPropertyAnimation::finished, this, [=] () {
         animation->deleteLater();
         this->show();
 //        this->m_frame->setGraphicsEffect(NULL);

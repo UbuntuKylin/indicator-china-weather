@@ -36,7 +36,7 @@ public:
     explicit AirWidget(QWidget *parent = 0);
     ~AirWidget();
 
-    void resetData(const Air &data);
+    void resetData(const AqiAir &data);
 
 public slots:
     void animationShow(const QString &styleSheet);

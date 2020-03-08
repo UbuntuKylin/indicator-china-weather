@@ -36,7 +36,7 @@ SettingTitleBar::SettingTitleBar(QWidget *parent) : QWidget(parent)
 
     m_timer->setSingleShot(true);
     m_timer->setInterval(1000*5);
-    connect(m_timer, &QTimer::timeout, this, [=] {
+    connect(m_timer, &QTimer::timeout, this, [=] () {
         m_timer->stop();
         m_tipLabel->setVisible(false);
     }, Qt::QueuedConnection);
@@ -125,12 +125,12 @@ void SettingTitleBar::initBottomContent()
     m_bLayout->addStretch();
     m_bLayout->addWidget(m_tipLabel);
 
-    connect(locationBtn, &ActiveButton::btnClicked, this, [=] {
+    connect(locationBtn, &ActiveButton::btnClicked, this, [=] () {
         locationBtn->setActive(true);
         systemBtn->setActive(false);
         emit this->requestSwitchPage(true);
     });
-    connect(systemBtn, &ActiveButton::btnClicked, this, [=] {
+    connect(systemBtn, &ActiveButton::btnClicked, this, [=] () {
         systemBtn->setActive(true);
         locationBtn->setActive(false);
         emit this->requestSwitchPage(false);

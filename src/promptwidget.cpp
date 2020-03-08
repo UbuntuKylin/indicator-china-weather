@@ -57,7 +57,7 @@ PromptWidget::PromptWidget(QWidget *parent) : QFrame(parent)
     m_vlayout->addWidget(m_iconLabel, 0, Qt::AlignHCenter);
     m_vlayout->addWidget(m_textLabel, 0, Qt::AlignHCenter);
 
-    connect(m_closeBtn, &QPushButton::clicked, this, [=] {
+    connect(m_closeBtn, &QPushButton::clicked, this, [=] () {
         this->setVisible(false);
     });
 }
@@ -103,7 +103,7 @@ PromptWidget::PromptWidget(const QString &text, QWidget *parent, const QString &
     m_hlayout->addWidget(m_iconLabel, 0, Qt::AlignVCenter | Qt::AlignLeft);
     m_hlayout->addStretch();
 
-    connect(m_closeBtn, &QPushButton::clicked, this, [=] {
+    connect(m_closeBtn, &QPushButton::clicked, this, [=] () {
         m_movie->stop();
         this->setVisible(false);
     });

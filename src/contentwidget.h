@@ -54,7 +54,6 @@ signals:
 
 private:
     QVBoxLayout *m_layout = nullptr;
-
     NowWeatherWidget *m_nowWidget = nullptr;
     ForecastWeatherWidget *m_forecastWidget = nullptr;
     NetworkErrorWidget *m_networkErrorWidget = nullptr;

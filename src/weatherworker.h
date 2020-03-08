@@ -36,32 +36,31 @@ public:
     enum WeatherType
     {
         Type_Observe,
-        Type_Forecast
+        Type_Forecast,
+        Type_Aqi
     };
 
     explicit WeatherWorker(QObject *parent = 0);
     ~WeatherWorker();
 
-    void refreshObserveWeatherData(const QString &cityId);
-    void refreshForecastWeatherData(const QString &cityId);
     void requestPingBackWeatherServer();
-    bool AccessDedirectUrl(const QString &redirectUrl, WeatherType weatherType);
+    bool AccessDedirectUrl(const QString &redirectUrl/*, WeatherType weatherType*/);
     void AccessDedirectUrlWithPost(const QString &redirectUrl);
     QString getErrorCodeDescription(QString errorCode);
+
+    void convertWeatherValue(WeatherType weatherType, const QString &line, QChar separator);
 
 signals:
     void requestTestNetwork();
     void nofityNetworkStatus(const QString &status);
-    void observeDataRefreshed(const ObserveWeather &data);
-    void forecastDataRefreshed(const QList<ForecastWeather> &datas, LifeStyle data);
+    void requesUiRefreshed();
     void requestPostHostInfoToWeatherServer();
     void responseFailure(int code);
     void requestDiplayServerNotify(const QString &notifyInfo);
     void requestRefresheWeatherData(const QString &cityId);
 
 public slots:
-    void onWeatherObserveReply();
-    void onWeatherForecastReply();
+    void onWeatherDataReply();
     void onPingBackPostReply();
     void networkLookedUp(const QHostInfo &host);
     void onPostHostInfoToWeatherServer();

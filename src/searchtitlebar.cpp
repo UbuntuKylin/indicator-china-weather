@@ -41,7 +41,7 @@ SearchTitleBar::SearchTitleBar(QWidget *parent) : QWidget(parent)
 
     connect(m_searchTimer, SIGNAL(timeout()), this, SLOT(onSearchTimerOut()));
 
-    connect(m_searchInputEdit, &SearchInputEdit::textChanged, this, [this] {
+    connect(m_searchInputEdit, &SearchInputEdit::textChanged, this, [this] () {
         emit this->requestResetViewAndModel();
 
         if (m_searchTimer->isActive()) {

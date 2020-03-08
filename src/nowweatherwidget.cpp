@@ -216,23 +216,23 @@ NowWeatherWidget::NowWeatherWidget(QFrame *parent) :
     m_aqiLabel->setLabelIcon(":/res/aqi.png");
     m_aqiLabel->setToolTip(tr("Click to see details of air quality"));
     m_aqiLabel->move(m_weatherIcon->x() - 10, m_windLabel->y());
-    connect(m_aqiLabel, &TranslucentLabel::clicked, this, [=] {
+    connect(m_aqiLabel, &TranslucentLabel::clicked, this, [=] () {
         if (m_ariWidget->isVisible()) {
             m_ariWidget->animationHide();
         }
         else {
-            if (m_preferences->air.id != m_preferences->m_currentCityId) {
+            if (m_preferences->m_aqiAir.id != m_preferences->m_currentCityId) {
                 return;
             }
-            if (m_preferences->air.aqi.contains("Unknown") && m_preferences->air.qlty.contains("Unknown")) {
+            if (m_preferences->m_aqiAir.aqi.contains("-") && m_preferences->m_aqiAir.qlty.contains("-")) {
                 return;
             }
-            m_ariWidget->resetData(m_preferences->air);
-            if (m_preferences->weather.cond_code.contains(QChar('n'))) {//#063638
+            m_ariWidget->resetData(m_preferences->m_aqiAir);
+            if (m_preferences->m_observerWeather.cond_code.contains(QChar('n'))) {//#063638
                 m_ariWidget->animationShow("QFrame{border:none;background-color:rgba(6,54,56,85%);color:rgb(255,255,255);}");
             }
             else {
-                m_ariWidget->animationShow(convertCodeToStyleSheet(m_preferences->weather.cond_code.toInt()));
+                m_ariWidget->animationShow(convertCodeToStyleSheet(m_preferences->m_observerWeather.cond_code.toInt()));
             }
         }
     });
@@ -241,7 +241,7 @@ NowWeatherWidget::NowWeatherWidget(QFrame *parent) :
     m_temperatureLabel->setLabelIcon(":/res/temp.png");
     m_temperatureLabel->move(m_aqiLabel->x(), m_aqiLabel->y() + m_aqiLabel->height() + 8);
 
-    connect(m_tipTimer, &QTimer::timeout, this, [=] {
+    connect(m_tipTimer, &QTimer::timeout, this, [=] () {
         m_tipTimer->stop();
         m_tipWidget->setVisible(false);
     });
@@ -299,7 +299,7 @@ void NowWeatherWidget::refreshData(const ObserveWeather &data)
         m_windPowerLabel->setText(tr("%1stage wind").arg(data.wind_sc));//级风
     }
     this->setWeatherIcon(QString(":/res/weather_icons/white/%1.png").arg(data.cond_code));
-    if (data.air.isEmpty() || data.air.contains("Unknown")) {
+    if (data.air.isEmpty() || data.air == "-") {
         m_aqiLabel->setLabelText(QString(tr("Unknown")));
     }
     else {

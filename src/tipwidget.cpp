@@ -46,7 +46,7 @@ TipWidget::TipWidget(QWidget *parent)
     m_closeBtn->setFocusPolicy(Qt::NoFocus);
     m_closeBtn->setStyleSheet("QPushButton{background-image:url(':/res/delete_normal.png');border:0px;}QPushButton:hover{background:url(':/res/delete_hover_press.png');}QPushButton:pressed{background:url(':/res/delete_hover_press.png');}");
     m_closeBtn->setVisible(false);
-    connect(m_closeBtn, &QPushButton::clicked, this, [=] {
+    connect(m_closeBtn, &QPushButton::clicked, this, [=] () {
         m_preferences->m_serverNotify = false;
         this->setVisible(false);
     });

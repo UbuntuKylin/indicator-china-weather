@@ -54,7 +54,8 @@ const void getIpAndCityByUbuntu(const QString &url, QString &ip, QString &city)
     QNetworkReply *reply = manager->get(QNetworkRequest(QUrl(url)));
 
     QEventLoop loop;
-    QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &loop, SLOT(quit()));
+    QObject::connect(manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
+    //QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &loop, SLOT(quit()));
     loop.exec();
 
     if (reply->error() == QNetworkReply::NoError) {
@@ -90,7 +91,8 @@ const QString getIpByPconline(const QString &url)
     QNetworkAccessManager *manager = new QNetworkAccessManager();
     QNetworkReply *reply = manager->get(QNetworkRequest(QUrl(url)));
     QEventLoop loop;
-    QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &loop, SLOT(quit()));
+    QObject::connect(manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
+    //QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &loop, SLOT(quit()));
     loop.exec();
 
     if (reply->error() == QNetworkReply::NoError) {
@@ -136,7 +138,8 @@ const QString getCityFromIpByAmap(const QString &ip)
     QNetworkAccessManager *manager = new QNetworkAccessManager();
     QNetworkReply *reply = manager->get(QNetworkRequest(QUrl(url)));
     QEventLoop loop;
-    QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &loop, SLOT(quit()));
+    QObject::connect(manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
+    //QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &loop, SLOT(quit()));
     loop.exec();
 
     int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -180,7 +183,8 @@ const QString getCityFromIpByTaobao(const QString &ip)
     QNetworkAccessManager *manager = new QNetworkAccessManager();
     QNetworkReply *reply = manager->get(QNetworkRequest(QUrl(url)));
     QEventLoop loop;
-    QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &loop, SLOT(quit()));
+    QObject::connect(manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
+    //QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &loop, SLOT(quit()));
     loop.exec();
 
     int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();

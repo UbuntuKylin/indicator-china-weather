@@ -29,6 +29,7 @@ Preferences::Preferences()
 {
     m_cityList.clear();
     //m_cityIdList.clear();
+    m_forecastList.clear();
     m_cities.clear();
     m_maxCityItems = 10;
     m_updateFrequency = 30;
@@ -66,159 +67,161 @@ void Preferences::save()
     set->endGroup();
 
     set->beginGroup("Weather");
-    set->setValue("updatetime", weather.updatetime);
-    set->setValue("air", weather.air);
-    set->setValue("cloud", weather.cloud);
-    set->setValue("cond_code", weather.cond_code);
-    set->setValue("cond_txt", weather.cond_txt);
-    set->setValue("fl", weather.fl);
-    set->setValue("hum", weather.hum);
-    set->setValue("pcpn", weather.pcpn);
-    set->setValue("pres", weather.pres);
-    set->setValue("tmp", weather.tmp);
-    set->setValue("vis", weather.vis);
-    set->setValue("wind_deg", weather.wind_deg);
-    set->setValue("wind_dir", weather.wind_dir);
-    set->setValue("wind_sc", weather.wind_sc);
-    set->setValue("wind_spd", weather.wind_spd);
+    set->setValue("updatetime", m_observerWeather.updatetime);
+    set->setValue("air", m_observerWeather.air);
+    set->setValue("cloud", m_observerWeather.cloud);
+    set->setValue("cond_code", m_observerWeather.cond_code);
+    set->setValue("cond_txt", m_observerWeather.cond_txt);
+    set->setValue("fl", m_observerWeather.fl);
+    set->setValue("hum", m_observerWeather.hum);
+    set->setValue("pcpn", m_observerWeather.pcpn);
+    set->setValue("pres", m_observerWeather.pres);
+    set->setValue("tmp", m_observerWeather.tmp);
+    set->setValue("vis", m_observerWeather.vis);
+    set->setValue("wind_deg", m_observerWeather.wind_deg);
+    set->setValue("wind_dir", m_observerWeather.wind_dir);
+    set->setValue("wind_sc", m_observerWeather.wind_sc);
+    set->setValue("wind_spd", m_observerWeather.wind_spd);
     set->endGroup();
 
 
+
+//    [Forecast]
+//    cond_code_d=306, 305, 101
+//    cond_code_n=306, 101, 101
+//    cond_txt_d=中雨, 小雨, 多云
+//    cond_txt_n=中雨, 多云, 多云
+//    forcast_date=2020-03-08, 2020-03-09, 2020-03-10
+//    hum=95, 84, 78
+//    mr_ms=16:58+05:44, 18:07+06:30, 19:16+07:13
+//    pcpn=0.0, 3.1, 0.0
+//    pop=24, 68, 4
+//    pres=999, 1013, 1012
+//    sr_ss=06:43+18:33, 06:42+18:34, 06:41+18:34
+//    tmp_max=16, 16, 17
+//    tmp_min=13, 9, 8
+//    uv_index=2, 2, 12
+//    vis=13, 24, 25
+//    wind_deg=353, 6, 352
+//    wind_dir=北风, 北风, 北风
+//    wind_sc=1-2, 3-4, 1-2
+//    wind_spd=11, 22, 8
+
+
+    QString cond_code_d;
+    QString cond_code_n;
+    QString cond_txt_d;
+    QString cond_txt_n;
+    QString forcast_date;
+    QString hum;
+//    QString mr_ms;
+    QString mr;
+    QString ms;
+    QString pcpn;
+    QString pop;
+    QString pres;
+//    QString sr_ss;
+    QString sr;
+    QString ss;
+    QString tmp_max;
+    QString tmp_min;
+    QString uv_index;
+    QString vis;
+    QString wind_deg;
+    QString wind_dir;
+    QString wind_sc;
+    QString wind_spd;
     set->beginGroup("Forecast");
-    QStringList result;
-    result.append(forecast0.forcast_date);
-    result.append(forecast1.forcast_date);
-    result.append(forecast2.forcast_date);
-    set->setValue("forcast_date", result);
-
-    result.clear();
-    result.append(forecast0.cond_code_d);
-    result.append(forecast1.cond_code_d);
-    result.append(forecast2.cond_code_d);
-    set->setValue("cond_code_d", result);
-
-    result.clear();
-    result.append(forecast0.cond_txt_d);
-    result.append(forecast1.cond_txt_d);
-    result.append(forecast2.cond_txt_d);
-    set->setValue("cond_txt_d", result);
-
-    result.clear();
-    result.append(forecast0.cond_code_n);
-    result.append(forecast1.cond_code_n);
-    result.append(forecast2.cond_code_n);
-    set->setValue("cond_code_n", result);
-
-    result.clear();
-    result.append(forecast0.cond_txt_n);
-    result.append(forecast1.cond_txt_n);
-    result.append(forecast2.cond_txt_n);
-    set->setValue("cond_txt_n", result);
-
-    result.clear();
-    result.append(forecast0.hum);
-    result.append(forecast1.hum);
-    result.append(forecast2.hum);
-    set->setValue("hum", result);
-
-    result.clear();
-    result.append(forecast0.mr_ms);
-    result.append(forecast1.mr_ms);
-    result.append(forecast2.mr_ms);
-    set->setValue("mr_ms", result);
-
-    result.clear();
-    result.append(forecast0.pcpn);
-    result.append(forecast1.pcpn);
-    result.append(forecast2.pcpn);
-    set->setValue("pcpn", result);
-
-    result.clear();
-    result.append(forecast0.pop);
-    result.append(forecast1.pop);
-    result.append(forecast2.pop);
-    set->setValue("pop", result);
-
-    result.clear();
-    result.append(forecast0.pres);
-    result.append(forecast1.pres);
-    result.append(forecast2.pres);
-    set->setValue("pres", result);
-
-    result.clear();
-    result.append(forecast0.sr_ss);
-    result.append(forecast1.sr_ss);
-    result.append(forecast2.sr_ss);
-    set->setValue("sr_ss", result);
-
-    result.clear();
-    result.append(forecast0.tmp_max);
-    result.append(forecast1.tmp_max);
-    result.append(forecast2.tmp_max);
-    set->setValue("tmp_max", result);
-
-    result.clear();
-    result.append(forecast0.tmp_min);
-    result.append(forecast1.tmp_min);
-    result.append(forecast2.tmp_min);
-    set->setValue("tmp_min", result);
-
-    result.clear();
-    result.append(forecast0.uv_index);
-    result.append(forecast1.uv_index);
-    result.append(forecast2.uv_index);
-    set->setValue("uv_index", result);
-
-    result.clear();
-    result.append(forecast0.vis);
-    result.append(forecast1.vis);
-    result.append(forecast2.vis);
-    set->setValue("vis", result);
-
-    result.clear();
-    result.append(forecast0.wind_deg);
-    result.append(forecast1.wind_deg);
-    result.append(forecast2.wind_deg);
-    set->setValue("wind_deg", result);
-
-    result.clear();
-    result.append(forecast0.wind_dir);
-    result.append(forecast1.wind_dir);
-    result.append(forecast2.wind_dir);
-    set->setValue("wind_dir", result);
-
-    result.clear();
-    result.append(forecast0.wind_sc);
-    result.append(forecast1.wind_sc);
-    result.append(forecast2.wind_sc);
-    set->setValue("wind_sc", result);
-
-    result.clear();
-    result.append(forecast0.wind_spd);
-    result.append(forecast1.wind_spd);
-    result.append(forecast2.wind_spd);
-    set->setValue("wind_spd", result);
-    result.clear();
+    int forecastCount = m_forecastList.size();
+    for (int i = 0; i < forecastCount; ++i) {
+        forcast_date += m_forecastList.at(i).forcast_date;
+        cond_code_d += m_forecastList.at(i).cond_code_d;
+        cond_txt_d += m_forecastList.at(i).cond_txt_d;
+        cond_code_n += m_forecastList.at(i).cond_code_n;
+        cond_txt_n += m_forecastList.at(i).cond_txt_n;
+        hum += m_forecastList.at(i).hum;
+        mr += m_forecastList.at(i).mr;
+        ms += m_forecastList.at(i).ms;
+        pcpn += m_forecastList.at(i).pcpn;
+        pop += m_forecastList.at(i).pop;
+        pres += m_forecastList.at(i).pres;
+        sr += m_forecastList.at(i).sr;
+        ss += m_forecastList.at(i).ss;
+        tmp_max += m_forecastList.at(i).tmp_max;
+        tmp_min += m_forecastList.at(i).tmp_min;
+        uv_index += m_forecastList.at(i).uv_index;
+        vis += m_forecastList.at(i).vis;
+        wind_deg += m_forecastList.at(i).wind_deg;
+        wind_dir += m_forecastList.at(i).wind_dir;
+        wind_sc += m_forecastList.at(i).wind_sc;
+        wind_spd += m_forecastList.at(i).wind_spd;
+        if (i != forecastCount-1) {
+            forcast_date += ",";
+            cond_code_d += ",";
+            cond_code_n += ",";
+            cond_txt_d += ",";
+            cond_txt_n += ",";
+            hum += ",";
+            mr += ",";
+            ms += ",";
+            pcpn += ",";
+            pop += ",";
+            pres += ",";
+            sr += ",";
+            ss += ",";
+            tmp_max += ",";
+            tmp_min += ",";
+            uv_index += ",";
+            vis += ",";
+            wind_deg += ",";
+            wind_dir += ",";
+            wind_sc += ",";
+            wind_spd += ",";
+        }
+    }
+    set->setValue("forcast_date", forcast_date);
+    set->setValue("cond_code_d", cond_code_d);
+    set->setValue("cond_txt_d", cond_txt_d);
+    set->setValue("cond_code_n", cond_code_n);
+    set->setValue("cond_txt_n", cond_txt_n);
+    set->setValue("hum", hum);
+//    set->setValue("mr_ms", mr_ms);
+    set->setValue("mr", mr);
+    set->setValue("ms", ms);
+    set->setValue("pcpn", pcpn);
+    set->setValue("pop", pop);
+    set->setValue("pres", pres);
+//    set->setValue("sr_ss", sr_ss);
+    set->setValue("sr", sr);
+    set->setValue("ss", ss);
+    set->setValue("tmp_max", tmp_max);
+    set->setValue("tmp_min", tmp_min);
+    set->setValue("uv_index", uv_index);
+    set->setValue("vis", vis);
+    set->setValue("wind_deg", wind_deg);
+    set->setValue("wind_dir", wind_dir);
+    set->setValue("wind_sc", wind_sc);
+    set->setValue("wind_spd", wind_spd);
     set->endGroup();
 
 
     set->beginGroup("Lifestyle");
-    set->setValue("air_brf", lifestyle.air_brf);
-    set->setValue("air_txt", lifestyle.air_txt);
-    set->setValue("comf_brf", lifestyle.comf_brf);
-    set->setValue("comf_txt", lifestyle.comf_txt);
-    set->setValue("cw_brf", lifestyle.cw_brf);
-    set->setValue("cw_txt", lifestyle.cw_txt);
-    set->setValue("drsg_brf", lifestyle.drsg_brf);
-    set->setValue("drsg_txt", lifestyle.drsg_txt);
-    set->setValue("flu_brf", lifestyle.flu_brf);
-    set->setValue("flu_txt", lifestyle.flu_txt);
-    set->setValue("sport_brf", lifestyle.sport_brf);
-    set->setValue("sport_txt", lifestyle.sport_txt);
-    set->setValue("trav_brf", lifestyle.trav_brf);
-    set->setValue("trav_txt", lifestyle.trav_txt);
-    set->setValue("uv_brf", lifestyle.uv_brf);
-    set->setValue("uv_txt", lifestyle.uv_txt);
+    set->setValue("air_brf", m_lifestyle.air_brf);
+    set->setValue("air_txt", m_lifestyle.air_txt);
+    set->setValue("comf_brf", m_lifestyle.comf_brf);
+    set->setValue("comf_txt", m_lifestyle.comf_txt);
+    set->setValue("cw_brf", m_lifestyle.cw_brf);
+    set->setValue("cw_txt", m_lifestyle.cw_txt);
+    set->setValue("drsg_brf", m_lifestyle.drsg_brf);
+    set->setValue("drsg_txt", m_lifestyle.drsg_txt);
+    set->setValue("flu_brf", m_lifestyle.flu_brf);
+    set->setValue("flu_txt", m_lifestyle.flu_txt);
+    set->setValue("sport_brf", m_lifestyle.sport_brf);
+    set->setValue("sport_txt", m_lifestyle.sport_txt);
+    set->setValue("trav_brf", m_lifestyle.trav_brf);
+    set->setValue("trav_txt", m_lifestyle.trav_txt);
+    set->setValue("uv_brf", m_lifestyle.uv_brf);
+    set->setValue("uv_txt", m_lifestyle.uv_txt);
     set->endGroup();
 
     set->sync();
@@ -295,196 +298,107 @@ void Preferences::load()
 
 
     set->beginGroup("Weather");
-    weather.updatetime = set->value("updatetime", weather.updatetime).toString();
-    weather.air = set->value("air", weather.air).toString();
-    weather.cloud = set->value("cloud", weather.cloud).toString();
-    weather.cond_code = set->value("cond_code", weather.cond_code).toString();
-    weather.cond_txt = set->value("cond_txt", weather.cond_txt).toString();
-    weather.fl = set->value("fl", weather.fl).toString();
-    weather.hum = set->value("hum", weather.hum).toString();
-    weather.pcpn = set->value("pcpn", weather.pcpn).toString();
-    weather.pres = set->value("pres", weather.pres).toString();
-    weather.tmp = set->value("tmp", weather.tmp).toString();
-    weather.vis = set->value("vis", weather.vis).toString();
-    weather.wind_deg = set->value("wind_deg", weather.wind_deg).toString();
-    weather.wind_dir = set->value("wind_dir", weather.wind_dir).toString();
-    weather.wind_sc = set->value("wind_sc", weather.wind_sc).toString();
-    weather.wind_spd = set->value("wind_spd", weather.wind_spd).toString();
+    m_observerWeather.updatetime = set->value("updatetime", m_observerWeather.updatetime).toString();
+    m_observerWeather.air = set->value("air", m_observerWeather.air).toString();
+    m_observerWeather.cloud = set->value("cloud", m_observerWeather.cloud).toString();
+    m_observerWeather.cond_code = set->value("cond_code", m_observerWeather.cond_code).toString();
+    m_observerWeather.cond_txt = set->value("cond_txt", m_observerWeather.cond_txt).toString();
+    m_observerWeather.fl = set->value("fl", m_observerWeather.fl).toString();
+    m_observerWeather.hum = set->value("hum", m_observerWeather.hum).toString();
+    m_observerWeather.pcpn = set->value("pcpn", m_observerWeather.pcpn).toString();
+    m_observerWeather.pres = set->value("pres", m_observerWeather.pres).toString();
+    m_observerWeather.tmp = set->value("tmp", m_observerWeather.tmp).toString();
+    m_observerWeather.vis = set->value("vis", m_observerWeather.vis).toString();
+    m_observerWeather.wind_deg = set->value("wind_deg", m_observerWeather.wind_deg).toString();
+    m_observerWeather.wind_dir = set->value("wind_dir", m_observerWeather.wind_dir).toString();
+    m_observerWeather.wind_sc = set->value("wind_sc", m_observerWeather.wind_sc).toString();
+    m_observerWeather.wind_spd = set->value("wind_spd", m_observerWeather.wind_spd).toString();
     set->endGroup();
 
 
     set->beginGroup("Forecast");
-    QStringList resultlist = set->value("forcast_date").toStringList();
-    if (resultlist.length() == 3) {
-        forecast0.forcast_date = resultlist.at(0);
-        forecast1.forcast_date = resultlist.at(1);
-        forecast2.forcast_date = resultlist.at(2);
-    }
+    QStringList forcast_date = set->value("forcast_date").toStringList();
+    QStringList cond_code_d = set->value("cond_code_d").toStringList();
+    QStringList cond_txt_d = set->value("cond_txt_d").toStringList();
+    QStringList cond_code_n = set->value("cond_code_n").toStringList();
+    QStringList cond_txt_n = set->value("cond_txt_n").toStringList();
+    QStringList hum = set->value("hum").toStringList();
+    QStringList mr = set->value("mr").toStringList();
+    QStringList ms = set->value("ms").toStringList();
+    QStringList pcpn = set->value("pcpn").toStringList();
+    QStringList pop = set->value("pop").toStringList();
+    QStringList pres = set->value("pres").toStringList();
+    QStringList sr = set->value("sr").toStringList();
+    QStringList ss = set->value("ss").toStringList();
+    QStringList tmp_max = set->value("tmp_max").toStringList();
+    QStringList tmp_min = set->value("tmp_min").toStringList();
+    QStringList uv_index = set->value("uv_index").toStringList();
+    QStringList vis = set->value("vis").toStringList();
+    QStringList wind_deg = set->value("wind_deg").toStringList();
+    QStringList wind_dir = set->value("wind_dir").toStringList();
+    QStringList wind_sc = set->value("wind_sc").toStringList();
+    QStringList wind_spd = set->value("wind_spd").toStringList();
 
-    resultlist.clear();
-    resultlist = set->value("cond_code_d").toStringList();
-    if (resultlist.length() == 3) {
-        forecast0.cond_code_d = resultlist.at(0);
-        forecast1.cond_code_d = resultlist.at(1);
-        forecast2.cond_code_d = resultlist.at(2);
+    int forecastCount = forcast_date.length();
+    if ((forecastCount == cond_code_d.length()) && (forecastCount == cond_txt_d.length()) &&
+            (forecastCount == cond_code_n.length()) && (forecastCount == cond_txt_n.length()) &&
+            (forecastCount == hum.length()) && (forecastCount == mr.length()) &&
+            (forecastCount == ms.length()) && (forecastCount == pcpn.length()) &&
+            (forecastCount == pop.length()) && (forecastCount == pres.length()) &&
+            (forecastCount == sr.length()) && (forecastCount == ss.length()) &&
+            (forecastCount == tmp_max.length()) && (forecastCount == tmp_min.length()) &&
+            (forecastCount == uv_index.length()) && (forecastCount == vis.length()) &&
+            (forecastCount == wind_deg.length()) && (forecastCount == wind_dir.length()) &&
+            (forecastCount == wind_sc.length()) && (forecastCount == wind_spd.length())) {
+        for (int i=0; i< forecastCount; i++) {
+            ForecastWeather forecast;
+            forecast.forcast_date = forcast_date.at(i);
+            forecast.cond_code_d = cond_code_d.at(i);
+            forecast.cond_txt_d = cond_txt_d.at(i);
+            forecast.cond_code_n = cond_code_n.at(i);
+            forecast.cond_txt_n = cond_txt_n.at(i);
+            forecast.hum = hum.at(i);
+            forecast.mr = mr.at(i);
+            forecast.ms = ms.at(i);
+            forecast.pcpn = pcpn.at(i);
+            forecast.pop = pop.at(i);
+            forecast.pres = pres.at(i);
+            forecast.sr = sr.at(i);
+            forecast.ss = ss.at(i);
+            forecast.tmp_max = tmp_max.at(i);
+            forecast.tmp_min = tmp_min.at(i);
+            forecast.uv_index = uv_index.at(i);
+            forecast.vis = vis.at(i);
+            forecast.wind_deg = wind_deg.at(i);
+            forecast.wind_dir = wind_dir.at(i);
+            forecast.wind_sc = wind_sc.at(i);
+            forecast.wind_spd = wind_spd.at(i);
+            m_forecastList.append(forecast);
+        }
     }
-
-    resultlist.clear();
-    resultlist = set->value("cond_txt_d").toStringList();
-    if (resultlist.length() == 3) {
-        forecast0.cond_txt_d = resultlist.at(0);
-        forecast1.cond_txt_d = resultlist.at(1);
-        forecast2.cond_txt_d = resultlist.at(2);
+    else {
+        m_forecastList.clear();
     }
-
-    resultlist.clear();
-    resultlist = set->value("cond_code_n").toStringList();
-    if (resultlist.length() == 3) {
-        forecast0.cond_code_n = resultlist.at(0);
-        forecast1.cond_code_n = resultlist.at(1);
-        forecast2.cond_code_n = resultlist.at(2);
-    }
-
-    resultlist.clear();
-    resultlist = set->value("cond_txt_n").toStringList();
-    if (resultlist.length() == 3) {
-        forecast0.cond_txt_n = resultlist.at(0);
-        forecast1.cond_txt_n = resultlist.at(1);
-        forecast2.cond_txt_n = resultlist.at(2);
-    }
-
-    resultlist.clear();
-    resultlist = set->value("hum").toStringList();
-    if (resultlist.length() == 3) {
-        forecast0.hum = resultlist.at(0);
-        forecast1.hum = resultlist.at(1);
-        forecast2.hum = resultlist.at(2);
-    }
-
-    resultlist.clear();
-    resultlist = set->value("mr_ms").toStringList();
-    if (resultlist.length() == 3) {
-        forecast0.mr_ms = resultlist.at(0);
-        forecast1.mr_ms = resultlist.at(1);
-        forecast2.mr_ms = resultlist.at(2);
-    }
-
-    resultlist.clear();
-    resultlist = set->value("pcpn").toStringList();
-    if (resultlist.length() == 3) {
-        forecast0.pcpn = resultlist.at(0);
-        forecast1.pcpn = resultlist.at(1);
-        forecast2.pcpn = resultlist.at(2);
-    }
-
-    resultlist.clear();
-    resultlist = set->value("pop").toStringList();
-    if (resultlist.length() == 3) {
-        forecast0.pop = resultlist.at(0);
-        forecast1.pop = resultlist.at(1);
-        forecast2.pop = resultlist.at(2);
-    }
-
-    resultlist.clear();
-    resultlist = set->value("pres").toStringList();
-    if (resultlist.length() == 3) {
-        forecast0.pres = resultlist.at(0);
-        forecast1.pres = resultlist.at(1);
-        forecast2.pres = resultlist.at(2);
-    }
-
-    resultlist.clear();
-    resultlist = set->value("sr_ss").toStringList();
-    if (resultlist.length() == 3) {
-        forecast0.sr_ss = resultlist.at(0);
-        forecast1.sr_ss = resultlist.at(1);
-        forecast2.sr_ss = resultlist.at(2);
-    }
-
-    resultlist.clear();
-    resultlist = set->value("tmp_max").toStringList();
-    if (resultlist.length() == 3) {
-        forecast0.tmp_max = resultlist.at(0);
-        forecast1.tmp_max = resultlist.at(1);
-        forecast2.tmp_max = resultlist.at(2);
-    }
-
-    resultlist.clear();
-    resultlist = set->value("tmp_min").toStringList();
-    if (resultlist.length() == 3) {
-        forecast0.tmp_min = resultlist.at(0);
-        forecast1.tmp_min = resultlist.at(1);
-        forecast2.tmp_min = resultlist.at(2);
-    }
-
-    resultlist.clear();
-    resultlist = set->value("uv_index").toStringList();
-    if (resultlist.length() == 3) {
-        forecast0.uv_index = resultlist.at(0);
-        forecast1.uv_index = resultlist.at(1);
-        forecast2.uv_index = resultlist.at(2);
-    }
-
-    resultlist.clear();
-    resultlist = set->value("vis").toStringList();
-    if (resultlist.length() == 3) {
-        forecast0.vis = resultlist.at(0);
-        forecast1.vis = resultlist.at(1);
-        forecast2.vis = resultlist.at(2);
-    }
-
-    resultlist.clear();
-    resultlist = set->value("wind_deg").toStringList();
-    if (resultlist.length() == 3) {
-        forecast0.wind_deg = resultlist.at(0);
-        forecast1.wind_deg = resultlist.at(1);
-        forecast2.wind_deg = resultlist.at(2);
-    }
-
-    resultlist.clear();
-    resultlist = set->value("wind_dir").toStringList();
-    if (resultlist.length() == 3) {
-        forecast0.wind_dir = resultlist.at(0);
-        forecast1.wind_dir = resultlist.at(1);
-        forecast2.wind_dir = resultlist.at(2);
-    }
-
-    resultlist.clear();
-    resultlist = set->value("wind_sc").toStringList();
-    if (resultlist.length() == 3) {
-        forecast0.wind_sc = resultlist.at(0);
-        forecast1.wind_sc = resultlist.at(1);
-        forecast2.wind_sc = resultlist.at(2);
-    }
-
-    resultlist.clear();
-    resultlist = set->value("wind_spd").toStringList();
-    if (resultlist.length() == 3) {
-        forecast0.wind_spd = resultlist.at(0);
-        forecast1.wind_spd = resultlist.at(1);
-        forecast2.wind_spd = resultlist.at(2);
-    }
-    resultlist.clear();
     set->endGroup();
 
 
     set->beginGroup("Lifestyle");
-    lifestyle.air_brf = set->value("air_brf", lifestyle.air_brf).toString();
-    lifestyle.air_txt = set->value("air_txt", lifestyle.air_txt).toString();
-    lifestyle.comf_brf = set->value("comf_brf", lifestyle.comf_brf).toString();
-    lifestyle.comf_txt = set->value("comf_txt", lifestyle.comf_txt).toString();
-    lifestyle.cw_brf = set->value("cw_brf", lifestyle.cw_brf).toString();
-    lifestyle.cw_txt = set->value("cw_txt", lifestyle.cw_txt).toString();
-    lifestyle.drsg_brf = set->value("drsg_brf", lifestyle.drsg_brf).toString();
-    lifestyle.drsg_txt = set->value("drsg_txt", lifestyle.drsg_txt).toString();
-    lifestyle.flu_brf = set->value("flu_brf", lifestyle.flu_brf).toString();
-    lifestyle.flu_txt = set->value("flu_txt", lifestyle.flu_txt).toString();
-    lifestyle.sport_brf = set->value("sport_brf", lifestyle.sport_brf).toString();
-    lifestyle.sport_txt = set->value("sport_txt", lifestyle.sport_txt).toString();
-    lifestyle.trav_brf = set->value("trav_brf", lifestyle.trav_brf).toString();
-    lifestyle.trav_txt = set->value("trav_txt", lifestyle.trav_txt).toString();
-    lifestyle.uv_brf = set->value("uv_brf", lifestyle.uv_brf).toString();
-    lifestyle.uv_txt = set->value("uv_txt", lifestyle.uv_txt).toString();
+    m_lifestyle.air_brf = set->value("air_brf", m_lifestyle.air_brf).toString();
+    m_lifestyle.air_txt = set->value("air_txt", m_lifestyle.air_txt).toString();
+    m_lifestyle.comf_brf = set->value("comf_brf", m_lifestyle.comf_brf).toString();
+    m_lifestyle.comf_txt = set->value("comf_txt", m_lifestyle.comf_txt).toString();
+    m_lifestyle.cw_brf = set->value("cw_brf", m_lifestyle.cw_brf).toString();
+    m_lifestyle.cw_txt = set->value("cw_txt", m_lifestyle.cw_txt).toString();
+    m_lifestyle.drsg_brf = set->value("drsg_brf", m_lifestyle.drsg_brf).toString();
+    m_lifestyle.drsg_txt = set->value("drsg_txt", m_lifestyle.drsg_txt).toString();
+    m_lifestyle.flu_brf = set->value("flu_brf", m_lifestyle.flu_brf).toString();
+    m_lifestyle.flu_txt = set->value("flu_txt", m_lifestyle.flu_txt).toString();
+    m_lifestyle.sport_brf = set->value("sport_brf", m_lifestyle.sport_brf).toString();
+    m_lifestyle.sport_txt = set->value("sport_txt", m_lifestyle.sport_txt).toString();
+    m_lifestyle.trav_brf = set->value("trav_brf", m_lifestyle.trav_brf).toString();
+    m_lifestyle.trav_txt = set->value("trav_txt", m_lifestyle.trav_txt).toString();
+    m_lifestyle.uv_brf = set->value("uv_brf", m_lifestyle.uv_brf).toString();
+    m_lifestyle.uv_txt = set->value("uv_txt", m_lifestyle.uv_txt).toString();
     set->endGroup();
 }
 

@@ -101,6 +101,9 @@ SOURCES += src/main.cpp \
     src/maskwidget.cpp \
     src/weathermanager.cpp \
     src/geoipworker.cpp
+#    src/scroller.cpp \
+#    src/weatherforecastwidget.cpp \
+#    src/forecastitem.cpp
 
 HEADERS  += src/mainwindow.h \
     src/titlebar.h \
@@ -143,6 +146,9 @@ HEADERS  += src/mainwindow.h \
     src/maskwidget.h \
     src/weathermanager.h \
     src/geoipworker.h
+#    src/scroller.h \
+#    src/weatherforecastwidget.h \
+#    src/forecastitem.h
 
 RESOURCES += \
     res.qrc

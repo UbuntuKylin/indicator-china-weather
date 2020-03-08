@@ -150,13 +150,13 @@ void CityWidget::loadCityItems()
         info.active = (m_preferences->m_currentCityId == m_preferences->m_cities.at(i).id) ? true : false;
         info.id = m_preferences->m_cities.at(i).id;
         info.name = m_preferences->m_cities.at(i).name;
-        info.temperature = (m_preferences->m_currentCityId == m_preferences->m_cities.at(i).id) ? m_preferences->weather.tmp + "°C" : "";
+        info.temperature = (m_preferences->m_currentCityId == m_preferences->m_cities.at(i).id) ? m_preferences->m_observerWeather.tmp + "°C" : "";
 
-        if (m_preferences->weather.cond_code.isEmpty()) {
+        if (m_preferences->m_observerWeather.cond_code.isEmpty()) {
             info.icon = ":/res/weather_icons/darkgrey/999.png";
         }
         else {
-            info.icon = (m_preferences->m_currentCityId == m_preferences->m_cities.at(i).id) ? QString(":/res/weather_icons/darkgrey/%1.png").arg(m_preferences->weather.cond_code) : ":/res/weather_icons/darkgrey/999.png";
+            info.icon = (m_preferences->m_currentCityId == m_preferences->m_cities.at(i).id) ? QString(":/res/weather_icons/darkgrey/%1.png").arg(m_preferences->m_observerWeather.cond_code) : ":/res/weather_icons/darkgrey/999.png";
 
         }
         addCityItem(info);
@@ -251,17 +251,17 @@ void CityWidget::refreshListWeatherStatus()
         if (item->getCityId() == m_preferences->m_currentCityId) {
             QString icon;
             QString temp;
-            if (m_preferences->weather.cond_code.isEmpty()) {
+            if (m_preferences->m_observerWeather.cond_code.isEmpty()) {
                 temp = "";
             }
             else {
-                temp = m_preferences->weather.tmp + "°C";
+                temp = m_preferences->m_observerWeather.tmp + "°C";
             }
-            if (m_preferences->weather.cond_code.isEmpty()) {
+            if (m_preferences->m_observerWeather.cond_code.isEmpty()) {
                 icon = ":/res/weather_icons/darkgrey/999.png";
             }
             else {
-                icon = QString(":/res/weather_icons/darkgrey/%1.png").arg(m_preferences->weather.cond_code);
+                icon = QString(":/res/weather_icons/darkgrey/%1.png").arg(m_preferences->m_observerWeather.cond_code);
             }
             item->setItemWeather(temp, icon);
         } else {

@@ -45,8 +45,9 @@ void TitleBar::initLeftContent()
     m_leftWidget = new QWidget;
     m_leftWidget->setStyleSheet("QWidget{background-image:none;}QWidget::hover{background-image:url(':/res/location_bg_hover.png');}");
     m_leftWidget->installEventFilter(this);
-    m_leftWidget->setFixedSize(69, 22);
+    m_leftWidget->setFixedHeight(22);
     m_lLayout = new QHBoxLayout(m_leftWidget);
+    m_lLayout->setAlignment(Qt::AlignLeft);
     m_lLayout->setContentsMargins(5, 0, 0, 0);
     m_lLayout->setSpacing(5);
     m_layout->addWidget(m_leftWidget, 1, Qt::AlignLeft | Qt::AlignTop);
@@ -59,6 +60,8 @@ void TitleBar::initLeftContent()
     city_button->setIcon(QIcon(":/res/set_city.png"));
 
     m_cityLabel = new QLabel;
+    m_cityLabel->adjustSize();
+    //m_cityLabel->setScaledContents(true);
     m_cityLabel->setText("--");//for test
     m_cityLabel->setStyleSheet("QLabel{font-size:12px;color:#ffffff;background:transparent;background-color:transparent;}");
 
@@ -98,14 +101,14 @@ void TitleBar::initRightContent()
     m_rLayout->addWidget(m_minBtn);
     m_rLayout->addWidget(m_closeBtn);
 
-    connect(m_minBtn, &QPushButton::clicked, this, [=] {
+    connect(m_minBtn, &QPushButton::clicked, this, [=] () {
         if (parentWidget() && parentWidget()->parentWidget()) {
 //            parentWidget()->parentWidget()->showMinimized();
             parentWidget()->parentWidget()->hide();
         }
     });
 
-    connect(m_closeBtn, &QPushButton::clicked, this, [=] {
+    connect(m_closeBtn, &QPushButton::clicked, this, [=] () {
 //        qApp->quit();
         if (parentWidget() && parentWidget()->parentWidget()) {
 //            parentWidget()->parentWidget()->showMinimized();
