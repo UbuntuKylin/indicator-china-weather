@@ -21,9 +21,12 @@
 
 #include <QApplication>
 #include <QMouseEvent>
+#include <QDesktopWidget>
+#include <QTimer>
 #include <QDebug>
 
 TitleBar::TitleBar(QWidget *parent) : QWidget(parent)
+    , m_isPressed(false)
 {
     this->setFixedHeight(32);
 
@@ -46,6 +49,7 @@ void TitleBar::initLeftContent()
     m_leftWidget->setStyleSheet("QWidget{background-image:none;}QWidget::hover{background-image:url(':/res/location_bg_hover.png');}");
     m_leftWidget->installEventFilter(this);
     m_leftWidget->setFixedHeight(22);
+//    m_leftWidget->setToolTip(tr("Click to set city"));
     m_lLayout = new QHBoxLayout(m_leftWidget);
     m_lLayout->setAlignment(Qt::AlignLeft);
     m_lLayout->setContentsMargins(5, 0, 0, 0);
@@ -143,9 +147,69 @@ void TitleBar::setNightStyleSheets()
     //m_leftWidget->setStyleSheet("QWidget{background-image:url(':/res/location_bg_hover.png');}");
 }
 
+void TitleBar::showSetCityTooltip(const QPoint &pos)
+{
+    emit requestHideTip();
+
+    QFrame *tipFrame = new QFrame();
+    tipFrame->setWindowFlags(Qt::ToolTip);
+    tipFrame->setAttribute(Qt::WA_TranslucentBackground);
+    tipFrame->setStyleSheet(this->styleSheet());
+    QLabel *label = new QLabel(tipFrame);
+    label->setText(tr("Click to set city"));
+    QHBoxLayout *layout = new QHBoxLayout(tipFrame);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(label);
+    tipFrame->show();
+    tipFrame->move(pos.x(), pos.y() + tipFrame->height());
+    QTimer::singleShot(3000, tipFrame, SLOT(deleteLater()));
+    connect(this, &TitleBar::requestHideTip, tipFrame, &QFrame::deleteLater);
+}
+
+bool TitleBar::event(QEvent *event)
+{
+    if (event->type() == QEvent::ToolTip) {
+        this->showSetCityTooltip(QCursor::pos());
+//        if (QHelpEvent *e = static_cast<QHelpEvent *>(event)) {
+//            this->showSetCityTooltip(e->globalPos());
+//            return false;
+//        }
+    }
+
+    return QWidget::event(event);
+}
+
+void TitleBar::enterEvent(QEvent *event)
+{
+    Q_UNUSED(event)
+    setCursor(Qt::PointingHandCursor);
+}
+
+void TitleBar::leaveEvent(QEvent *event)
+{
+    Q_UNUSED(event)
+    setCursor(Qt::ArrowCursor);
+    emit requestHideTip();
+}
+
+void TitleBar::mousePressEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event)
+    m_isPressed = true;
+}
+
+void TitleBar::mouseReleaseEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event)
+    if (m_isPressed) {
+        m_isPressed = false;
+        emit requestHideTip();
+    }
+}
+
 bool TitleBar::eventFilter(QObject *obj, QEvent *event)
 {
-    if(obj == m_leftWidget) {
+    if (obj == m_leftWidget) {
         switch (event->type()) {
         case QEvent::Enter: {
             QWidget *widget = qobject_cast<QWidget *>(obj);

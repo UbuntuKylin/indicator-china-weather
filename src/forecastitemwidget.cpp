@@ -6,9 +6,11 @@
 #include <QCursor>
 #include <QDate>
 #include <QDateTime>
+#include <QHelpEvent>
 
 ForecastItemWidget::ForecastItemWidget(QWidget *parent) :
     QWidget(parent)
+    , m_isPressed(false)
 {
     this->setFixedSize(100, 140);//140:initForecastWidget's height - 2*space = 160- 10*2
     this->setStyleSheet("QWidget{border-radius: 0px;color:rgb(250,250,250);background-color:rgba(0,0,0,0.2)}");
@@ -129,23 +131,46 @@ void ForecastItemWidget::setDefaultData()
 bool ForecastItemWidget::event(QEvent *event)
 {
     if (event->type() == QEvent::ToolTip) {
-        m_toolTip->popupTip(QCursor::pos());
+        //m_toolTip->popupTip(QCursor::pos());
+        if (QHelpEvent *e = static_cast<QHelpEvent *>(event)) {
+            m_toolTip->popupTip(e->globalPos());
+            return false;
+        }
     }
-    else if (event->type() == QEvent::Leave) {
+    /*else if (event->type() == QEvent::Leave)  {
         m_toolTip->hide();
+//        QWidget::leaveEvent(event);
     }
+    else if (event->type() == QEvent::MouseButtonPress) {
+        m_toolTip->hide();
+    }*/
 
     return QWidget::event(event);
 }
 
-//void ForecastItemWidget::enterEvent(QEvent *event)
-//{
+void ForecastItemWidget::enterEvent(QEvent *event)
+{
 //    m_toolTip->popupTip(QCursor::pos());
-//    QWidget::enterEvent(event);
-//}
+    QWidget::enterEvent(event);
+}
 
-//void ForecastItemWidget::leaveEvent(QEvent *event)
-//{
-//    m_toolTip->hide();
-//    QWidget::leaveEvent(event);
-//}
+void ForecastItemWidget::leaveEvent(QEvent *event)
+{
+    m_toolTip->hide();
+    QWidget::leaveEvent(event);
+}
+
+void ForecastItemWidget::mousePressEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event)
+    m_isPressed = true;
+}
+
+void ForecastItemWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event)
+    if (m_isPressed) {
+        m_isPressed = false;
+        m_toolTip->hide();
+    }
+}

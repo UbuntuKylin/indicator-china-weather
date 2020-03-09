@@ -25,26 +25,34 @@
 class TranslucentLabel : public QLabel {
     Q_OBJECT
 public:
-    explicit TranslucentLabel(bool showTip = false, QWidget *parent = 0);
+    TranslucentLabel(QWidget *parent = 0);
+    TranslucentLabel(const QString &tiptxt, QWidget *parent = 0);
 
     void setLabelIcon(const QString &iconPath);
     void setLabelText(const QString &text);
 
+    void showTooltip(const QPoint &pos);
+
 signals:
     void clicked();
+    void requestHideTip();
+
 
 protected:
 //    virtual void focusInEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
 //    virtual void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
-    virtual void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-
-private:
-    bool eventFilter(QObject *obj, QEvent *event) Q_DECL_OVERRIDE;
-    //bool event(QEvent *event) Q_DECL_OVERRIDE;
+    bool event(QEvent *event) Q_DECL_OVERRIDE;
+    void enterEvent(QEvent *event) Q_DECL_OVERRIDE;
+    void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    //bool eventFilter(QObject *obj, QEvent *event) Q_DECL_OVERRIDE;
 
 private:
     QLabel *m_icon = nullptr;
     QLabel *m_text = nullptr;
     bool m_showTip;
+    bool m_isPressed;
+    QString m_tipTxt;
 };
 #endif // TRANLUCENTLABEL_H

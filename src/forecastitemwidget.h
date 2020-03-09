@@ -44,8 +44,10 @@ public:
 
 protected:
     bool event(QEvent *event) Q_DECL_OVERRIDE;
-//    void enterEvent(QEvent *event) Q_DECL_OVERRIDE;
-//    void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
+    void enterEvent(QEvent *event) Q_DECL_OVERRIDE;
+    void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 private:
     QLabel *m_weekLabel = nullptr;
@@ -56,6 +58,7 @@ private:
     QVBoxLayout *m_layout = nullptr;
     ToolTip *m_toolTip = nullptr;
     bool m_isDayOrNight;
+    bool m_isPressed;
 };
 
 #endif // FORECASTITEMWIDGET_H

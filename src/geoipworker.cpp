@@ -54,7 +54,8 @@ const void getIpAndCityByUbuntu(const QString &url, QString &ip, QString &city)
     QNetworkReply *reply = manager->get(QNetworkRequest(QUrl(url)));
 
     QEventLoop loop;
-    QObject::connect(manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
+    QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    //QObject::connect(manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
     //QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &loop, SLOT(quit()));
     loop.exec();
 
@@ -91,7 +92,8 @@ const QString getIpByPconline(const QString &url)
     QNetworkAccessManager *manager = new QNetworkAccessManager();
     QNetworkReply *reply = manager->get(QNetworkRequest(QUrl(url)));
     QEventLoop loop;
-    QObject::connect(manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
+    QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    //QObject::connect(manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
     //QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &loop, SLOT(quit()));
     loop.exec();
 
@@ -138,7 +140,8 @@ const QString getCityFromIpByAmap(const QString &ip)
     QNetworkAccessManager *manager = new QNetworkAccessManager();
     QNetworkReply *reply = manager->get(QNetworkRequest(QUrl(url)));
     QEventLoop loop;
-    QObject::connect(manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
+    QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    //QObject::connect(manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
     //QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &loop, SLOT(quit()));
     loop.exec();
 
@@ -183,7 +186,8 @@ const QString getCityFromIpByTaobao(const QString &ip)
     QNetworkAccessManager *manager = new QNetworkAccessManager();
     QNetworkReply *reply = manager->get(QNetworkRequest(QUrl(url)));
     QEventLoop loop;
-    QObject::connect(manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
+    QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    //QObject::connect(manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
     //QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &loop, SLOT(quit()));
     loop.exec();
 
@@ -268,7 +272,7 @@ const QString automaicCity()
         ip = getIpByPconline(PconlineUrl);
     }
 
-    qDebug() << "ip:" << ip;
+//    qDebug() << "ip:" << ip;
 
     if (city.isEmpty()) {
         city = getCityFromIPAddr(ip);//根据ip从geoip库定位城市
@@ -280,7 +284,7 @@ const QString automaicCity()
         }
     }
 
-    qDebug() << "city:" << city;
+//    qDebug() << "city:" << city;
 
     return city;
 }

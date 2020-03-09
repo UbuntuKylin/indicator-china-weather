@@ -48,6 +48,7 @@ const QString getPublicIpAddrByUrl(const QString &url)
     QNetworkReply *reply = manager->get(QNetworkRequest(QUrl(url)));
     QByteArray ba;
     QEventLoop loop;
+    //QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
     QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &loop, SLOT(quit()));
     loop.exec();
     ba = reply->readAll();
@@ -92,6 +93,7 @@ const QString getCityFromIpByAmap(const QString &ip)
     QNetworkAccessManager *manager = new QNetworkAccessManager();
     QNetworkReply *reply = manager->get(QNetworkRequest(QUrl(url)));
     QEventLoop loop;
+    //QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
     QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &loop, SLOT(quit()));
     loop.exec();
 
@@ -136,7 +138,8 @@ const QString getCityFromIpByTaobao(const QString &ip)
     QNetworkAccessManager *manager = new QNetworkAccessManager();
     QNetworkReply *reply = manager->get(QNetworkRequest(QUrl(url)));
     QEventLoop loop;
-    QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &loop, SLOT(quit()));
+    QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    //QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &loop, SLOT(quit()));
     loop.exec();
 
     int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();

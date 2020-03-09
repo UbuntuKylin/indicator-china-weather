@@ -176,7 +176,6 @@ void ToolTip::popupTip(QPoint point)
     }
     point_Y = point.ry();
     this->move(QPoint(point_X, point_Y));
-//    this->show();
     QFrame::show();
     QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect(this->m_frame);
     opacityEffect->setOpacity(1);

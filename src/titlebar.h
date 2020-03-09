@@ -40,11 +40,19 @@ public:
     void setDayStyleSheets();
     void setNightStyleSheets();
 
+    void showSetCityTooltip(const QPoint &pos);
+
 signals:
     void requestShowSettingDialog();
+    void requestHideTip();
 
-private:
+protected:
     bool eventFilter(QObject *obj, QEvent *event) Q_DECL_OVERRIDE;
+    bool event(QEvent *event) Q_DECL_OVERRIDE;
+    void enterEvent(QEvent *event) Q_DECL_OVERRIDE;
+    void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 private:
     QHBoxLayout *m_layout = nullptr;
@@ -53,6 +61,7 @@ private:
     QWidget *m_leftWidget = nullptr;
     QPushButton *m_setCityBtn = nullptr;
     QLabel *m_cityLabel = nullptr;
+    bool m_isPressed;
 //    QPushButton *m_minBtn = nullptr;
 //    QPushButton *m_closeBtn = nullptr;
 };

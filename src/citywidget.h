@@ -52,8 +52,9 @@ signals:
     void requestRefreshWeatherById(const QString &id);
     void responseCityError(const QString &info);
 
-private:
+protected:
     bool event(QEvent *event);
+    void showEvent(QShowEvent *event);
 
 private:
     CityListWidget *m_cityListWidget = nullptr;
@@ -62,7 +63,7 @@ private:
     QList<CitySettingData> m_dataList;
     QScrollArea *m_scrollArea = nullptr;
     QWidget *m_widget = nullptr;
-    QTimer *m_timer = nullptr;
+//    QTimer *m_timer = nullptr;
 };
 
 #endif // CITYWIDGET_H

@@ -212,9 +212,10 @@ NowWeatherWidget::NowWeatherWidget(QFrame *parent) :
     m_ariWidget->raise();
     m_ariWidget->setVisible(false);
 
-    m_aqiLabel = new TranslucentLabel(true, this);
+    m_aqiLabel = new TranslucentLabel(tr("Click to see details of air quality"), this);
+    m_aqiLabel->setFixedSize(89, 26);
     m_aqiLabel->setLabelIcon(":/res/aqi.png");
-    m_aqiLabel->setToolTip(tr("Click to see details of air quality"));
+    //m_aqiLabel->setToolTip(tr("Click to see details of air quality"));
     m_aqiLabel->move(m_weatherIcon->x() - 10, m_windLabel->y());
     connect(m_aqiLabel, &TranslucentLabel::clicked, this, [=] () {
         if (m_ariWidget->isVisible()) {
@@ -237,7 +238,8 @@ NowWeatherWidget::NowWeatherWidget(QFrame *parent) :
         }
     });
 
-    m_temperatureLabel = new TranslucentLabel(false, this);
+    m_temperatureLabel = new TranslucentLabel(this);
+    m_temperatureLabel->setFixedSize(89, 26);
     m_temperatureLabel->setLabelIcon(":/res/temp.png");
     m_temperatureLabel->move(m_aqiLabel->x(), m_aqiLabel->y() + m_aqiLabel->height() + 8);
 

@@ -34,7 +34,7 @@ CityWidget::CityWidget(QWidget *parent)
     : QWidget(parent)
     , m_cityListWidget(new CityListWidget)
     , m_addBtn(new QPushButton(this))
-    , m_timer(new QTimer(this))
+//    , m_timer(new QTimer(this))
 {
     this->setAttribute(Qt::WA_TranslucentBackground);
     this->setStyleSheet("QWidget{border:none; background-color:#ffffff;}");
@@ -86,21 +86,21 @@ CityWidget::CityWidget(QWidget *parent)
     m_dataList.clear();
     this->loadCityItems();
 
-    m_timer->setSingleShot(false);
-    m_timer->setInterval(30);
-    connect(m_timer, &QTimer::timeout, this, &CityWidget::refreshListWeatherStatus, Qt::QueuedConnection);
+//    m_timer->setSingleShot(false);
+//    m_timer->setInterval(30);
+//    connect(m_timer, &QTimer::timeout, this, &CityWidget::refreshListWeatherStatus, Qt::QueuedConnection);
 }
 
 CityWidget::~CityWidget()
 {
-    if (m_timer) {
-        disconnect(m_timer, SIGNAL(timeout()), this, SLOT(refreshListWeatherStatus()));
-        if(m_timer->isActive()) {
-            m_timer->stop();
-        }
-        delete m_timer;
-        m_timer = nullptr;
-    }
+//    if (m_timer) {
+//        disconnect(m_timer, SIGNAL(timeout()), this, SLOT(refreshListWeatherStatus()));
+//        if(m_timer->isActive()) {
+//            m_timer->stop();
+//        }
+//        delete m_timer;
+//        m_timer = nullptr;
+//    }
 
     QList<CityItemWidget *> items = findChildren<CityItemWidget*>();
     for (CityItemWidget *item : items) {
@@ -225,10 +225,10 @@ void CityWidget::addCityItem(const CitySettingData &info)
             else {
                 cityItem->setItemAction(false);
             }
-            m_timer->start();
+//            m_timer->start();
         }
     });
-    m_timer->start();
+//    m_timer->start();
 }
 
 void CityWidget::removeCityItemById(const QString &id)
@@ -241,7 +241,8 @@ void CityWidget::removeCityItemById(const QString &id)
             break;
         }
     }
-    m_timer->start();
+//    m_timer->start();
+    this->refreshListWeatherStatus();
 }
 
 void CityWidget::refreshListWeatherStatus()
@@ -264,7 +265,8 @@ void CityWidget::refreshListWeatherStatus()
                 icon = QString(":/res/weather_icons/darkgrey/%1.png").arg(m_preferences->m_observerWeather.cond_code);
             }
             item->setItemWeather(temp, icon);
-        } else {
+        }
+        else {
             item->setItemWeather("", ":/res/weather_icons/darkgrey/999.png");
         }
     }
@@ -279,9 +281,16 @@ void CityWidget::refreshCityList(const QString &id)
         else
             cityItem->setItemAction(false);
     }
-    m_timer->start();
+    //m_timer->start();
+
+    this->refreshListWeatherStatus();
 }
 
+void CityWidget::showEvent(QShowEvent *event)
+{
+    this->refreshListWeatherStatus();
+    QWidget::showEvent(event);
+}
 /*void CityWidget::onMouseEnter()
 {
     QList<CityItemWidget *> items = findChildren<CityItemWidget*>();

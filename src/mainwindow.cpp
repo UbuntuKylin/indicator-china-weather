@@ -254,8 +254,6 @@ MainWindow::MainWindow(QWidget *parent)
             m_contentWidget->showServerNotifyInfo(notifyInfo);
     });
 
-
-
     connect(m_weatherManager, &WeatherManager::requesUiRefreshed, this, [=] () {
         this->stopTrayFlashing();
         m_maskWidget->hide();
@@ -285,6 +283,9 @@ MainWindow::MainWindow(QWidget *parent)
             }
         }
 
+        if (m_setttingDialog) {
+            m_setttingDialog->refreshCityList(m_preferences->m_currentCity);
+        }
 
         int len = m_preferences->m_forecastList.size();
         if (len > 3) {
