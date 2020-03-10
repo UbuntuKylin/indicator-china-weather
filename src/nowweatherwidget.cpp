@@ -20,8 +20,6 @@
 #include "nowweatherwidget.h"
 #include "translucentlabel.h"
 #include "tipwidget.h"
-#include "texttip.h"
-#include "tipmodule.h"
 #include "airwidget.h"
 
 #include <QVBoxLayout>
@@ -90,54 +88,12 @@ inline QString convertTemperatureToString(int temp)
     }
 }
 
-//it must be consistent with the function named convertCodeToBackgroud() which in MainWindow
-inline QString convertCodeToStyleSheet(int code)
-{
-    if (code == 100 || code == 900) {//#ee613f
-        return "QFrame{border:none;background-color:rgba(238,97,63,85%);color:rgb(255,255,255);}";
-    }
-    else if (code <= 103 && code >= 101) {//#0c69c3
-        return "QFrame{border:none;background-color:rgba(12,105,195,85%);color:rgb(255,255,255);}";
-    }
-    else if (code == 104 || code == 901) {//#404b5b
-        return "QFrame{border:none;background-color:rgba(64,75,91,85%);color:rgb(255,255,255);}";
-    }
-    else if (code <= 204 && code >= 200) {//#ee613f
-        return "QFrame{border:none;background-color:rgba(238,97,63,85%);color:rgb(255,255,255);}";
-    }
-    else if (code <= 213 && code >= 205) {//#404b5b
-        return "QFrame{border:none;background-color:rgba(64,75,91,85%);color:rgb(255,255,255);}";
-    }
-    else if (code <= 399 && code >= 300) {//#5336bf
-        return "QFrame{border:none;background-color:rgba(83,54,191,85%);color:rgb(255,255,255);}";
-    }
-    else if (code <= 499 && code >= 400) {//#4f88b3
-        return "QFrame{border:none;background-color:rgba(79,136,179,85%);color:rgb(255,255,255);}";
-    }
-    else if (code <= 502 && code >= 500) {//#312e33
-        return "QFrame{border:none;background-color:rgba(49,46,51,85%);color:rgb(255,255,255);}";
-    }
-    else if (code <= 508 && code >= 503) {//#98733f
-        return "QFrame{border:none;background-color:rgba(152,115,63,85%);color:rgb(255,255,255);}";
-    }
-    else if (code <= 515 && code >= 509) {//#312e33
-        return "QFrame{border:none;background-color:rgba(49,46,51,85%);color:rgb(255,255,255);}";
-    }
-    else {//#ee613f
-        return "QFrame{border:none;background-color:rgba(238,97,63,85%);color:rgb(255,255,255);}";
-    }
-}
 
 NowWeatherWidget::NowWeatherWidget(QFrame *parent) :
     QFrame(parent)
     , m_tipTimer(new QTimer(this))
-//    , m_tipModule(new TipModule)
-//    , m_tip(new TextTip(QString(), this))
 {
     this->setFixedSize(355, 180);
-
-    //m_tip->setFixedSize(100, 32);
-//    this->setStyleSheet("QLabel{border-radius: 0px; color:rgb(250, 250, 250); background-color:rgba(0,0,0,0.2)}");
 
     //test background color
     /*this->setAutoFillBackground(true);
@@ -205,21 +161,37 @@ NowWeatherWidget::NowWeatherWidget(QFrame *parent) :
     m_weatherIcon = new QLabel(this);
     m_weatherIcon->setGeometry(this->width() - 64 - 20, m_tempLabel->y(), 64, 64);
     m_weatherIcon->setStyleSheet("QLabel{border:none;background-color:transparent;}");
-    //m_weatherIcon->setProperty("TextTipWidget", QVariant::fromValue<QWidget *>(m_tip));
-    //m_weatherIcon->installEventFilter(m_tipModule);
 
     m_ariWidget = new AirWidget(this);
-    m_ariWidget->raise();
+//    m_ariWidget->raise();
     m_ariWidget->setVisible(false);
+//    m_ariWidget->setProperty("DelayHide", true);
+//    m_ariWidget->setProperty("NoDelayShow", true);
 
     m_aqiLabel = new TranslucentLabel(tr("Click to see details of air quality"), this);
     m_aqiLabel->setFixedSize(89, 26);
     m_aqiLabel->setLabelIcon(":/res/aqi.png");
     //m_aqiLabel->setToolTip(tr("Click to see details of air quality"));
     m_aqiLabel->move(m_weatherIcon->x() - 10, m_windLabel->y());
-    connect(m_aqiLabel, &TranslucentLabel::clicked, this, [=] () {
+    connect(m_aqiLabel, &TranslucentLabel::requestShowTip, this, [=] (const QPoint &pos) {
+        m_ariWidget->resetData(m_preferences->m_aqiAir);
+        m_ariWidget->showTooltip(mapToGlobal(pos));
+        setFocus();
+
+//        m_ariWidget->resetData(m_preferences->m_aqiAir);
+//        this->update();
+    });
+
+    /*connect(m_aqiLabel, &TranslucentLabel::clicked, this, [=] () {
+//        qDebug() << "UPDATE================";
+//        m_ariWidget->resetData(m_preferences->m_aqiAir);
+//        this->update();
+        return;
+
+
+
         if (m_ariWidget->isVisible()) {
-            m_ariWidget->animationHide();
+            //m_ariWidget->animationHide();
         }
         else {
             if (m_preferences->m_aqiAir.id != m_preferences->m_currentCityId) {
@@ -230,13 +202,13 @@ NowWeatherWidget::NowWeatherWidget(QFrame *parent) :
             }
             m_ariWidget->resetData(m_preferences->m_aqiAir);
             if (m_preferences->m_observerWeather.cond_code.contains(QChar('n'))) {//#063638
-                m_ariWidget->animationShow("QFrame{border:none;background-color:rgba(6,54,56,85%);color:rgb(255,255,255);}");
+                //m_ariWidget->animationShow("QFrame{border:none;background-color:rgba(6,54,56,85%);color:rgb(255,255,255);}");
             }
             else {
-                m_ariWidget->animationShow(convertCodeToStyleSheet(m_preferences->m_observerWeather.cond_code.toInt()));
+                //m_ariWidget->animationShow(convertCodeToStyleSheet(m_preferences->m_observerWeather.cond_code.toInt()));
             }
         }
-    });
+    });*/
 
     m_temperatureLabel = new TranslucentLabel(this);
     m_temperatureLabel->setFixedSize(89, 26);
@@ -252,7 +224,6 @@ NowWeatherWidget::NowWeatherWidget(QFrame *parent) :
 NowWeatherWidget::~NowWeatherWidget()
 {
     delete m_tipTimer;
-    //delete m_tipModule;
     delete m_ariWidget;
 }
 
@@ -282,7 +253,6 @@ void NowWeatherWidget::setWeatherIcon(const QString &iconPath)
 
 void NowWeatherWidget::refreshData(const ObserveWeather &data)
 {
-    //m_tip->resetTipText(data.cond_txt);
     m_weatherLabel->setText(data.cond_txt);
 
     m_tempLabel->setText(data.tmp);
@@ -302,7 +272,7 @@ void NowWeatherWidget::refreshData(const ObserveWeather &data)
     }
     this->setWeatherIcon(QString(":/res/weather_icons/white/%1.png").arg(data.cond_code));
     if (data.air.isEmpty() || data.air == "-") {
-        m_aqiLabel->setLabelText(QString(tr("Unknown")));
+        m_aqiLabel->setLabelText(QString(tr("-")));
     }
     else {
         m_aqiLabel->setLabelText(data.air);

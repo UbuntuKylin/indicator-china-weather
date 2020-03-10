@@ -53,8 +53,8 @@ signals:
     void responseCityError(const QString &info);
 
 protected:
-    bool event(QEvent *event);
-    void showEvent(QShowEvent *event);
+    bool event(QEvent *event) Q_DECL_OVERRIDE;
+    void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
 
 private:
     CityListWidget *m_cityListWidget = nullptr;

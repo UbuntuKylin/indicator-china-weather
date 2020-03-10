@@ -39,7 +39,7 @@ public:
 protected:
     void enterEvent(QEvent *event) Q_DECL_OVERRIDE;
     void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
-    bool event(QEvent *event);
+    bool event(QEvent *event) Q_DECL_OVERRIDE;
     void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
     void hideEvent(QHideEvent* event) Q_DECL_OVERRIDE;
 

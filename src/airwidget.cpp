@@ -18,29 +18,76 @@
  */
 
 #include "airwidget.h"
+#include "preferences.h"
+#include "global.h"
+using namespace Global;
 
 #include <QTimer>
+#include <QPainter>
 #include <QDebug>
+#include <QDesktopWidget>
+#include <QTimer>
+#include <QTimeLine>
+#include <QApplication>
+
+//it must be consistent with the function named convertCodeToBackgroud() which in MainWindow
+inline QString convertCodeToStyleSheet(int code)
+{
+    if (code == 100 || code == 900) {//#ee613f
+        return "QFrame{border:none;background-color:rgba(238,97,63,85%);color:rgb(255,255,255);}";
+    }
+    else if (code <= 103 && code >= 101) {//#0c69c3
+        return "QFrame{border:none;background-color:rgba(12,105,195,85%);color:rgb(255,255,255);}";
+    }
+    else if (code == 104 || code == 901) {//#404b5b
+        return "QFrame{border:none;background-color:rgba(64,75,91,85%);color:rgb(255,255,255);}";
+    }
+    else if (code <= 204 && code >= 200) {//#ee613f
+        return "QFrame{border:none;background-color:rgba(238,97,63,85%);color:rgb(255,255,255);}";
+    }
+    else if (code <= 213 && code >= 205) {//#404b5b
+        return "QFrame{border:none;background-color:rgba(64,75,91,85%);color:rgb(255,255,255);}";
+    }
+    else if (code <= 399 && code >= 300) {//#5336bf
+        return "QFrame{border:none;background-color:rgba(83,54,191,85%);color:rgb(255,255,255);}";
+    }
+    else if (code <= 499 && code >= 400) {//#4f88b3
+        return "QFrame{border:none;background-color:rgba(79,136,179,85%);color:rgb(255,255,255);}";
+    }
+    else if (code <= 502 && code >= 500) {//#312e33
+        return "QFrame{border:none;background-color:rgba(49,46,51,85%);color:rgb(255,255,255);}";
+    }
+    else if (code <= 508 && code >= 503) {//#98733f
+        return "QFrame{border:none;background-color:rgba(152,115,63,85%);color:rgb(255,255,255);}";
+    }
+    else if (code <= 515 && code >= 509) {//#312e33
+        return "QFrame{border:none;background-color:rgba(49,46,51,85%);color:rgb(255,255,255);}";
+    }
+    else {//#ee613f
+        return "QFrame{border:none;background-color:rgba(238,97,63,85%);color:rgb(255,255,255);}";
+    }
+}
 
 AirWidget::AirWidget(QWidget *parent)
     : QFrame(parent)
     , m_layout(new QVBoxLayout(this))
     , m_opacityEffect(new QGraphicsOpacityEffect(this))
     , m_animation(new QPropertyAnimation(this, "pos"))
-    , m_timer(new QTimer(this))
+    , m_showTimer(new QTimer(this))
+    , m_radius(4)
+    , m_borderColor(QColor(0, 0, 0,  255 / 10))
+    , m_background(QBrush(QColor(6,54,56,85)))
 {
+//    setWindowFlags(Qt::ToolTip);
+//    setAutoFillBackground(true);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
     this->setContentsMargins(10, 2, 10, 2);
 //    this->setStyleSheet("QFrame{border:none;background-color:rgba(0,0,0,0.9);color:rgb(255,255,255);}");
 //    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     //this->setStyleSheet("QFrame{border:1px solid #e0e0e0;border-radius:2px;background-color:rgba(255, 255, 255, 0.8);}");
-    this->setFixedSize(160, 150);
+    this->setFixedSize(350 - 100, 150);
     m_layout->setSpacing(1);
     m_layout->setMargin(0);
-
-    m_timer->setSingleShot(true);
-    m_timer->setInterval(1000*5);
-    connect(m_timer, &QTimer::timeout, this, &AirWidget::animationHide, Qt::QueuedConnection);
 
     m_opacityEffect->setOpacity(1.0);
     this->setGraphicsEffect(m_opacityEffect);
@@ -76,19 +123,30 @@ AirWidget::AirWidget(QWidget *parent)
     m_layout->addWidget(m_so2Label, 0, Qt::AlignLeft);
     m_layout->addWidget(m_coLabel, 0, Qt::AlignLeft);
     m_layout->addWidget(m_o3Label, 0, Qt::AlignLeft);
+
+//    QGraphicsDropShadowEffect *bodyShadow = new QGraphicsDropShadowEffect;
+//    bodyShadow->setBlurRadius(10.0);
+//    bodyShadow->setColor(QColor(0, 0, 0,  255 / 10));
+//    bodyShadow->setOffset(0, 2.0);
+//    this->setGraphicsEffect(bodyShadow);
+
+    m_showTimer->setSingleShot(true);
+    m_showTimer->setTimerType(Qt::VeryCoarseTimer);
+    connect(m_showTimer, &QTimer::timeout, this, &AirWidget::animationHide);
 }
 
 AirWidget::~AirWidget()
 {
     m_animation->deleteLater();
 
-    if (m_timer) {
-        disconnect(m_timer, SIGNAL(timeout()), this, SLOT(animationHide()));
-        if(m_timer->isActive()) {
-            m_timer->stop();
+    if (m_showTimer) {
+        disconnect(m_showTimer, &QTimer::timeout, this, &AirWidget::animationHide);
+//        disconnect(m_showTimer, SIGNAL(timeout()), this, SLOT(animationHide()));
+        if(m_showTimer->isActive()) {
+            m_showTimer->stop();
         }
-        delete m_timer;
-        m_timer = nullptr;
+        delete m_showTimer;
+        m_showTimer = nullptr;
     }
 
     QLayoutItem *child;
@@ -99,30 +157,38 @@ AirWidget::~AirWidget()
     }
 }
 
-void AirWidget::animationShow(const QString &styleSheet)
+int AirWidget::getWidth()
+{
+    int width = 350;
+    QWidget *parentWidget = this->parentWidget();
+
+    if (parentWidget ) {
+        width = parentWidget->width();
+    }
+
+    return width;
+}
+
+void AirWidget::animationShow(/*const QString &styleSheet*/)
 {
     if (m_animation->state() == QPropertyAnimation::Running)
         return;
 
-    this->setStyleSheet(styleSheet);
+//    this->setStyleSheet(styleSheet);
 
     QWidget::show();
 
     m_animation->setStartValue(QPoint(335, 0));//QPoint(0, 0)
-    m_animation->setEndValue(QPoint(100, 0));
+    m_animation->setEndValue(QPoint(0, 0));
     m_animation->start();
-
-    m_timer->start();
 }
 
 void AirWidget::animationHide()
 {
+    //QDesktopWidget *desktopWidget=qApp->desktop();
     if (m_animation->state() == QPropertyAnimation::Running)
         return;
-
-    m_timer->stop();
-
-    m_animation->setStartValue(QPoint(100, 0));
+    m_animation->setStartValue(QPoint(0, 0));
     m_animation->setEndValue(QPoint(335, 0));//QPoint(0, 0)
     m_animation->start();
     QTimer::singleShot(m_animation->duration(), this, [=] {
@@ -144,9 +210,95 @@ void AirWidget::resetData(const AqiAir &data)
     m_o3Label->setText(QString(tr("o3:%1")).arg(data.o3));//臭氧
 }
 
+void AirWidget::showTooltip(const QPoint &position)
+{
+    Q_UNUSED(position);
+
+    if (!isVisible()) {
+        if (m_preferences->m_observerWeather.cond_code.contains(QChar('n'))) {//#063638
+            this->animationShow(/*"QFrame{border:none;background-color:rgba(6,54,56,85%);color:rgb(255,255,255);}"*/);
+        }
+        else {
+            this->animationShow(/*convertCodeToStyleSheet(m_preferences->m_observerWeather.cond_code.toInt())*/);
+        }
+    }
+
+    m_showTimer->stop();
+    m_showTimer->setInterval(3000);
+    m_showTimer->start();
+}
+
 void AirWidget::mousePressEvent(QMouseEvent *event)
 {
     QFrame::mousePressEvent(event);
 
     this->animationHide();
+}
+
+void AirWidget::enterEvent(QEvent *event)
+{
+    QWidget::enterEvent(event);
+
+    m_showTimer->stop();
+    m_showTimer->setInterval(300);
+
+    setFocus();
+}
+
+void AirWidget::leaveEvent(QEvent *event)
+{
+    QWidget::leaveEvent(event);
+
+    m_showTimer->start();
+}
+
+void AirWidget::focusOutEvent(QFocusEvent *event)
+{
+    QWidget::focusOutEvent(event);
+    m_showTimer->start();
+}
+
+void AirWidget::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
+
+    QPainter painter(this);
+    painter.setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);
+
+    QBrush background =  this->m_background;
+    QColor borderColor = this->m_borderColor;
+
+    //arcTo(rect, 45,315);//即在矩形rect内，起始角度为45，逆时针转315度形成的弧
+    //arcTo(rect, 45,-315);//即在矩形rect内，起始角度为45，顺时针转315度形成的弧
+    const int triangleOffset = 30;
+    const qreal radius = this->m_radius;
+    const qreal triangleHeight = 8;
+    const qreal triangleWidth = 3;
+
+    QPainterPath path;
+    QRect rect = this->rect();
+    int cornerSize = radius*2;//调节圆角的大小
+
+    path.moveTo(rect.left() + m_radius, rect.top());
+    path.arcTo(rect.left(), rect.top(), cornerSize, cornerSize, 90.0f, 90.0f);
+
+    path.lineTo(rect.left(), rect.bottom() - m_radius);
+    path.arcTo(rect.left(), rect.bottom() - cornerSize, cornerSize, cornerSize, 180.0f, 90.0f);
+
+    path.lineTo(rect.right() - triangleWidth - m_radius, rect.bottom());
+    path.arcTo(rect.right()- triangleWidth - cornerSize, rect.bottom() - cornerSize, cornerSize, cornerSize, 270.0f, 90.0f);
+
+    path.lineTo(rect.right()- triangleWidth, rect.height() / 2 + triangleHeight/2 + triangleOffset);
+    path.lineTo(rect.right(), rect.height() / 2 + triangleOffset);
+    path.lineTo(rect.right()- triangleWidth, rect.height() / 2 + triangleOffset - triangleHeight/2);
+    path.lineTo(rect.right()- triangleWidth, m_radius);
+
+    path.arcTo(rect.right() - triangleWidth - cornerSize, rect.top(), cornerSize, cornerSize, 0.0f, 90.0f);
+    path.lineTo(rect.left() + m_radius, rect.top());
+
+    painter.fillPath(path, background);
+
+    QPen pen(borderColor);
+    pen.setWidth(1);
+    painter.strokePath(path, pen);
 }

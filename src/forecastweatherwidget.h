@@ -60,7 +60,7 @@ public slots:
     void showLifeStyleIndex(const QString &name);
 
 protected:
-    void leaveEvent(QEvent *e);
+    void leaveEvent(QEvent *e) Q_DECL_OVERRIDE;
 
 private:
     QVBoxLayout *m_layout = nullptr;

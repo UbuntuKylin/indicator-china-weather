@@ -7,6 +7,7 @@ indicator-china-weather (3.1.0-1) unstable; urgency=medium
   * Make tray icon blink dynamically during data acquisition.
   * Using the new API interface (V3.0).
   * Use custom tooltip.
+  * Rewrite air quality display UI.
 
  -- lixiang <lixiang@kylinos.cn>  Fri, 06 Mar 2020 11:57:02 +0800
 

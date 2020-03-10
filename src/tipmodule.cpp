@@ -55,12 +55,13 @@ void TipModule::onDisplayTimeOut()
         if (m_tipWidget && m_tipWidget != tip) {
             m_tipWidget->setVisible(false);
         }
+
         m_tipWidget = tip;
         m_tipWidget->adjustSize();
         m_tipWidget->setVisible(true);
         m_tipWidget->raise();
 
-        QTimer::singleShot(5, this, [this] {
+        QTimer::singleShot(5, this, [this] () {
             if (!m_parentWidget) {
                 return;
             }

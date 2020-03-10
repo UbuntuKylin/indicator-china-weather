@@ -28,6 +28,8 @@
 
 #include "data.h"
 
+class QTimeLine;
+
 class AirWidget : public QFrame
 {
     Q_OBJECT
@@ -37,15 +39,23 @@ public:
     ~AirWidget();
 
     void resetData(const AqiAir &data);
+    void showTooltip(const QPoint &position);
+    int getWidth();
 
 public slots:
-    void animationShow(const QString &styleSheet);
+    void animationShow(/*const QString &styleSheet*/);
     void animationHide();
 
 protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void enterEvent(QEvent *event) Q_DECL_OVERRIDE;
+    void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
+    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+    void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
 
 private:
+    QTimer *m_showTimer = nullptr;
+
     QGraphicsOpacityEffect *m_opacityEffect = nullptr;
     QPropertyAnimation *m_animation = nullptr;
 
@@ -59,8 +69,10 @@ private:
     QLabel *m_coLabel = nullptr;
     QLabel *m_o3Label = nullptr;
 
-    QTimer *m_timer = nullptr;
     QVBoxLayout *m_layout = nullptr;
+    QBrush m_background;
+    QColor m_borderColor;
+    int m_radius;
 };
 
 #endif // AIRWIDGET_H

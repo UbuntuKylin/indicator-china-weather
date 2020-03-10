@@ -158,37 +158,60 @@ void TranslucentLabel::showTooltip(const QPoint &pos)
     connect(this, &TranslucentLabel::requestHideTip, tipFrame, &QFrame::deleteLater);
 }
 
-bool TranslucentLabel::event(QEvent *event)
+//bool TranslucentLabel::event(QEvent *event)
+//{
+//    if (event->type() == QEvent::ToolTip) {
+//        if (m_showTip) {
+
+//        }
+
+//    }
+
+//    return QWidget::event(event);
+//}
+
+/*bool TranslucentLabel::event(QEvent *event)
 {
-    if (event->type() == QEvent::ToolTip) {
-        if (m_showTip) {
-            auto center = mapToGlobal(QPoint(this->rect().center()));
-            center.setX(center.x() - width() / 2);
-            center.setY(center.y() - height() / 2);
-            this->showTooltip(center);
-        }
+    switch(event->type())
+    {
+    case QEvent::ToolTip:
+    case QEvent::ToolTipChange:
+    {
+        auto center = mapToGlobal(QPoint(this->rect().center()));
+        center.setX(center.x() - width() / 2);
+        center.setY(center.y() - height() / 2);
+        this->showTooltip(center);
+
 //        if (QHelpEvent *e = static_cast<QHelpEvent *>(event)) {
-//            this->showSetCityTooltip(e->globalPos());
+//            this->showSetCityTooltip(e->pos());
 //            return false;
 //        }
     }
-
-    return QWidget::event(event);
-}
+    default:
+        //Process other kinds of events.
+        return QListView::event(event);
+    }
+}*/
 
 void TranslucentLabel::enterEvent(QEvent *event)
 {
-    Q_UNUSED(event)
+    Q_UNUSED(event);
+    //QLabel::enterEvent(event);
     if (m_showTip) {
-        setCursor(Qt::PointingHandCursor);
+        //setCursor(Qt::PointingHandCursor);
+//        this->m_mouseHover = true;
+        QHelpEvent *helpEvent=static_cast<QHelpEvent *>(event);
+        emit this->requestShowTip(helpEvent->pos());
     }
 }
 
 void TranslucentLabel::leaveEvent(QEvent *event)
 {
-    Q_UNUSED(event)
+    Q_UNUSED(event);
+    QLabel::leaveEvent(event);
     if (m_showTip) {
-        setCursor(Qt::ArrowCursor);
+        //setCursor(Qt::ArrowCursor);
+//        this->m_mouseHover = false;
         emit requestHideTip();
     }
 }

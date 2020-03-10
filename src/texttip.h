@@ -34,7 +34,7 @@ public:
     void resetTipText(const QString &txt);
 
 protected:
-    virtual void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
 private:
     int m_radius;

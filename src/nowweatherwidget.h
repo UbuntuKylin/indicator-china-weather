@@ -28,7 +28,6 @@
 class QLabel;
 class TranslucentLabel;
 class TipWidget;
-class TextTip;
 class TipModule;
 class AirWidget;
 
@@ -58,8 +57,6 @@ private:
     TranslucentLabel *m_temperatureLabel = nullptr;
     TipWidget *m_tipWidget = nullptr;
     QTimer *m_tipTimer = nullptr;
-    //TextTip *m_tip = nullptr;
-    //TipModule *m_tipModule = nullptr;
     AirWidget *m_ariWidget = nullptr;
 };
 

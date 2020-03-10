@@ -36,12 +36,13 @@ public:
 signals:
     void clicked();
     void requestHideTip();
+    void requestShowTip(const QPoint &pos);
 
 
 protected:
 //    virtual void focusInEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
 //    virtual void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
-    bool event(QEvent *event) Q_DECL_OVERRIDE;
+//    bool event(QEvent *event) Q_DECL_OVERRIDE;
     void enterEvent(QEvent *event) Q_DECL_OVERRIDE;
     void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;

@@ -531,7 +531,7 @@ void MainWindow::refreshTrayMenuWeather(const ObserveWeather &data)
     m_temperatureAction->setText(QString(tr("Temperature:%1")).arg(data.tmp) + "˚C");
     m_sdAction->setText(QString(tr("Relative humidity:%1")).arg(data.hum));
     if (data.air.isEmpty() || data.air == "-") {
-        m_aqiAction->setText(QString(tr("Air quality:%1")).arg(QString(tr("Unknown"))));
+        m_aqiAction->setText(QString(tr("Air quality:%1")).arg(QString(tr("-"))));
     }
     else {
         m_aqiAction->setText(QString(tr("Air quality:%1")).arg(data.air));
