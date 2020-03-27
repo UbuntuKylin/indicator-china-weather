@@ -18,13 +18,12 @@
  */
 
 #include "mainwindow.h"
-#include "dbusadaptor.h"
 
 #include <QApplication>
 #include <QTranslator>
 #include <QLibraryInfo>
-#include <QDebug>
 #include <QObject>
+#include <QDir>
 
 #include <signal.h>
 
@@ -37,6 +36,8 @@ int main(int argc, char *argv[])
     a.setApplicationName("Kylin Weather (indicator-china-weather)");
     a.setApplicationVersion("3.1.0");
     a.setQuitOnLastWindowClosed(false);//Avoid that after hiding mainwindow, close the sub window would cause the program exit
+
+    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QTranslator app_trans;
     QTranslator qt_trans;
@@ -66,19 +67,7 @@ int main(int argc, char *argv[])
     }
 
     MainWindow w;
-    DbusAdaptor adaptor(&w);
-    Q_UNUSED(adaptor);
-    auto connection = QDBusConnection::sessionBus();
-    if (!connection.registerService("com.kylin.weather") || !connection.registerObject("/com/kylin/weather", &w/*, QDBusConnection::ExportAllSlots | QDBusConnection::ExportAllSignals*/)) {
-        qCritical() << "QDbus register service failed reason:" << connection.lastError();
-        QDBusInterface iface("com.kylin.weather",
-                                       "/com/kylin/weather",
-                                       "com.kylin.weather",
-                                       connection);
-        iface.call("showMainWindow");
-
-        return 0;
-    }//QDBusConnection::sessionBus().unregisterService("com.kylin.weather");
+    w.show();
 
     return a.exec();
 }

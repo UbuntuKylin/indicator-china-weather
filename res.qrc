@@ -1,62 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>res/close_hover_btn.png</file>
-        <file>res/close_normal_btn.png</file>
-        <file>res/close_pressed_btn.png</file>
-        <file>res/indicator-china-weather_min.png</file>
-        <file>res/min_hover_btn.png</file>
-        <file>res/min_pressed_btn.png</file>
-        <file>res/min_normal_btn.png</file>
-        <file>res/background/weather-clear-night.png</file>
-        <file>res/background/weather-clear.png</file>
-        <file>res/background/weather-few-clouds.png</file>
-        <file>res/background/weather-fog.png</file>
-        <file>res/background/weather-overcast.png</file>
-        <file>res/background/weather-rain.png</file>
-        <file>res/background/weather-sandstorm.png</file>
-        <file>res/background/weather-snow.png</file>
-        <file>res/indicator-china-weather.png</file>
-        <file>res/about_normal.png</file>
-        <file>res/quit_normal.png</file>
-        <file>res/location.png</file>
-        <file>res/set_city.png</file>
-        <file>res/current_sd.png</file>
-        <file>res/current_wind.png</file>
-        <file>res/aqi.png</file>
-        <file>res/temp.png</file>
         <file>res/weather_icons/lightgrey/100.png</file>
-        <file>res/life_index_d.png</file>
-        <file>res/life_index_n.png</file>
-        <file>res/clothe_index.png</file>
-        <file>res/search.png</file>
-        <file>res/delete_hover_pressed_btn.png</file>
-        <file>res/delete_normal_btn.png</file>
-        <file>res/add.png</file>
-        <file>res/add_hover_btn.png</file>
-        <file>res/add_normal_btn.png</file>
-        <file>res/add_pressed_btn.png</file>
-        <file>res/subtract_hover_btn.png</file>
-        <file>res/subtract_normal_btn.png</file>
-        <file>res/subtract_pressed_btn.png</file>
-        <file>res/cash_wash_index.png</file>
-        <file>res/checkbox.png</file>
-        <file>res/city_background.png</file>
-        <file>res/link.gif</file>
-        <file>res/location_bg_hover.png</file>
-        <file>res/min_bg.png</file>
-        <file>res/network_warn.png</file>
-        <file>res/ok_disabled_btn.png</file>
-        <file>res/ok_hover_btn.png</file>
-        <file>res/ok_normal_btn.png</file>
-        <file>res/ok_pressed_btn.png</file>
-        <file>res/pressure.png</file>
-        <file>res/sd.png</file>
-        <file>res/ultraviolet_rays.png</file>
-        <file>res/unlink.png</file>
-        <file>res/update_warn.png</file>
-        <file>res/visibility.png</file>
-        <file>res/delete_hover_press.png</file>
-        <file>res/delete_normal.png</file>
         <file>res/weather_icons/darkgrey/100.png</file>
         <file>res/weather_icons/darkgrey/101.png</file>
         <file>res/weather_icons/darkgrey/102.png</file>
@@ -209,13 +153,6 @@
         <file>res/weather_icons/white/900.png</file>
         <file>res/weather_icons/white/901.png</file>
         <file>res/weather_icons/white/999.png</file>
-        <file>res/prefs.png</file>
-        <file>res/air_index.png</file>
-        <file>res/comf_index.png</file>
-        <file>res/flu_index.png</file>
-        <file>res/sport_index.png</file>
-        <file>res/trav_index.png</file>
-        <file>res/move.gif</file>
         <file>res/weather_icons/darkgrey/100n.png</file>
         <file>res/weather_icons/darkgrey/103n.png</file>
         <file>res/weather_icons/darkgrey/104n.png</file>
@@ -288,8 +225,73 @@
         <file>res/weather_icons/white/513.png</file>
         <file>res/weather_icons/white/514.png</file>
         <file>res/weather_icons/white/515.png</file>
-        <file>res/statusBusy1.png</file>
-        <file>res/statusBusy2.png</file>
+        <file>res/background/weather-clear-night.png</file>
+        <file>res/background/weather-clear.png</file>
+        <file>res/background/weather-few-clouds.png</file>
+        <file>res/background/weather-fog.png</file>
+        <file>res/background/weather-overcast.png</file>
+        <file>res/background/weather-rain.png</file>
+        <file>res/background/weather-sandstorm.png</file>
+        <file>res/background/weather-snow.png</file>
+        <file>res/control_icons/about_normal.png</file>
+        <file>res/control_icons/add.png</file>
+        <file>res/control_icons/aqi.png</file>
+        <file>res/control_icons/checkbox.png</file>
+        <file>res/control_icons/city_background.png</file>
+        <file>res/control_icons/close_hover_btn.png</file>
+        <file>res/control_icons/close_normal_btn.png</file>
+        <file>res/control_icons/close_pressed_btn.png</file>
+        <file>res/control_icons/current_sd.png</file>
+        <file>res/control_icons/current_wind.png</file>
+        <file>res/control_icons/delete_hover_press.png</file>
+        <file>res/control_icons/delete_hover_pressed_btn.png</file>
+        <file>res/control_icons/delete_normal_btn.png</file>
+        <file>res/control_icons/delete_normal.png</file>
+        <file>res/control_icons/indicator-china-weather_min.png</file>
+        <file>res/control_icons/indicator-china-weather.png</file>
+        <file>res/control_icons/link.gif</file>
+        <file>res/control_icons/location_bg_hover.png</file>
+        <file>res/control_icons/location.png</file>
+        <file>res/control_icons/min_bg.png</file>
+        <file>res/control_icons/min_hover_btn.png</file>
+        <file>res/control_icons/min_normal_btn.png</file>
+        <file>res/control_icons/min_pressed_btn.png</file>
+        <file>res/control_icons/move.gif</file>
+        <file>res/control_icons/network_warn.png</file>
+        <file>res/control_icons/ok_disabled_btn.png</file>
+        <file>res/control_icons/ok_hover_btn.png</file>
+        <file>res/control_icons/ok_normal_btn.png</file>
+        <file>res/control_icons/ok_pressed_btn.png</file>
+        <file>res/control_icons/prefs.png</file>
+        <file>res/control_icons/pressure.png</file>
+        <file>res/control_icons/quit_normal.png</file>
+        <file>res/control_icons/sd.png</file>
+        <file>res/control_icons/set_city.png</file>
+        <file>res/control_icons/statusBusy1.png</file>
+        <file>res/control_icons/statusBusy2.png</file>
+        <file>res/control_icons/subtract_hover_btn.png</file>
+        <file>res/control_icons/subtract_normal_btn.png</file>
+        <file>res/control_icons/subtract_pressed_btn.png</file>
+        <file>res/control_icons/temp.png</file>
+        <file>res/control_icons/ultraviolet_rays.png</file>
+        <file>res/control_icons/unlink.png</file>
+        <file>res/control_icons/update_warn.png</file>
+        <file>res/control_icons/visibility.png</file>
+        <file>res/control_icons/add_hover_btn.png</file>
+        <file>res/control_icons/add_normal_btn.png</file>
+        <file>res/control_icons/add_pressed_btn.png</file>
+        <file>res/control_icons/search.png</file>
+        <file>res/control_icons/weather-clear.png</file>
+        <file>res/control_icons/weather-few-clouds.png</file>
+        <file>res/control_icons/weather-overcast.png</file>
+        <file>res/control_icons/weather-rain.png</file>
+        <file>res/control_icons/weather-shower .png</file>
+        <file>res/control_icons/index_air.png</file>
+        <file>res/control_icons/index_cash_wash.png</file>
+        <file>res/control_icons/index_clothe.png</file>
+        <file>res/control_icons/index_flu.png</file>
+        <file>res/control_icons/index_sport.png</file>
+        <file>res/control_icons/index_uv.png</file>
     </qresource>
     <qresource prefix="/data">
         <file>data/china-city-list.csv</file>

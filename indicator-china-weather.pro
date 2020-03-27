@@ -61,94 +61,34 @@ unix {
 }
 
 SOURCES += src/main.cpp \
+    src/cityaddsearchbox.cpp \
+    src/cityaddsearchdelegate.cpp \
+    src/cityaddsearchview.cpp \
+    src/cityaddwidget.cpp \
+    src/citycollectionitem.cpp \
+    src/citycollectionwidget.cpp \
+    src/informationwidget.cpp \
+    src/leftupcitybtn.cpp \
+    src/leftupsearchbox.cpp \
+    src/leftupsearchdelegate.cpp \
+    src/leftupsearchview.cpp \
     src/mainwindow.cpp \
-    src/titlebar.cpp \
-    src/contentwidget.cpp \
-    src/nowweatherwidget.cpp \
-    src/forecastweatherwidget.cpp \
-    src/translucentlabel.cpp \
-    src/forecastitemwidget.cpp \
-    src/tooltip.cpp \
-    src/indexitemwidget.cpp \
-    src/settingdialog.cpp \
-    src/settingtitlebar.cpp \
-    src/activebutton.cpp \
-    src/searchtitlebar.cpp \
-    src/searchinputedit.cpp \
-    src/searchview.cpp \
-    src/searchmodel.cpp \
-    src/searchdelegate.cpp \
-    src/locationworker.cpp \
-    src/citywidget.cpp \
-    src/citylistwidget.cpp \
-    src/cityitemwidget.cpp \
-    src/spinbox.cpp \
-    src/aboutdialog.cpp \
-    src/menuaction.cpp \
-    src/menuactiongroup.cpp \
-    src/global.cpp \
-    src/preferences.cpp \
-    src/weatherworker.cpp \
-    src/networkerrorwidget.cpp \
-    src/separator.cpp \
-    src/tipwidget.cpp \
-    src/texttip.cpp \
-    src/tipmodule.cpp \
-    src/promptwidget.cpp \
-    src/airwidget.cpp \
-    src/dbusadaptor.cpp \
-    src/automaticlocation.cpp \
-    src/maskwidget.cpp \
-    src/weathermanager.cpp \
-    src/geoipworker.cpp
-#    src/scroller.cpp \
-#    src/weatherforecastwidget.cpp \
-#    src/forecastitem.cpp
 
 HEADERS  += src/mainwindow.h \
-    src/titlebar.h \
-    src/contentwidget.h \
-    src/nowweatherwidget.h \
-    src/forecastweatherwidget.h \
-    src/translucentlabel.h \
-    src/forecastitemwidget.h \
-    src/tooltip.h \
-    src/indexitemwidget.h \
-    src/settingdialog.h \
-    src/settingtitlebar.h \
-    src/activebutton.h \
-    src/searchtitlebar.h \
-    src/searchinputedit.h \
-    src/searchview.h \
-    src/searchmodel.h \
-    src/searchdelegate.h \
+    src/cityaddsearchbox.h \
+    src/cityaddsearchdelegate.h \
+    src/cityaddsearchview.h \
+    src/cityaddwidget.h \
+    src/citycollectionitem.h \
+    src/citycollectionwidget.h \
     src/data.h \
-    src/locationworker.h \
-    src/citywidget.h \
-    src/citylistwidget.h \
-    src/cityitemwidget.h \
-    src/spinbox.h \
-    src/aboutdialog.h \
-    src/menuaction.h \
-    src/menuactiongroup.h \
-    src/global.h \
-    src/preferences.h \
-    src/weatherworker.h \
-    src/networkerrorwidget.h \
-    src/separator.h \
-    src/tipwidget.h \
-    src/texttip.h \
-    src/tipmodule.h \
-    src/promptwidget.h \
-    src/airwidget.h \
-    src/dbusadaptor.h \
-    src/automaticlocation.h \
-    src/maskwidget.h \
-    src/weathermanager.h \
-    src/geoipworker.h
-#    src/scroller.h \
-#    src/weatherforecastwidget.h \
-#    src/forecastitem.h
+    src/dataitem.h \
+    src/informationwidget.h \
+    src/leftupcitybtn.h \
+    src/leftupsearchbox.h \
+    src/leftupsearchdelegate.h \
+    src/leftupsearchview.h
+
 
 RESOURCES += \
     res.qrc
@@ -156,3 +96,10 @@ RESOURCES += \
 TRANSLATIONS += \
     translations/indicator-china-weather_zh_CN.ts \
     translations/indicator-china-weather_bo.ts
+
+FORMS += \
+    src/cityaddwidget.ui \
+    src/citycollectionitem.ui \
+    src/citycollectionwidget.ui \
+    src/informationwidget.ui \
+    src/mainwindow.ui

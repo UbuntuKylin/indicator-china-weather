@@ -1,0 +1,857 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>information</class>
+ <widget class="QWidget" name="information">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>840</width>
+    <height>450</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QLabel" name="lb_flu">
+   <property name="geometry">
+    <rect>
+     <x>294</x>
+     <y>299</y>
+     <width>60</width>
+     <height>11</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbLifeStyle">
+   <property name="geometry">
+    <rect>
+     <x>21</x>
+     <y>243</y>
+     <width>72</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_uv_brf">
+   <property name="geometry">
+    <rect>
+     <x>507</x>
+     <y>318</y>
+     <width>32</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_sport_icon">
+   <property name="geometry">
+    <rect>
+     <x>244</x>
+     <y>379</y>
+     <width>32</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="Line" name="lineV_1">
+   <property name="geometry">
+    <rect>
+     <x>224</x>
+     <y>281</y>
+     <width>1</width>
+     <height>148</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_cw_brf">
+   <property name="geometry">
+    <rect>
+     <x>710</x>
+     <y>318</y>
+     <width>32</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_drsg">
+   <property name="geometry">
+    <rect>
+     <x>91</x>
+     <y>299</y>
+     <width>60</width>
+     <height>11</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="Line" name="lineV_2">
+   <property name="geometry">
+    <rect>
+     <x>427</x>
+     <y>281</y>
+     <width>1</width>
+     <height>148</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_cw_icon">
+   <property name="geometry">
+    <rect>
+     <x>650</x>
+     <y>300</y>
+     <width>32</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_drsg_icon">
+   <property name="geometry">
+    <rect>
+     <x>41</x>
+     <y>300</y>
+     <width>32</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_sport">
+   <property name="geometry">
+    <rect>
+     <x>294</x>
+     <y>378</y>
+     <width>60</width>
+     <height>11</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_uv_icon">
+   <property name="geometry">
+    <rect>
+     <x>447</x>
+     <y>300</y>
+     <width>32</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_drsg_brf">
+   <property name="geometry">
+    <rect>
+     <x>101</x>
+     <y>318</y>
+     <width>32</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_uv">
+   <property name="geometry">
+    <rect>
+     <x>499</x>
+     <y>299</y>
+     <width>60</width>
+     <height>11</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_air_icon">
+   <property name="geometry">
+    <rect>
+     <x>41</x>
+     <y>379</y>
+     <width>32</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_air_brf">
+   <property name="geometry">
+    <rect>
+     <x>101</x>
+     <y>397</y>
+     <width>32</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_flu_icon">
+   <property name="geometry">
+    <rect>
+     <x>244</x>
+     <y>300</y>
+     <width>32</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_air">
+   <property name="geometry">
+    <rect>
+     <x>91</x>
+     <y>378</y>
+     <width>60</width>
+     <height>11</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_sport_brf">
+   <property name="geometry">
+    <rect>
+     <x>301</x>
+     <y>397</y>
+     <width>32</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_cw">
+   <property name="geometry">
+    <rect>
+     <x>702</x>
+     <y>299</y>
+     <width>60</width>
+     <height>11</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="Line" name="lineV_3">
+   <property name="geometry">
+    <rect>
+     <x>630</x>
+     <y>281</y>
+     <width>1</width>
+     <height>148</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="Line" name="lineH">
+   <property name="geometry">
+    <rect>
+     <x>21</x>
+     <y>354</y>
+     <width>808</width>
+     <height>1</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_flu_brf">
+   <property name="geometry">
+    <rect>
+     <x>304</x>
+     <y>318</y>
+     <width>32</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbWea_7">
+   <property name="geometry">
+    <rect>
+     <x>749</x>
+     <y>172</y>
+     <width>63</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbIcon_1">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>80</y>
+     <width>48</width>
+     <height>48</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbDate_3">
+   <property name="geometry">
+    <rect>
+     <x>273</x>
+     <y>48</y>
+     <width>47</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbIcon_2">
+   <property name="geometry">
+    <rect>
+     <x>151</x>
+     <y>80</y>
+     <width>48</width>
+     <height>48</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbDate_2">
+   <property name="geometry">
+    <rect>
+     <x>152</x>
+     <y>48</y>
+     <width>47</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbDate_4">
+   <property name="geometry">
+    <rect>
+     <x>394</x>
+     <y>48</y>
+     <width>47</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbWea_2">
+   <property name="geometry">
+    <rect>
+     <x>144</x>
+     <y>172</y>
+     <width>63</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbDay_4">
+   <property name="geometry">
+    <rect>
+     <x>397</x>
+     <y>28</y>
+     <width>42</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbDate_6">
+   <property name="geometry">
+    <rect>
+     <x>636</x>
+     <y>48</y>
+     <width>47</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbWea_6">
+   <property name="geometry">
+    <rect>
+     <x>628</x>
+     <y>172</y>
+     <width>63</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbDay_3">
+   <property name="geometry">
+    <rect>
+     <x>276</x>
+     <y>28</y>
+     <width>42</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbDate_5">
+   <property name="geometry">
+    <rect>
+     <x>515</x>
+     <y>48</y>
+     <width>47</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbIcon_5">
+   <property name="geometry">
+    <rect>
+     <x>514</x>
+     <y>80</y>
+     <width>48</width>
+     <height>48</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbTmp_3">
+   <property name="geometry">
+    <rect>
+     <x>265</x>
+     <y>148</y>
+     <width>60</width>
+     <height>11</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbIcon_3">
+   <property name="geometry">
+    <rect>
+     <x>272</x>
+     <y>80</y>
+     <width>48</width>
+     <height>48</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbDay_6">
+   <property name="geometry">
+    <rect>
+     <x>639</x>
+     <y>28</y>
+     <width>42</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbDay_2">
+   <property name="geometry">
+    <rect>
+     <x>155</x>
+     <y>28</y>
+     <width>42</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="Line" name="line_3">
+   <property name="geometry">
+    <rect>
+     <x>356</x>
+     <y>14</y>
+     <width>1</width>
+     <height>199</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbWea_5">
+   <property name="geometry">
+    <rect>
+     <x>507</x>
+     <y>172</y>
+     <width>63</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbIcon_7">
+   <property name="geometry">
+    <rect>
+     <x>756</x>
+     <y>80</y>
+     <width>48</width>
+     <height>48</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbWea_1">
+   <property name="geometry">
+    <rect>
+     <x>23</x>
+     <y>172</y>
+     <width>63</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbWea_3">
+   <property name="geometry">
+    <rect>
+     <x>265</x>
+     <y>172</y>
+     <width>63</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="Line" name="line_4">
+   <property name="geometry">
+    <rect>
+     <x>477</x>
+     <y>14</y>
+     <width>1</width>
+     <height>199</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbDate_1">
+   <property name="geometry">
+    <rect>
+     <x>31</x>
+     <y>48</y>
+     <width>47</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbTmp_7">
+   <property name="geometry">
+    <rect>
+     <x>749</x>
+     <y>148</y>
+     <width>60</width>
+     <height>11</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="Line" name="line_2">
+   <property name="geometry">
+    <rect>
+     <x>235</x>
+     <y>14</y>
+     <width>1</width>
+     <height>199</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbTmp_2">
+   <property name="geometry">
+    <rect>
+     <x>144</x>
+     <y>148</y>
+     <width>60</width>
+     <height>11</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbWea_4">
+   <property name="geometry">
+    <rect>
+     <x>386</x>
+     <y>172</y>
+     <width>63</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbTmp_6">
+   <property name="geometry">
+    <rect>
+     <x>628</x>
+     <y>148</y>
+     <width>60</width>
+     <height>11</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="Line" name="line_1">
+   <property name="geometry">
+    <rect>
+     <x>114</x>
+     <y>14</y>
+     <width>1</width>
+     <height>199</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbTmp_1">
+   <property name="geometry">
+    <rect>
+     <x>28</x>
+     <y>148</y>
+     <width>60</width>
+     <height>11</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbDay_5">
+   <property name="geometry">
+    <rect>
+     <x>518</x>
+     <y>28</y>
+     <width>42</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbTmp_4">
+   <property name="geometry">
+    <rect>
+     <x>391</x>
+     <y>148</y>
+     <width>60</width>
+     <height>11</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbDay_1">
+   <property name="geometry">
+    <rect>
+     <x>41</x>
+     <y>28</y>
+     <width>28</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="Line" name="line_5">
+   <property name="geometry">
+    <rect>
+     <x>598</x>
+     <y>14</y>
+     <width>1</width>
+     <height>199</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbDate_7">
+   <property name="geometry">
+    <rect>
+     <x>757</x>
+     <y>48</y>
+     <width>47</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbDay_7">
+   <property name="geometry">
+    <rect>
+     <x>760</x>
+     <y>28</y>
+     <width>42</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbIcon_4">
+   <property name="geometry">
+    <rect>
+     <x>393</x>
+     <y>80</y>
+     <width>48</width>
+     <height>48</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbIcon_6">
+   <property name="geometry">
+    <rect>
+     <x>635</x>
+     <y>80</y>
+     <width>48</width>
+     <height>48</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbTmp_5">
+   <property name="geometry">
+    <rect>
+     <x>512</x>
+     <y>148</y>
+     <width>60</width>
+     <height>11</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="Line" name="line_6">
+   <property name="geometry">
+    <rect>
+     <x>719</x>
+     <y>14</y>
+     <width>1</width>
+     <height>199</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
