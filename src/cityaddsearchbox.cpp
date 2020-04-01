@@ -29,7 +29,13 @@ CityAddSearchBox::CityAddSearchBox(QWidget* parent)
     , m_searchPixmap(QPixmap(":/res/control_icons/search_city.png"))
 {
     this->setFixedSize(470, 30);
-    this->setStyleSheet("QLineEdit{padding-left:31px;background:rgba(255,255,255,0.2);border-radius:4px;color:rgba(255,255,255,0.5);font-family:Microsoft YaHei;}");
+    this->setStyleSheet("QLineEdit{padding-left:31px;"
+                        "background:rgba(248,248,248,1);"
+                        "border:1px solid rgba(61,107,229,1);"
+                        "border-radius:4px;"
+                        "font-size:14px;"
+                        "color:rgba(0,0,0,1);"
+                        "font-family:Microsoft YaHei;}");
     this->setFocusPolicy(Qt::ClickFocus);
 }
 

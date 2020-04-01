@@ -24,9 +24,7 @@ void CityAddSearchDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
     {
         painter->save();
 
-        ItemStatus status = (ItemStatus)(index.data(Qt::UserRole).toInt());
-
-        QVariant variant = index.data(Qt::UserRole+1);
+        QVariant variant = index.data(Qt::UserRole);
         ItemData data = variant.value<ItemData>();
 
         QStyleOptionViewItem viewOption(option);//用来在视图中画一个item
@@ -72,34 +70,16 @@ void CityAddSearchDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
 
         //绘制数据位置
         QRect NameRect = QRect(rect.left()+8, rect.top(), rect.width()-30, 26);
-        QRect circle = QRect(NameRect.right() - 10, rect.top()+10, 10, 10);
         QRect telRect = QRect(rect.left()+8, rect.bottom()-24, rect.width()-10, 20);
 
 
-        switch (status) {
-        case S_RED:
-            painter->setBrush(Qt::red);
-            painter->setPen(QPen(Qt::red));
-            break;
-        case S_BLUE:
-            painter->setBrush(Qt::blue);
-            painter->setPen(QPen(Qt::blue));
-            break;
-        case S_YELLOW:
-            painter->setBrush(Qt::yellow);
-            painter->setPen(QPen(Qt::yellow));
-            break;
-        }
-
-        // painter->drawEllipse(circle);     //画圆圈
-
-        painter->setPen(QPen(Qt::white));
+        painter->setPen(QPen(Qt::black));
         painter->setFont(QFont("Microsoft YaHei", 16));
-        painter->drawText(NameRect,Qt::AlignLeft,data.name); //绘制名字
+        painter->drawText(NameRect,Qt::AlignLeft,data.name);
 
-        painter->setPen(QPen(Qt::white));
+        painter->setPen(QPen(Qt::black));
         painter->setFont(QFont("Microsoft YaHei", 12));
-        painter->drawText(telRect,Qt::AlignLeft,data.tel); //绘制电话
+        painter->drawText(telRect,Qt::AlignLeft,data.tel);
 
         painter->restore();
     }
@@ -107,5 +87,5 @@ void CityAddSearchDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
 
 QSize CityAddSearchDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    return QSize(464, 45);
+    return QSize(468, 45);
 }

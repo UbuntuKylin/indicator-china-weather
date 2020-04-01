@@ -5,6 +5,8 @@
 #include <QModelIndex>
 #include <QStandardItemModel>
 
+#include <QMouseEvent>
+
 class LeftUpSearchDelegate : public QStyledItemDelegate
 {
     Q_OBJECT

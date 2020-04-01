@@ -18,8 +18,10 @@
  */
 
 #include "cityaddsearchview.h"
+#include "dataitem.h"
 
 #include <QScrollBar>
+#include <QDebug>
 
 CityAddSearchView::CityAddSearchView(QWidget *parent)
     : QListView(parent)
@@ -31,7 +33,7 @@ CityAddSearchView::CityAddSearchView(QWidget *parent)
                         "QListView::item:selected:!active{background:#e9eef1;}"
                         "QListView::item:selected:active{background:#3f96e4;}"
                         "QListView::item:hover{background:#e9eef0;}");
-    this->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 0px 0px 0px;background-color:rgb(255,255,255,100);border:0px;width:10px;}" \
+    this->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 0px 0px 0px;background-color:rgb(255,255,255,100);border:0px;width:2px;}" \
                                              "QScrollBar::sub-line:vertical{subcontrol-origin:margin;border:1px solid red;height:13px;}" \
                                              "QScrollBar::up-arrow:vertical{subcontrol-origin:margin;background-color:blue;height:13px;}" \
                                              "QScrollBar::sub-page:vertical{background-color:#EEEDF0;}" \
@@ -46,4 +48,17 @@ CityAddSearchView::CityAddSearchView(QWidget *parent)
 CityAddSearchView::~CityAddSearchView()
 {
 
+}
+
+void CityAddSearchView::mouseReleaseEvent(QMouseEvent *e)
+{
+    QModelIndexList sourceIndexList = this->selectionModel()->selectedIndexes();
+
+    foreach (QModelIndex sourceIndex, sourceIndexList){
+        QVariant variant = sourceIndex.data(Qt::UserRole);
+        ItemData data = variant.value<ItemData>();
+        qDebug() << "Index : " << sourceIndex.row();
+
+        qDebug() << "city : " << data.name<< "province : " <<data.tel;
+    }
 }

@@ -7,6 +7,7 @@
 #include "leftupsearchview.h"
 #include "leftupsearchdelegate.h"
 #include "informationwidget.h"
+#include "locationworker.h"
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -55,20 +56,19 @@ private:
     LeftUpSearchBox *m_leftupsearchbox = nullptr;
 
     LeftUpSearchView *m_searchView = nullptr;
-    LeftUpSearchDelegate *m_delegate;
-    QSortFilterProxyModel* m_proxyModel;
-    QStandardItemModel *m_model;
+    LeftUpSearchDelegate *m_delegate = nullptr;
+    QSortFilterProxyModel* m_proxyModel = nullptr;
+    QStandardItemModel *m_model = nullptr;
 
-    int totalNum;
-    int redNum;
-    int blueNum;
-    int yellowNum;
+    LocationWorker *m_locationWorker = nullptr;
 
     void checkSingle();
 
-    void initData();
+    void searchCityName();
 
     void initControlQss();
+
+    void onSearchBoxEdited();
 
     bool isPress;
     QPoint winPos;

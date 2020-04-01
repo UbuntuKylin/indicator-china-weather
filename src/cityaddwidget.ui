@@ -52,6 +52,20 @@
     <string/>
    </property>
   </widget>
+  <widget class="QWidget" name="backwidget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>580</width>
+     <height>560</height>
+    </rect>
+   </property>
+  </widget>
+  <zorder>backwidget</zorder>
+  <zorder>lbLeftUpIcon</zorder>
+  <zorder>lbLeftUpTitle</zorder>
+  <zorder>btnCancel</zorder>
  </widget>
  <resources/>
  <connections/>

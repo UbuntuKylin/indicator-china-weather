@@ -22,9 +22,9 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
 
 private slots:
-    void on_lbCancel_clicked();
-
     void on_pushButton_clicked();
+
+    void on_btnCancel_clicked();
 
 private:
     Ui::citycollectionwidget *ui;

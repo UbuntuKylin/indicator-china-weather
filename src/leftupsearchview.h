@@ -2,6 +2,7 @@
 #define LEFTUPSEARCHVIEW_H
 
 #include <QListView>
+#include <QDebug>
 
 class LeftUpSearchView : public QListView
 {
@@ -9,6 +10,9 @@ class LeftUpSearchView : public QListView
 public:
     explicit LeftUpSearchView(QWidget *parent = 0);
     ~LeftUpSearchView();
+
+protected:
+    void mouseReleaseEvent(QMouseEvent *e) override;
 };
 
 #endif // LEFTUPSEARCHVIEW_H

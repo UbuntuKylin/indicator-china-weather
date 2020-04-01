@@ -72,6 +72,7 @@ SOURCES += src/main.cpp \
     src/leftupsearchbox.cpp \
     src/leftupsearchdelegate.cpp \
     src/leftupsearchview.cpp \
+    src/locationworker.cpp \
     src/mainwindow.cpp \
 
 HEADERS  += src/mainwindow.h \
@@ -87,7 +88,8 @@ HEADERS  += src/mainwindow.h \
     src/leftupcitybtn.h \
     src/leftupsearchbox.h \
     src/leftupsearchdelegate.h \
-    src/leftupsearchview.h
+    src/leftupsearchview.h \
+    src/locationworker.h
 
 
 RESOURCES += \

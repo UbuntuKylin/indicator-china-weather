@@ -4,6 +4,7 @@
 #include "cityaddsearchbox.h"
 #include "cityaddsearchview.h"
 #include "cityaddsearchdelegate.h"
+#include "locationworker.h"
 
 #include <QWidget>
 #include <QButtonGroup>
@@ -31,16 +32,15 @@ private:
     CityAddSearchBox *m_cityaddsearchbox = nullptr;
 
     CityAddSearchView *m_cityaddsearchview = nullptr;
-    CityAddSearchDelegate *m_cityaddsearchdelegate;
-    QSortFilterProxyModel* m_proxyModel;
-    QStandardItemModel *m_model;
+    CityAddSearchDelegate *m_cityaddsearchdelegate = nullptr;
+    QSortFilterProxyModel* m_proxyModel = nullptr;
+    QStandardItemModel *m_model = nullptr;
 
-    int totalNum;
-    int redNum;
-    int blueNum;
-    int yellowNum;
+    LocationWorker *m_locationWorker = nullptr;
 
-    void initData();
+    void searchCityName();
+
+    void onSearchBoxEdited();
 };
 
 #endif // CITYADDITION_H

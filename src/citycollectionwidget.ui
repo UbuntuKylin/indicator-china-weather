@@ -39,7 +39,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="lbCancel">
+  <widget class="QPushButton" name="btnCancel">
    <property name="geometry">
     <rect>
      <x>540</x>
@@ -104,6 +104,24 @@
     <string/>
    </property>
   </widget>
+  <widget class="QWidget" name="backwidget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>580</width>
+     <height>560</height>
+    </rect>
+   </property>
+  </widget>
+  <zorder>backwidget</zorder>
+  <zorder>lbLeftUpIcon</zorder>
+  <zorder>lbLeftUpTitle</zorder>
+  <zorder>btnCancel</zorder>
+  <zorder>lbCityCurrent</zorder>
+  <zorder>lbCityCollect</zorder>
+  <zorder>lbCityCount</zorder>
+  <zorder>pushButton</zorder>
  </widget>
  <resources/>
  <connections/>

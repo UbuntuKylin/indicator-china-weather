@@ -292,6 +292,9 @@
         <file>res/control_icons/index_flu.png</file>
         <file>res/control_icons/index_sport.png</file>
         <file>res/control_icons/index_uv.png</file>
+        <file>res/control_icons/close_white.png</file>
+        <file>res/control_icons/close_black.png</file>
+        <file>res/control_icons/logo.png</file>
     </qresource>
     <qresource prefix="/data">
         <file>data/china-city-list.csv</file>

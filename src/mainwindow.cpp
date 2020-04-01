@@ -19,6 +19,7 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "data.h"
 #include "dataitem.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -55,31 +56,24 @@ MainWindow::MainWindow(QWidget *parent) :
     m_leftupsearchbox->move(116, 17);
     m_leftupsearchbox->show();
 
-
-    initData();
     m_searchView = new LeftUpSearchView(ui->widget_normal);
     m_delegate = new LeftUpSearchDelegate(m_searchView);
     m_proxyModel = new QSortFilterProxyModel(m_searchView);
+    m_model = new QStandardItemModel();
     m_searchView->move(116, 49);
-    m_searchView->resize(181,260);
+    m_searchView->resize(181,254);
     m_searchView->hide();
-    m_searchView->setItemDelegate(m_delegate);       //为视图设置委托
-    m_searchView->setSpacing(1);                   //为视图设置控件间距
-    m_proxyModel->setSourceModel(m_model);
-    m_proxyModel->setFilterRole(Qt::UserRole);
-    m_proxyModel->setDynamicSortFilter(true);
-    m_searchView->setModel(m_proxyModel);                  //为委托设置模型
-    m_searchView->setViewMode(QListView::IconMode); //设置Item图标显示
-    m_searchView->setDragEnabled(false);            //控件不允许拖动
 
-
-    connect(m_leftupsearchbox, &LeftUpSearchBox::textEdited, this, [this] () {
+    connect(m_leftupsearchbox, &LeftUpSearchBox::textChanged, this, [this] () {
         if (m_leftupsearchbox->text().size() == 0){
             m_searchView->hide();
         }else{
             m_searchView->show();
+            onSearchBoxEdited();
         }
     });
+
+    m_locationWorker = new LocationWorker();
 }
 
 MainWindow::~MainWindow()
@@ -153,42 +147,47 @@ void MainWindow::initControlQss()
     m_information->move(0,0);
 }
 
-void MainWindow::initData()
+void MainWindow::onSearchBoxEdited()
 {
-    totalNum = 5;
-    redNum = 0;
-    blueNum = 0;
-    yellowNum = 0;
+    searchCityName();
 
-    m_model = new QStandardItemModel();
+    m_searchView->setItemDelegate(m_delegate); //为视图设置委托
+    m_searchView->setSpacing(1); //为视图设置控件间距
+    m_proxyModel->setSourceModel(m_model);
+    m_proxyModel->setFilterRole(Qt::UserRole);
+    m_proxyModel->setDynamicSortFilter(true);
+    m_searchView->setModel(m_proxyModel); //为委托设置模型
+    m_searchView->setViewMode(QListView::IconMode); //设置Item图标显示
+    m_searchView->setDragEnabled(false); //控件不允许拖动
+}
 
-    for (int i = 0; i < totalNum; ++i) {
-        QStandardItem *Item = new QStandardItem;
+void MainWindow::searchCityName()
+{
+    const QString inputText = m_leftupsearchbox->text().trimmed();
+    if (inputText.isEmpty())
+        return;
 
-        ItemData itemData;
+    QList<LocationData> searchResultList;
+    searchResultList = m_locationWorker->exactMatchCity(inputText);
 
-        itemData.name = QString("Name %1").arg(i);
-        itemData.tel = QString("TEL:1331234567%1").arg(i);
-        int randNum = rand()% 3;
-        ItemStatus itemStatus;
-        switch (randNum) {
-        case 0:
-            itemStatus = S_RED;
-            redNum++;
-            break;
-        case 1:
-            itemStatus = S_BLUE;
-            blueNum++;
-            break;
-        case 2:
-            itemStatus = S_YELLOW;
-            yellowNum++;
-            break;
+    if (searchResultList.isEmpty()) {
+        qDebug()<<"fail to search city information";
+    }
+    else {
+        delete m_model;
+        m_model = new QStandardItemModel();
+
+        foreach(LocationData m_locationdata, searchResultList){
+            QStandardItem *Item = new QStandardItem;
+
+            ItemData itemData;
+
+            itemData.name = QString(m_locationdata.city);
+            itemData.tel = QString(m_locationdata.province);
+            Item->setData(QVariant::fromValue(itemData),Qt::UserRole); //整体存取
+
+            m_model->appendRow(Item); //追加Item
         }
-        Item->setData(itemStatus,Qt::UserRole);  // 单一存取
-        Item->setData(QVariant::fromValue(itemData),Qt::UserRole+1);//整体存取
-
-        m_model->appendRow(Item);      //追加Item
     }
 }
 

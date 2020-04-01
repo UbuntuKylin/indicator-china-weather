@@ -9,6 +9,9 @@ class CityAddSearchView : public QListView
 public:
     explicit CityAddSearchView(QWidget *parent = 0);
     ~CityAddSearchView();
+
+protected:
+    void mouseReleaseEvent(QMouseEvent *e) override;
 };
 
 #endif // CITYADDSEARCHVIEW_H
