@@ -18,7 +18,7 @@
  */
 
 #include "cityaddsearchview.h"
-#include "dataitem.h"
+#include "data.h"
 
 #include <QScrollBar>
 #include <QDebug>
@@ -58,7 +58,6 @@ void CityAddSearchView::mouseReleaseEvent(QMouseEvent *e)
         QVariant variant = sourceIndex.data(Qt::UserRole);
         ItemData data = variant.value<ItemData>();
         qDebug() << "Index : " << sourceIndex.row();
-
-        qDebug() << "city : " << data.name<< "province : " <<data.tel;
+        qDebug() << "cityId : "<< data.cityId << " city : " << data.cityName<< " province : " <<data.cityProvince;
     }
 }

@@ -2,7 +2,14 @@
 #define DATA_H
 
 #include <QObject>
+#include <QMetaType>
 
+struct ItemData
+{
+    QString cityId;
+    QString cityName;
+    QString cityProvince;
+};
 
 struct City
 {
@@ -71,9 +78,11 @@ struct ForecastWeather
     QString wind_dir;//风向 	西北风
     QString wind_sc;//风力 	1-2 (级风)
     QString wind_spd;//风速，公里/小时 	14
+    QString date;//日期
 };
 
-struct LifeStyle {
+struct LifeStyle
+{
     QString air_brf;
     QString air_txt;
     QString comf_brf;
@@ -131,6 +140,7 @@ inline bool operator ==(const LocationData &data, const LocationData &that)
     return data.id == that.id || (data.admin_district == that.admin_district && data.city == that.city);
 }
 
+Q_DECLARE_METATYPE(ItemData)
 Q_DECLARE_METATYPE(City)
 Q_DECLARE_METATYPE(ObserveWeather)
 Q_DECLARE_METATYPE(ForecastWeather)

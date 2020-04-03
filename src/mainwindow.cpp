@@ -19,14 +19,16 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "data.h"
-#include "dataitem.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    qRegisterMetaType<ObserveWeather>();
+    qRegisterMetaType<ForecastWeather>();
+    qRegisterMetaType<LifeStyle>();
 
     checkSingle();
 
@@ -51,7 +53,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_leftupcitybtn->move(20, 22);
     m_leftupcitybtn->show();
 
-
     m_leftupsearchbox = new LeftUpSearchBox(ui->widget_normal);
     m_leftupsearchbox->move(116, 17);
     m_leftupsearchbox->show();
@@ -73,7 +74,21 @@ MainWindow::MainWindow(QWidget *parent) :
         }
     });
 
-    m_locationWorker = new LocationWorker();
+    m_locationWorker = new LocationWorker(this);
+
+    connect(m_searchView, &LeftUpSearchView::requestSetObserveWeather, this, [=] (ObserveWeather observerdata) {
+        this->onSetObserveWeather(observerdata);
+    });
+    connect(m_searchView, &LeftUpSearchView::requestSetForecastWeather, this, [=] (ForecastWeather forecastweather) {
+        this->onSetForecastWeather(forecastweather);
+    });
+    connect(m_searchView, &LeftUpSearchView::requestSetLifeStyle, this, [=] (LifeStyle lifestyle) {
+        this->onSetLifeStyle(lifestyle);
+    });
+
+    //主窗口初始化
+    //CN101010100,beijing,北京,CN,China,中国,beijing,北京,beijing,北京,39.904987,116.40529,"110100,110000,100000"
+    m_searchView->requestWeatherData("101010100");
 }
 
 MainWindow::~MainWindow()
@@ -108,7 +123,7 @@ void MainWindow::initControlQss()
                                "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
 
-    ui->lbCurrTmp->setStyleSheet("QLabel{border:none;background:transparent;font-size:120px;color:rgba(255,255,255,1);line-height:80px;}");
+    ui->lbCurrTmp->setStyleSheet("QLabel{border:none;background:transparent;font-size:110px;color:rgba(255,255,255,1);line-height:80px;}");
     ui->lbCurrTmp->setText("12");
     ui->lbCurrTmpUnit->setStyleSheet("QLabel{border:none;background:transparent;font-size:20px;color:rgba(255,255,255,1);line-height:14px;}");
     ui->lbCurrTmpUnit->setText("℃");
@@ -143,7 +158,7 @@ void MainWindow::initControlQss()
     m_scrollarea->setWidget(m_scrollwidget);
     m_scrollwidget->move(0, 0);
 
-    Information *m_information = new Information(m_scrollwidget);
+    m_information = new Information(m_scrollwidget);
     m_information->move(0,0);
 }
 
@@ -182,14 +197,39 @@ void MainWindow::searchCityName()
 
             ItemData itemData;
 
-            itemData.name = QString(m_locationdata.city);
-            itemData.tel = QString(m_locationdata.province);
+            itemData.cityId = QString(m_locationdata.id);
+            itemData.cityName = QString(m_locationdata.city);
+            itemData.cityProvince = QString(m_locationdata.province);
             Item->setData(QVariant::fromValue(itemData),Qt::UserRole); //整体存取
 
             m_model->appendRow(Item); //追加Item
         }
     }
 }
+
+void MainWindow::onSetLifeStyle(LifeStyle m_lifestyle)
+{
+    m_information->onSetLifeStyle(m_lifestyle);
+}
+
+void MainWindow::onSetForecastWeather(ForecastWeather m_forecastweather)
+{
+    m_information->onSetForecastWeather(m_forecastweather);
+}
+
+void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
+{
+    m_searchView->hide();
+    m_leftupsearchbox->setText("");
+
+    QString strHum = "湿度 " + m_observeweather.hum + "%   " + m_observeweather.wind_dir + " " + m_observeweather.wind_sc + "级";
+    ui->lbCurrHum->setText(strHum);
+
+    ui->lbCurrTmp->setText(m_observeweather.tmp);
+
+    ui->lbCurrWea->setText(m_observeweather.cond_txt);
+}
+
 
 void MainWindow::mousePressEvent(QMouseEvent *event){
     if(event->button() == Qt::LeftButton){

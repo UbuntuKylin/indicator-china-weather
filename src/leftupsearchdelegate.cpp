@@ -1,5 +1,5 @@
 #include "leftupsearchdelegate.h"
-#include "dataitem.h"
+#include "data.h"
 
 #include <QPainter>
 #include <QStyledItemDelegate>
@@ -75,11 +75,11 @@ void LeftUpSearchDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         painter->setPen(QPen(Qt::white));
         painter->setFont(QFont("Microsoft YaHei", 16));
-        painter->drawText(NameRect,Qt::AlignLeft,data.name); //绘制城市名字
+        painter->drawText(NameRect,Qt::AlignLeft,data.cityName); //绘制城市名字
 
         painter->setPen(QPen(Qt::white));
         painter->setFont(QFont("Microsoft YaHei", 12));
-        painter->drawText(telRect,Qt::AlignLeft,data.tel); //绘制城市所属省份
+        painter->drawText(telRect,Qt::AlignLeft,data.cityProvince); //绘制城市所属省份
 
         painter->restore();
     }

@@ -1,5 +1,5 @@
 #include "cityaddsearchdelegate.h"
-#include "dataitem.h"
+#include "data.h"
 
 #include <QPainter>
 #include <QStyledItemDelegate>
@@ -75,11 +75,11 @@ void CityAddSearchDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
 
         painter->setPen(QPen(Qt::black));
         painter->setFont(QFont("Microsoft YaHei", 16));
-        painter->drawText(NameRect,Qt::AlignLeft,data.name);
+        painter->drawText(NameRect,Qt::AlignLeft,data.cityName);
 
         painter->setPen(QPen(Qt::black));
         painter->setFont(QFont("Microsoft YaHei", 12));
-        painter->drawText(telRect,Qt::AlignLeft,data.tel);
+        painter->drawText(telRect,Qt::AlignLeft,data.cityProvince);
 
         painter->restore();
     }

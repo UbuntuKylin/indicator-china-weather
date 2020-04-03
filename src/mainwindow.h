@@ -8,6 +8,7 @@
 #include "leftupsearchdelegate.h"
 #include "informationwidget.h"
 #include "locationworker.h"
+#include "data.h"
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -36,6 +37,11 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+public slots:
+    void onSetForecastWeather(ForecastWeather m_forecastweather);
+    void onSetObserveWeather(ObserveWeather m_observeweather);
+    void onSetLifeStyle(LifeStyle m_lifestyle);
+
 protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
@@ -61,6 +67,8 @@ private:
     QStandardItemModel *m_model = nullptr;
 
     LocationWorker *m_locationWorker = nullptr;
+
+    Information *m_information;
 
     void checkSingle();
 

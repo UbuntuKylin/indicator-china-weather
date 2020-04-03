@@ -18,7 +18,7 @@
  */
 
 #include "leftupsearchview.h"
-#include "dataitem.h"
+#include "weatherworker.h"
 
 #include <QScrollBar>
 
@@ -42,6 +42,12 @@ LeftUpSearchView::LeftUpSearchView(QWidget *parent)
                                              "QScrollBar::add-page:vertical{background-color:#EEEDF0;}" \
                                              "QScrollBar::down-arrow:vertical{background-color:yellow;}" \
                                              "QScrollBar::add-line:vertical{subcontrol-origin:margin;border:1px solid green;height:18px;}");
+
+    m_weatherWorker = new WeatherWorker(this);
+
+    connect(m_weatherWorker, SIGNAL(requestSetObserveWeather(ObserveWeather)), this, SIGNAL(requestSetObserveWeather(ObserveWeather)));
+    connect(m_weatherWorker, SIGNAL(requestSetForecastWeather(ForecastWeather)), this, SIGNAL(requestSetForecastWeather(ForecastWeather)));
+    connect(m_weatherWorker, SIGNAL(requestSetLifeStyle(LifeStyle)), this, SIGNAL(requestSetLifeStyle(LifeStyle)));
 }
 
 LeftUpSearchView::~LeftUpSearchView()
@@ -56,8 +62,11 @@ void LeftUpSearchView::mouseReleaseEvent(QMouseEvent *e)
     foreach (QModelIndex sourceIndex, sourceIndexList){
         QVariant variant = sourceIndex.data(Qt::UserRole);
         ItemData data = variant.value<ItemData>();
-        qDebug() << "Index : " << sourceIndex.row();
-
-        qDebug() << "city : " << data.name<< "province : " <<data.tel;
+        // qDebug() << "Index : " << sourceIndex.row();
+        m_weatherWorker->onWeatherDataRequest(data.cityId);
     }
+}
+
+void LeftUpSearchView::requestWeatherData(QString cityId){
+    m_weatherWorker->onWeatherDataRequest(cityId);
 }

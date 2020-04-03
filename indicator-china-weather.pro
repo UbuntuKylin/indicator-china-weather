@@ -74,6 +74,7 @@ SOURCES += src/main.cpp \
     src/leftupsearchview.cpp \
     src/locationworker.cpp \
     src/mainwindow.cpp \
+    src/weatherworker.cpp
 
 HEADERS  += src/mainwindow.h \
     src/cityaddsearchbox.h \
@@ -83,13 +84,13 @@ HEADERS  += src/mainwindow.h \
     src/citycollectionitem.h \
     src/citycollectionwidget.h \
     src/data.h \
-    src/dataitem.h \
     src/informationwidget.h \
     src/leftupcitybtn.h \
     src/leftupsearchbox.h \
     src/leftupsearchdelegate.h \
     src/leftupsearchview.h \
-    src/locationworker.h
+    src/locationworker.h \
+    src/weatherworker.h
 
 
 RESOURCES += \

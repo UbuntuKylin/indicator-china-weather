@@ -1,7 +1,6 @@
 #include "cityaddwidget.h"
 #include "ui_cityaddwidget.h"
 #include "citycollectionwidget.h"
-#include "dataitem.h"
 #include "data.h"
 
 #include <QDebug>
@@ -95,8 +94,9 @@ void CityAddition::searchCityName()
 
             ItemData itemData;
 
-            itemData.name = QString(m_locationdata.city);
-            itemData.tel = QString(m_locationdata.province);
+            itemData.cityId = QString(m_locationdata.id);
+            itemData.cityName = QString(m_locationdata.city);
+            itemData.cityProvince = QString(m_locationdata.province);
             Item->setData(QVariant::fromValue(itemData),Qt::UserRole); //整体存取
 
             m_model->appendRow(Item); //追加Item
