@@ -12,6 +12,7 @@ CityAddition::CityAddition(QWidget *parent) :
     ui->setupUi(this);
 
     this->setWindowFlags(Qt::FramelessWindowHint);
+    this->setFocusPolicy(Qt::StrongFocus);
     this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     QPainterPath path;
     auto rect = this->rect();
@@ -19,6 +20,7 @@ CityAddition::CityAddition(QWidget *parent) :
     path.addRoundedRect(rect, 6, 6);
     setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
     this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
+    this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/indicator-china-weather.png")) );
 
     ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(255,255,255,0.05);border-radius:6px;background:rgba(255,255,255,1);}");
 
@@ -40,6 +42,9 @@ CityAddition::CityAddition(QWidget *parent) :
     m_cityaddsearchview->move(35, 125);
     m_cityaddsearchview->resize(470,220);
     m_cityaddsearchview->hide();
+
+    connect(m_cityaddsearchview, SIGNAL(requestClearLineEdit() ), this, SLOT(onRequestClearLineEdit()) );
+    connect(m_cityaddsearchview, SIGNAL(requestAddNewCity(QString)), this, SIGNAL(requestAddNewCity(QString)) );
 
 
     connect(m_cityaddsearchbox, &CityAddSearchBox::textChanged, this, [this] () {
@@ -104,9 +109,13 @@ void CityAddition::searchCityName()
     }
 }
 
+void CityAddition::onRequestClearLineEdit()
+{
+    m_cityaddsearchview->hide();
+    m_cityaddsearchbox->setText("");
+}
+
 void CityAddition::on_btnCancel_clicked()
 {
-    this->hide();
-    CityCollectionWidget *m_cityaddition = new CityCollectionWidget();
-    m_cityaddition->show();
+    emit hideCityAddWiget();
 }

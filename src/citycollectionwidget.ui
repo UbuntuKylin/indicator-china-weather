@@ -91,19 +91,6 @@
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
-   <property name="geometry">
-    <rect>
-     <x>540</x>
-     <y>50</y>
-     <width>30</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
   <widget class="QWidget" name="backwidget" native="true">
    <property name="geometry">
     <rect>
@@ -121,7 +108,6 @@
   <zorder>lbCityCurrent</zorder>
   <zorder>lbCityCollect</zorder>
   <zorder>lbCityCount</zorder>
-  <zorder>pushButton</zorder>
  </widget>
  <resources/>
  <connections/>

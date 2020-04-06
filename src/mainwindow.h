@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <xcb/xcb.h>
 
 #include <QMainWindow>
 #include <QStandardPaths>
@@ -24,6 +25,12 @@
 #include <QScrollArea>
 #include <QScrollBar>
 #include <QWidget>
+#include <QSystemTrayIcon>
+#include <QRect>
+#include <QScreen>
+#include <QDesktopWidget>
+#include <QTime>
+#include <QFileInfo>
 
 namespace Ui {
 class MainWindow;
@@ -42,16 +49,12 @@ public slots:
     void onSetObserveWeather(ObserveWeather m_observeweather);
     void onSetLifeStyle(LifeStyle m_lifestyle);
 
-protected:
-    void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-
 private slots:
-
     void on_btnMinimize_clicked();
 
     void on_btnCancel_clicked();
+
+    void iconActivated(QSystemTrayIcon::ActivationReason reason);
 
 private:
     Ui::MainWindow *ui;
@@ -70,13 +73,22 @@ private:
 
     Information *m_information;
 
+    QSystemTrayIcon *trayIcon = nullptr;
+
     void checkSingle();
+
+    bool isFileExist(QString fullFileName);
+
+    void createTrayIcon();
+    void handleIconClicked();
 
     void searchCityName();
 
     void initControlQss();
 
     void onSearchBoxEdited();
+
+    QString convertCodeToBackgroud(int code);
 
     bool isPress;
     QPoint winPos;

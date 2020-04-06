@@ -295,6 +295,15 @@
         <file>res/control_icons/close_white.png</file>
         <file>res/control_icons/close_black.png</file>
         <file>res/control_icons/logo.png</file>
+        <file>res/control_icons/search_city.png</file>
+        <file>res/image/weather-clear-night.png</file>
+        <file>res/image/weather-clear.png</file>
+        <file>res/image/weather-few-clouds.png</file>
+        <file>res/image/weather-fog.png</file>
+        <file>res/image/weather-overcast.png</file>
+        <file>res/image/weather-rain.png</file>
+        <file>res/image/weather-sandstorm.png</file>
+        <file>res/image/weather-snow.png</file>
     </qresource>
     <qresource prefix="/data">
         <file>data/china-city-list.csv</file>

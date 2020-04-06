@@ -147,7 +147,8 @@ void WeatherWorker::onWeatherDataReply()
                     m_observeweather.fl = strListSub.at(11);
                     m_observeweather.cloud = strListSub.at(12);
 
-                    emit this->requestSetObserveWeather(m_observeweather);
+                    emit this->requestSetObserveWeather(m_observeweather);//用于设置主窗口
+
                 }
 
                 //处理预报天气

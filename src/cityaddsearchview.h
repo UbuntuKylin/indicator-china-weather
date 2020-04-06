@@ -2,6 +2,9 @@
 #define CITYADDSEARCHVIEW_H
 
 #include <QListView>
+#include <QDebug>
+#include "data.h"
+
 
 class CityAddSearchView : public QListView
 {
@@ -12,6 +15,10 @@ public:
 
 protected:
     void mouseReleaseEvent(QMouseEvent *e) override;
+
+signals:
+    void requestClearLineEdit();
+    void requestAddNewCity(QString cityId);
 };
 
 #endif // CITYADDSEARCHVIEW_H

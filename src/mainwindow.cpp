@@ -32,10 +32,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     checkSingle();
 
-    this->setWindowFlags(Qt::FramelessWindowHint);
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
     this->setFocusPolicy(Qt::StrongFocus);//this->setFocusPolicy(Qt::NoFocus);
     this->setWindowTitle(tr("Kylin Weather"));
-    this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/indicator-china-weather.png")) );
+    //this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/indicator-china-weather.png")) );
 
     this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     QPainterPath path;
@@ -46,6 +46,9 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
 
     this->initControlQss();
+
+    this->createTrayIcon();
+    connect(trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
 
     ui->widget_normal->show();
 
@@ -86,9 +89,27 @@ MainWindow::MainWindow(QWidget *parent) :
         this->onSetLifeStyle(lifestyle);
     });
 
-    //主窗口初始化
-    //CN101010100,beijing,北京,CN,China,中国,beijing,北京,beijing,北京,39.904987,116.40529,"110100,110000,100000"
-    m_searchView->requestWeatherData("101010100");
+    //主窗口初始化,系统安装后第一次更改默认城市之前执行
+    //CN101010100,beijing,北京,CN,China,中国
+    QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+    QString collectPath = homePath.at(0) + "/.config/china-weather-data";
+    if (!isFileExist(collectPath)){
+        m_searchView->requestWeatherData("101010100");
+
+        QFile file(collectPath);
+        file.open(QIODevice::WriteOnly | QIODevice::Text);
+        file.write("101010100,");
+        file.close();
+    } else {
+        QFile file(collectPath);
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
+        QByteArray cityId = file.readAll();
+        QString readCityId = (QString(cityId));
+        file.close();
+
+        QStringList listCityId = readCityId.split(",");
+        m_searchView->requestWeatherData(listCityId.at(0));
+    }
 }
 
 MainWindow::~MainWindow()
@@ -107,6 +128,123 @@ void MainWindow::checkSingle()
     if (lockf(fd, F_TLOCK, 0)) {
         qDebug()<<"Can't lock single file, indicator-china-weather is already running!";
         exit(0);
+    }
+}
+
+bool MainWindow::isFileExist(QString fullFileName)
+{
+    QFileInfo fileInfo(fullFileName);
+    if(fileInfo.isFile())
+    {
+        return true;
+    }
+    return false;
+}
+
+void MainWindow::createTrayIcon()
+{
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setToolTip(QString(tr("Kylin Weather")));
+    trayIcon->setIcon(QIcon(":/res/control_icons/indicator-china-weather.png"));
+    trayIcon->setVisible(true);
+}
+
+void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+    //    switch (reason) {
+    //    case QSystemTrayIcon::Trigger:
+    //    case QSystemTrayIcon::DoubleClick:
+    //    case QSystemTrayIcon::MiddleClick:
+    //        break;
+    //    }
+
+    switch(reason){
+    case QSystemTrayIcon::Trigger:
+    case QSystemTrayIcon::MiddleClick:
+        handleIconClicked();
+        if(this->isHidden()){
+            this->showNormal();
+        }else{
+            this->hide();
+        }
+        break;
+    case QSystemTrayIcon::DoubleClick:
+        this->hide();
+        break;
+    case QSystemTrayIcon::Context:
+        //右键点击托盘图标弹出菜单
+        //showTrayIconMenu(); //显示右键菜单
+        break;
+    default:
+        break;
+    }
+}
+
+void MainWindow::handleIconClicked()
+{
+    QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
+    QRect screenGeometry = qApp->primaryScreen()->geometry();
+
+    QDesktopWidget* desktopWidget = QApplication::desktop();
+    QRect deskMainRect = desktopWidget->availableGeometry(0);//获取可用桌面大小
+    QRect screenMainRect = desktopWidget->screenGeometry(0);//获取设备屏幕大小
+    QRect deskDupRect = desktopWidget->availableGeometry(1);//获取可用桌面大小
+    QRect screenDupRect = desktopWidget->screenGeometry(1);//获取设备屏幕大小
+
+//    qDebug()<<"                                                  ";
+//    qDebug()<<"trayIcon:"<<trayIcon->geometry();
+//    qDebug()<<"screenGeometry: "<<screenGeometry;
+//    qDebug()<<"availableGeometry: "<<availableGeometry;
+
+//    qDebug()<<"deskMainRect: "<<deskMainRect;
+//    qDebug()<<"screenMainRect: "<<screenMainRect;
+//    qDebug()<<"deskDupRect: "<<deskDupRect;
+//    qDebug()<<"screenDupRect: "<<screenDupRect;
+
+    int m = 46;
+    int n = 0;
+    int d = 2; //窗口边沿到任务栏距离
+
+    if (screenGeometry.width() == availableGeometry.width() && screenGeometry.height() == availableGeometry.height()){
+        if(n == 0){
+            //任务栏在下侧
+            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + availableGeometry.height() - this->height() - m - d);
+        }else if(n == 1){
+            //任务栏在上侧
+            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + screenGeometry.height() - availableGeometry.height() + m + d);
+        } else if (n == 2){
+            //任务栏在左侧
+            this->move(m + d, screenMainRect.y() + screenMainRect.height() - this->height());
+//            if (screenGeometry.x() == 0){//主屏在左侧
+//                this->move(screenGeometry.width() - availableGeometry.width() + m + d, screenMainRect.y() + screenMainRect.height() - this->height());
+//            }else{//主屏在右侧
+//                this->move(screenGeometry.width() - availableGeometry.width() + m + d,screenDupRect.y() + screenDupRect.height() - this->height());
+//            }
+        } else if (n == 3){
+            //任务栏在右侧
+            this->move(screenMainRect.width() - this->width() - m - d, screenDupRect.y() + screenDupRect.height() - this->height());
+//            if (screenGeometry.x() == 0){//主屏在左侧
+//                this->move(screenMainRect.width() + screenDupRect.width() - this->width() - m - d, screenDupRect.y() + screenDupRect.height() - this->height());
+//            }else{//主屏在右侧
+//                this->move(availableGeometry.x() + availableGeometry.width() - this->width() - m - d, screenMainRect.y() + screenMainRect.height() - this->height());
+//            }
+        }
+    } else if(screenGeometry.width() == availableGeometry.width() ){
+        if (trayIcon->geometry().y() > availableGeometry.height()/2){
+            //任务栏在下侧
+            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + availableGeometry.height() - this->height() - d);
+        }else{
+            //任务栏在上侧
+            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + screenGeometry.height() - availableGeometry.height() + d);
+        }
+    } else if (screenGeometry.height() == availableGeometry.height()){
+        if (trayIcon->geometry().x() > availableGeometry.width()/2){
+            //任务栏在右侧
+            this->move(availableGeometry.x() + availableGeometry.width() - this->width() - d, screenMainRect.y() + screenGeometry.height() - this->height());
+        } else {
+            //任务栏在左侧
+            this->move(screenGeometry.width() - availableGeometry.width() + d, screenMainRect.y() + screenGeometry.height() - this->height());
+        }
     }
 }
 
@@ -222,6 +360,11 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
     m_searchView->hide();
     m_leftupsearchbox->setText("");
 
+    int code  = m_observeweather.cond_code.toInt();
+    QString picStr = convertCodeToBackgroud(code);
+    QString picQss = "#centralwidget{color:white;background-image:url(" + picStr + ");background-repeat:no-repeat;}";
+    ui->centralwidget->setStyleSheet(picQss);
+
     QString strHum = "湿度 " + m_observeweather.hum + "%   " + m_observeweather.wind_dir + " " + m_observeweather.wind_sc + "级";
     ui->lbCurrHum->setText(strHum);
 
@@ -230,24 +373,52 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
     ui->lbCurrWea->setText(m_observeweather.cond_txt);
 }
 
-
-void MainWindow::mousePressEvent(QMouseEvent *event){
-    if(event->button() == Qt::LeftButton){
-        this->isPress = true;
-        this->winPos = this->pos();
-        this->dragPos = event->globalPos();
-        event->accept();
+QString MainWindow::convertCodeToBackgroud(int code)
+{
+    if (code == 100 || code == 900) {
+        QTime current_time = QTime::currentTime();
+        int hour = current_time.hour();
+        if (hour>=6 && hour<= 18){
+            return ":/res/background/weather-clear.png";
+        } else {
+            return ":/res/background/weather-clear-night.png";
+        }
     }
-}
-
-void MainWindow::mouseReleaseEvent(QMouseEvent *event){
-    this->isPress = false;
-}
-
-void MainWindow::mouseMoveEvent(QMouseEvent *event){
-    if(this->isPress){
-        this->move(this->winPos - (this->dragPos - event->globalPos()));
-        event->accept();
+    else if (code <= 103 && code >= 101) {
+        return ":/res/background/weather-few-clouds.png";
+    }
+    else if (code == 104 || code == 901) {
+        return ":/res/background/weather-overcast.png";
+    }
+    else if (code <= 204 && code >= 200) {
+        return ":/res/background/weather-clear.png";
+    }
+    else if (code <= 213 && code >= 205) {
+        return ":/res/background/weather-overcast.png";
+    }
+    else if (code <= 399 && code >= 300) {
+        return ":/res/background/weather-rain.png";
+    }
+    else if (code <= 499 && code >= 400) {
+        return ":/res/background/weather-snow.png";
+    }
+    else if (code <= 502 && code >= 500) {
+        return ":/res/background/weather-fog.png";
+    }
+    else if (code <= 508 && code >= 503) {
+        return ":/res/background/weather-sandstorm.png";
+    }
+    else if (code <= 515 && code >= 509) {
+        return ":/res/background/weather-fog.png";
+    }
+    else {
+        QTime current_time = QTime::currentTime();
+        int hour = current_time.hour();
+        if (hour>=6 && hour<= 18){
+            return ":/res/background/weather-clear.png";
+        } else {
+            return ":/res/background/weather-clear-night.png";
+        }
     }
 }
 

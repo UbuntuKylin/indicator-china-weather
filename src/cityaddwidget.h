@@ -26,6 +26,8 @@ public:
 private slots:
     void on_btnCancel_clicked();
 
+    void onRequestClearLineEdit();
+
 private:
     Ui::cityaddition *ui;
 
@@ -41,6 +43,10 @@ private:
     void searchCityName();
 
     void onSearchBoxEdited();
+
+signals:
+    void hideCityAddWiget();
+    void requestAddNewCity(QString cityId);
 };
 
 #endif // CITYADDITION_H

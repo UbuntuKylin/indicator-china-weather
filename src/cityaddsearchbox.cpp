@@ -50,20 +50,20 @@ void CityAddSearchBox::paintEvent(QPaintEvent *event)
         QFont curFont = painter.font();//QGuiApplication::font();
         curFont.setPixelSize(14);//font.setPointSize(14);
         curFont.setFamily("Microsoft YaHei");
-        QPen pen(Qt::white);
+        QPen pen(Qt::black);
         painter.setPen(pen);
         painter.setFont(curFont);
 
-        QRect iconRect(QPoint(65, 6), m_searchPixmap.size()/qApp->devicePixelRatio());
+        QRect iconRect(QPoint(210, 7), m_searchPixmap.size()/qApp->devicePixelRatio());
         painter.drawPixmap(iconRect, m_searchPixmap);
 
-        QRect textRect(87, 2, 30, 28);
+        QRect textRect(235, 3, 30, 28);
         painter.drawText(textRect, m_searchText);
     } else {
         QPainter painter(this);
         painter.setOpacity(0.5);
 
-        QRect iconRect(QPoint(9, 6), m_searchPixmap.size()/qApp->devicePixelRatio());
+        QRect iconRect(QPoint(9, 7), m_searchPixmap.size()/qApp->devicePixelRatio());
         painter.drawPixmap(iconRect, m_searchPixmap);
     }
 }

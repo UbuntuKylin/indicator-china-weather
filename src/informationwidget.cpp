@@ -354,7 +354,7 @@ void Information::onSetLifeStyle(LifeStyle lifestyle)
     ui->lb_sport_brf->setText(lifestyle.sport_brf);
 }
 
- QString Information::convertCodeToBackgroud(int code)
+QString Information::convertCodeToBackgroud(int code)
 {
     if (code == 100 || code == 900) {
         return ":/res/control_icons/weather-clear.png";

@@ -15,8 +15,16 @@ public:
     explicit citycollectionitem(QWidget *parent = nullptr);
     ~citycollectionitem();
 
+    void setItemWidgetState(bool isShowNormal);
+
+private slots:
+    void on_btnAddCity_clicked();
+
 private:
     Ui::citycollectionitem *ui;
+
+signals:
+    void showCityAddWiget();
 };
 
 #endif // CITYCOLLECTIONITEM_H

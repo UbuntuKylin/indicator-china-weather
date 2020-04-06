@@ -18,7 +18,6 @@
  */
 
 #include "cityaddsearchview.h"
-#include "data.h"
 
 #include <QScrollBar>
 #include <QDebug>
@@ -29,10 +28,9 @@ CityAddSearchView::CityAddSearchView(QWidget *parent)
     this->setMouseTracking(true);
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    this->setStyleSheet("QListView{margin:0px;padding:0px;border:none;border-radius:4px;outline:none;background-color:rgba(0,255,255,0.25);}"
-                        "QListView::item:selected:!active{background:#e9eef1;}"
-                        "QListView::item:selected:active{background:#3f96e4;}"
-                        "QListView::item:hover{background:#e9eef0;}");
+    this->setStyleSheet("QListView{margin:0px;padding:0px;border:1px solid rgba(207,207,207,1);border-radius:4px;outline:none;background:rgba(255,255,255,1);}"
+                        "QListView::item:selected:active{background:rgba(238,242,253,1);}"
+                        "QListView::item:hover{background:rgba(238,242,253,1);}");
     this->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 0px 0px 0px;background-color:rgb(255,255,255,100);border:0px;width:2px;}" \
                                              "QScrollBar::sub-line:vertical{subcontrol-origin:margin;border:1px solid red;height:13px;}" \
                                              "QScrollBar::up-arrow:vertical{subcontrol-origin:margin;background-color:blue;height:13px;}" \
@@ -59,5 +57,7 @@ void CityAddSearchView::mouseReleaseEvent(QMouseEvent *e)
         ItemData data = variant.value<ItemData>();
         qDebug() << "Index : " << sourceIndex.row();
         qDebug() << "cityId : "<< data.cityId << " city : " << data.cityName<< " province : " <<data.cityProvince;
+        emit requestClearLineEdit();
+        emit requestAddNewCity(data.cityId);
     }
 }
