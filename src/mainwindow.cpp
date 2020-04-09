@@ -92,7 +92,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_maskWidget(new MaskWidget(this))//MaskWidget::Instance();
 {
     this->setFixedSize(355, 552);
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::Tool);
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
     this->setFocusPolicy(Qt::StrongFocus);//this->setFocusPolicy(Qt::NoFocus);
     //this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint);
 //    this->setAttribute(Qt::WA_TranslucentBackground, true);
@@ -158,7 +158,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_weatherWorker, &WeatherWorker::nofityNetworkStatus, this, [=] (const QString &status) {
         if (status == "OK") {//互联网可以ping通
             m_weatherWorker->requestPostHostInfoToWeatherServer();
-            m_weatherWorker->startAutoLocationTask();//开始自动定位城市
+            qDebug()<<"debug: aaaaaaaaaaaaaaaaa";
+//            m_weatherWorker->startAutoLocationTask();//开始自动定位城市
+            m_preferences->resetCurrentCityNameById("101010100");
+            this->refreshCityActions();
+            this->startGetWeather();
         }
         else {//互联网无法ping通
             m_hintWidget->setIconAndText(":/res/network_warn.png", status);
@@ -303,7 +307,7 @@ void MainWindow::updateTimeTip()
 
     m_updateTimeAction->setText(m_updateTimeStr);
 
-    m_weatherWorker->requestPingBackWeatherServer();
+    //m_weatherWorker->requestPingBackWeatherServer();
 }
 
 void MainWindow::setOpacity(double opacity)
