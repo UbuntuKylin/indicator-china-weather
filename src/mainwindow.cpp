@@ -36,6 +36,8 @@
 #include <QDebug>
 #include <QTimer>
 #include <math.h>
+#include <QStandardPaths>
+#include <QFileInfo>
 
 #include "preferences.h"
 #include "global.h"
@@ -117,6 +119,17 @@ MainWindow::MainWindow(QWidget *parent)
     this->initMenuAndTray();
     m_titleBar->setCityName(m_preferences->m_currentCity);
 
+    //第一次启动麒麟天气时执行,创建china-weather-save文件
+    //CN101010100,beijing,北京,CN,China,中国
+    QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+    QString savePath = homePath.at(0) + "/.config/china-weather-save";
+    if (!isFileExist(savePath)){
+        QFile file(savePath);
+        file.open(QIODevice::WriteOnly | QIODevice::Text);
+        file.write("101010100");
+        file.close();
+    }
+
     m_currentDesktop = qgetenv("XDG_CURRENT_DESKTOP");
     if (m_currentDesktop.isEmpty()) {
         m_currentDesktop = qgetenv("XDG_SESSION_DESKTOP");
@@ -158,9 +171,24 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_weatherWorker, &WeatherWorker::nofityNetworkStatus, this, [=] (const QString &status) {
         if (status == "OK") {//互联网可以ping通
             m_weatherWorker->requestPostHostInfoToWeatherServer();
-            qDebug()<<"debug: aaaaaaaaaaaaaaaaa";
 //            m_weatherWorker->startAutoLocationTask();//开始自动定位城市
-            m_preferences->resetCurrentCityNameById("101010100");
+
+            //选择默认城市
+            QString m_cityId;
+            QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+            QString savePath = homePath.at(0) + "/.config/china-weather-save";
+            if (!isFileExist(savePath)){
+                m_cityId = "101010100";
+            } else {
+                QFile file(savePath);
+                file.open(QIODevice::ReadOnly | QIODevice::Text);
+                QByteArray cityId = file.readAll();
+                m_cityId = (QString(cityId));
+                m_cityId.trimmed();
+                file.close();
+            }
+
+            m_preferences->resetCurrentCityNameById(m_cityId);
             this->refreshCityActions();
             this->startGetWeather();
         }
@@ -282,6 +310,16 @@ MainWindow::~MainWindow()
     }
 
     global_end();
+}
+
+bool MainWindow::isFileExist(QString fullFileName)
+{
+    QFileInfo fileInfo(fullFileName);
+    if(fileInfo.isFile())
+    {
+        return true;
+    }
+    return false;
 }
 
 void MainWindow::updateTimeTip()

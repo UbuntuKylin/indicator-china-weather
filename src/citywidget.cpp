@@ -25,6 +25,8 @@
 #include <QScrollBar>
 #include <QTimer>
 #include <QDebug>
+#include <QFile>
+#include <QStandardPaths>
 
 #include "preferences.h"
 #include "global.h"
@@ -208,6 +210,15 @@ void CityWidget::addCityItem(const CitySettingData &info)
 
     //根据城市id设置该城市为默认选中的当前城市
     connect(item, &CityItemWidget::requestSetDefaultCityById, this, [=] (const QString id) {
+
+        QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+        QString savePath = homePath.at(0) + "/.config/china-weather-save";
+        QFile file(savePath);
+        file.open(QIODevice::WriteOnly | QIODevice::Text);
+        QString m_cityid = id;
+        file.write(m_cityid.toUtf8());
+        file.close();
+
         QList<CityItemWidget *> cityItems = findChildren<CityItemWidget*>();
         for (CityItemWidget *cityItem : cityItems) {
             if (cityItem->getCityId() == id) {
