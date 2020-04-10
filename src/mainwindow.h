@@ -70,6 +70,8 @@ public slots:
 private:
 //    QPoint m_dragPosition;
 //    bool m_mousePressed;
+    void judgeSystemLanguage();
+
     bool isFileExist(QString fullFileName);
 
     QVBoxLayout *m_layout = nullptr;

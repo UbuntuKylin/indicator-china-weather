@@ -93,6 +93,8 @@ MainWindow::MainWindow(QWidget *parent)
     , m_weatherWorker(new WeatherWorker(this))
     , m_maskWidget(new MaskWidget(this))//MaskWidget::Instance();
 {
+    judgeSystemLanguage();
+
     this->setFixedSize(355, 552);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
     this->setFocusPolicy(Qt::StrongFocus);//this->setFocusPolicy(Qt::NoFocus);
@@ -310,6 +312,25 @@ MainWindow::~MainWindow()
     }
 
     global_end();
+}
+
+void MainWindow::judgeSystemLanguage()
+{
+    QLocale locale;
+    //获取系统语言环境
+    if( locale.language() == QLocale::Chinese )   {
+        qDebug() << "中文系统";
+        return;
+    } else {
+        qDebug() << "非中文系统";
+        exit(0);
+    }
+
+//    if( locale.language() == QLocale::English )   {
+//        qDebug() << "English system" ;
+//    } else if( locale.language() == QLocale::Chinese ) {
+//        qDebug() << "中文系统";
+//    }
 }
 
 bool MainWindow::isFileExist(QString fullFileName)
