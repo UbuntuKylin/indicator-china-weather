@@ -1,9 +1,21 @@
-indicator-china-weather (3.0.3-0ubuntu2) eoan; urgency=medium
+indicator-china-weather (3.0.4-0ubuntu1) focal; urgency=medium
 
-  [ Li Xiang ]
-  * Handling QNetworkReply Error Code.
+  * New bugfix release:
+    - Fix the 404 error. (LP: #1870951)
+    - Don't launch if locale is no zh_CN since it is not friendly to
+      non-chinese users now.
+  * debian:
+    - Bump standards-versition to 4.5.0.
+    - Use debhelper-compat instead of debhelper.
+    - Set Rules-Requires-Root to no.
 
- -- lixiang <lixiang@kylinos.cn>  Fri, 20 Sep 2019 10:00:24 +0800
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Fri, 10 Apr 2020 16:23:19 +0800
+
+indicator-china-weather (3.0.3-0ubuntu2) focal; urgency=medium
+
+  * No-change rebuild for libgcc-s1 package name change.
+
+ -- Matthias Klose <doko@ubuntu.com>  Wed, 25 Mar 2020 19:06:56 +0100
 
 indicator-china-weather (3.0.3-0ubuntu1) eoan; urgency=medium
 
