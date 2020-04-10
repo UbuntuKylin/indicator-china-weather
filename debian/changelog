@@ -1,8 +1,9 @@
 indicator-china-weather (3.0.4-0ubuntu1) focal; urgency=medium
 
   * New bugfix release:
-    - Fix the 404 error. (LP: #1870951)
-    - Don't launch if locale is no zh_CN since it is not friendly to
+    - Fix the 404 error by set the default city and fix the wrong url.
+      (LP: #1870951)
+    - Don't start if locale is no chinese since it is not friendly to
       non-chinese users now.
   * debian:
     - Bump standards-versition to 4.5.0.

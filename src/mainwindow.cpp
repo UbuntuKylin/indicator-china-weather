@@ -319,18 +319,12 @@ void MainWindow::judgeSystemLanguage()
     QLocale locale;
     //获取系统语言环境
     if( locale.language() == QLocale::Chinese )   {
-        qDebug() << "中文系统";
+        qDebug() << "Chinese system";
         return;
     } else {
-        qDebug() << "非中文系统";
+        qDebug() << "Non-chinese system";
         exit(0);
     }
-
-//    if( locale.language() == QLocale::English )   {
-//        qDebug() << "English system" ;
-//    } else if( locale.language() == QLocale::Chinese ) {
-//        qDebug() << "中文系统";
-//    }
 }
 
 bool MainWindow::isFileExist(QString fullFileName)
