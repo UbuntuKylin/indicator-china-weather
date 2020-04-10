@@ -1,7 +1,8 @@
 Source: indicator-china-weather
 Section: utils
 Priority: optional
-Maintainer: lixiang <lixiang@kylinos.cn>
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: lixiang <lixiang@kylinos.cn>
 Uploaders: handsome_feng <jianfengli@ubuntukylin.com>
 Build-Depends: debhelper-compat (=12),
                qtbase5-dev (>= 5.1),
