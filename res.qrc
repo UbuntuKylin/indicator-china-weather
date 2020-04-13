@@ -216,6 +216,18 @@
         <file>res/sport_index.png</file>
         <file>res/trav_index.png</file>
         <file>res/move.gif</file>
+        <file>res/weather_icons/darkgrey/314.png</file>
+        <file>res/weather_icons/darkgrey/315.png</file>
+        <file>res/weather_icons/darkgrey/316.png</file>
+        <file>res/weather_icons/darkgrey/317.png</file>
+        <file>res/weather_icons/darkgrey/318.png</file>
+        <file>res/weather_icons/darkgrey/399.png</file>
+        <file>res/weather_icons/white/314.png</file>
+        <file>res/weather_icons/white/315.png</file>
+        <file>res/weather_icons/white/316.png</file>
+        <file>res/weather_icons/white/317.png</file>
+        <file>res/weather_icons/white/318.png</file>
+        <file>res/weather_icons/white/399.png</file>
     </qresource>
     <qresource prefix="/data">
         <file>data/china-city-list.csv</file>
