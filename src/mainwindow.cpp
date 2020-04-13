@@ -493,9 +493,12 @@ void MainWindow::createSettingDialog()
         if (removedDefault) {//刪除了默认城市后，重新设置了列表中第一个城市为默认城市后，从服务端获取该城市的天气
             this->startGetWeather();
         }
+
+        m_preferences->save();
     });
     connect(m_setttingDialog, &SettingDialog::requestRefreshWeatherById, this, [this] (const QString &id) {
         m_preferences->resetCurrentCityNameById(id);
+        m_preferences->save();
         this->refreshCityActions();
         this->startGetWeather();
     });
