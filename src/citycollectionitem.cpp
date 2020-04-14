@@ -40,7 +40,7 @@ citycollectionitem::~citycollectionitem()
 void citycollectionitem::setItemWidgetState(bool isShowNormal)
 {
 
-    if (isShowNormal){
+    if (isShowNormal) {
         ui->lbCityName->show();
         ui->lbTmp->show();
         ui->lbTmpUnit->show();
@@ -48,7 +48,7 @@ void citycollectionitem::setItemWidgetState(bool isShowNormal)
         ui->btnAddCity->hide();
         ui->lbAddCity->hide();
         ui->lbBackImage->setStyleSheet("QWidget{background-image:url(:/res/image/weather-clear.png);}");
-    }else{
+    } else {
         ui->lbCityName->hide();
         ui->lbTmp->hide();
         ui->lbTmpUnit->hide();

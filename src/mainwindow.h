@@ -73,7 +73,7 @@ private:
 
     Information *m_information;
 
-    QSystemTrayIcon *trayIcon = nullptr;
+    QSystemTrayIcon *m_trayIcon = nullptr;
 
     void checkSingle();
 
@@ -89,6 +89,7 @@ private:
     void onSearchBoxEdited();
 
     QString convertCodeToBackgroud(int code);
+    void convertCodeToTrayIcon(QString code);
 
     bool isPress;
     QPoint winPos;

@@ -122,6 +122,18 @@ void WeatherWorker::onWeatherDataReply()
             QJsonObject weatherObj = mainObj.value("weather").toObject();
             if (!weatherObj.isEmpty() && weatherObj.size() > 0) {
                 //处理实时天气
+                ObserveWeather m_observeweather;
+
+                QString id_msg = weatherObj.value("id").toString();
+                if (id_msg != ""){
+                    m_observeweather.id = id_msg;
+                }
+
+                QString location_msg = weatherObj.value("location").toString();
+                if (location_msg != ""){
+                    m_observeweather.city = location_msg;
+                }
+
                 QString now_msg = weatherObj.value("now").toString();
                 if (now_msg != ""){
                     QStringList strList = now_msg.split(",");
@@ -132,7 +144,6 @@ void WeatherWorker::onWeatherDataReply()
                         }
                     }
 
-                    ObserveWeather m_observeweather;
                     m_observeweather.tmp = strListSub.at(0);
                     m_observeweather.wind_sc = strListSub.at(1);
                     m_observeweather.cond_txt = strListSub.at(2);

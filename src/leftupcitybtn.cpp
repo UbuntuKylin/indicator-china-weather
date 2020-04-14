@@ -48,6 +48,10 @@ LeftUpCityBtn::LeftUpCityBtn(QWidget *parent) : QWidget(parent)
 
     m_addCityLabel->setText("北京");
     setStyleSheet("QWidget{background-color:rgba(255,0,0,1);}");
+
+    connect(this, &LeftUpCityBtn::requestSetCityName, this, [=] (QString cityName) {
+        m_addCityLabel->setText(cityName);
+    });
 }
 
 void LeftUpCityBtn::enterEvent(QEvent *event)

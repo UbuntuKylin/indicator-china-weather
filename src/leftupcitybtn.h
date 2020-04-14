@@ -30,6 +30,9 @@ private:
     QHBoxLayout *m_layout = nullptr;
     QPushButton *m_addCityBtn = nullptr;
     QLabel *m_addCityLabel = nullptr;
+
+signals:
+    void requestSetCityName(QString cityName);
 };
 
 #endif // LEFTUPCITYBTN_H

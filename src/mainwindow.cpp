@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->initControlQss();
 
     this->createTrayIcon();
-    connect(trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
+    connect(m_trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
 
     ui->widget_normal->show();
 
@@ -88,6 +88,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_searchView, &LeftUpSearchView::requestSetLifeStyle, this, [=] (LifeStyle lifestyle) {
         this->onSetLifeStyle(lifestyle);
     });
+    connect(m_searchView, SIGNAL(requestSetCityName(QString)), m_leftupcitybtn, SIGNAL(requestSetCityName(QString)) );
 
     //主窗口初始化,系统安装后第一次更改默认城市之前执行
     //CN101010100,beijing,北京,CN,China,中国
@@ -141,12 +142,67 @@ bool MainWindow::isFileExist(QString fullFileName)
     return false;
 }
 
+void MainWindow::initControlQss()
+{
+    ui->centralwidget->setStyleSheet("#centralwidget{border:1px solid rgba(255,255,255,0.05);border-radius:6px;background:rgba(19,19,20,0);}");
+    ui->centralwidget->setStyleSheet("#centralwidget{color:white;background-image:url(':/res/background/weather-clear.png');background-repeat:no-repeat;}");
+
+    ui->btnMinimize->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/min_normal_btn.png);}"
+                               "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/min_hover_btn.png);}"
+                               "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/min_pressed_btn.png);}");
+
+    ui->btnCancel->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_normal_btn.png);}"
+                               "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
+                               "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
+
+    ui->lbCurrTmp->setStyleSheet("QLabel{border:none;background:transparent;font-size:110px;color:rgba(255,255,255,1);line-height:80px;}");
+    ui->lbCurrTmp->setAlignment(Qt::AlignCenter);
+    ui->lbCurrTmp->setText("12");
+    ui->lbCurrTmpUnit->setStyleSheet("QLabel{border:none;background:transparent;font-size:20px;color:rgba(255,255,255,1);line-height:14px;}");
+    ui->lbCurrTmpUnit->setAlignment(Qt::AlignCenter);
+    ui->lbCurrTmpUnit->setText("℃");
+    ui->lbCurrWea->setStyleSheet("QLabel{border:none;background:transparent;font-size:20px;color:rgba(255,255,255,1);line-height:14px;}");
+    ui->lbCurrWea->setAlignment(Qt::AlignCenter);
+    ui->lbCurrWea->setText("多云");
+    ui->lbCurrHum->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;color:rgba(255,255,255,1);line-height:14px;}");
+    ui->lbCurrHum->setAlignment(Qt::AlignCenter);
+    ui->lbCurrHum->setText("湿度 98%   东南风 1级");
+
+
+    m_scrollarea = new QScrollArea(ui->centralwidget);
+    m_scrollarea->setFixedSize(858, 220);
+    m_scrollarea->move(4, 290);
+    m_scrollarea->setStyleSheet("QScrollArea{border:none;border-radius:4px;background:transparent;color:rgba(255,255,255,1);}");
+    m_scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+
+    m_scrollarea->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 2px 0px 2px;width:10px;background:rgba(255,255,255,0);border-radius:6px;}"
+                                                     "QScrollBar::up-arrow:vertical{height:0px;}"
+                                                     "QScrollBar::sub-line:vertical{border:0px solid;height:0px}"
+                                                     "QScrollBar::sub-page:vertical{background:transparent;}"
+                                                     "QScrollBar::handle:vertical{width:6px;background:rgba(255,255,255,0.2);border-radius:3px;}"
+                                                     "QScrollBar::handle:vertical:hover{width:6px;background:rgba(255,255,255,0.2);border-radius:3px;}"
+                                                     "QScrollBar::handle:vertical:pressed{width:6px;background:rgba(255,255,255,0.2);border-radius:3px;}"
+                                                     "QScrollBar::add-page:vertical{background:transparent;}"
+                                                     "QScrollBar::add-line:vertical{border:0px solid;height:0px}"
+                                                     "QScrollBar::down-arrow:vertical{height:0px;}");
+
+    m_scrollwidget = new QWidget(m_scrollarea);
+    m_scrollwidget->resize(858, 450);
+    m_scrollwidget->setStyleSheet("QWidget{border:none;border-radius:4px;background:transparent;color:rgba(255,255,255,1);}");
+    m_scrollarea->setWidget(m_scrollwidget);
+    m_scrollwidget->move(0, 0);
+
+    m_information = new Information(m_scrollwidget);
+    m_information->move(0,0);
+}
+
 void MainWindow::createTrayIcon()
 {
-    trayIcon = new QSystemTrayIcon(this);
-    trayIcon->setToolTip(QString(tr("Kylin Weather")));
-    trayIcon->setIcon(QIcon(":/res/control_icons/indicator-china-weather.png"));
-    trayIcon->setVisible(true);
+    m_trayIcon = new QSystemTrayIcon(this);
+    m_trayIcon->setToolTip(QString(tr("Kylin Weather")));
+    m_trayIcon->setIcon(QIcon(":/res/control_icons/indicator-china-weather.png"));
+    m_trayIcon->setVisible(true);
 }
 
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
@@ -191,15 +247,15 @@ void MainWindow::handleIconClicked()
     QRect deskDupRect = desktopWidget->availableGeometry(1);//获取可用桌面大小
     QRect screenDupRect = desktopWidget->screenGeometry(1);//获取设备屏幕大小
 
-//    qDebug()<<"                                                  ";
-//    qDebug()<<"trayIcon:"<<trayIcon->geometry();
-//    qDebug()<<"screenGeometry: "<<screenGeometry;
-//    qDebug()<<"availableGeometry: "<<availableGeometry;
+    //qDebug()<<"                                                  ";
+    //qDebug()<<"m_trayIcon:"<<m_trayIcon->geometry();
+    //qDebug()<<"screenGeometry: "<<screenGeometry;
+    //qDebug()<<"availableGeometry: "<<availableGeometry;
 
-//    qDebug()<<"deskMainRect: "<<deskMainRect;
-//    qDebug()<<"screenMainRect: "<<screenMainRect;
-//    qDebug()<<"deskDupRect: "<<deskDupRect;
-//    qDebug()<<"screenDupRect: "<<screenDupRect;
+    //qDebug()<<"deskMainRect: "<<deskMainRect;
+    //qDebug()<<"screenMainRect: "<<screenMainRect;
+    //qDebug()<<"deskDupRect: "<<deskDupRect;
+    //qDebug()<<"screenDupRect: "<<screenDupRect;
 
     int m = 46;
     int n = 0;
@@ -215,22 +271,22 @@ void MainWindow::handleIconClicked()
         } else if (n == 2){
             //任务栏在左侧
             this->move(m + d, screenMainRect.y() + screenMainRect.height() - this->height());
-//            if (screenGeometry.x() == 0){//主屏在左侧
-//                this->move(screenGeometry.width() - availableGeometry.width() + m + d, screenMainRect.y() + screenMainRect.height() - this->height());
-//            }else{//主屏在右侧
-//                this->move(screenGeometry.width() - availableGeometry.width() + m + d,screenDupRect.y() + screenDupRect.height() - this->height());
-//            }
+            //if (screenGeometry.x() == 0){//主屏在左侧
+            //    this->move(screenGeometry.width() - availableGeometry.width() + m + d, screenMainRect.y() + screenMainRect.height() - this->height());
+            //}else{//主屏在右侧
+            //    this->move(screenGeometry.width() - availableGeometry.width() + m + d,screenDupRect.y() + screenDupRect.height() - this->height());
+            //}
         } else if (n == 3){
             //任务栏在右侧
             this->move(screenMainRect.width() - this->width() - m - d, screenDupRect.y() + screenDupRect.height() - this->height());
-//            if (screenGeometry.x() == 0){//主屏在左侧
-//                this->move(screenMainRect.width() + screenDupRect.width() - this->width() - m - d, screenDupRect.y() + screenDupRect.height() - this->height());
-//            }else{//主屏在右侧
-//                this->move(availableGeometry.x() + availableGeometry.width() - this->width() - m - d, screenMainRect.y() + screenMainRect.height() - this->height());
-//            }
+            //if (screenGeometry.x() == 0){//主屏在左侧
+            //    this->move(screenMainRect.width() + screenDupRect.width() - this->width() - m - d, screenDupRect.y() + screenDupRect.height() - this->height());
+            //}else{//主屏在右侧
+            //    this->move(availableGeometry.x() + availableGeometry.width() - this->width() - m - d, screenMainRect.y() + screenMainRect.height() - this->height());
+            //}
         }
     } else if(screenGeometry.width() == availableGeometry.width() ){
-        if (trayIcon->geometry().y() > availableGeometry.height()/2){
+        if (m_trayIcon->geometry().y() > availableGeometry.height()/2){
             //任务栏在下侧
             this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + availableGeometry.height() - this->height() - d);
         }else{
@@ -238,7 +294,7 @@ void MainWindow::handleIconClicked()
             this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + screenGeometry.height() - availableGeometry.height() + d);
         }
     } else if (screenGeometry.height() == availableGeometry.height()){
-        if (trayIcon->geometry().x() > availableGeometry.width()/2){
+        if (m_trayIcon->geometry().x() > availableGeometry.width()/2){
             //任务栏在右侧
             this->move(availableGeometry.x() + availableGeometry.width() - this->width() - d, screenMainRect.y() + screenGeometry.height() - this->height());
         } else {
@@ -248,58 +304,7 @@ void MainWindow::handleIconClicked()
     }
 }
 
-void MainWindow::initControlQss()
-{
-    ui->centralwidget->setStyleSheet("#centralwidget{border:1px solid rgba(255,255,255,0.05);border-radius:6px;background:rgba(19,19,20,0);}");
-    ui->centralwidget->setStyleSheet("#centralwidget{color:white;background-image:url(':/res/background/weather-clear.png');background-repeat:no-repeat;}");
-
-    ui->btnMinimize->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/min_normal_btn.png);}"
-                               "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/min_hover_btn.png);}"
-                               "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/min_pressed_btn.png);}");
-
-    ui->btnCancel->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_normal_btn.png);}"
-                               "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
-                               "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
-
-    ui->lbCurrTmp->setStyleSheet("QLabel{border:none;background:transparent;font-size:110px;color:rgba(255,255,255,1);line-height:80px;}");
-    ui->lbCurrTmp->setText("12");
-    ui->lbCurrTmpUnit->setStyleSheet("QLabel{border:none;background:transparent;font-size:20px;color:rgba(255,255,255,1);line-height:14px;}");
-    ui->lbCurrTmpUnit->setText("℃");
-    ui->lbCurrWea->setStyleSheet("QLabel{border:none;background:transparent;font-size:20px;color:rgba(255,255,255,1);line-height:14px;}");
-    ui->lbCurrWea->setText("多云");
-    ui->lbCurrHum->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;color:rgba(255,255,255,1);line-height:14px;}");
-    ui->lbCurrHum->setAlignment(Qt::AlignCenter);
-    ui->lbCurrHum->setText("湿度 98%   东南风 1级");
-
-
-    m_scrollarea = new QScrollArea(ui->centralwidget);
-    m_scrollarea->setFixedSize(858, 220);
-    m_scrollarea->move(4, 290);
-    m_scrollarea->setStyleSheet("QScrollArea{border:none;border-radius:4px;background:transparent;color:rgba(255,255,255,1);}");
-    m_scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-
-    m_scrollarea->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 2px 0px 2px;width:10px;background:rgba(255,255,255,0);border-radius:6px;}"
-                                                     "QScrollBar::up-arrow:vertical{height:0px;}"
-                                                     "QScrollBar::sub-line:vertical{border:0px solid;height:0px}"
-                                                     "QScrollBar::sub-page:vertical{background:transparent;}"
-                                                     "QScrollBar::handle:vertical{width:6px;background:rgba(255,255,255,0.2);border-radius:3px;}"
-                                                     "QScrollBar::handle:vertical:hover{width:6px;background:rgba(255,255,255,0.2);border-radius:3px;}"
-                                                     "QScrollBar::handle:vertical:pressed{width:6px;background:rgba(255,255,255,0.2);border-radius:3px;}"
-                                                     "QScrollBar::add-page:vertical{background:transparent;}"
-                                                     "QScrollBar::add-line:vertical{border:0px solid;height:0px}"
-                                                     "QScrollBar::down-arrow:vertical{height:0px;}");
-
-    m_scrollwidget = new QWidget(m_scrollarea);
-    m_scrollwidget->resize(858, 450);
-    m_scrollwidget->setStyleSheet("QWidget{border:none;border-radius:4px;background:transparent;color:rgba(255,255,255,1);}");
-    m_scrollarea->setWidget(m_scrollwidget);
-    m_scrollwidget->move(0, 0);
-
-    m_information = new Information(m_scrollwidget);
-    m_information->move(0,0);
-}
-
+//更新主界面搜索列表
 void MainWindow::onSearchBoxEdited()
 {
     searchCityName();
@@ -313,7 +318,6 @@ void MainWindow::onSearchBoxEdited()
     m_searchView->setViewMode(QListView::IconMode); //设置Item图标显示
     m_searchView->setDragEnabled(false); //控件不允许拖动
 }
-
 void MainWindow::searchCityName()
 {
     const QString inputText = m_leftupsearchbox->text().trimmed();
@@ -345,22 +349,27 @@ void MainWindow::searchCityName()
     }
 }
 
+//设置生活指数
 void MainWindow::onSetLifeStyle(LifeStyle m_lifestyle)
 {
     m_information->onSetLifeStyle(m_lifestyle);
 }
 
+//设置预报天气
 void MainWindow::onSetForecastWeather(ForecastWeather m_forecastweather)
 {
     m_information->onSetForecastWeather(m_forecastweather);
 }
 
+//设置实况天气
 void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
 {
+    //主界面UI变化
     m_searchView->hide();
     m_leftupsearchbox->setText("");
 
     int code  = m_observeweather.cond_code.toInt();
+    convertCodeToTrayIcon(m_observeweather.cond_code);
     QString picStr = convertCodeToBackgroud(code);
     QString picQss = "#centralwidget{color:white;background-image:url(" + picStr + ");background-repeat:no-repeat;}";
     ui->centralwidget->setStyleSheet(picQss);
@@ -371,8 +380,48 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
     ui->lbCurrTmp->setText(m_observeweather.tmp);
 
     ui->lbCurrWea->setText(m_observeweather.cond_txt);
+
+    emit m_leftupcitybtn->requestSetCityName(m_observeweather.city);
+
+    //更新保存城市列表文件china-weather-data
+    QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+    QString collectPath = homePath.at(0) + "/.config/china-weather-data";
+
+    QFile readFile(collectPath);
+    readFile.open(QIODevice::ReadOnly | QIODevice::Text);
+    QByteArray cityId = readFile.readAll();
+    QString readCityId = (QString(cityId));
+    readFile.close();
+
+    QStringList readCityIdList = readCityId.split(",");
+    readCityIdList.replace(0, m_observeweather.id);
+
+    QString writeCityId = "";
+    foreach (QString strCity, readCityIdList) {
+        if (strCity != ""){
+            writeCityId.append(strCity);
+            writeCityId.append(",");
+        }
+    }
+    QFile writeFile(collectPath);
+    writeFile.open(QIODevice::WriteOnly | QIODevice::Text);
+    writeFile.write(writeCityId.toUtf8().data());
+    writeFile.close();
 }
 
+//根据天气情况设置托盘图标
+void MainWindow::convertCodeToTrayIcon(QString code)
+{
+    if (code.isEmpty()) {
+        m_trayIcon->setIcon(QIcon(":/res/control_icons/indicator-china-weather.png"));
+        return;
+    }
+
+    QString strIcon = QString(":/res/weather_icons/white/%1.png").arg(code);
+    m_trayIcon->setIcon(QIcon(strIcon));
+}
+
+//根据天气情况设置主界面背景贴图
 QString MainWindow::convertCodeToBackgroud(int code)
 {
     if (code == 100 || code == 900) {

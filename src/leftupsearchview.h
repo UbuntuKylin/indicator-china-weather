@@ -23,6 +23,7 @@ signals:
     void requestSetObserveWeather(ObserveWeather observerdata);
     void requestSetForecastWeather(ForecastWeather forecastweather);
     void requestSetLifeStyle(LifeStyle lifestyle);
+    void requestSetCityName(QString cityName);
 
 private:
     WeatherWorker *m_weatherWorker = nullptr;
