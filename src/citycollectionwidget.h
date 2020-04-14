@@ -9,12 +9,7 @@
 #include <QDebug>
 #include <QObject>
 
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkRequest>
-#include <QtNetwork/QNetworkReply>
-#include <QtNetwork/QNetworkConfigurationManager>
-
-#include "data.h"
+#include <unistd.h>
 
 class CityAddition;
 class citycollectionitem;
@@ -32,10 +27,8 @@ public:
     ~CityCollectionWidget();
 
 public slots:
-    void onWeatherDataRequest(const QString &cityId);
-    void onWeatherDataReply();
-
     void onRequestAddNewCity(QString cityId);
+    void onRequestDeleteCity(QString cityId);
 
 protected:
     void mousePressEvent(QMouseEvent *event);
@@ -53,21 +46,16 @@ private:
 
     CityAddition *m_cityaddition;
 
-    QNetworkAccessManager *m_networkManager = nullptr;
-
     void writeCollectedCity(QString cityId);
     QString readCollectedCity();
 
     void setCurrentCity();
     void setCollectCity();
-    void showCollectCity(int x, int y, bool isShowNormal);
+    void showCollectCity(int x, int y, bool isShowNormal, QString cityId);
 
     bool isPress;
     QPoint winPos;
     QPoint dragPos;
-
-signals:
-    void needSetObserveWeather(ObserveWeather observeweather);
 };
 
 #endif // CITYCOLLECTION_H

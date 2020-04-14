@@ -56,7 +56,6 @@ void CityAddSearchView::mouseReleaseEvent(QMouseEvent *e)
         QVariant variant = sourceIndex.data(Qt::UserRole);
         ItemData data = variant.value<ItemData>();
         qDebug() << "Index : " << sourceIndex.row();
-        qDebug() << "cityId : "<< data.cityId << " city : " << data.cityName<< " province : " <<data.cityProvince;
         emit requestClearLineEdit();
         emit requestAddNewCity(data.cityId);
     }

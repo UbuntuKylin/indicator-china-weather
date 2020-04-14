@@ -51,7 +51,6 @@ signals:
     void setLifeStyle();
     void setLocationData();
     void requestSetObserveWeather(ObserveWeather observeweather);
-    void needSetObserveWeather(ObserveWeather observeweather);
     void requestSetForecastWeather(ForecastWeather forecastweather);
     void requestSetLifeStyle(LifeStyle lifestyle);
 };

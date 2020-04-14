@@ -43,7 +43,6 @@ WeatherWorker::~WeatherWorker()
 
 void WeatherWorker::onWeatherDataRequest(const QString &cityId)
 {
-    qDebug()<<"cityId: "<<cityId;
     if (cityId.isEmpty()) {
         return;
     }
