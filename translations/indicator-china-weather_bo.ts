@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="bo_CN">
+<TS version="2.1" language="bo_CN">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -100,22 +100,22 @@
 <context>
     <name>CityWidget</name>
     <message>
-        <location filename="../src/citywidget.cpp" line="62"/>
+        <location filename="../src/citywidget.cpp" line="64"/>
         <source>Add City</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/citywidget.cpp" line="170"/>
+        <location filename="../src/citywidget.cpp" line="172"/>
         <source>Only 10 cities can be added at most!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/citywidget.cpp" line="176"/>
+        <location filename="../src/citywidget.cpp" line="178"/>
         <source>The city already exists!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/citywidget.cpp" line="188"/>
+        <location filename="../src/citywidget.cpp" line="190"/>
         <source>At least one city needs to be preserved!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -182,104 +182,104 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="100"/>
-        <location filename="../src/mainwindow.cpp" line="409"/>
+        <location filename="../src/mainwindow.cpp" line="104"/>
+        <location filename="../src/mainwindow.cpp" line="466"/>
         <source>Kylin Weather</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="107"/>
+        <location filename="../src/mainwindow.cpp" line="111"/>
         <source>Refresh time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="142"/>
+        <location filename="../src/mainwindow.cpp" line="157"/>
         <source>Network not connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="146"/>
+        <location filename="../src/mainwindow.cpp" line="161"/>
         <source>Getting data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="180"/>
+        <location filename="../src/mainwindow.cpp" line="214"/>
         <source>Incorrect access address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="183"/>
+        <location filename="../src/mainwindow.cpp" line="217"/>
         <source>Network error code:%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="289"/>
+        <location filename="../src/mainwindow.cpp" line="346"/>
         <source>Refresh time:Just updated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="293"/>
+        <location filename="../src/mainwindow.cpp" line="350"/>
         <source>Refresh time:%1 minute ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="296"/>
+        <location filename="../src/mainwindow.cpp" line="353"/>
         <source>Refresh time:%1 minutes ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="328"/>
+        <location filename="../src/mainwindow.cpp" line="385"/>
         <source>City</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="353"/>
+        <location filename="../src/mainwindow.cpp" line="410"/>
         <source>Release time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="362"/>
+        <location filename="../src/mainwindow.cpp" line="419"/>
         <source>Weather Forecast</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="373"/>
+        <location filename="../src/mainwindow.cpp" line="430"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="375"/>
+        <location filename="../src/mainwindow.cpp" line="432"/>
         <source>Kylin Weather - About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="377"/>
+        <location filename="../src/mainwindow.cpp" line="434"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="483"/>
-        <source>Temperature:%1ËC</source>
+        <location filename="../src/mainwindow.cpp" line="544"/>
+        <source>Temperature:%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="484"/>
+        <location filename="../src/mainwindow.cpp" line="545"/>
         <source>Relative humidity:%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="486"/>
-        <location filename="../src/mainwindow.cpp" line="489"/>
+        <location filename="../src/mainwindow.cpp" line="547"/>
+        <location filename="../src/mainwindow.cpp" line="550"/>
         <source>Air quality:%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="486"/>
+        <location filename="../src/mainwindow.cpp" line="547"/>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="491"/>
+        <location filename="../src/mainwindow.cpp" line="552"/>
         <source>Release time:%1</source>
         <translation type="unfinished"></translation>
     </message>
