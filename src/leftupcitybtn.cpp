@@ -78,6 +78,7 @@ void LeftUpCityBtn::mousePressEvent(QMouseEvent *event)
     m_addCityBtn->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(':/res/control_icons/add_pressed_btn.png');}");
 
     CityCollectionWidget *m_citycollectionwidget = new CityCollectionWidget();
+    connect(m_citycollectionwidget, &CityCollectionWidget::sendCurrentCityId, this, &LeftUpCityBtn::sendCurrentCityId);
     m_citycollectionwidget->show();
 }
 

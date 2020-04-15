@@ -25,6 +25,7 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkConfigurationManager>
+#include <QHostInfo>
 
 #include "data.h"
 
@@ -40,6 +41,9 @@ public slots:
     void onWeatherDataRequest(const QString &cityId);
     void onWeatherDataReply();
 
+    void networkLookedUp(const QHostInfo &host);
+    void onResponseTestNetwork();
+
 private:
     QNetworkAccessManager *m_networkManager = nullptr;
 
@@ -53,6 +57,9 @@ signals:
     void requestSetObserveWeather(ObserveWeather observeweather);
     void requestSetForecastWeather(ForecastWeather forecastweather);
     void requestSetLifeStyle(LifeStyle lifestyle);
+
+    void requestTestNetwork();
+    void nofityNetworkStatus(const QString &status);
 };
 
 #endif // WEATHERWORKER_H

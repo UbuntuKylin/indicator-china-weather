@@ -8,6 +8,7 @@
 #include "leftupsearchdelegate.h"
 #include "informationwidget.h"
 #include "locationworker.h"
+#include "weathermanager.h"
 #include "data.h"
 
 #include <unistd.h>
@@ -63,6 +64,7 @@ private:
 
     LeftUpCityBtn *m_leftupcitybtn = nullptr;
     LeftUpSearchBox *m_leftupsearchbox = nullptr;
+    WeatherManager* m_weatherManager = nullptr;
 
     LeftUpSearchView *m_searchView = nullptr;
     LeftUpSearchDelegate *m_delegate = nullptr;

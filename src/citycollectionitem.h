@@ -23,7 +23,7 @@ public:
     explicit citycollectionitem(QWidget *parent = nullptr);
     ~citycollectionitem();
 
-    void setItemWidgetState(bool isShowNormal);
+    void setItemWidgetState(bool isShowNormal, bool isCurrentCity);
     void setCurrentWeather(QString cityId);
     QString convertCodeToBackgroud(int code);
 
@@ -47,6 +47,7 @@ private:
     QNetworkAccessManager *m_networkManager = nullptr;
 
 signals:
+    void changeCurrentCity(QString cityId);
     void showCityAddWiget();
     void requestDeleteCity(QString cityId);
 };

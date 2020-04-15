@@ -9,6 +9,8 @@
 #include <QPushButton>
 #include <QDebug>
 
+#include "data.h"
+
 class LeftUpCityBtn : public QWidget
 {
     Q_OBJECT
@@ -17,6 +19,7 @@ public:
     explicit LeftUpCityBtn(QWidget *parent=0);
 
 signals:
+    void sendCurrentCityId(QString id);
 
 protected:
     void enterEvent(QEvent *event) Q_DECL_OVERRIDE;

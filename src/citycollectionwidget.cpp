@@ -2,7 +2,6 @@
 #include "ui_citycollectionwidget.h"
 #include "cityaddwidget.h"
 #include "citycollectionitem.h"
-#include "data.h"
 
 #include <QFile>
 #include <QApplication>
@@ -64,7 +63,7 @@ void CityCollectionWidget::setCurrentCity()
 {
     citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
     m_currentcity->move(35, 81);
-    m_currentcity->setItemWidgetState(true);
+    m_currentcity->setItemWidgetState(true, true);
     m_currentcity->show();
 
     QString strCurrCity = readCollectedCity();
@@ -106,11 +105,12 @@ void CityCollectionWidget::showCollectCity(int x, int y, bool isShowNormal, QStr
 {
     citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
     m_currentcity->move(x, y); //m_currentcity->move(35 + j*170, 242 + i*100);
-    m_currentcity->setItemWidgetState(isShowNormal);
+    m_currentcity->setItemWidgetState(isShowNormal, false);
     m_currentcity->show();
     m_currentcity->setCurrentWeather(cityId);
     connect(m_currentcity, SIGNAL(showCityAddWiget()), this, SLOT(onShowCityAddWiget()) );
     connect(m_currentcity, SIGNAL(requestDeleteCity(QString)), this, SLOT(onRequestDeleteCity(QString)) );
+    connect(m_currentcity, SIGNAL(changeCurrentCity(QString)), this, SLOT(onChangeCurrentCity(QString)) );
 }
 
 void CityCollectionWidget::onRequestAddNewCity(QString cityId)
@@ -133,6 +133,12 @@ void CityCollectionWidget::onRequestAddNewCity(QString cityId)
         }
     }
 
+    QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
+    for(int i = 0;i < cityItemList.size(); i ++){
+        citycollectionitem *cityItem = cityItemList.at(i);
+        delete cityItem;
+    }
+
     writeCollectedCity(newStrCityId);
     setCollectCity();
 }
@@ -141,15 +147,23 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
 {
     qDebug()<<"debug: city id = "<<cityId;
 
+    QString strSavedCity = readCollectedCity();
+    QStringList listSavedCityId = strSavedCity.split(",");
+
+    if (listSavedCityId.size() == 2) {
+        return; //说明收藏窗口只有当前城市，不能删掉当前城市
+    }
+
     QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
     for(int i = 0;i < cityItemList.size(); i ++){
         citycollectionitem *cityItem = cityItemList.at(i);
-        qDebug()<<"debug: cityItem = "<<cityItem->m_city_id;
+        if (i == 0) {
+            if (cityItem->m_city_id == cityId) { //说明删除的是当前城市，以第一个收藏城市代替
+                emit sendCurrentCityId(listSavedCityId.at(1)); //发信号更新主界面
+            }
+        }
         delete cityItem;
     }
-
-    QString strSavedCity = readCollectedCity();
-    QStringList listSavedCityId = strSavedCity.split(",");
 
     bool isflag = listSavedCityId.removeOne(cityId);
     if (isflag) {
@@ -168,6 +182,42 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
     } else {
         qDebug()<<"delete one element from collected city list failed";
     }
+}
+
+void CityCollectionWidget::onChangeCurrentCity(QString cityId)
+{
+    qDebug()<<"debug: city id = "<<cityId;
+    emit sendCurrentCityId(cityId); //发信号更新主界面
+
+    QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
+    for(int i = 0;i < cityItemList.size(); i ++){
+        citycollectionitem *cityItem = cityItemList.at(i);
+        delete cityItem;
+    }
+
+    QString strSavedCity = readCollectedCity();
+    QStringList listSavedCityId = strSavedCity.split(",");
+
+    QString firstId = listSavedCityId.at(0);
+    listSavedCityId.replace(0, cityId);
+
+    for (int i=1;i<listSavedCityId.size();i++){
+        if (cityId == listSavedCityId.at(i)){
+            listSavedCityId.replace(i, firstId);
+        }
+    }
+
+    QString newStrCityId = "";
+    foreach(QString str, listSavedCityId){
+        if (str != ""){
+            newStrCityId.append(str);
+            newStrCityId.append(",");
+        }
+    }
+
+    writeCollectedCity(newStrCityId);
+    setCurrentCity();
+    setCollectCity();
 }
 
 void CityCollectionWidget::writeCollectedCity(QString cityId)

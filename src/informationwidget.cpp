@@ -12,14 +12,14 @@ Information::Information(QWidget *parent) :
 
     this->editQssString();
     this->initControlQss();
-    this->initControlData();
+    //this->initControlData();
 
     m_weatherworker = new WeatherWorker(this);
-//    connect(m_weatherworker, SIGNAL(requestSetForecastWeather(ForecastWeather)), this, SLOT(onSetForecastWeather(ForecastWeather)) );
+    //connect(m_weatherworker, SIGNAL(requestSetForecastWeather(ForecastWeather)), this, SLOT(onSetForecastWeather(ForecastWeather)) );
 
-//    connect(m_weatherworker, &WeatherWorker::requestSetForecastWeather, this, [=] (ForecastWeather forecastweather) {
-//        this->onSetForecastWeather(forecastweather);
-//    });
+    //connect(m_weatherworker, &WeatherWorker::requestSetForecastWeather, this, [=] (ForecastWeather forecastweather) {
+    //    this->onSetForecastWeather(forecastweather);
+    //});
 }
 
 Information::~Information()

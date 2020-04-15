@@ -45,21 +45,24 @@ MainWindow::MainWindow(QWidget *parent) :
     setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
     this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
 
-    this->initControlQss();
+    this->initControlQss(); //设置其他控件样式
 
-    this->createTrayIcon();
+    this->createTrayIcon(); //创建托盘图标
     connect(m_trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
 
     ui->widget_normal->show();
 
+    //左上角按钮
     m_leftupcitybtn = new LeftUpCityBtn(ui->widget_normal);
     m_leftupcitybtn->move(20, 22);
     m_leftupcitybtn->show();
 
+    //左上角搜索框
     m_leftupsearchbox = new LeftUpSearchBox(ui->widget_normal);
     m_leftupsearchbox->move(116, 17);
     m_leftupsearchbox->show();
 
+    //主界面搜索列表
     m_searchView = new LeftUpSearchView(ui->widget_normal);
     m_delegate = new LeftUpSearchDelegate(m_searchView);
     m_proxyModel = new QSortFilterProxyModel(m_searchView);
@@ -77,8 +80,6 @@ MainWindow::MainWindow(QWidget *parent) :
         }
     });
 
-    m_locationWorker = new LocationWorker(this);
-
     connect(m_searchView, &LeftUpSearchView::requestSetObserveWeather, this, [=] (ObserveWeather observerdata) {
         this->onSetObserveWeather(observerdata);
     });
@@ -90,27 +91,49 @@ MainWindow::MainWindow(QWidget *parent) :
     });
     connect(m_searchView, SIGNAL(requestSetCityName(QString)), m_leftupcitybtn, SIGNAL(requestSetCityName(QString)) );
 
-    //主窗口初始化,系统安装后第一次更改默认城市之前执行
-    //CN101010100,beijing,北京,CN,China,中国
-    QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
-    QString collectPath = homePath.at(0) + "/.config/china-weather-data";
-    if (!isFileExist(collectPath)){
-        m_searchView->requestWeatherData("101010100");
+    connect(m_leftupcitybtn, &LeftUpCityBtn::sendCurrentCityId, this, [=] (QString id) {
+        m_searchView->requestWeatherData(id);
+    });
 
-        QFile file(collectPath);
-        file.open(QIODevice::WriteOnly | QIODevice::Text);
-        file.write("101010100,");
-        file.close();
-    } else {
-        QFile file(collectPath);
-        file.open(QIODevice::ReadOnly | QIODevice::Text);
-        QByteArray cityId = file.readAll();
-        QString readCityId = (QString(cityId));
-        file.close();
+    m_locationWorker = new LocationWorker(this);
+    m_weatherManager = new WeatherManager(this);
 
-        QStringList listCityId = readCityId.split(",");
-        m_searchView->requestWeatherData(listCityId.at(0));
-    }
+    //开始测试网络情况
+    m_weatherManager->startTestNetwork();
+
+    //根据获取到网络探测的结果分别处理
+    connect(m_weatherManager, &WeatherManager::nofityNetworkStatus, this, [=] (const QString &status) {
+        if (status == "OK") {
+            qDebug()<<"debug: 网络正常";
+
+            //CN101010100,beijing,北京,CN,China,中国
+            QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+            QString collectPath = homePath.at(0) + "/.config/china-weather-data";
+            if (!isFileExist(collectPath)){ //文件不存在时默认设置为北京
+                m_searchView->requestWeatherData("101010100");
+
+                QFile file(collectPath);
+                file.open(QIODevice::WriteOnly | QIODevice::Text);
+                file.write("101010100,");
+                file.close();
+            } else {//文件存在时根据保存的默认城市进行设置
+                QFile file(collectPath);
+                file.open(QIODevice::ReadOnly | QIODevice::Text);
+                QByteArray cityId = file.readAll();
+                QString readCityId = (QString(cityId));
+                file.close();
+
+                QStringList listCityId = readCityId.split(",");
+                m_searchView->requestWeatherData(listCityId.at(0));
+            }
+        } else {
+            if (status == "Fail") {//物理网线未连接
+                qDebug()<<"debug: 物理网线未连接";
+            } else {//互联网无法ping通
+                qDebug()<<"debug: 互联网无法ping通";
+            }
+        }
+    });
 }
 
 MainWindow::~MainWindow()
@@ -157,16 +180,16 @@ void MainWindow::initControlQss()
 
     ui->lbCurrTmp->setStyleSheet("QLabel{border:none;background:transparent;font-size:110px;color:rgba(255,255,255,1);line-height:80px;}");
     ui->lbCurrTmp->setAlignment(Qt::AlignCenter);
-    ui->lbCurrTmp->setText("12");
+    //ui->lbCurrTmp->setText("12");
     ui->lbCurrTmpUnit->setStyleSheet("QLabel{border:none;background:transparent;font-size:20px;color:rgba(255,255,255,1);line-height:14px;}");
     ui->lbCurrTmpUnit->setAlignment(Qt::AlignCenter);
-    ui->lbCurrTmpUnit->setText("℃");
+    //ui->lbCurrTmpUnit->setText("℃");
     ui->lbCurrWea->setStyleSheet("QLabel{border:none;background:transparent;font-size:20px;color:rgba(255,255,255,1);line-height:14px;}");
     ui->lbCurrWea->setAlignment(Qt::AlignCenter);
-    ui->lbCurrWea->setText("多云");
+    //ui->lbCurrWea->setText("多云");
     ui->lbCurrHum->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;color:rgba(255,255,255,1);line-height:14px;}");
     ui->lbCurrHum->setAlignment(Qt::AlignCenter);
-    ui->lbCurrHum->setText("湿度 98%   东南风 1级");
+    //ui->lbCurrHum->setText("湿度 98%   东南风 1级");
 
 
     m_scrollarea = new QScrollArea(ui->centralwidget);
@@ -364,6 +387,7 @@ void MainWindow::onSetForecastWeather(ForecastWeather m_forecastweather)
 //设置实况天气
 void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
 {
+    qDebug()<<"debug: ccccccccccccccccccccccccccc";
     //主界面UI变化
     m_searchView->hide();
     m_leftupsearchbox->setText("");
@@ -373,6 +397,8 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
     QString picStr = convertCodeToBackgroud(code);
     QString picQss = "#centralwidget{color:white;background-image:url(" + picStr + ");background-repeat:no-repeat;}";
     ui->centralwidget->setStyleSheet(picQss);
+
+    ui->lbCurrTmpUnit->setText("℃");
 
     QString strHum = "湿度 " + m_observeweather.hum + "%   " + m_observeweather.wind_dir + " " + m_observeweather.wind_sc + "级";
     ui->lbCurrHum->setText(strHum);

@@ -70,28 +70,33 @@ bool citycollectionitem::eventFilter(QObject *obj, QEvent *event)
     return QWidget::eventFilter(obj,event);
 }
 
-void citycollectionitem::setItemWidgetState(bool isShowNormal)
+void citycollectionitem::setItemWidgetState(bool isShowNormal, bool isCurrentCity)
 {
-
-    if (isShowNormal) {
+    if (isCurrentCity) { //如果是当前城市
         ui->lbCityName->show();
         ui->lbTmp->show();
         ui->lbTmpUnit->show();
         ui->lbwea->show();
-        ui->btnAddCity->hide();
         ui->lbAddCity->hide();
-
-        this->is_normal_item = true;
-    } else {
-        ui->lbCityName->hide();
-        ui->lbTmp->hide();
-        ui->lbTmpUnit->hide();
-        ui->lbwea->hide();
+        ui->btnAddCity->hide();
+    } else { //如果不是当前城市
         ui->btnAddCity->show();
-        ui->lbAddCity->show();
-
-        this->is_normal_item = false;
+        if (isShowNormal) {
+            ui->lbCityName->show();
+            ui->lbTmp->show();
+            ui->lbTmpUnit->show();
+            ui->lbwea->show();
+            ui->lbAddCity->hide();
+        } else {
+            ui->lbCityName->hide();
+            ui->lbTmp->hide();
+            ui->lbTmpUnit->hide();
+            ui->lbwea->hide();
+            ui->lbAddCity->show();
+        }
     }
+
+    this->is_normal_item = isShowNormal;
 }
 
 void citycollectionitem::setCurrentWeather(QString cityId)
@@ -252,7 +257,13 @@ QString citycollectionitem::convertCodeToBackgroud(int code)
 
 void citycollectionitem::on_btnAddCity_clicked()
 {
-    emit showCityAddWiget();
+    if (this->is_normal_item) {
+        //将该收藏城市设置为当前城市
+        emit changeCurrentCity(this->m_city_id);
+    } else {
+        //显示添加收藏城市界面
+        emit showCityAddWiget();
+    }
 }
 
 void citycollectionitem::on_btnDelete_clicked()

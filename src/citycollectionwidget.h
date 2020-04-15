@@ -11,6 +11,8 @@
 
 #include <unistd.h>
 
+#include "data.h"
+
 class CityAddition;
 class citycollectionitem;
 
@@ -29,6 +31,10 @@ public:
 public slots:
     void onRequestAddNewCity(QString cityId);
     void onRequestDeleteCity(QString cityId);
+    void onChangeCurrentCity(QString cityId);
+
+signals:
+    void sendCurrentCityId(QString id);
 
 protected:
     void mousePressEvent(QMouseEvent *event);

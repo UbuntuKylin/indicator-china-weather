@@ -34,6 +34,8 @@ WeatherWorker::WeatherWorker(QObject *parent) :
     QObject(parent)
 {
     m_networkManager = new QNetworkAccessManager(this);
+
+    connect(this, &WeatherWorker::requestTestNetwork, this, &WeatherWorker::onResponseTestNetwork);
 }
 
 WeatherWorker::~WeatherWorker()
@@ -41,6 +43,31 @@ WeatherWorker::~WeatherWorker()
     m_networkManager->deleteLater();
 }
 
+void WeatherWorker::onResponseTestNetwork()
+{
+    QNetworkConfigurationManager mgr;
+    if (mgr.isOnline()) {//判断网络是否有连接，不一定能上网，如果连接了，则开始检查互联网是否可以ping通
+        //http://service.ubuntukylin.com:8001/weather/pingnetwork/
+        QHostInfo::lookupHost("www.baidu.com", this, SLOT(networkLookedUp(QHostInfo)));
+    }
+    else {
+        emit nofityNetworkStatus("Fail");//物理网线未连接
+    }
+}
+
+void WeatherWorker::networkLookedUp(const QHostInfo &host)
+{
+    if(host.error() != QHostInfo::NoError) {
+        //qDebug() << "test network failed, errorCode:" << host.error();
+        emit this->nofityNetworkStatus(host.errorString());
+    }
+    else {
+        //qDebug() << "test network success, the server's ip:" << host.addresses().first().toString();
+        emit this->nofityNetworkStatus("OK");
+    }
+}
+
+//利用连接请求网络数据
 void WeatherWorker::onWeatherDataRequest(const QString &cityId)
 {
     if (cityId.isEmpty()) {
@@ -54,6 +81,8 @@ void WeatherWorker::onWeatherDataRequest(const QString &cityId)
     connect(reply, &QNetworkReply::finished, this, &WeatherWorker::onWeatherDataReply );
 }
 
+
+//处理返回的网络数据
 void WeatherWorker::onWeatherDataReply()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
