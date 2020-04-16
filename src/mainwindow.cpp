@@ -387,7 +387,6 @@ void MainWindow::onSetForecastWeather(ForecastWeather m_forecastweather)
 //设置实况天气
 void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
 {
-    qDebug()<<"debug: ccccccccccccccccccccccccccc";
     //主界面UI变化
     m_searchView->hide();
     m_leftupsearchbox->setText("");

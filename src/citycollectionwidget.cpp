@@ -115,12 +115,54 @@ void CityCollectionWidget::showCollectCity(int x, int y, bool isShowNormal, QStr
 
 void CityCollectionWidget::onRequestAddNewCity(QString cityId)
 {
-    m_cityaddition->hide(); //隐藏添加收藏城市窗口
+    m_cityaddition->hide(); //隐藏 搜索及添加城市窗口
 
+    //第一步 移动控件
+    QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
+
+    int itemNum = cityItemList.size();
+
+    citycollectionitem *lastCityItem = cityItemList.at(itemNum-1); //删除最后一项
+    delete lastCityItem;
+    itemNum -= 1;
+
+    if (itemNum <= 1) {
+        showCollectCity(35, 242, true, cityId); //添加新增加的收藏城市
+        showCollectCity(35, 242 + 100, false, ""); //添加最后一项
+    }
+
+    if (itemNum > 1 && itemNum < 9) {
+        int row(0), column(0);
+        for (int i = 1;i < itemNum; i ++) {
+            column += 1;
+            if (column == 3) {
+                column = 0;
+                row += 1;
+            }
+        }
+        showCollectCity(35 + column*170, 242 + row*100, true, cityId); //添加新增加的收藏城市
+
+        column += 1;
+        if (column == 3) {
+            column = 0;
+            row += 1;
+        }
+        showCollectCity(35 + column*170, 242 + row*100, false, ""); //添加最后一项
+    }
+
+    if (itemNum >= 9) {
+        QList<citycollectionitem *> m_cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
+        citycollectionitem *m_lastCityItem = m_cityItemList.at(m_cityItemList.size() - 1); //删除最后一项
+        delete m_lastCityItem;
+        showCollectCity(35 + 1*170, 242 + 2*100, true, cityId); //添加新增加的收藏城市
+        showCollectCity(35 + 2*170, 242 + 2*100, false, ""); //添加最后一项
+    }
+
+    //第二步 将新增城市写入列表
     QString strSavedCity = readCollectedCity();
     QStringList listSavedCityId = strSavedCity.split(",");
-    if (listSavedCityId.size() == 10){ //最后一项为空字符串
-        listSavedCityId.replace(8, cityId); //若收藏城市已经有8个，替换最后一个
+    if (listSavedCityId.size() == 10){ //包含最后一项为空字符串的项
+        listSavedCityId.replace(8, cityId); //收藏城市已经有8个，替换最后一个收藏城市
     }else {
         listSavedCityId.append(cityId); //若收藏城市未满8个,将新添加的城市加到最后
     }
@@ -133,14 +175,7 @@ void CityCollectionWidget::onRequestAddNewCity(QString cityId)
         }
     }
 
-    QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
-    for(int i = 0;i < cityItemList.size(); i ++){
-        citycollectionitem *cityItem = cityItemList.at(i);
-        delete cityItem;
-    }
-
     writeCollectedCity(newStrCityId);
-    setCollectCity();
 }
 
 void CityCollectionWidget::onRequestDeleteCity(QString cityId)
@@ -150,21 +185,46 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
     QString strSavedCity = readCollectedCity();
     QStringList listSavedCityId = strSavedCity.split(",");
 
+    //若收藏窗口只有当前城市，不能删掉当前城市
     if (listSavedCityId.size() == 2) {
-        return; //说明收藏窗口只有当前城市，不能删掉当前城市
+        return;
     }
 
+    //删掉对应的城市
     QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
     for(int i = 0;i < cityItemList.size(); i ++){
         citycollectionitem *cityItem = cityItemList.at(i);
         if (i == 0) {
             if (cityItem->m_city_id == cityId) { //说明删除的是当前城市，以第一个收藏城市代替
                 emit sendCurrentCityId(listSavedCityId.at(1)); //发信号更新主界面
+                delete cityItem;
+            }
+        } else {
+            if (cityItem->m_city_id == cityId) {
+                delete cityItem;
             }
         }
-        delete cityItem;
     }
 
+    //重新排列现有收藏城市
+    int row(0), column(0);
+    QList<citycollectionitem *> newCityItemList = ui->backwidget->findChildren<citycollectionitem *>();
+    for(int i = 0;i < newCityItemList.size(); i ++){
+        citycollectionitem *newCityItem = newCityItemList.at(i);
+        if (i == 0) {
+            newCityItem->move(35, 81); //当前城市
+            newCityItem->setItemWidgetState(true, true);
+        } else {
+            newCityItem->move(35 + column*170, 242 + row*100); //收藏城市
+            column += 1;
+            if (column == 3) {
+                column = 0;
+                row += 1;
+            }
+        }
+    }
+
+    //更新城市列表
     bool isflag = listSavedCityId.removeOne(cityId);
     if (isflag) {
         qDebug()<<"delete one element from collected city list successfully";
@@ -175,10 +235,7 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
                 newStrCityId.append(",");
             }
         }
-
         writeCollectedCity(newStrCityId);
-        setCurrentCity();
-        setCollectCity();
     } else {
         qDebug()<<"delete one element from collected city list failed";
     }
@@ -186,15 +243,40 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
 
 void CityCollectionWidget::onChangeCurrentCity(QString cityId)
 {
-    qDebug()<<"debug: city id = "<<cityId;
     emit sendCurrentCityId(cityId); //发信号更新主界面
 
+    //交换城市item
     QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
-    for(int i = 0;i < cityItemList.size(); i ++){
+    citycollectionitem *firstCityItem = cityItemList.at(0);
+    firstCityItem->setItemWidgetState(true, false);
+    for(int i = 1;i < cityItemList.size(); i ++){
         citycollectionitem *cityItem = cityItemList.at(i);
-        delete cityItem;
+        if (cityItem->m_city_id == cityId) {
+            citycollectionitem *swapCityItem = cityItemList.at(i);
+            swapCityItem->setItemWidgetState(true, true);
+            cityItemList.replace(i, firstCityItem);
+            cityItemList.replace(0, swapCityItem);
+            break;
+        }
     }
 
+    //重新排列现有收藏城市
+    int row(0), column(0);
+    for(int i = 0;i < cityItemList.size(); i ++){
+        citycollectionitem *newCityItem = cityItemList.at(i);
+        if (i == 0) {
+            newCityItem->move(35, 81); //当前城市
+        } else {
+            newCityItem->move(35 + column*170, 242 + row*100); //收藏城市
+            column += 1;
+            if (column == 3) {
+                column = 0;
+                row += 1;
+            }
+        }
+    }
+
+    //更新城市列表
     QString strSavedCity = readCollectedCity();
     QStringList listSavedCityId = strSavedCity.split(",");
 
@@ -216,8 +298,6 @@ void CityCollectionWidget::onChangeCurrentCity(QString cityId)
     }
 
     writeCollectedCity(newStrCityId);
-    setCurrentCity();
-    setCollectCity();
 }
 
 void CityCollectionWidget::writeCollectedCity(QString cityId)
