@@ -22,6 +22,7 @@
 
 #include <QMainWindow>
 #include <QVBoxLayout>
+#include <QIcon>
 #include <QSystemTrayIcon>
 
 #include "menuactiongroup.h"

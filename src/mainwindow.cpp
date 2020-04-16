@@ -462,6 +462,7 @@ void MainWindow::initMenuAndTray()
     });
     connect(m_quitAction, &QAction::triggered, qApp, &QApplication::quit);
 
+    // 初始化托盘所有Icon
     m_systemTray = new QSystemTrayIcon(this);
     m_systemTray->setToolTip(QString(tr("Kylin Weather")));
     m_systemTray->setIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/indicator-china-weather.png")));
@@ -538,7 +539,8 @@ void MainWindow::refreshCityActions()
 
 void MainWindow::refreshTrayMenuWeather(const ObserveWeather &data)
 {
-    m_systemTray->setIcon(QIcon(QString(":/res/weather_icons/white/%1.png").arg(data.cond_code)));
+    //m_systemTray->setIcon(QIcon::fromTheme(QString("%1").arg(data.cond_code)) );
+    m_systemTray->setIcon(QIcon::fromTheme(QString("%1").arg(data.cond_code), QIcon(QString(":/res/weather_icons/white/%1.png").arg(data.cond_code))) );
     m_weatherAction->setText(data.cond_txt);
     //m_temperatureAction->setText(QString(tr("Temperature:%1˚C")).arg(data.tmp));
     m_temperatureAction->setText(QString(tr("Temperature:%1")).arg(data.tmp) + "˚C");

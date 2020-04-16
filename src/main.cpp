@@ -33,6 +33,8 @@ int main(int argc, char *argv[])
     signal(SIGINT, [](int) { QApplication::quit(); });// 设置退出信号
 
     QApplication a(argc, argv);
+    QIcon::setThemeName("ukui-icon-theme-default");
+
     a.setOrganizationName("kylin");
     a.setApplicationName("Kylin Weather (indicator-china-weather)");
     a.setApplicationVersion("3.0.4");
