@@ -31,15 +31,16 @@ PromptWidget::PromptWidget(QWidget *parent) : QFrame(parent)
     , m_iconLabel(new QLabel(this))
     , m_textLabel(new QLabel(this))
     , m_closeBtn(new QPushButton(this))
+    , m_retryBtn(new QPushButton(this))
 {
-    this->setStyleSheet("QFrame{background:rgba(255,255,255,0.25);border-radius:6px;}"
-                        "QFrame:hover{background:rgba(255,255,255,0.4);border-radius:6px;}");
+    this->setStyleSheet("QFrame{background:rgba(255,255,255,0.25);border-radius:6px;}");
+                        //"QFrame:hover{background:rgba(255,255,255,0.4);border-radius:6px;}");
     this->setFixedSize(223, 138);
     this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     this->setContentsMargins(0, 0, 0, 0);
 
     QVBoxLayout *m_vlayout = new QVBoxLayout(this);
-    m_vlayout->setContentsMargins(10, 30, 10, 10);
+    m_vlayout->setContentsMargins(10, 10, 10, 10);
     m_vlayout->setSpacing(5);
 
     m_closeBtn->setFixedSize(12, 12);
@@ -57,11 +58,23 @@ PromptWidget::PromptWidget(QWidget *parent) : QFrame(parent)
     m_textLabel->setAlignment(Qt::AlignCenter);
     m_textLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
+    m_retryBtn->setFixedSize(90, 25);
+    m_retryBtn->setFocusPolicy(Qt::NoFocus);
+    m_retryBtn->setStyleSheet("QPushButton{border:1px solid #e0e0e0;text-align:center;font-size:14px;color:#ffffff;background:rgba(255,255,255,0);}"
+                              "QPushButton:hover{border:1px solid #e0e0e0;text-align:center;font-size:14px;color:#ffffff;background:rgba(255,255,255,0.15);}");
+    m_retryBtn->setText(tr("重试"));
+
     m_vlayout->addWidget(m_iconLabel, 0, Qt::AlignHCenter);
     m_vlayout->addWidget(m_textLabel, 0, Qt::AlignHCenter);
+    m_vlayout->addWidget(m_retryBtn, 0, Qt::AlignHCenter);
 
     connect(m_closeBtn, &QPushButton::clicked, this, [=] () {
         this->setVisible(false);
+    });
+
+    connect(m_retryBtn, &QPushButton::clicked, this, [=] () {
+        this->setVisible(false);
+        emit this->requestRetryAccessWeather();
     });
 }
 
@@ -72,8 +85,8 @@ PromptWidget::PromptWidget(const QString &text, QWidget *parent, const QString &
     , m_closeBtn(new QPushButton(this))
     , m_isMovie(movie)
 {
-    this->setStyleSheet("QFrame{background:rgba(255,255,255,0.25);border-radius:6px;}"
-                        "QFrame:hover{background:rgba(255,255,255,0.4);border-radius:6px;}");
+    this->setStyleSheet("QFrame{background:rgba(255,255,255,0.25);border-radius:6px;}");
+                        //"QFrame:hover{background:rgba(255,255,255,0.4);border-radius:6px;}");
     this->setFixedSize(223, 138);
     this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     this->setContentsMargins(0, 0, 0, 0);

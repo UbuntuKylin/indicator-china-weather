@@ -156,12 +156,17 @@ MainWindow::MainWindow(QWidget *parent) :
         }
     });
 
+    connect(m_hintWidget, &PromptWidget::requestRetryAccessWeather, this, [=] () {
+        qDebug()<<"debug: retry to refreah mainwindow weather";
+        onRefreshMainWindowWeather();
+    });
+
     onRefreshMainWindowWeather();//软件启动时先获取一次网络数据
 
     m_refreshweather = new QTimer(this); //定时更新主界面天气
     m_refreshweather->setTimerType(Qt::PreciseTimer);
     QObject::connect(m_refreshweather, SIGNAL(timeout()), this, SLOT(onRefreshMainWindowWeather()));
-    m_refreshweather->start((1*30)*1000); //半小时更新一次
+    m_refreshweather->start((20*60)*1000); //set time interval to refresh weather
 }
 
 MainWindow::~MainWindow()

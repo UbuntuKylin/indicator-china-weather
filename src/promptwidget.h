@@ -47,8 +47,12 @@ private:
     QLabel *m_iconLabel = nullptr;
     QLabel *m_textLabel = nullptr;
     QPushButton *m_closeBtn = nullptr;
+    QPushButton *m_retryBtn = nullptr;
     QMovie *m_movie = nullptr;
     bool m_isMovie = false;
+
+signals:
+    void requestRetryAccessWeather();
 };
 
 #endif // PROMPTWIDGET_H_
