@@ -603,12 +603,17 @@ void MainWindow::movePosition()
     QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
     QRect screenGeometry = qApp->primaryScreen()->geometry();
 
-    //panel in bottom or right, then show on topRight
+    //panel in bottom or right
     if (availableGeometry.x() == screenGeometry.x() && availableGeometry.y() == screenGeometry.y()) {
         this->move(availableGeometry.x() + availableGeometry.width() - this->width(), availableGeometry.height() - this->height());
     }
-    else {//panel in top or left, then show on bottomRight
-        this->move(availableGeometry.x() + availableGeometry.width() - this->width(), availableGeometry.y());
+    else {
+        if (availableGeometry.x() > 0) {//panel in left
+            this->move(availableGeometry.x(), availableGeometry.y() + availableGeometry.height()  - this->height());
+        }
+        else {//panel in top
+            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), availableGeometry.y());
+        }
     }
     this->showNormal();
     this->raise();
