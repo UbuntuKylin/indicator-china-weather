@@ -126,6 +126,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //根据获取到网络探测的结果分别处理
     connect(m_weatherManager, &WeatherManager::nofityNetworkStatus, this, [=] (const QString &status) {
         if (status == "OK") {
+            //m_weatherManager->startAutoLocationTask();//开始自动定位城市
+
             //CN101010100,beijing,北京,CN,China,中国
             QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
             QString collectPath = homePath.at(0) + "/.config/china-weather-data";
@@ -153,6 +155,16 @@ MainWindow::MainWindow(QWidget *parent) :
                 onHandelAbnormalSituation("Unable to access the Internet");
             }
             emit m_searchView->responseFailure(404);
+        }
+    });
+
+    //自动定位成功后，更新各个控件的默认城市数据，并开始获取天气数据
+    connect(m_weatherManager, &WeatherManager::requestAutoLocationData, this, [=] (const CitySettingData &info, bool success) {
+        qDebug()<<"debug: =============info.name: "<<info.name;
+        if (success) {
+            //自动定位城市成功后，更新各个ui，然后获取天气数据
+        } else {
+            //自动定位城市失败后，获取天气数据
         }
     });
 
@@ -495,8 +507,10 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
     ui->lbCurrTmp->setText(m_observeweather.tmp);
 
     ui->lbCurrWea->setText(m_observeweather.cond_txt);
-
-    emit m_leftupcitybtn->requestSetCityName(m_observeweather.city);
+    if (m_observeweather.city != "") {
+        m_weatherManager->postSystemInfoToServer(); //将当前城市告诉给服务器
+        emit m_leftupcitybtn->requestSetCityName(m_observeweather.city);
+    }
 
     //更新保存城市列表文件china-weather-data
     QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);

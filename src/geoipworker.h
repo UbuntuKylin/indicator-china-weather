@@ -17,37 +17,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WEATHER_MANAGER_H
-#define WEATHER_MANAGER_H
+#ifndef GEOIP_WORKER_H
+#define GEOIP_WORKER_H
 
 #include <QObject>
 
-class QThread;
-class CitySettingData;
-class GeoIpWorker;
-class WeatherWorker;
+class QNetworkAccessManager;
+class QNetworkReply;
 
-class WeatherManager : public QObject
+class GeoIpWorker : public QObject
 {
     Q_OBJECT
 public:
-    explicit WeatherManager(QObject *parent = nullptr);
-    ~WeatherManager();
-
-    void startTestNetwork();
-    void postSystemInfoToServer();
-    void startAutoLocationTask();
-
-private:
-    WeatherWorker *m_weatherWorker = nullptr;
-    GeoIpWorker *m_geoipWorker = nullptr;
+    explicit GeoIpWorker(QObject *parent = nullptr);
 
 private slots:
-    void setAutomaticCity(const QString& cityName);
+    void doWork();
+    //void onReplyFinished(QNetworkReply *reply);
 
 signals:
-    void requestAutoLocationData(const CitySettingData & info, bool success);
-    void nofityNetworkStatus(const QString &status);
+    void requestStartWork();
+    void automaticLocationFinished(const QString &cityName);
+
+private:
+    //QNetworkAccessManager *m_networkManager = nullptr;
 };
 
-#endif // WEATHER_MANAGER_H
+#endif // GEOIP_WORKER_H

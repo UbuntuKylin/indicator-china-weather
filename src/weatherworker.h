@@ -37,15 +37,23 @@ public:
     explicit WeatherWorker(QObject *parent = 0);
     ~WeatherWorker();
 
+    void AccessDedirectUrlWithPost(const QString &redirectUrl);
+
 public slots:
     void onWeatherDataRequest(const QString &cityId);
     void onWeatherDataReply();
+
+    void onPostHostInfoToWeatherServer();
+    void onPingBackPostReply();
 
     void networkLookedUp(const QHostInfo &host);
     void onResponseTestNetwork();
 
 private:
     QNetworkAccessManager *m_networkManager = nullptr;
+    QString m_hostInfoParameters;
+
+    QString m_currentcityname = "";
 
 signals:
     void setLocationData();
@@ -53,6 +61,7 @@ signals:
     void requestSetForecastWeather(ForecastWeather forecastweather);
     void requestSetLifeStyle(LifeStyle lifestyle);
 
+    void requestPostHostInfoToWeatherServer();
     void requestTestNetwork();
     void nofityNetworkStatus(const QString &status);
     void responseFailure(int code);

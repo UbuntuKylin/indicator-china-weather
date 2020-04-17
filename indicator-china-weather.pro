@@ -67,6 +67,7 @@ SOURCES += src/main.cpp \
     src/cityaddwidget.cpp \
     src/citycollectionitem.cpp \
     src/citycollectionwidget.cpp \
+    src/geoipworker.cpp \
     src/informationwidget.cpp \
     src/leftupcitybtn.cpp \
     src/leftupsearchbox.cpp \
@@ -86,6 +87,7 @@ HEADERS  += src/mainwindow.h \
     src/citycollectionitem.h \
     src/citycollectionwidget.h \
     src/data.h \
+    src/geoipworker.h \
     src/informationwidget.h \
     src/leftupcitybtn.h \
     src/leftupsearchbox.h \

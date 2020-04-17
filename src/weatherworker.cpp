@@ -30,12 +30,42 @@
 #include <QUrl>
 #include <QVariant>
 
+inline QString readOsInfo()
+{
+    QString idParse = "DISTRIB_ID=";
+    QString releaseParse = "DISTRIB_RELEASE=";
+    QString osId;
+    QString osRelease;
+
+    QFile file("/etc/lsb-release");
+    if (!file.open(QFile::ReadOnly)) {
+        qCritical() << QString("open lsb-release file failed");
+        return QString("distro=ukylin&version_os=18.04");
+    }
+
+    QByteArray content = file.readAll();
+    file.close();
+    QTextStream stream(&content, QIODevice::ReadOnly);
+    while (!stream.atEnd()) {
+        QString line = stream.readLine();
+        if (line.startsWith(idParse)) {
+            osId = line.remove(0, idParse.size());
+        }
+        else if (line.startsWith(releaseParse)) {
+            osRelease = line.remove(0, releaseParse.size());
+        }
+    }
+
+    return QString("distro=%1&version_os=%2").arg(osId).arg(osRelease);
+}
+
 WeatherWorker::WeatherWorker(QObject *parent) :
     QObject(parent)
 {
     m_networkManager = new QNetworkAccessManager(this);
 
     connect(this, &WeatherWorker::requestTestNetwork, this, &WeatherWorker::onResponseTestNetwork);
+    connect(this, &WeatherWorker::requestPostHostInfoToWeatherServer, this, &WeatherWorker::onPostHostInfoToWeatherServer);
 }
 
 WeatherWorker::~WeatherWorker()
@@ -67,9 +97,66 @@ void WeatherWorker::networkLookedUp(const QHostInfo &host)
     }
 }
 
+void WeatherWorker::onPostHostInfoToWeatherServer()
+{
+    QString osInfo = readOsInfo();
+    QString hostInfo = QString("%1&version_weather=%2&city=%3").arg(osInfo).arg(qApp->applicationVersion()).arg(m_currentcityname);
+    this->m_hostInfoParameters = hostInfo;
+
+    QByteArray parameters = hostInfo.toUtf8();
+    QNetworkRequest request;
+    request.setUrl(QUrl("http://service.ubuntukylin.com:8001/weather/pingbackmain"));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    request.setHeader(QNetworkRequest::ContentLengthHeader, parameters.length());
+    //QUrl url("http://service.ubuntukylin.com:8001/weather/pingbackmain");
+    QNetworkReply *reply = m_networkManager->post(request, parameters);//QNetworkReply *reply = m_networkManager->post(QNetworkRequest(url), parameters);
+    connect(reply, &QNetworkReply::finished, this, &WeatherWorker::onPingBackPostReply);
+}
+
+void WeatherWorker::onPingBackPostReply()
+{
+    QNetworkReply *m_reply = qobject_cast<QNetworkReply*>(sender());
+    int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if(m_reply->error() != QNetworkReply::NoError || statusCode != 200) {//200 is normal status
+        //qDebug() << "post host info request error:" << m_reply->error() << ", statusCode=" << statusCode;
+        if (statusCode == 301 || statusCode == 302) {//redirect
+            QVariant redirectionUrl = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
+            //qDebug() << "pingback redirectionUrl=" << redirectionUrl.toString();
+            AccessDedirectUrlWithPost(redirectionUrl.toString());
+            m_reply->close();
+            m_reply->deleteLater();
+        }
+        return;
+    }
+
+    //QByteArray ba = m_reply->readAll();
+    m_reply->close();
+    m_reply->deleteLater();
+    //QString reply_content = QString::fromUtf8(ba);
+    //qDebug() << "return size: " << ba.size() << reply_content;
+}
+
+void WeatherWorker::AccessDedirectUrlWithPost(const QString &redirectUrl)
+{
+    if (redirectUrl.isEmpty())
+        return;
+
+    QNetworkRequest request;
+    QString url;
+    url = redirectUrl;
+    QByteArray parameters = this->m_hostInfoParameters.toUtf8();
+    request.setUrl(QUrl(url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    request.setHeader(QNetworkRequest::ContentLengthHeader, parameters.length());
+    QNetworkReply *reply = m_networkManager->post(request, parameters);
+    connect(reply, &QNetworkReply::finished, this, &WeatherWorker::onPingBackPostReply);
+}
+
 //利用连接请求网络数据
 void WeatherWorker::onWeatherDataRequest(const QString &cityId)
 {
+
+
     if (cityId.isEmpty()) {
         return;
     }
@@ -187,6 +274,7 @@ void WeatherWorker::onWeatherDataReply()
                 QString location_msg = weatherObj.value("location").toString();
                 if (location_msg != ""){
                     m_observeweather.city = location_msg;
+                    m_currentcityname = location_msg;
                 }
 
                 QString now_msg = weatherObj.value("now").toString();
