@@ -24,6 +24,7 @@ signals:
     void requestSetForecastWeather(ForecastWeather forecastweather);
     void requestSetLifeStyle(LifeStyle lifestyle);
     void requestSetCityName(QString cityName);
+    void responseFailure(int code);
 
 private:
     WeatherWorker *m_weatherWorker = nullptr;

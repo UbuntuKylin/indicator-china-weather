@@ -304,6 +304,7 @@
         <file>res/image/weather-rain.png</file>
         <file>res/image/weather-sandstorm.png</file>
         <file>res/image/weather-snow.png</file>
+        <file>res/control_icons/weather-none.png</file>
     </qresource>
     <qresource prefix="/data">
         <file>data/china-city-list.csv</file>

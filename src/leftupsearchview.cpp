@@ -48,6 +48,7 @@ LeftUpSearchView::LeftUpSearchView(QWidget *parent)
     connect(m_weatherWorker, SIGNAL(requestSetObserveWeather(ObserveWeather)), this, SIGNAL(requestSetObserveWeather(ObserveWeather)));
     connect(m_weatherWorker, SIGNAL(requestSetForecastWeather(ForecastWeather)), this, SIGNAL(requestSetForecastWeather(ForecastWeather)));
     connect(m_weatherWorker, SIGNAL(requestSetLifeStyle(LifeStyle)), this, SIGNAL(requestSetLifeStyle(LifeStyle)));
+    connect(m_weatherWorker, SIGNAL(responseFailure(int)), this, SIGNAL(responseFailure(int)));
 }
 
 LeftUpSearchView::~LeftUpSearchView()

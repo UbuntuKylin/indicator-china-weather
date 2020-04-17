@@ -48,11 +48,6 @@ private:
     QNetworkAccessManager *m_networkManager = nullptr;
 
 signals:
-    void setCity();
-    void setAqiAir();
-    void setObserveWeather();
-    void setForecastWeather();
-    void setLifeStyle();
     void setLocationData();
     void requestSetObserveWeather(ObserveWeather observeweather);
     void requestSetForecastWeather(ForecastWeather forecastweather);
@@ -60,6 +55,7 @@ signals:
 
     void requestTestNetwork();
     void nofityNetworkStatus(const QString &status);
+    void responseFailure(int code);
 };
 
 #endif // WEATHERWORKER_H

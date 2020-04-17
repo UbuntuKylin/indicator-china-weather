@@ -88,7 +88,30 @@ void WeatherWorker::onWeatherDataReply()
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 
     int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    qDebug()<<"value of statusCode is: "<<statusCode;
+    qDebug()<<"debug: Value of statusCode is: "<<statusCode;
+
+    if (statusCode == 301 || statusCode == 302) {//redirect
+        emit responseFailure(statusCode);
+        return;
+    }
+    else if (statusCode == 400) {
+        qDebug() << "Weather: Network error (HTTP400/Bad Request)";
+        emit responseFailure(statusCode);
+        return;
+    }
+    else if (statusCode == 403) {
+        qDebug() << "Weather: Username or password invalid (permission denied)";
+        emit responseFailure(statusCode);
+        return;
+    }
+    else if (statusCode == 200) {
+        // 200 is normal status
+    }
+    else {
+        emit responseFailure(statusCode);
+        return;
+    }
+
 
     if(reply->error() != QNetworkReply::NoError) {
         qDebug() << "reply error!";
@@ -105,21 +128,25 @@ void WeatherWorker::onWeatherDataReply()
     QJsonDocument jsonDocument = QJsonDocument::fromJson(ba, &err);
     if (err.error != QJsonParseError::NoError) {// Json type error
         qDebug() << "Json type error";
+        emit responseFailure(0);
         return;
     }
     if (jsonDocument.isNull() || jsonDocument.isEmpty()) {
         qDebug() << "Json null or empty!";
+        emit responseFailure(0);
         return;
     }
 
     QJsonObject jsonObject = jsonDocument.object();
     if (jsonObject.isEmpty() || jsonObject.size() == 0) {
         qDebug() << "Json object null or empty!";
+        emit responseFailure(0);
         return;
     }
     if (jsonObject.contains("KylinWeather")) {
         QJsonObject mainObj = jsonObject.value("KylinWeather").toObject();
         if (mainObj.isEmpty() || mainObj.size() == 0) {
+            emit responseFailure(0);
             return;
         }
         if (mainObj.contains("lifestyle")) {

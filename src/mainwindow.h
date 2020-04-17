@@ -9,6 +9,7 @@
 #include "informationwidget.h"
 #include "locationworker.h"
 #include "weathermanager.h"
+#include "promptwidget.h"
 #include "data.h"
 
 #include <unistd.h>
@@ -31,6 +32,7 @@
 #include <QScreen>
 #include <QDesktopWidget>
 #include <QTime>
+#include <QTimer>
 #include <QFileInfo>
 
 namespace Ui {
@@ -46,6 +48,9 @@ public:
     ~MainWindow();
 
 public slots:
+    void onRefreshMainWindowWeather();
+    void onHandelAbnormalSituation(QString abnormalText);
+
     void onSetForecastWeather(ForecastWeather m_forecastweather);
     void onSetObserveWeather(ObserveWeather m_observeweather);
     void onSetLifeStyle(LifeStyle m_lifestyle);
@@ -61,21 +66,19 @@ private:
     Ui::MainWindow *ui;
     QScrollArea *m_scrollarea = nullptr;
     QWidget *m_scrollwidget = nullptr;
-
     LeftUpCityBtn *m_leftupcitybtn = nullptr;
     LeftUpSearchBox *m_leftupsearchbox = nullptr;
     WeatherManager* m_weatherManager = nullptr;
-
+    PromptWidget *m_hintWidget = nullptr;
+    PromptWidget *m_movieWidget = nullptr;
     LeftUpSearchView *m_searchView = nullptr;
     LeftUpSearchDelegate *m_delegate = nullptr;
     QSortFilterProxyModel* m_proxyModel = nullptr;
     QStandardItemModel *m_model = nullptr;
-
     LocationWorker *m_locationWorker = nullptr;
-
     Information *m_information;
-
     QSystemTrayIcon *m_trayIcon = nullptr;
+    QTimer *m_refreshweather;
 
     void checkSingle();
 
@@ -84,11 +87,12 @@ private:
     void createTrayIcon();
     void handleIconClicked();
 
+    void onSearchBoxEdited();
     void searchCityName();
 
     void initControlQss();
 
-    void onSearchBoxEdited();
+    void setAbnormalMainWindow();
 
     QString convertCodeToBackgroud(int code);
     void convertCodeToTrayIcon(QString code);

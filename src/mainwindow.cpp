@@ -26,18 +26,20 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    //先注册结构体，这样才能作为信号与槽的参数
     qRegisterMetaType<ObserveWeather>();
     qRegisterMetaType<ForecastWeather>();
     qRegisterMetaType<LifeStyle>();
 
+    //单例运行
     checkSingle();
 
+    //设置主界面样式
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
     this->setFocusPolicy(Qt::StrongFocus);//this->setFocusPolicy(Qt::NoFocus);
     this->setWindowTitle(tr("Kylin Weather"));
-    //this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/indicator-china-weather.png")) );
-
     this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
+
     QPainterPath path;
     auto rect = this->rect();
     rect.adjust(1, 1, -1, -1);
@@ -45,12 +47,14 @@ MainWindow::MainWindow(QWidget *parent) :
     setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
     this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
 
-    this->initControlQss(); //设置其他控件样式
+    //设置其他控件样式
+    this->initControlQss();
 
-    this->createTrayIcon(); //创建托盘图标
+    //创建托盘图标
+    this->createTrayIcon();
     connect(m_trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
 
-    ui->widget_normal->show();
+    //ui->widget_normal->show();
 
     //左上角按钮
     m_leftupcitybtn = new LeftUpCityBtn(ui->widget_normal);
@@ -71,6 +75,14 @@ MainWindow::MainWindow(QWidget *parent) :
     m_searchView->resize(181,254);
     m_searchView->hide();
 
+    m_hintWidget = new PromptWidget(this);
+    m_hintWidget->setIconAndText(":/res/control_icons/network_warn.png", tr("Network not connected"));
+    m_hintWidget->move((this->width() - m_hintWidget->width())/2, 100);
+    m_hintWidget->setVisible(false);
+
+    m_locationWorker = new LocationWorker(this);
+    m_weatherManager = new WeatherManager(this);
+
     connect(m_leftupsearchbox, &LeftUpSearchBox::textChanged, this, [this] () {
         if (m_leftupsearchbox->text().size() == 0){
             m_searchView->hide();
@@ -80,44 +92,52 @@ MainWindow::MainWindow(QWidget *parent) :
         }
     });
 
-    connect(m_searchView, &LeftUpSearchView::requestSetObserveWeather, this, [=] (ObserveWeather observerdata) {
-        this->onSetObserveWeather(observerdata);
-    });
-    connect(m_searchView, &LeftUpSearchView::requestSetForecastWeather, this, [=] (ForecastWeather forecastweather) {
-        this->onSetForecastWeather(forecastweather);
-    });
-    connect(m_searchView, &LeftUpSearchView::requestSetLifeStyle, this, [=] (LifeStyle lifestyle) {
-        this->onSetLifeStyle(lifestyle);
-    });
-    connect(m_searchView, SIGNAL(requestSetCityName(QString)), m_leftupcitybtn, SIGNAL(requestSetCityName(QString)) );
-
     connect(m_leftupcitybtn, &LeftUpCityBtn::sendCurrentCityId, this, [=] (QString id) {
         m_searchView->requestWeatherData(id);
     });
 
-    m_locationWorker = new LocationWorker(this);
-    m_weatherManager = new WeatherManager(this);
+    connect(m_searchView, &LeftUpSearchView::requestSetObserveWeather, this, [=] (ObserveWeather observerdata) {
+        this->onSetObserveWeather(observerdata);
+    });
 
-    //开始测试网络情况
-    m_weatherManager->startTestNetwork();
+    connect(m_searchView, &LeftUpSearchView::requestSetForecastWeather, this, [=] (ForecastWeather forecastweather) {
+        this->onSetForecastWeather(forecastweather);
+    });
+
+    connect(m_searchView, &LeftUpSearchView::requestSetLifeStyle, this, [=] (LifeStyle lifestyle) {
+        this->onSetLifeStyle(lifestyle);
+    });
+
+    connect(m_searchView, SIGNAL(requestSetCityName(QString)), m_leftupcitybtn, SIGNAL(requestSetCityName(QString)) );
+
+    //获取天气数据时发生了异常
+    connect(m_searchView, &LeftUpSearchView::responseFailure, this, [=] (int code) {
+        onHandelAbnormalSituation("Get weather data failed!");
+
+        m_hintWidget->setVisible(true);
+
+        if (code == 0) {
+            m_hintWidget->setIconAndText(":/res/control_icons/network_warn.png", tr("Incorrect access address"));
+        } else {
+            m_hintWidget->setIconAndText(":/res/control_icons/network_warn.png", QString(tr("Network error code:%1")).arg(QString::number(code)));
+        }
+    });
 
     //根据获取到网络探测的结果分别处理
     connect(m_weatherManager, &WeatherManager::nofityNetworkStatus, this, [=] (const QString &status) {
         if (status == "OK") {
-            qDebug()<<"debug: 网络正常";
-
             //CN101010100,beijing,北京,CN,China,中国
             QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
             QString collectPath = homePath.at(0) + "/.config/china-weather-data";
-            if (!isFileExist(collectPath)){ //文件不存在时默认设置为北京
-                m_searchView->requestWeatherData("101010100");
+            if (!isFileExist(collectPath)){
+                m_searchView->requestWeatherData("101010100");//文件不存在时默认设置为北京
 
                 QFile file(collectPath);
                 file.open(QIODevice::WriteOnly | QIODevice::Text);
                 file.write("101010100,");
                 file.close();
-            } else {//文件存在时根据保存的默认城市进行设置
-                QFile file(collectPath);
+            } else {
+                QFile file(collectPath); //文件存在时根据保存的默认城市进行设置
                 file.open(QIODevice::ReadOnly | QIODevice::Text);
                 QByteArray cityId = file.readAll();
                 QString readCityId = (QString(cityId));
@@ -127,13 +147,21 @@ MainWindow::MainWindow(QWidget *parent) :
                 m_searchView->requestWeatherData(listCityId.at(0));
             }
         } else {
-            if (status == "Fail") {//物理网线未连接
-                qDebug()<<"debug: 物理网线未连接";
-            } else {//互联网无法ping通
-                qDebug()<<"debug: 互联网无法ping通";
+            if (status == "Fail") {
+                onHandelAbnormalSituation("Without wired Carrier");
+            } else {
+                onHandelAbnormalSituation("Unable to access the Internet");
             }
+            emit m_searchView->responseFailure(404);
         }
     });
+
+    onRefreshMainWindowWeather();//软件启动时先获取一次网络数据
+
+    m_refreshweather = new QTimer(this); //定时更新主界面天气
+    m_refreshweather->setTimerType(Qt::PreciseTimer);
+    QObject::connect(m_refreshweather, SIGNAL(timeout()), this, SLOT(onRefreshMainWindowWeather()));
+    m_refreshweather->start((1*30)*1000); //半小时更新一次
 }
 
 MainWindow::~MainWindow()
@@ -141,6 +169,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+//单例模式
 void MainWindow::checkSingle()
 {
     QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
@@ -155,6 +184,7 @@ void MainWindow::checkSingle()
     }
 }
 
+//配置文件是否存在
 bool MainWindow::isFileExist(QString fullFileName)
 {
     QFileInfo fileInfo(fullFileName);
@@ -165,6 +195,7 @@ bool MainWindow::isFileExist(QString fullFileName)
     return false;
 }
 
+//初始化各控件样式
 void MainWindow::initControlQss()
 {
     ui->centralwidget->setStyleSheet("#centralwidget{border:1px solid rgba(255,255,255,0.05);border-radius:6px;background:rgba(19,19,20,0);}");
@@ -180,17 +211,15 @@ void MainWindow::initControlQss()
 
     ui->lbCurrTmp->setStyleSheet("QLabel{border:none;background:transparent;font-size:110px;color:rgba(255,255,255,1);line-height:80px;}");
     ui->lbCurrTmp->setAlignment(Qt::AlignCenter);
-    //ui->lbCurrTmp->setText("12");
+
     ui->lbCurrTmpUnit->setStyleSheet("QLabel{border:none;background:transparent;font-size:20px;color:rgba(255,255,255,1);line-height:14px;}");
     ui->lbCurrTmpUnit->setAlignment(Qt::AlignCenter);
-    //ui->lbCurrTmpUnit->setText("℃");
+
     ui->lbCurrWea->setStyleSheet("QLabel{border:none;background:transparent;font-size:20px;color:rgba(255,255,255,1);line-height:14px;}");
     ui->lbCurrWea->setAlignment(Qt::AlignCenter);
-    //ui->lbCurrWea->setText("多云");
+
     ui->lbCurrHum->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;color:rgba(255,255,255,1);line-height:14px;}");
     ui->lbCurrHum->setAlignment(Qt::AlignCenter);
-    //ui->lbCurrHum->setText("湿度 98%   东南风 1级");
-
 
     m_scrollarea = new QScrollArea(ui->centralwidget);
     m_scrollarea->setFixedSize(858, 220);
@@ -220,6 +249,7 @@ void MainWindow::initControlQss()
     m_information->move(0,0);
 }
 
+//创建托盘图标
 void MainWindow::createTrayIcon()
 {
     m_trayIcon = new QSystemTrayIcon(this);
@@ -228,15 +258,9 @@ void MainWindow::createTrayIcon()
     m_trayIcon->setVisible(true);
 }
 
+//托盘图标被点击
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
-    //    switch (reason) {
-    //    case QSystemTrayIcon::Trigger:
-    //    case QSystemTrayIcon::DoubleClick:
-    //    case QSystemTrayIcon::MiddleClick:
-    //        break;
-    //    }
-
     switch(reason){
     case QSystemTrayIcon::Trigger:
     case QSystemTrayIcon::MiddleClick:
@@ -259,6 +283,7 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
     }
 }
 
+//处理点击托盘图标事件
 void MainWindow::handleIconClicked()
 {
     QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
@@ -325,6 +350,66 @@ void MainWindow::handleIconClicked()
             this->move(screenGeometry.width() - availableGeometry.width() + d, screenMainRect.y() + screenGeometry.height() - this->height());
         }
     }
+}
+
+//定时更新主界面天气
+void MainWindow::onRefreshMainWindowWeather()
+{
+    //开始测试网络情况
+    m_weatherManager->startTestNetwork();
+}
+
+//处理因网络异常等未获取到天气数据的情况
+void MainWindow::onHandelAbnormalSituation(QString abnormalText){
+    qDebug()<<"debug: network state: "<<abnormalText;
+    setAbnormalMainWindow();
+}
+
+//处理异常时的主界面显示
+void MainWindow::setAbnormalMainWindow()
+{
+    m_trayIcon->setIcon(QIcon(":/res/control_icons/indicator-china-weather.png"));
+
+    ui->lbCurrTmp->setText("");
+    ui->lbCurrTmpUnit->setText("");
+    ui->lbCurrWea->setText("");
+    ui->lbCurrHum->setText("");
+
+    ForecastWeather abnormalForecastweather;
+    for (int i=0; i<7; i++) {
+        abnormalForecastweather.uv_index = "N/A";
+        abnormalForecastweather.wind_spd = "N/A";
+        abnormalForecastweather.sr = "N/A";
+        abnormalForecastweather.wind_sc = "N/A";
+        abnormalForecastweather.ms = "N/A";
+        abnormalForecastweather.cond_txt_d = "N/A";
+        abnormalForecastweather.vis = "N/A";
+        abnormalForecastweather.ss = "N/A";
+        abnormalForecastweather.hum = "N/A";
+        abnormalForecastweather.cond_txt_n = "N/A";
+        abnormalForecastweather.pop = "N/A";
+        abnormalForecastweather.wind_deg = "N/A";
+        abnormalForecastweather.pcpn = "N/A";
+        abnormalForecastweather.wind_dir = "N/A ";
+        abnormalForecastweather.cond_code_d = "999";
+        abnormalForecastweather.mr = "N/A";
+        abnormalForecastweather.date = "N/A";
+        abnormalForecastweather.tmp_max = "N/A";
+        abnormalForecastweather.cond_code_n = "999";
+        abnormalForecastweather.pres = "N/A";
+        abnormalForecastweather.tmp_min = "N/A";
+
+        onSetForecastWeather(abnormalForecastweather);
+    }
+
+    LifeStyle abnormalLifestyle;
+    abnormalLifestyle.drsg_brf = "N/A";
+    abnormalLifestyle.flu_brf = "N/A";
+    abnormalLifestyle.uv_brf = "N/A";
+    abnormalLifestyle.cw_brf = "N/A";
+    abnormalLifestyle.air_brf = "N/A";
+    abnormalLifestyle.sport_brf = "N/A";
+    onSetLifeStyle(abnormalLifestyle);
 }
 
 //更新主界面搜索列表

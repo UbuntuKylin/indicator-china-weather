@@ -390,6 +390,9 @@ QString Information::convertCodeToBackgroud(int code)
         //return ":/res/control_icons/weather-fog.png";
         return ":/res/control_icons/weather-few-clouds.png";
     }
+    else if (code <= 999 && code >= 900) {
+        return ":/res/control_icons/weather-none.png";
+    }
     else {
         return ":/res/control_icons/weather-clear.png";
     }
