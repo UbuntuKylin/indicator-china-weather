@@ -85,95 +85,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_locationWorker = new LocationWorker(this);
     m_weatherManager = new WeatherManager(this);
 
-    connect(m_leftupsearchbox, &LeftUpSearchBox::textChanged, this, [this] () {
-        if (m_leftupsearchbox->text().size() == 0){
-            m_searchView->hide();
-        }else{
-            m_searchView->show();
-            onSearchBoxEdited();
-        }
-    });
-
-    connect(m_leftupcitybtn, &LeftUpCityBtn::sendCurrentCityId, this, [=] (QString id) {
-        m_searchView->requestWeatherData(id);
-    });
-
-    connect(m_searchView, &LeftUpSearchView::requestSetObserveWeather, this, [=] (ObserveWeather observerdata) {
-        this->onSetObserveWeather(observerdata);
-    });
-
-    connect(m_searchView, &LeftUpSearchView::requestSetForecastWeather, this, [=] (ForecastWeather forecastweather) {
-        this->onSetForecastWeather(forecastweather);
-    });
-
-    connect(m_searchView, &LeftUpSearchView::requestSetLifeStyle, this, [=] (LifeStyle lifestyle) {
-        this->onSetLifeStyle(lifestyle);
-    });
-
-    connect(m_searchView, SIGNAL(requestSetCityName(QString)), m_leftupcitybtn, SIGNAL(requestSetCityName(QString)) );
-
-    //获取天气数据时发生了异常
-    connect(m_searchView, &LeftUpSearchView::responseFailure, this, [=] (int code) {
-        onHandelAbnormalSituation("Get weather data failed!");
-
-        m_hintWidget->setVisible(true);
-
-        if (code == 0) {
-            m_hintWidget->setIconAndText(":/res/control_icons/network_warn.png", tr("Incorrect access address"));
-        } else {
-            m_hintWidget->setIconAndText(":/res/control_icons/network_warn.png", QString(tr("Network error code:%1")).arg(QString::number(code)));
-        }
-    });
-
-    //根据获取到网络探测的结果分别处理
-    connect(m_weatherManager, &WeatherManager::nofityNetworkStatus, this, [=] (const QString &status) {
-        if (status == "OK") {
-            //m_weatherManager->startAutoLocationTask();//开始自动定位城市
-
-            //CN101010100,beijing,北京,CN,China,中国
-            QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
-            QString collectPath = homePath.at(0) + "/.config/china-weather-data";
-            if (!isFileExist(collectPath)){
-                m_searchView->requestWeatherData("101010100");//文件不存在时默认设置为北京
-
-                QFile file(collectPath);
-                file.open(QIODevice::WriteOnly | QIODevice::Text);
-                file.write("101010100,");
-                file.close();
-            } else {
-                QFile file(collectPath); //文件存在时根据保存的默认城市进行设置
-                file.open(QIODevice::ReadOnly | QIODevice::Text);
-                QByteArray cityId = file.readAll();
-                QString readCityId = (QString(cityId));
-                file.close();
-
-                QStringList listCityId = readCityId.split(",");
-                m_searchView->requestWeatherData(listCityId.at(0));
-            }
-        } else {
-            if (status == "Fail") {
-                onHandelAbnormalSituation("Without wired Carrier");
-            } else {
-                onHandelAbnormalSituation("Unable to access the Internet");
-            }
-            emit m_searchView->responseFailure(404);
-        }
-    });
-
-    //自动定位成功后，更新各个控件的默认城市数据，并开始获取天气数据
-    connect(m_weatherManager, &WeatherManager::requestAutoLocationData, this, [=] (const CitySettingData &info, bool success) {
-        qDebug()<<"debug: =============info.name: "<<info.name;
-        if (success) {
-            //自动定位城市成功后，更新各个ui，然后获取天气数据
-        } else {
-            //自动定位城市失败后，获取天气数据
-        }
-    });
-
-    connect(m_hintWidget, &PromptWidget::requestRetryAccessWeather, this, [=] () {
-        qDebug()<<"debug: retry to refreah mainwindow weather";
-        onRefreshMainWindowWeather();
-    });
+    initConnections(); //建立信号与槽的连接
 
     onRefreshMainWindowWeather();//软件启动时先获取一次网络数据
 
@@ -279,6 +191,108 @@ void MainWindow::initControlQss()
 
     m_information = new Information(m_scrollwidget);
     m_information->move(0,0);
+}
+
+void MainWindow::initConnections()
+{
+    connect(m_leftupsearchbox, &LeftUpSearchBox::textChanged, this, [this] () {
+        if (m_leftupsearchbox->text().size() == 0){
+            m_searchView->hide();
+        }else{
+            m_searchView->show();
+            onSearchBoxEdited();
+        }
+    });
+
+    connect(m_leftupcitybtn, &LeftUpCityBtn::sendCurrentCityId, this, [=] (QString id) {
+        qDebug()<<"debug: xxxxxxxxxx "<<id;
+        m_searchView->requestWeatherData(id);
+    });
+
+    connect(m_searchView, &LeftUpSearchView::requestSetObserveWeather, this, [=] (ObserveWeather observerdata) {
+        this->onSetObserveWeather(observerdata);
+    });
+
+    connect(m_searchView, &LeftUpSearchView::requestSetForecastWeather, this, [=] (ForecastWeather forecastweather) {
+        this->onSetForecastWeather(forecastweather);
+    });
+
+    connect(m_searchView, &LeftUpSearchView::requestSetLifeStyle, this, [=] (LifeStyle lifestyle) {
+        this->onSetLifeStyle(lifestyle);
+    });
+
+    connect(m_searchView, SIGNAL(requestSetCityName(QString)), m_leftupcitybtn, SIGNAL(requestSetCityName(QString)) );
+
+    //获取天气数据时发生了异常
+    connect(m_searchView, &LeftUpSearchView::responseFailure, this, [=] (int code) {
+        onHandelAbnormalSituation("Get weather data failed!");
+
+        m_hintWidget->setVisible(true);
+
+        if (code == 0) {
+            m_hintWidget->setIconAndText(":/res/control_icons/network_warn.png", tr("Incorrect access address"));
+        } else {
+            m_hintWidget->setIconAndText(":/res/control_icons/network_warn.png", QString(tr("Network error code:%1")).arg(QString::number(code)));
+        }
+    });
+
+    //根据获取到网络探测的结果分别处理
+    connect(m_weatherManager, &WeatherManager::nofityNetworkStatus, this, [=] (const QString &status) {
+        if (status == "OK") {
+            //m_weatherManager->startAutoLocationTask();//开始自动定位城市
+
+            //CN101010100,beijing,北京,CN,China,中国
+            QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+            QString collectPath = homePath.at(0) + "/.config/china-weather-data";
+            if (!isFileExist(collectPath)){
+                m_searchView->requestWeatherData("101010100");//文件不存在时默认设置为北京
+
+                QFile file(collectPath);
+                if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                    file.write("101010100,");
+                    file.close();
+                } else {
+                    qDebug()<<"Can not write city id data to ~/.config/china-weather-data";
+                }
+
+            } else {
+                QFile file(collectPath); //文件存在时根据保存的默认城市进行设置
+                QString readCityId;
+                if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                    QByteArray cityId = file.readAll();
+                    readCityId = (QString(cityId));
+                    file.close();
+                } else {
+                    readCityId = "101010100,";
+                }
+
+                QStringList listCityId = readCityId.split(",");
+                m_searchView->requestWeatherData(listCityId.at(0));
+            }
+        } else {
+            if (status == "Fail") {
+                onHandelAbnormalSituation("Without wired Carrier");
+            } else {
+                onHandelAbnormalSituation("Unable to access the Internet");
+            }
+            emit m_searchView->responseFailure(404);
+        }
+    });
+
+    //自动定位成功后，更新各个控件的默认城市数据，并开始获取天气数据
+    connect(m_weatherManager, &WeatherManager::requestAutoLocationData, this, [=] (const CitySettingData &info, bool success) {
+        qDebug()<<"debug: =============info.name: "<<info.name;
+        if (success) {
+            //自动定位城市成功后，更新各个ui，然后获取天气数据
+        } else {
+            //自动定位城市失败后，获取天气数据
+        }
+    });
+
+    connect(m_hintWidget, &PromptWidget::requestRetryAccessWeather, this, [=] () {
+        qDebug()<<"debug: retry to refreah mainwindow weather";
+        onRefreshMainWindowWeather();
+    });
 }
 
 //创建托盘图标

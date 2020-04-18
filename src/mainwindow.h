@@ -93,6 +93,7 @@ private:
     void searchCityName();
 
     void initControlQss();
+    void initConnections();
 
     void setAbnormalMainWindow();
 

@@ -282,5 +282,6 @@ void citycollectionitem::on_btnAddCity_clicked()
 
 void citycollectionitem::on_btnDelete_clicked()
 {
+    qDebug()<<"debug: aaaaaaaaaaaaa "<<this->m_city_id;
     emit requestDeleteCity(this->m_city_id);
 }
