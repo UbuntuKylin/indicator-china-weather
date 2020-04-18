@@ -9,6 +9,11 @@
 #include <QDebug>
 #include <QObject>
 
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QNetworkConfigurationManager>
+
 #include <unistd.h>
 
 #include "data.h"
@@ -42,6 +47,9 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
 
 private slots:
+    void onWeatherDataRequest();
+    void onWeatherDataReply();
+
     void on_btnCancel_clicked();
 
     void onShowCityAddWiget();
@@ -49,7 +57,7 @@ private slots:
 
 private:
     Ui::citycollectionwidget *ui;
-
+    QNetworkAccessManager *m_networkManager;
     CityAddition *m_cityaddition;
 
     void writeCollectedCity(QString cityId);

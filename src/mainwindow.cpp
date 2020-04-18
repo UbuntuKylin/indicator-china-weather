@@ -26,6 +26,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    judgeSystemLanguage();
+
     //先注册结构体，这样才能作为信号与槽的参数
     qRegisterMetaType<ObserveWeather>();
     qRegisterMetaType<ForecastWeather>();
@@ -184,6 +186,20 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+//非中文系统环境无法启动
+void MainWindow::judgeSystemLanguage()
+{
+    QLocale locale;
+    //获取系统语言环境
+    if( locale.language() == QLocale::Chinese ) {
+        qDebug() << "Chinese system";
+        return;
+    } else {
+        qDebug() << "Non-chinese system";
+        exit(0);
+    }
 }
 
 //单例模式

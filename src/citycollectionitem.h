@@ -24,6 +24,7 @@ public:
     ~citycollectionitem();
 
     void setItemWidgetState(bool isShowNormal, bool isCurrentCity);
+    void setCityWeather(ObserveWeather observeweather);
     void setCurrentWeather(QString cityId);
     QString convertCodeToBackgroud(int code);
 

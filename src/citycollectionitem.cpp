@@ -99,6 +99,20 @@ void citycollectionitem::setItemWidgetState(bool isShowNormal, bool isCurrentCit
     this->is_normal_item = isShowNormal;
 }
 
+void citycollectionitem::setCityWeather(ObserveWeather observeweather)
+{
+    ui->lbTmp->setText(observeweather.tmp);
+    ui->lbwea->setText(observeweather.cond_txt);
+    ui->lbTmpUnit->setText("℃");
+    QString weather_code = observeweather.cond_code;
+    int code  = weather_code.toInt();
+    QString returnStr = convertCodeToBackgroud(code);
+    QString picStr = QString("QLabel{background-image:url(%1);}").arg(returnStr);
+    ui->lbBackImage->setStyleSheet(picStr);
+    ui->lbCityName->setText(observeweather.city);
+    this->m_city_id = observeweather.id;
+}
+
 void citycollectionitem::setCurrentWeather(QString cityId)
 {
     if (!cityId.isEmpty()) {

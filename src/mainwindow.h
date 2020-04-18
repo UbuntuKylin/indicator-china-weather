@@ -34,6 +34,7 @@
 #include <QTime>
 #include <QTimer>
 #include <QFileInfo>
+#include <QLocale>
 
 namespace Ui {
 class MainWindow;
@@ -80,6 +81,7 @@ private:
     QSystemTrayIcon *m_trayIcon = nullptr;
     QTimer *m_refreshweather;
 
+    void judgeSystemLanguage();
     void checkSingle();
 
     bool isFileExist(QString fullFileName);
