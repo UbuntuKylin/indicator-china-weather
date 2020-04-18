@@ -37,7 +37,7 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
     this->move((availableGeometry.width()-this->width())/2, (availableGeometry.height()-this->height())/2);
 
-    ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(207,207,207,1);box-shadow:0px 3px 10px 0px rgba(0, 0, 0, 0.2);border-radius:6px;background:rgba(255,255,255,1);}");
+    ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(207,207,207,1);border-radius:6px;background:rgba(255,255,255,1);}");
 
     ui->lbLeftUpIcon->setStyleSheet("QLabel{border:none;background:transparent;background-image:url(':/res/control_icons/logo.png');}");
 
@@ -158,8 +158,6 @@ void CityCollectionWidget::onWeatherDataReply()
                 int column = 0; //当前列
                 for (int i=0; i< strList.size()-1; i++) {
                     QString eachCityData = strList.at(i);
-                    qDebug()<<"                 ";
-                    qDebug()<<eachCityData;
                     ObserveWeather observeweather;
                     QStringList strListSub;
                     if (!eachCityData.isEmpty()) {

@@ -48,37 +48,40 @@ void CityAddSearchDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         path.lineTo(rect.topRight() + QPointF(0, radius));
         path.quadTo(rect.topRight(), rect.topRight() + QPointF(-radius, -0));
 
-        if(option.state.testFlag(QStyle::State_Selected))
-        {
-            painter->setPen(QPen(Qt::blue));
-            painter->setBrush(QColor(255, 255, 255));
-            painter->setOpacity(0.3);
+        if(option.state.testFlag(QStyle::State_Selected)) {
+            //painter->setPen(QPen(Qt::blue));
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(QColor(238,242,253));
+            painter->setOpacity(1);
             painter->drawPath(path);
-        }
-        else if(option.state.testFlag(QStyle::State_MouseOver))
-        {
-            painter->setPen(QPen(Qt::green));
-            painter->setBrush(QColor(255, 255, 255));
-            painter->setOpacity(0.3);
+        } else if(option.state.testFlag(QStyle::State_MouseOver)) {
+            //painter->setPen(QPen(Qt::green));
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(QColor(238,242,253));
+            painter->setOpacity(1);
             painter->drawPath(path);
-        }
-        else{
-            painter->setPen(QPen(Qt::gray));
+        } else {
+            //painter->setPen(QPen(Qt::gray));
+            painter->setPen(Qt::NoPen);
             painter->setBrush(Qt::NoBrush);
             painter->drawPath(path);
         }
 
         //绘制数据位置
         QRect NameRect = QRect(rect.left()+8, rect.top(), rect.width()-30, 26);
-        QRect telRect = QRect(rect.left()+8, rect.bottom()-24, rect.width()-10, 20);
+        QRect telRect = QRect(rect.left()+8, rect.bottom()-22, rect.width()-10, 20);
 
 
-        painter->setPen(QPen(Qt::black));
-        painter->setFont(QFont("Microsoft YaHei", 16));
+        //painter->setPen(QPen(Qt::black));
+        painter->setPen(QPen(QColor(68,68,68)));
+        painter->setFont(QFont("Microsoft YaHei", 13));
+        painter->setOpacity(1);
         painter->drawText(NameRect,Qt::AlignLeft,data.cityName);
 
-        painter->setPen(QPen(Qt::black));
-        painter->setFont(QFont("Microsoft YaHei", 12));
+        //painter->setPen(QPen(Qt::black));
+        painter->setPen(QPen(QColor(136,136,136)));
+        painter->setFont(QFont("Microsoft YaHei", 10));
+        painter->setOpacity(1);
         painter->drawText(telRect,Qt::AlignLeft,data.cityProvince);
 
         painter->restore();

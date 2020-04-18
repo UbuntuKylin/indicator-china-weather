@@ -48,38 +48,38 @@ void LeftUpSearchDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         path.lineTo(rect.topRight() + QPointF(0, radius));
         path.quadTo(rect.topRight(), rect.topRight() + QPointF(-radius, -0));
 
-        if(option.state.testFlag(QStyle::State_Selected))
-        {
-            painter->setPen(QPen(Qt::blue));
+        if(option.state.testFlag(QStyle::State_Selected)) {
+            //painter->setPen(QPen(Qt::blue));
+            painter->setPen(Qt::NoPen);
             painter->setBrush(QColor(255, 255, 255));
-            painter->setOpacity(0.3);
+            painter->setOpacity(0.1);
             painter->drawPath(path);
-        }
-        else if(option.state.testFlag(QStyle::State_MouseOver))
-        {
-            painter->setPen(QPen(Qt::green));
+        } else if(option.state.testFlag(QStyle::State_MouseOver)) {
+            //painter->setPen(QPen(Qt::green));
+            painter->setPen(Qt::NoPen);
             painter->setBrush(QColor(255, 255, 255));
-            painter->setOpacity(0.3);
+            painter->setOpacity(0.2);
             painter->drawPath(path);
-        }
-        else{
-            painter->setPen(QPen(Qt::gray));
+        } else {
+            painter->setPen(Qt::NoPen);
             painter->setBrush(Qt::NoBrush);
             painter->drawPath(path);
         }
 
         //绘制数据位置
-        QRect NameRect = QRect(rect.left()+8, rect.top(), rect.width()-30, 26);
-        QRect telRect = QRect(rect.left()+8, rect.bottom()-24, rect.width()-10, 20);
+        QRect NameRect = QRect(rect.left()+8, rect.top(), rect.width()-30, 28);
+        QRect telRect = QRect(rect.left()+8, rect.bottom()-24, rect.width()-10, 22);
 
 
         painter->setPen(QPen(Qt::white));
-        painter->setFont(QFont("Microsoft YaHei", 16));
-        painter->drawText(NameRect,Qt::AlignLeft,data.cityName); //绘制城市名字
+        painter->setFont(QFont("Microsoft YaHei", 15));
+        painter->setOpacity(1);
+        painter->drawText(NameRect, Qt::AlignLeft, data.cityName); //绘制城市名字
 
         painter->setPen(QPen(Qt::white));
         painter->setFont(QFont("Microsoft YaHei", 12));
-        painter->drawText(telRect,Qt::AlignLeft,data.cityProvince); //绘制城市所属省份
+        painter->setOpacity(0.4);
+        painter->drawText(telRect, Qt::AlignLeft, data.cityProvince); //绘制城市所属省份
 
         painter->restore();
     }

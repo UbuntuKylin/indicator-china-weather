@@ -22,7 +22,7 @@ CityAddition::CityAddition(QWidget *parent) :
     this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
     this->setWindowIcon(QIcon(":/res/control_icons/indicator-china-weather.png") );
 
-    ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(207,207,207,1);box-shadow:0px 3px 10px 0px rgba(0, 0, 0, 0.2);border-radius:6px;background:rgba(255,255,255,1);}");
+    ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(207,207,207,1);border-radius:6px;background:rgba(255,255,255,1);}");
 
     ui->lbLeftUpIcon->setStyleSheet("QLabel{border:none;background:transparent;background-image:url(':/res/control_icons/logo.png');}");
 

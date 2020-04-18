@@ -29,19 +29,19 @@ LeftUpSearchView::LeftUpSearchView(QWidget *parent)
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     this->setStyleSheet("QListView{margin:0px;padding:0px;border:none;border-radius:4px;outline:none;background-color:rgba(255,255,255,0.25);}"
-                        "QListView::item:selected:!active{background:#e9eef1;}"
-                        "QListView::item:selected:active{background:#3f96e4;}"
-                        "QListView::item:hover{background:#e9eef0;}");
-    this->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 0px 0px 0px;background-color:rgb(255,255,255,100);border:0px;width:2px;}" \
-                                             "QScrollBar::sub-line:vertical{subcontrol-origin:margin;border:1px solid red;height:13px;}" \
-                                             "QScrollBar::up-arrow:vertical{subcontrol-origin:margin;background-color:blue;height:13px;}" \
-                                             "QScrollBar::sub-page:vertical{background-color:#EEEDF0;}" \
-                                             "QScrollBar::handle:vertical{background-color:#D1D0D2;width:10px;}" \
-                                             "QScrollBar::handle:vertical:hover{background-color:#14ACF5;width:10px;}" \
-                                             "QScrollBar::handle:vertical:pressed{background-color:#0B95D7;width:10px;}" \
-                                             "QScrollBar::add-page:vertical{background-color:#EEEDF0;}" \
-                                             "QScrollBar::down-arrow:vertical{background-color:yellow;}" \
-                                             "QScrollBar::add-line:vertical{subcontrol-origin:margin;border:1px solid green;height:18px;}");
+                        "QListView::item:selected:!active{background-color:rgba(255,255,255,0.25);}"
+                        "QListView::item:selected:active{background-color:rgba(255,255,255,0.25);}"
+                        "QListView::item:hover{background-color:rgba(255,255,255,0.25);}");
+    this->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 0px 0px 0px;background-color:transparent;border:0px;width:1px;}" \
+                                             "QScrollBar::sub-line:vertical{subcontrol-origin:margin;border:none;height:6px;}" \
+                                             "QScrollBar::up-arrow:vertical{subcontrol-origin:margin;background-color:transparent;height:6px;}" \
+                                             "QScrollBar::sub-page:vertical{background-color:transparent;}" \
+                                             "QScrollBar::handle:vertical{background-color:transparent;width:1px;}" \
+                                             "QScrollBar::handle:vertical:hover{background-color:transparent;width:1px;}" \
+                                             "QScrollBar::handle:vertical:pressed{background-color:transparent;width:1px;}" \
+                                             "QScrollBar::add-page:vertical{background-color:transparent;}" \
+                                             "QScrollBar::down-arrow:vertical{background-color:transparent;}" \
+                                             "QScrollBar::add-line:vertical{subcontrol-origin:margin;border:none;height:6px;}");
 
     m_weatherWorker = new WeatherWorker(this);
 

@@ -73,8 +73,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_delegate = new LeftUpSearchDelegate(m_searchView);
     m_proxyModel = new QSortFilterProxyModel(m_searchView);
     m_model = new QStandardItemModel();
-    m_searchView->move(116, 49);
-    m_searchView->resize(181,254);
+    m_searchView->move(128, 49);
+    m_searchView->resize(178,205);
     m_searchView->hide();
 
     m_hintWidget = new PromptWidget(this);
