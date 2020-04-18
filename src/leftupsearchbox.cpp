@@ -48,10 +48,10 @@ void LeftUpSearchBox::paintEvent(QPaintEvent *event)
         painter.setPen(pen);
         painter.setFont(curFont);
 
-        QRect iconRect(QPoint(65, 6), m_searchPixmap.size()/qApp->devicePixelRatio());
+        QRect iconRect(QPoint(65, 7), m_searchPixmap.size()/qApp->devicePixelRatio());
         painter.drawPixmap(iconRect, m_searchPixmap);
 
-        QRect textRect(87, 2, 30, 28);
+        QRect textRect(87, 3, 30, 28);
         painter.drawText(textRect, m_searchText);
     } else {
         QPainter painter(this);

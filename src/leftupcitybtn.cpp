@@ -22,7 +22,7 @@
 
 LeftUpCityBtn::LeftUpCityBtn(QWidget *parent) : QWidget(parent)
 {
-    this->setFixedSize(76, 20);
+    this->setFixedSize(108, 20);
     this->setCursor(QCursor(Qt::PointingHandCursor));
 
     m_layout = new QHBoxLayout(this);
@@ -35,7 +35,8 @@ LeftUpCityBtn::LeftUpCityBtn(QWidget *parent) : QWidget(parent)
     // m_iconLabel->setScaledContents(true);//自动缩放,显示图像大小自动调整为Qlabel大小
 
     m_addCityLabel = new QLabel(this);
-    m_addCityLabel->setFixedSize(48, 16);
+    m_addCityLabel->setFixedSize(80, 18);
+    m_addCityLabel->setAlignment(Qt::AlignVCenter);
     m_addCityLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:16px;}");
 
     m_layout->addWidget(m_addCityBtn);
@@ -44,7 +45,7 @@ LeftUpCityBtn::LeftUpCityBtn(QWidget *parent) : QWidget(parent)
     m_layout->addWidget(m_addCityLabel);
 
     setLayout(m_layout);
-    m_layout->setContentsMargins(0, 0, 0, 0);
+    m_layout->setContentsMargins(1, 1, 1, 1);
 
     m_addCityLabel->setText("N/A");
     setStyleSheet("QWidget{background-color:rgba(255,0,0,1);}");

@@ -52,10 +52,10 @@
     <widget class="QLabel" name="lbCurrTmp">
      <property name="geometry">
       <rect>
-       <x>345</x>
+       <x>356</x>
        <y>85</y>
-       <width>130</width>
-       <height>93</height>
+       <width>110</width>
+       <height>100</height>
       </rect>
      </property>
      <property name="text">
@@ -65,10 +65,10 @@
     <widget class="QLabel" name="lbCurrWea">
      <property name="geometry">
       <rect>
-       <x>475</x>
-       <y>160</y>
-       <width>41</width>
-       <height>19</height>
+       <x>483</x>
+       <y>165</y>
+       <width>80</width>
+       <height>21</height>
       </rect>
      </property>
      <property name="text">
@@ -78,10 +78,10 @@
     <widget class="QLabel" name="lbCurrHum">
      <property name="geometry">
       <rect>
-       <x>345</x>
+       <x>332</x>
        <y>202</y>
-       <width>175</width>
-       <height>13</height>
+       <width>200</width>
+       <height>15</height>
       </rect>
      </property>
      <property name="text">
@@ -91,7 +91,7 @@
     <widget class="QLabel" name="lbCurrTmpUnit">
      <property name="geometry">
       <rect>
-       <x>475</x>
+       <x>481</x>
        <y>85</y>
        <width>30</width>
        <height>30</height>

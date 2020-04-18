@@ -60,12 +60,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //左上角按钮
     m_leftupcitybtn = new LeftUpCityBtn(ui->widget_normal);
-    m_leftupcitybtn->move(20, 22);
+    m_leftupcitybtn->move(20, 21);
     m_leftupcitybtn->show();
 
     //左上角搜索框
     m_leftupsearchbox = new LeftUpSearchBox(ui->widget_normal);
-    m_leftupsearchbox->move(116, 17);
+    m_leftupsearchbox->move(128, 18);
     m_leftupsearchbox->show();
 
     //主界面搜索列表
@@ -242,14 +242,13 @@ void MainWindow::initControlQss()
                                "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
 
-    ui->lbCurrTmp->setStyleSheet("QLabel{border:none;background:transparent;font-size:110px;color:rgba(255,255,255,1);line-height:80px;}");
+    ui->lbCurrTmp->setStyleSheet("QLabel{border:none;background:transparent;font-size:110px;font-family:Microsoft YaHei;font-weight:300;color:rgba(255,255,255,1);line-height:100px;}");
     ui->lbCurrTmp->setAlignment(Qt::AlignCenter);
 
-    ui->lbCurrTmpUnit->setStyleSheet("QLabel{border:none;background:transparent;font-size:20px;color:rgba(255,255,255,1);line-height:14px;}");
+    ui->lbCurrTmpUnit->setStyleSheet("QLabel{border:none;background:transparent;font-size:24px;color:rgba(255,255,255,1);line-height:14px;}");
     ui->lbCurrTmpUnit->setAlignment(Qt::AlignCenter);
 
     ui->lbCurrWea->setStyleSheet("QLabel{border:none;background:transparent;font-size:20px;color:rgba(255,255,255,1);line-height:14px;}");
-    ui->lbCurrWea->setAlignment(Qt::AlignCenter);
 
     ui->lbCurrHum->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;color:rgba(255,255,255,1);line-height:14px;}");
     ui->lbCurrHum->setAlignment(Qt::AlignCenter);
@@ -619,7 +618,8 @@ QString MainWindow::convertCodeToBackgroud(int code)
 
 void MainWindow::on_btnMinimize_clicked()
 {
-    QWidget::showMinimized();
+    //QWidget::showMinimized();
+    this->setVisible(false);
 }
 
 void MainWindow::on_btnCancel_clicked()

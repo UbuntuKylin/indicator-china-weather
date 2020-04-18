@@ -33,13 +33,13 @@ citycollectionitem::citycollectionitem(QWidget *parent) :
     ui->lbwea->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(255,255,255,1);}");
     //ui->lbwea->setText("晴");
 
-    ui->btnDelete->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
+    ui->btnDelete->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/city_delete.png);}");
     ui->btnDelete->hide();
 
     ui->btnAddCity->setStyleSheet("QPushButton{border:0px;background:transparent;}");
     ui->btnAddCity->hide();
 
-    ui->lbAddCity->setStyleSheet("QLabel{border:0px;background:transparent;background-image:url(:/res/control_icons/add.png);}");
+    ui->lbAddCity->setStyleSheet("QLabel{border:0px;background:transparent;background-image:url(:/res/control_icons/city_add.png);}");
     ui->lbAddCity->hide();
 
     this->setAttribute(Qt::WA_Hover,true);

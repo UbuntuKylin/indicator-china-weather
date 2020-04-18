@@ -40,7 +40,7 @@ void Information::editQssString()
 
     lbIndexIconQss = "QLabel{border:none;background:transparent;}";
     lbIndexQss = "QLabel{border:none;background:transparent;font-size:12px;color:rgba(255,255,255,0.5);line-height:18px;}";
-    lbIndexBrfQss = "QLabel{border:none;background:transparent;font-size:16px;color:rgba(255,255,255,1);line-height:18px;}";
+    lbIndexBrfQss = "QLabel{border:none;background:transparent;font-size:16px;font-family:Microsoft YaHei;font-weight:400;color:rgba(255,255,255,1);line-height:18px;}";
 
     lineQss = "border:none;background-color:rgba(255,255,255,0.1);";
     lineLinearGradientQss = "border:none;background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 255, 0), stop:0.5 rgba(255, 255, 255, 0.7), stop:1 rgba(255, 255, 255, 0));";
@@ -51,20 +51,34 @@ void Information::initControlQss()
     /******************天气预报***************************/
 
     ui->lbDay_1->setStyleSheet(lbDayQss);
+    ui->lbDay_1->setAlignment(Qt::AlignCenter);
     ui->lbDay_2->setStyleSheet(lbDayQss);
+    ui->lbDay_2->setAlignment(Qt::AlignCenter);
     ui->lbDay_3->setStyleSheet(lbDayQss);
+    ui->lbDay_3->setAlignment(Qt::AlignCenter);
     ui->lbDay_4->setStyleSheet(lbDayQss);
+    ui->lbDay_4->setAlignment(Qt::AlignCenter);
     ui->lbDay_5->setStyleSheet(lbDayQss);
+    ui->lbDay_5->setAlignment(Qt::AlignCenter);
     ui->lbDay_6->setStyleSheet(lbDayQss);
+    ui->lbDay_6->setAlignment(Qt::AlignCenter);
     ui->lbDay_7->setStyleSheet(lbDayQss);
+    ui->lbDay_7->setAlignment(Qt::AlignCenter);
 
     ui->lbDate_1->setStyleSheet(lbDateQss);
+    ui->lbDate_1->setAlignment(Qt::AlignCenter);
     ui->lbDate_2->setStyleSheet(lbDateQss);
+    ui->lbDate_2->setAlignment(Qt::AlignCenter);
     ui->lbDate_3->setStyleSheet(lbDateQss);
+    ui->lbDate_3->setAlignment(Qt::AlignCenter);
     ui->lbDate_4->setStyleSheet(lbDateQss);
+    ui->lbDate_4->setAlignment(Qt::AlignCenter);
     ui->lbDate_5->setStyleSheet(lbDateQss);
+    ui->lbDate_5->setAlignment(Qt::AlignCenter);
     ui->lbDate_6->setStyleSheet(lbDateQss);
+    ui->lbDate_6->setAlignment(Qt::AlignCenter);
     ui->lbDate_7->setStyleSheet(lbDateQss);
+    ui->lbDate_7->setAlignment(Qt::AlignCenter);
 
     ui->lbIcon_1->setStyleSheet(lbIconQss);
     ui->lbIcon_2->setStyleSheet(lbIconQss);
@@ -75,12 +89,19 @@ void Information::initControlQss()
     ui->lbIcon_7->setStyleSheet(lbIconQss);
 
     ui->lbTmp_1->setStyleSheet(lbTmpQss);
+    ui->lbTmp_1->setAlignment(Qt::AlignCenter);
     ui->lbTmp_2->setStyleSheet(lbTmpQss);
+    ui->lbTmp_2->setAlignment(Qt::AlignCenter);
     ui->lbTmp_3->setStyleSheet(lbTmpQss);
+    ui->lbTmp_3->setAlignment(Qt::AlignCenter);
     ui->lbTmp_4->setStyleSheet(lbTmpQss);
+    ui->lbTmp_4->setAlignment(Qt::AlignCenter);
     ui->lbTmp_5->setStyleSheet(lbTmpQss);
+    ui->lbTmp_5->setAlignment(Qt::AlignCenter);
     ui->lbTmp_6->setStyleSheet(lbTmpQss);
+    ui->lbTmp_6->setAlignment(Qt::AlignCenter);
     ui->lbTmp_7->setStyleSheet(lbTmpQss);
+    ui->lbTmp_7->setAlignment(Qt::AlignCenter);
 
 
     ui->lbWea_1->setStyleSheet(lbWeaQss);
@@ -241,7 +262,7 @@ void Information::onSetForecastWeather(ForecastWeather forecastweather)
 
     //获取星期
     QDateTime current_date_time = QDateTime::currentDateTime();
-    QString current_week_1 = current_date_time.toString("ddd");
+    QString current_week_1 = "今天";//current_date_time.toString("ddd");
     QString current_week_2 = current_date_time.addDays(+1).toString("ddd");
     QString current_week_3 = current_date_time.addDays(+2).toString("ddd");
     QString current_week_4 = current_date_time.addDays(+3).toString("ddd");

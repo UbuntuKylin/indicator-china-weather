@@ -20,9 +20,9 @@ CityAddition::CityAddition(QWidget *parent) :
     path.addRoundedRect(rect, 6, 6);
     setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
     this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
-    this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/indicator-china-weather.png")) );
+    this->setWindowIcon(QIcon(":/res/control_icons/indicator-china-weather.png") );
 
-    ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(255,255,255,0.05);border-radius:6px;background:rgba(255,255,255,1);}");
+    ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(207,207,207,1);box-shadow:0px 3px 10px 0px rgba(0, 0, 0, 0.2);border-radius:6px;background:rgba(255,255,255,1);}");
 
     ui->lbLeftUpIcon->setStyleSheet("QLabel{border:none;background:transparent;background-image:url(':/res/control_icons/logo.png');}");
 
@@ -40,7 +40,7 @@ CityAddition::CityAddition(QWidget *parent) :
     m_proxyModel = new QSortFilterProxyModel(m_cityaddsearchview);
     m_model = new QStandardItemModel();
     m_cityaddsearchview->move(35, 125);
-    m_cityaddsearchview->resize(470,220);
+    m_cityaddsearchview->resize(470,227);
     m_cityaddsearchview->hide();
 
     connect(m_cityaddsearchview, SIGNAL(requestClearLineEdit() ), this, SLOT(onRequestClearLineEdit()) );
@@ -69,7 +69,6 @@ void CityAddition::onSearchBoxEdited()
     searchCityName();
 
     m_cityaddsearchview->setItemDelegate(m_cityaddsearchdelegate);       //为视图设置委托
-    m_cityaddsearchview->setSpacing(1);                   //为视图设置控件间距
     m_proxyModel->setSourceModel(m_model);
     m_proxyModel->setFilterRole(Qt::UserRole);
     m_proxyModel->setDynamicSortFilter(true);
