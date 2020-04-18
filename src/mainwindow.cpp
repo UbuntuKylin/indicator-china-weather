@@ -562,8 +562,9 @@ void MainWindow::convertCodeToTrayIcon(QString code)
         return;
     }
 
-    QString strIcon = QString(":/res/weather_icons/white/%1.png").arg(code);
-    m_trayIcon->setIcon(QIcon(strIcon));
+    //QString strIcon = QString(":/res/weather_icons/white/%1.png").arg(code);
+    //m_trayIcon->setIcon(QIcon(strIcon));
+    m_trayIcon->setIcon(QIcon::fromTheme(QString("%1").arg(code), QIcon(QString(":/res/weather_icons/white/%1.png").arg(code))) );
 }
 
 //根据天气情况设置主界面背景贴图
