@@ -70,6 +70,8 @@ private:
     bool isPress;
     QPoint winPos;
     QPoint dragPos;
+
+    int cityNumber;
 };
 
 #endif // CITYCOLLECTION_H

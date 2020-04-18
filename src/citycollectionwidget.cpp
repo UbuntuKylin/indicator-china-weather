@@ -53,7 +53,8 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     ui->lbCityCollect->setText("收藏城市");
 
     ui->lbCityCount->setStyleSheet("QLabel{border:none;background:transparent;font-size:12px;font-weight:400;color:rgba(68,68,68,1);}");
-    ui->lbCityCount->setText("1/8");
+    ui->lbCityCount->setText("0/8");
+    cityNumber = 0;
 
     m_cityaddition = new CityAddition(this);
     m_cityaddition->move(0, 0);
@@ -89,6 +90,9 @@ void CityCollectionWidget::onWeatherDataRequest()
             urlPrefix.append("+");
         }
     }
+    cityNumber = cityList.size()-2;
+    QString citynumber = QString::number(cityNumber) + "/8";
+    ui->lbCityCount->setText(citynumber);
 
     QNetworkRequest request;
     request.setUrl(urlPrefix);
@@ -298,7 +302,7 @@ void CityCollectionWidget::onRequestAddNewCity(QString cityId)
 
     if (itemNum <= 1) {
         showCollectCity(35, 242, true, cityId); //添加新增加的收藏城市
-        showCollectCity(35, 242 + 100, false, ""); //添加最后一项
+        showCollectCity(35 + 170, 242, false, ""); //添加最后一项
     }
 
     if (itemNum > 1 && itemNum < 9) {
@@ -333,6 +337,9 @@ void CityCollectionWidget::onRequestAddNewCity(QString cityId)
         listSavedCityId.replace(8, cityId); //收藏城市已经有8个，替换最后一个收藏城市
     }else {
         listSavedCityId.append(cityId); //若收藏城市未满8个,将新添加的城市加到最后
+        cityNumber += 1;
+        QString citynumber = QString::number(cityNumber) + "/8";
+        ui->lbCityCount->setText(citynumber);
     }
 
     QString newStrCityId = "";
@@ -408,6 +415,10 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
     } else {
         qDebug()<<"delete one element from collected city list failed";
     }
+
+    cityNumber -= 1;
+    QString citynumber = QString::number(cityNumber) + "/8";
+    ui->lbCityCount->setText(citynumber);
 }
 
 void CityCollectionWidget::onChangeCurrentCity(QString cityId)
