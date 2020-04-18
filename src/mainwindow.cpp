@@ -205,7 +205,6 @@ void MainWindow::initConnections()
     });
 
     connect(m_leftupcitybtn, &LeftUpCityBtn::sendCurrentCityId, this, [=] (QString id) {
-        qDebug()<<"debug: xxxxxxxxxx "<<id;
         m_searchView->requestWeatherData(id);
     });
 
@@ -281,7 +280,6 @@ void MainWindow::initConnections()
 
     //自动定位成功后，更新各个控件的默认城市数据，并开始获取天气数据
     connect(m_weatherManager, &WeatherManager::requestAutoLocationData, this, [=] (const CitySettingData &info, bool success) {
-        qDebug()<<"debug: =============info.name: "<<info.name;
         if (success) {
             //自动定位城市成功后，更新各个ui，然后获取天气数据
         } else {

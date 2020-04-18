@@ -8,6 +8,7 @@
 #include <QStandardPaths>
 #include <QDebug>
 #include <QObject>
+#include <QLabel>
 
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
@@ -57,8 +58,10 @@ private slots:
 
 private:
     Ui::citycollectionwidget *ui;
-    QNetworkAccessManager *m_networkManager;
-    CityAddition *m_cityaddition;
+    QNetworkAccessManager *m_networkManager= nullptr;
+    CityAddition *m_cityaddition= nullptr;
+    QLabel *m_tipIcon = nullptr;
+    QLabel *m_tipLabel = nullptr;
 
     void writeCollectedCity(QString cityId);
     QString readCollectedCity();

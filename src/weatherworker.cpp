@@ -280,26 +280,26 @@ void WeatherWorker::onWeatherDataReply()
                 QString now_msg = weatherObj.value("now").toString();
                 if (now_msg != ""){
                     QStringList strList = now_msg.split(",");
-                    QStringList strListSub;
+                    QJsonObject m_json;
                     foreach(QString str, strList){
                         if (str != ""){
-                            strListSub.append(str.split("=").at(1));
+                            m_json.insert(str.split("=").at(0), str.split("=").at(1));
                         }
                     }
 
-                    m_observeweather.tmp = strListSub.at(0);
-                    m_observeweather.wind_sc = strListSub.at(1);
-                    m_observeweather.cond_txt = strListSub.at(2);
-                    m_observeweather.vis = strListSub.at(3);
-                    m_observeweather.hum = strListSub.at(4);
-                    m_observeweather.cond_code = strListSub.at(5);
-                    m_observeweather.wind_deg = strListSub.at(6);
-                    m_observeweather.pcpn = strListSub.at(7);
-                    m_observeweather.pres = strListSub.at(8);
-                    m_observeweather.wind_spd = strListSub.at(9);
-                    m_observeweather.wind_dir = strListSub.at(10);
-                    m_observeweather.fl = strListSub.at(11);
-                    m_observeweather.cloud = strListSub.at(12);
+                    m_observeweather.tmp = m_json.value("tmp").toString();
+                    m_observeweather.wind_sc = m_json.value("wind_sc").toString();
+                    m_observeweather.cond_txt = m_json.value("cond_txt").toString();
+                    m_observeweather.vis = m_json.value("vis").toString();
+                    m_observeweather.hum = m_json.value("hum").toString();
+                    m_observeweather.cond_code = m_json.value("cond_code").toString();
+                    m_observeweather.wind_deg = m_json.value("wind_deg").toString();
+                    m_observeweather.pcpn = m_json.value("pcpn").toString();
+                    m_observeweather.pres = m_json.value("pres").toString();
+                    m_observeweather.wind_spd = m_json.value("wind_spd").toString();
+                    m_observeweather.wind_dir = m_json.value("wind_dir").toString();
+                    m_observeweather.fl = m_json.value("fl").toString();
+                    m_observeweather.cloud = m_json.value("cloud").toString();
 
                     emit this->requestSetObserveWeather(m_observeweather);//用于设置主窗口
 
@@ -311,38 +311,38 @@ void WeatherWorker::onWeatherDataReply()
                     QStringList strList = forecast_msg.split(";");
                     foreach(QString strDay, strList){
                         QStringList strListDaySub;
-                        QStringList strListSub;
+                        QJsonObject m_json;
                         if (strDay != ""){
                             strListDaySub = strDay.split(",");
 
                             foreach(QString str, strListDaySub){
                                 if (str != ""){
-                                    strListSub.append(str.split("=").at(1));
+                                    m_json.insert(str.split("=").at(0), str.split("=").at(1));
                                 }
                             }
 
                             ForecastWeather m_forecastweather;
-                            m_forecastweather.uv_index = strListSub.at(0);
-                            m_forecastweather.wind_spd = strListSub.at(1);
-                            m_forecastweather.sr = strListSub.at(2);
-                            m_forecastweather.wind_sc = strListSub.at(3);
-                            m_forecastweather.ms = strListSub.at(4);
-                            m_forecastweather.cond_txt_d = strListSub.at(5);
-                            m_forecastweather.vis = strListSub.at(6);
-                            m_forecastweather.ss = strListSub.at(7);
-                            m_forecastweather.hum = strListSub.at(8);
-                            m_forecastweather.cond_txt_n = strListSub.at(9);
-                            m_forecastweather.pop = strListSub.at(10);
-                            m_forecastweather.wind_deg = strListSub.at(11);
-                            m_forecastweather.pcpn = strListSub.at(12);
-                            m_forecastweather.wind_dir = strListSub.at(13);
-                            m_forecastweather.cond_code_d = strListSub.at(14);
-                            m_forecastweather.mr = strListSub.at(15);
-                            m_forecastweather.date = strListSub.at(16);
-                            m_forecastweather.tmp_max = strListSub.at(17);
-                            m_forecastweather.cond_code_n = strListSub.at(18);
-                            m_forecastweather.pres = strListSub.at(19);
-                            m_forecastweather.tmp_min = strListSub.at(20);
+                            m_forecastweather.uv_index = m_json.value("uv_index").toString();
+                            m_forecastweather.wind_spd = m_json.value("wind_spd").toString();
+                            m_forecastweather.sr = m_json.value("sr").toString();
+                            m_forecastweather.wind_sc = m_json.value("wind_sc").toString();
+                            m_forecastweather.ms = m_json.value("ms").toString();
+                            m_forecastweather.cond_txt_d = m_json.value("cond_txt_d").toString();
+                            m_forecastweather.vis = m_json.value("vis").toString();
+                            m_forecastweather.ss = m_json.value("ss").toString();
+                            m_forecastweather.hum = m_json.value("hum").toString();
+                            m_forecastweather.cond_txt_n = m_json.value("cond_txt_n").toString();
+                            m_forecastweather.pop = m_json.value("pop").toString();
+                            m_forecastweather.wind_deg = m_json.value("wind_deg").toString();
+                            m_forecastweather.pcpn = m_json.value("pcpn").toString();
+                            m_forecastweather.wind_dir = m_json.value("wind_dir").toString();
+                            m_forecastweather.cond_code_d = m_json.value("cond_code_d").toString();
+                            m_forecastweather.mr = m_json.value("mr").toString();
+                            m_forecastweather.date = m_json.value("date").toString();
+                            m_forecastweather.tmp_max = m_json.value("tmp_max").toString();
+                            m_forecastweather.cond_code_n = m_json.value("cond_code_n").toString();
+                            m_forecastweather.pres = m_json.value("pres").toString();
+                            m_forecastweather.tmp_min = m_json.value("tmp_min").toString();
 
                             emit this->requestSetForecastWeather(m_forecastweather);
                         }

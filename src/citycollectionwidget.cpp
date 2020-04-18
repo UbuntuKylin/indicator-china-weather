@@ -56,6 +56,22 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     ui->lbCityCount->setText("0/8");
     cityNumber = 0;
 
+    m_tipIcon = new QLabel(this);
+    m_tipIcon->setFixedSize(127 ,93);
+    m_tipIcon->setStyleSheet("QLabel{border:none;background-color:transparent;}");
+    m_tipIcon->setPixmap(QPixmap(":/res/control_icons/unlink.png"));
+    m_tipIcon->move((this->width()-m_tipIcon->width())/2, 180);
+    m_tipIcon->hide();
+    m_tipLabel = new QLabel(this);
+    m_tipLabel->setFixedWidth(this->width());
+    m_tipLabel->setWordWrap(true);
+    m_tipLabel->setAlignment(Qt::AlignCenter);
+    m_tipLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+    m_tipLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
+    m_tipLabel->setText(tr("当前网络异常，请检查网络设置"));//当前网络异常，请检查网络设置
+    m_tipLabel->move(0, 300);
+    m_tipLabel->hide();
+
     m_cityaddition = new CityAddition(this);
     m_cityaddition->move(0, 0);
     m_cityaddition->hide();
@@ -118,6 +134,8 @@ void CityCollectionWidget::onWeatherDataReply()
     } else if (statusCode == 200) {
         // 200 is normal status
     } else {
+        m_tipIcon->show();
+        m_tipLabel->show();
         return;
     }
 
@@ -161,33 +179,33 @@ void CityCollectionWidget::onWeatherDataReply()
                 int row = 0; //当前行
                 int column = 0; //当前列
                 for (int i=0; i< strList.size()-1; i++) {
-                    QString eachCityData = strList.at(i);
+                    QString eachCityData = strList.at(i); //得到每个城市的实时天气数据
                     ObserveWeather observeweather;
-                    QStringList strListSub;
+                    QJsonObject m_json;
                     if (!eachCityData.isEmpty()) {
                         QStringList eachKeyList = eachCityData.split(",");
                         foreach (QString strKey, eachKeyList) {
                             if (!strKey.isEmpty()) {
-                                strListSub.append(strKey.split("=").at(1));
+                                m_json.insert(strKey.split("=").at(0), strKey.split("=").at(1));
                             }
                         }
                     }
 
-                    observeweather.tmp = strListSub.at(0);
-                    observeweather.wind_sc = strListSub.at(1);
-                    observeweather.cond_txt = strListSub.at(2);
-                    observeweather.vis = strListSub.at(3);
-                    observeweather.hum = strListSub.at(4);
-                    observeweather.cond_code = strListSub.at(5);
-                    observeweather.wind_deg = strListSub.at(6);
-                    observeweather.pcpn = strListSub.at(7);
-                    observeweather.pres = strListSub.at(8);
-                    observeweather.wind_spd = strListSub.at(9);
-                    observeweather.wind_dir = strListSub.at(10);
-                    observeweather.fl = strListSub.at(11);
-                    observeweather.cloud = strListSub.at(12);
-                    observeweather.id = strListSub.at(13);
-                    observeweather.city = strListSub.at(14);
+                    observeweather.tmp = m_json.value("tmp").toString();
+                    observeweather.wind_sc = m_json.value("wind_sc").toString();
+                    observeweather.cond_txt = m_json.value("cond_txt").toString();
+                    observeweather.vis = m_json.value("vis").toString();
+                    observeweather.hum = m_json.value("hum").toString();
+                    observeweather.cond_code = m_json.value("cond_code").toString();
+                    observeweather.wind_deg = m_json.value("wind_deg").toString();
+                    observeweather.pcpn = m_json.value("pcpn").toString();
+                    observeweather.pres = m_json.value("pres").toString();
+                    observeweather.wind_spd = m_json.value("wind_spd").toString();
+                    observeweather.wind_dir = m_json.value("wind_dir").toString();
+                    observeweather.fl = m_json.value("fl").toString();
+                    observeweather.cloud = m_json.value("cloud").toString();
+                    observeweather.id = m_json.value("id").toString();
+                    observeweather.city = m_json.value("location").toString();
 
                     if (i==0) { //当前城市
                         citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
@@ -371,7 +389,6 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
         citycollectionitem *cityItem = cityItemList.at(i);
         if (i == 0) {
             if (cityItem->m_city_id == cityId) { //说明删除的是当前城市，以第一个收藏城市代替
-                qDebug()<<"debug: bbbbbbbbb "<<cityId;
                 emit sendCurrentCityId(listSavedCityId.at(1)); //发信号更新主界面
                 delete cityItem;
             }

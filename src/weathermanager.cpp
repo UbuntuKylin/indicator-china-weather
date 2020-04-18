@@ -58,7 +58,6 @@ void WeatherManager::startAutoLocationTask()
 
 void WeatherManager::setAutomaticCity(const QString &cityName)
 {
-    qDebug()<<"debug: ============>cityName = "<<cityName;
     bool autoSuccess = false;
     CitySettingData info;
 

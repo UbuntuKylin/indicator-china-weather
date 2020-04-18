@@ -185,35 +185,21 @@ void citycollectionitem::onWeatherDataReply()
                 QString now_msg = weatherObj.value("now").toString();
                 if (now_msg != ""){
                     QStringList strList = now_msg.split(",");
-                    QStringList strListSub;
-                    foreach(QString str, strList){
-                        if (str != ""){
-                            strListSub.append(str.split("=").at(1));
+                    QJsonObject m_json;
+                    foreach(QString strKey, strList){
+                        if (strKey != ""){
+                            m_json.insert(strKey.split("=").at(0), strKey.split("=").at(1));
                         }
                     }
 
-                    ui->lbTmp->setText(strListSub.at(0));
-                    ui->lbwea->setText(strListSub.at(2));
+                    ui->lbTmp->setText(m_json.value("tmp").toString());
+                    ui->lbwea->setText(m_json.value("cond_txt").toString());
                     ui->lbTmpUnit->setText("℃");
-                    QString weather_code = strListSub.at(5);
+                    QString weather_code = m_json.value("cond_code").toString();
                     int code  = weather_code.toInt();
                     QString returnStr = convertCodeToBackgroud(code);
                     QString picStr = QString("QLabel{background-image:url(%1);}").arg(returnStr);
                     ui->lbBackImage->setStyleSheet(picStr);
-
-                    //m_observeweather.tmp = strListSub.at(0);
-                    //m_observeweather.wind_sc = strListSub.at(1);
-                    //m_observeweather.cond_txt = strListSub.at(2);
-                    //m_observeweather.vis = strListSub.at(3);
-                    //m_observeweather.hum = strListSub.at(4);
-                    //m_observeweather.cond_code = strListSub.at(5);
-                    //m_observeweather.wind_deg = strListSub.at(6);
-                    //m_observeweather.pcpn = strListSub.at(7);
-                    //m_observeweather.pres = strListSub.at(8);
-                    //m_observeweather.wind_spd = strListSub.at(9);
-                    //m_observeweather.wind_dir = strListSub.at(10);
-                    //m_observeweather.fl = strListSub.at(11);
-                    //m_observeweather.cloud = strListSub.at(12);
                 }
             }
         } //end if (mainObj.contains("weather"))
@@ -282,6 +268,5 @@ void citycollectionitem::on_btnAddCity_clicked()
 
 void citycollectionitem::on_btnDelete_clicked()
 {
-    qDebug()<<"debug: aaaaaaaaaaaaa "<<this->m_city_id;
     emit requestDeleteCity(this->m_city_id);
 }

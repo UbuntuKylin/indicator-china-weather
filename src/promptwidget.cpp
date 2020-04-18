@@ -33,8 +33,8 @@ PromptWidget::PromptWidget(QWidget *parent) : QFrame(parent)
     , m_closeBtn(new QPushButton(this))
     , m_retryBtn(new QPushButton(this))
 {
-    this->setStyleSheet("QFrame{background:rgba(255,255,255,0.25);border-radius:6px;}");
-                        //"QFrame:hover{background:rgba(255,255,255,0.4);border-radius:6px;}");
+    this->setStyleSheet("QFrame{background:rgba(255,255,255,0.25);border-radius:6px;}"
+                        "QFrame:hover{background:rgba(255,255,255,0.2);border-radius:6px;}");
     this->setFixedSize(223, 138);
     this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     this->setContentsMargins(0, 0, 0, 0);
@@ -174,6 +174,7 @@ bool PromptWidget::event(QEvent *event)
         }
         else {
             this->setVisible(false);
+            emit this->requestRetryAccessWeather();
         }
         break;
     /*case QEvent::Show:
