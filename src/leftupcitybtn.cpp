@@ -78,9 +78,17 @@ void LeftUpCityBtn::mousePressEvent(QMouseEvent *event)
     QWidget::mousePressEvent(event);
     m_addCityBtn->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(':/res/control_icons/add_pressed_btn.png');}");
 
-    CityCollectionWidget *m_citycollectionwidget = new CityCollectionWidget();
-    connect(m_citycollectionwidget, &CityCollectionWidget::sendCurrentCityId, this, &LeftUpCityBtn::sendCurrentCityId);
-    m_citycollectionwidget->show();
+    if (!is_open_city_collect_widget) {
+        CityCollectionWidget *m_citycollectionwidget = new CityCollectionWidget();
+        connect(m_citycollectionwidget, &CityCollectionWidget::sendCurrentCityId, this, &LeftUpCityBtn::sendCurrentCityId);
+        connect(m_citycollectionwidget, &CityCollectionWidget::requestChangeWidgetState, this, [=] () {
+            is_open_city_collect_widget = false;
+            m_citycollectionwidget->deleteLater();
+        });
+        m_citycollectionwidget->show();
+
+        is_open_city_collect_widget = true;
+    }
 }
 
 void LeftUpCityBtn::mouseReleaseEvent(QMouseEvent *event)

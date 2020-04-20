@@ -65,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //左上角搜索框
     m_leftupsearchbox = new LeftUpSearchBox(ui->widget_normal);
-    m_leftupsearchbox->move(128, 18);
+    m_leftupsearchbox->move(100, 18);
     m_leftupsearchbox->show();
 
     //主界面搜索列表
@@ -73,7 +73,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_delegate = new LeftUpSearchDelegate(m_searchView);
     m_proxyModel = new QSortFilterProxyModel(m_searchView);
     m_model = new QStandardItemModel();
-    m_searchView->move(128, 49);
+    m_searchView->move(100, 49);
     m_searchView->resize(178,205);
     m_searchView->hide();
 
@@ -503,9 +503,12 @@ void MainWindow::onSetForecastWeather(ForecastWeather m_forecastweather)
 //设置实况天气
 void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
 {
-    //主界面UI变化
+    //主界面UI变化,控件间的距离自适应
     m_searchView->hide();
     m_leftupsearchbox->setText("");
+    int m_size = m_observeweather.city.size();
+    m_leftupsearchbox->move(100 + 15*(m_size-2), 18);
+    m_searchView->move(100 + 15*(m_size-2), 49);
 
     int code  = m_observeweather.cond_code.toInt();
     convertCodeToTrayIcon(m_observeweather.cond_code);
@@ -513,17 +516,22 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
     QString picQss = "#centralwidget{color:white;background-image:url(" + picStr + ");background-repeat:no-repeat;}";
     ui->centralwidget->setStyleSheet(picQss);
 
+    ui->lbCurrTmp->setText(m_observeweather.tmp);
+    int m_size1 = m_observeweather.tmp.size();
+    ui->lbCurrTmpUnit->move(451 + 30*(m_size1-1), 95);
+    ui->lbCurrWea->move(454 + 30*(m_size1-1), 165);
+
+
     ui->lbCurrTmpUnit->setText("℃");
+
+    ui->lbCurrWea->setText(m_observeweather.cond_txt);
 
     QString strHum = "湿度 " + m_observeweather.hum + "%   " + m_observeweather.wind_dir + " " + m_observeweather.wind_sc + "级";
     ui->lbCurrHum->setText(strHum);
 
-    ui->lbCurrTmp->setText(m_observeweather.tmp);
-
-    ui->lbCurrWea->setText(m_observeweather.cond_txt);
     if (m_observeweather.city != "") {
         m_weatherManager->postSystemInfoToServer(); //将当前城市告诉给服务器
-        emit m_leftupcitybtn->requestSetCityName(m_observeweather.city);
+        emit m_leftupcitybtn->requestSetCityName(m_observeweather.city); //更新左上角按钮显示的城市
     }
 
     //更新保存城市列表文件china-weather-data

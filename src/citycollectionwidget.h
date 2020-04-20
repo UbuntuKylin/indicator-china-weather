@@ -41,6 +41,7 @@ public slots:
 
 signals:
     void sendCurrentCityId(QString id);
+    void requestChangeWidgetState();
 
 protected:
     void mousePressEvent(QMouseEvent *event);

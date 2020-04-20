@@ -538,5 +538,5 @@ void CityCollectionWidget::mouseMoveEvent(QMouseEvent *event){
 
 void CityCollectionWidget::on_btnCancel_clicked()
 {
-    this->hide();
+    emit requestChangeWidgetState();
 }
