@@ -333,20 +333,17 @@ void MainWindow::handleIconClicked()
     QRect screenGeometry = qApp->primaryScreen()->geometry();
 
     QDesktopWidget* desktopWidget = QApplication::desktop();
-    QRect deskMainRect = desktopWidget->availableGeometry(0);//获取可用桌面大小
+    //QRect deskMainRect = desktopWidget->availableGeometry(0);//获取可用桌面大小
     QRect screenMainRect = desktopWidget->screenGeometry(0);//获取设备屏幕大小
-    QRect deskDupRect = desktopWidget->availableGeometry(1);//获取可用桌面大小
-    QRect screenDupRect = desktopWidget->screenGeometry(1);//获取设备屏幕大小
+    //QRect deskDupRect = desktopWidget->availableGeometry(1);//获取可用桌面大小
+    //QRect screenDupRect = desktopWidget->screenGeometry(1);//获取设备屏幕大小
 
-    qDebug()<<"                                                  ";
-    qDebug()<<"screenGeometry: "<<screenGeometry;
-    qDebug()<<"availableGeometry: "<<availableGeometry;
-
-    qDebug()<<"deskMainRect: "<<deskMainRect;
-    qDebug()<<"screenMainRect: "<<screenMainRect;
-    qDebug()<<"deskDupRect: "<<deskDupRect;
-    qDebug()<<"screenDupRect: "<<screenDupRect;
-    qDebug()<<"                                                  ";
+    //qDebug()<<"screenGeometry: "<<screenGeometry;
+    //qDebug()<<"availableGeometry: "<<availableGeometry;
+    //qDebug()<<"deskMainRect: "<<deskMainRect;
+    //qDebug()<<"screenMainRect: "<<screenMainRect;
+    //qDebug()<<"deskDupRect: "<<deskDupRect;
+    //qDebug()<<"screenDupRect: "<<screenDupRect;
 
     int m = m_weatherManager->getTaskBarHeight("height");
     int n = m_weatherManager->getTaskBarPos("position");
@@ -364,14 +361,14 @@ void MainWindow::handleIconClicked()
             if (screenGeometry.x() == 0){//主屏在左侧
                 this->move(m + d, screenMainRect.y() + screenMainRect.height() - this->height());
             }else{//主屏在右侧
-                this->move(m + d, screenMainRect.y() + screenMainRect.height() - this->height());
+                this->move(screenMainRect.x() + m + d, screenMainRect.y() + screenMainRect.height() - this->height());
             }
         } else if (n == 3){
             //任务栏在右侧
             if (screenGeometry.x() == 0){//主屏在左侧
-                this->move(screenMainRect.width() - this->width() - m - d, screenDupRect.y() + screenDupRect.height() - this->height());
+                this->move(screenMainRect.width() - this->width() - m - d, screenMainRect.y() + screenMainRect.height() - this->height());
             }else{//主屏在右侧
-                this->move(screenMainRect.width() - this->width() - m - d, screenDupRect.y() + screenDupRect.height() - this->height());
+                this->move(screenMainRect.x() + screenMainRect.width() - this->width() - m - d, screenMainRect.y() + screenMainRect.height() - this->height());
             }
         }
     } else if (availableGeometry.x() == screenGeometry.x() && availableGeometry.y() == screenGeometry.y()) { //panel in right or bottom
