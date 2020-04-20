@@ -50,7 +50,7 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     ui->lbCityCurrent->setText("当前城市");
 
     ui->lbCityCollect->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(68,68,68,1);}");
-    ui->lbCityCollect->setText("收藏城市");
+    ui->lbCityCollect->setText("收藏城市y");
 
     ui->lbCityCount->setStyleSheet("QLabel{border:none;background:transparent;font-size:12px;font-weight:400;color:rgba(68,68,68,1);}");
     ui->lbCityCount->setText("0/8");
@@ -68,7 +68,7 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     m_tipLabel->setAlignment(Qt::AlignCenter);
     m_tipLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
     m_tipLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
-    m_tipLabel->setText(tr("当前网络异常，请检查网络设置"));//当前网络异常，请检查网络设置
+    m_tipLabel->setText("当前网络异常，请检查网络设置");//Current Network Exception, Please Check Network Settings
     m_tipLabel->move(0, 300);
     m_tipLabel->hide();
 
@@ -121,7 +121,7 @@ void CityCollectionWidget::onWeatherDataReply()
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 
     int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    qDebug()<<"value of statusCode is: "<<statusCode;
+    qDebug()<<"Reply value of getting weather data by URL is: "<<statusCode;
 
     if (statusCode == 301 || statusCode == 302) {//redirect
         return;

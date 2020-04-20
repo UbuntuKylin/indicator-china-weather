@@ -133,8 +133,7 @@ void MainWindow::checkSingle()
 bool MainWindow::isFileExist(QString fullFileName)
 {
     QFileInfo fileInfo(fullFileName);
-    if(fileInfo.isFile())
-    {
+    if(fileInfo.isFile()) {
         return true;
     }
     return false;
@@ -339,21 +338,21 @@ void MainWindow::handleIconClicked()
     QRect deskDupRect = desktopWidget->availableGeometry(1);//获取可用桌面大小
     QRect screenDupRect = desktopWidget->screenGeometry(1);//获取设备屏幕大小
 
-    //qDebug()<<"                                                  ";
-    //qDebug()<<"m_trayIcon:"<<m_trayIcon->geometry();
-    //qDebug()<<"screenGeometry: "<<screenGeometry;
-    //qDebug()<<"availableGeometry: "<<availableGeometry;
+    qDebug()<<"                                                  ";
+    qDebug()<<"screenGeometry: "<<screenGeometry;
+    qDebug()<<"availableGeometry: "<<availableGeometry;
 
-    //qDebug()<<"deskMainRect: "<<deskMainRect;
-    //qDebug()<<"screenMainRect: "<<screenMainRect;
-    //qDebug()<<"deskDupRect: "<<deskDupRect;
-    //qDebug()<<"screenDupRect: "<<screenDupRect;
+    qDebug()<<"deskMainRect: "<<deskMainRect;
+    qDebug()<<"screenMainRect: "<<screenMainRect;
+    qDebug()<<"deskDupRect: "<<deskDupRect;
+    qDebug()<<"screenDupRect: "<<screenDupRect;
+    qDebug()<<"                                                  ";
 
-    int m = 46;
-    int n = 0;
+    int m = m_weatherManager->getTaskBarHeight("height");
+    int n = m_weatherManager->getTaskBarPos("position");
     int d = 2; //窗口边沿到任务栏距离
 
-    if (screenGeometry.width() == availableGeometry.width() && screenGeometry.height() == availableGeometry.height()){
+    if (screenGeometry.width() == availableGeometry.width() && screenGeometry.height() == availableGeometry.height()){ 
         if(n == 0){
             //任务栏在下侧
             this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + availableGeometry.height() - this->height() - m - d);
@@ -362,36 +361,27 @@ void MainWindow::handleIconClicked()
             this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + screenGeometry.height() - availableGeometry.height() + m + d);
         } else if (n == 2){
             //任务栏在左侧
-            this->move(m + d, screenMainRect.y() + screenMainRect.height() - this->height());
-            //if (screenGeometry.x() == 0){//主屏在左侧
-            //    this->move(screenGeometry.width() - availableGeometry.width() + m + d, screenMainRect.y() + screenMainRect.height() - this->height());
-            //}else{//主屏在右侧
-            //    this->move(screenGeometry.width() - availableGeometry.width() + m + d,screenDupRect.y() + screenDupRect.height() - this->height());
-            //}
+            if (screenGeometry.x() == 0){//主屏在左侧
+                this->move(m + d, screenMainRect.y() + screenMainRect.height() - this->height());
+            }else{//主屏在右侧
+                this->move(m + d, screenMainRect.y() + screenMainRect.height() - this->height());
+            }
         } else if (n == 3){
             //任务栏在右侧
-            this->move(screenMainRect.width() - this->width() - m - d, screenDupRect.y() + screenDupRect.height() - this->height());
-            //if (screenGeometry.x() == 0){//主屏在左侧
-            //    this->move(screenMainRect.width() + screenDupRect.width() - this->width() - m - d, screenDupRect.y() + screenDupRect.height() - this->height());
-            //}else{//主屏在右侧
-            //    this->move(availableGeometry.x() + availableGeometry.width() - this->width() - m - d, screenMainRect.y() + screenMainRect.height() - this->height());
-            //}
+            if (screenGeometry.x() == 0){//主屏在左侧
+                this->move(screenMainRect.width() - this->width() - m - d, screenDupRect.y() + screenDupRect.height() - this->height());
+            }else{//主屏在右侧
+                this->move(screenMainRect.width() - this->width() - m - d, screenDupRect.y() + screenDupRect.height() - this->height());
+            }
         }
-    } else if(screenGeometry.width() == availableGeometry.width() ){
-        if (m_trayIcon->geometry().y() > availableGeometry.height()/2){
-            //任务栏在下侧
-            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + availableGeometry.height() - this->height() - d);
-        }else{
-            //任务栏在上侧
-            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + screenGeometry.height() - availableGeometry.height() + d);
+    } else if (availableGeometry.x() == screenGeometry.x() && availableGeometry.y() == screenGeometry.y()) { //panel in right or bottom
+        this->move(availableGeometry.x() + availableGeometry.width() - this->width() - d, availableGeometry.y() + availableGeometry.height() - this->height() - d);
+    } else {
+        if (availableGeometry.x() > 0) {//panel in left
+            this->move(availableGeometry.x() + d, availableGeometry.y() + availableGeometry.height()  - this->height());
         }
-    } else if (screenGeometry.height() == availableGeometry.height()){
-        if (m_trayIcon->geometry().x() > availableGeometry.width()/2){
-            //任务栏在右侧
-            this->move(availableGeometry.x() + availableGeometry.width() - this->width() - d, screenMainRect.y() + screenGeometry.height() - this->height());
-        } else {
-            //任务栏在左侧
-            this->move(screenGeometry.width() - availableGeometry.width() + d, screenMainRect.y() + screenGeometry.height() - this->height());
+        else {//panel in top
+            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), availableGeometry.y() + d);
         }
     }
 }

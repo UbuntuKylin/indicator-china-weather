@@ -175,7 +175,7 @@ void WeatherWorker::onWeatherDataReply()
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 
     int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    qDebug()<<"debug: Value of statusCode is: "<<statusCode;
+    qDebug()<<"Reply value of getting weather data by URL is: "<<statusCode;
 
     if (statusCode == 301 || statusCode == 302) {//redirect
         emit responseFailure(statusCode);

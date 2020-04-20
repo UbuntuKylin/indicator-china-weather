@@ -91,8 +91,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/cityitemwidget.cpp" line="90"/>
-        <location filename="../src/cityitemwidget.cpp" line="108"/>
+        <location filename="../src/cityitemwidget.cpp" line="86"/>
+        <location filename="../src/cityitemwidget.cpp" line="104"/>
         <source>%1 [Default]</source>
         <translation type="unfinished"></translation>
     </message>
@@ -100,22 +100,22 @@
 <context>
     <name>CityWidget</name>
     <message>
-        <location filename="../src/citywidget.cpp" line="62"/>
+        <location filename="../src/citywidget.cpp" line="64"/>
         <source>Add City</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/citywidget.cpp" line="169"/>
+        <location filename="../src/citywidget.cpp" line="172"/>
         <source>Only 10 cities can be added at most!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/citywidget.cpp" line="175"/>
+        <location filename="../src/citywidget.cpp" line="178"/>
         <source>The city already exists!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/citywidget.cpp" line="187"/>
+        <location filename="../src/citywidget.cpp" line="190"/>
         <source>At least one city needs to be preserved!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -123,7 +123,7 @@
 <context>
     <name>ForecastItemWidget</name>
     <message>
-        <location filename="../src/forecastitemwidget.cpp" line="44"/>
+        <location filename="../src/forecastitemwidget.cpp" line="42"/>
         <source>Today</source>
         <translation type="unfinished"></translation>
     </message>
@@ -182,121 +182,104 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="115"/>
-        <location filename="../src/mainwindow.cpp" line="334"/>
-        <location filename="../src/mainwindow.cpp" line="450"/>
+        <location filename="../src/mainwindow.cpp" line="104"/>
+        <location filename="../src/mainwindow.cpp" line="466"/>
         <source>Kylin Weather</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="122"/>
+        <location filename="../src/mainwindow.cpp" line="111"/>
         <source>Refresh time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="154"/>
+        <location filename="../src/mainwindow.cpp" line="157"/>
         <source>Network not connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="158"/>
+        <location filename="../src/mainwindow.cpp" line="161"/>
         <source>Getting data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="191"/>
-        <location filename="../src/mainwindow.cpp" line="247"/>
-        <source>Start to locate the city automatically...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="213"/>
-        <source>Start getting weather data...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="238"/>
+        <location filename="../src/mainwindow.cpp" line="214"/>
         <source>Incorrect access address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="241"/>
+        <location filename="../src/mainwindow.cpp" line="217"/>
         <source>Network error code:%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="344"/>
+        <location filename="../src/mainwindow.cpp" line="346"/>
         <source>Refresh time:Just updated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="348"/>
+        <location filename="../src/mainwindow.cpp" line="350"/>
         <source>Refresh time:%1 minute ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="351"/>
+        <location filename="../src/mainwindow.cpp" line="353"/>
         <source>Refresh time:%1 minutes ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="383"/>
+        <location filename="../src/mainwindow.cpp" line="385"/>
         <source>City</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="408"/>
+        <location filename="../src/mainwindow.cpp" line="410"/>
         <source>Release time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="422"/>
+        <location filename="../src/mainwindow.cpp" line="419"/>
         <source>Weather Forecast</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="433"/>
+        <location filename="../src/mainwindow.cpp" line="430"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="435"/>
+        <location filename="../src/mainwindow.cpp" line="432"/>
         <source>Kylin Weather - About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="437"/>
+        <location filename="../src/mainwindow.cpp" line="434"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="459"/>
-        <source>Detecting network...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="531"/>
+        <location filename="../src/mainwindow.cpp" line="544"/>
         <source>Temperature:%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="532"/>
+        <location filename="../src/mainwindow.cpp" line="545"/>
         <source>Relative humidity:%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="534"/>
-        <location filename="../src/mainwindow.cpp" line="537"/>
+        <location filename="../src/mainwindow.cpp" line="547"/>
+        <location filename="../src/mainwindow.cpp" line="550"/>
         <source>Air quality:%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="534"/>
+        <location filename="../src/mainwindow.cpp" line="547"/>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="539"/>
+        <location filename="../src/mainwindow.cpp" line="552"/>
         <source>Release time:%1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -330,22 +313,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="215"/>
+        <location filename="../src/nowweatherwidget.cpp" line="217"/>
         <source>Click to see details of air quality</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="298"/>
+        <location filename="../src/nowweatherwidget.cpp" line="292"/>
         <source>Static wind</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="301"/>
+        <location filename="../src/nowweatherwidget.cpp" line="295"/>
         <source>%1stage wind</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/nowweatherwidget.cpp" line="305"/>
+        <location filename="../src/nowweatherwidget.cpp" line="299"/>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -538,18 +521,15 @@
     </message>
 </context>
 <context>
-    <name>TitleBar</name>
-    <message>
-        <location filename="../src/titlebar.cpp" line="159"/>
-        <source>Click to set city</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ToolTip</name>
     <message>
-        <location filename="../src/tooltip.cpp" line="141"/>
+        <location filename="../src/tooltip.cpp" line="135"/>
         <source>Sunrise: %1 sunset: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tooltip.cpp" line="138"/>
+        <source>Sunrise and sunset: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -558,37 +538,42 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tooltip.cpp" line="158"/>
+        <location filename="../src/tooltip.cpp" line="145"/>
+        <source>Moonrise and moonset: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tooltip.cpp" line="148"/>
         <source>Relative humidity:%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tooltip.cpp" line="159"/>
+        <location filename="../src/tooltip.cpp" line="149"/>
         <source>Precipitation:%1 mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tooltip.cpp" line="160"/>
+        <location filename="../src/tooltip.cpp" line="150"/>
         <source>Probability of precipitation:%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tooltip.cpp" line="161"/>
+        <location filename="../src/tooltip.cpp" line="151"/>
         <source>Atmospheric pressure:%1 hPa</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tooltip.cpp" line="162"/>
+        <location filename="../src/tooltip.cpp" line="152"/>
         <source>UV intensity index:%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tooltip.cpp" line="163"/>
+        <location filename="../src/tooltip.cpp" line="153"/>
         <source>Visibility:%1 km</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tooltip.cpp" line="164"/>
+        <location filename="../src/tooltip.cpp" line="154"/>
         <source>Wind:%1 %2stage  direction %3  speed %4 km/h</source>
         <translation type="unfinished"></translation>
     </message>
@@ -596,7 +581,7 @@
 <context>
     <name>WeatherWorker</name>
     <message>
-        <location filename="../src/weatherworker.cpp" line="401"/>
+        <location filename="../src/weatherworker.cpp" line="631"/>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>

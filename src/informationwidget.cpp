@@ -185,75 +185,6 @@ void Information::initControlQss()
     ui->lineV_3->show();
 }
 
-void Information::initControlData()
-{
-    /******************天气预报***************************/
-
-    ui->lbDay_1->setText("星期一");
-    ui->lbDay_2->setText("星期一");
-    ui->lbDay_3->setText("星期一");
-    ui->lbDay_4->setText("星期一");
-    ui->lbDay_5->setText("星期一");
-    ui->lbDay_6->setText("星期一");
-    ui->lbDay_7->setText("星期一");
-
-    ui->lbDate_1->setText("3月26日");
-    ui->lbDate_2->setText("3月26日");
-    ui->lbDate_3->setText("3月26日");
-    ui->lbDate_4->setText("3月26日");
-    ui->lbDate_5->setText("3月26日");
-    ui->lbDate_6->setText("3月26日");
-    ui->lbDate_7->setText("3月26日");
-
-    ui->lbIcon_1->setStyleSheet("QLabel{background-image:url(:/res/control_icons/weather-clear.png);}");
-    ui->lbIcon_2->setStyleSheet("QLabel{background-image:url(:/res/control_icons/weather-clear.png);}");
-    ui->lbIcon_3->setStyleSheet("QLabel{background-image:url(:/res/control_icons/weather-clear.png);}");
-    ui->lbIcon_4->setStyleSheet("QLabel{background-image:url(:/res/control_icons/weather-clear.png);}");
-    ui->lbIcon_5->setStyleSheet("QLabel{background-image:url(:/res/control_icons/weather-clear.png);}");
-    ui->lbIcon_6->setStyleSheet("QLabel{background-image:url(:/res/control_icons/weather-clear.png);}");
-    ui->lbIcon_7->setStyleSheet("QLabel{background-image:url(:/res/control_icons/weather-clear.png);}");
-
-    ui->lbTmp_1->setText("13℃~23℃");
-    ui->lbTmp_2->setText("13℃~23℃");
-    ui->lbTmp_3->setText("13℃~23℃");
-    ui->lbTmp_4->setText("13℃~23℃");
-    ui->lbTmp_5->setText("13℃~23℃");
-    ui->lbTmp_6->setText("13℃~23℃");
-    ui->lbTmp_7->setText("13℃~23℃");
-
-
-    ui->lbWea_1->setText("阵雨转中雨\n东南风微风");
-    ui->lbWea_2->setText("阵雨转中雨\n东南风微风");
-    ui->lbWea_3->setText("阵雨转中雨\n东南风微风");
-    ui->lbWea_4->setText("阵雨转中雨\n东南风微风");
-    ui->lbWea_5->setText("阵雨转中雨\n东南风微风");
-    ui->lbWea_6->setText("阵雨转中雨\n东南风微风");
-    ui->lbWea_7->setText("阵雨转中雨\n东南风微风");
-
-
-    /******************生活指数***************************/
-
-    ui->lbLifeStyle->setText("生活指数");
-
-    ui->lb_drsg->setText("穿衣指数");
-    ui->lb_drsg_brf->setText("温凉");
-
-    ui->lb_flu->setText("感冒指数");
-    ui->lb_flu_brf->setText("易发");
-
-    ui->lb_uv->setText("紫外线指数");
-    ui->lb_uv_brf->setText("中等");
-
-    ui->lb_cw->setText("洗车指数");
-    ui->lb_cw_brf->setText("不宜");
-
-    ui->lb_air->setText("空气指数");
-    ui->lb_air_brf->setText("良好");
-
-    ui->lb_sport->setText("运动指数");
-    ui->lb_sport_brf->setText("不适宜");
-}
-
 void Information::onSetForecastWeather(ForecastWeather forecastweather)
 {
     if (m_day == 8){
@@ -272,13 +203,13 @@ void Information::onSetForecastWeather(ForecastWeather forecastweather)
 
     //获取日期
     QDateTime time = QDateTime::currentDateTime();//获取系统现在的时间
-    QString date_1 = time.toString("MM月dd日"); //设置显示格式
-    QString date_2 = time.addDays(+1).toString("MM月dd日");
-    QString date_3 = time.addDays(+2).toString("MM月dd日");
-    QString date_4 = time.addDays(+3).toString("MM月dd日");
-    QString date_5 = time.addDays(+4).toString("MM月dd日");
-    QString date_6 = time.addDays(+5).toString("MM月dd日");
-    QString date_7 = time.addDays(+6).toString("MM月dd日");
+    QString date_1 = time.toString("M月d日"); //设置显示格式
+    QString date_2 = time.addDays(+1).toString("M月d日");
+    QString date_3 = time.addDays(+2).toString("M月d日");
+    QString date_4 = time.addDays(+3).toString("M月d日");
+    QString date_5 = time.addDays(+4).toString("M月d日");
+    QString date_6 = time.addDays(+5).toString("M月d日");
+    QString date_7 = time.addDays(+6).toString("M月d日");
 
     //获取天气图片
     int code;

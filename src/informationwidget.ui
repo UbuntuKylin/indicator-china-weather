@@ -617,7 +617,7 @@
   <widget class="QLabel" name="lbDate_1">
    <property name="geometry">
     <rect>
-     <x>25</x>
+     <x>28</x>
      <y>48</y>
      <width>60</width>
      <height>12</height>

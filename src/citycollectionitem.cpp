@@ -22,16 +22,12 @@ citycollectionitem::citycollectionitem(QWidget *parent) :
     ui->lbBackImage->setStyleSheet("QWidget{background:rgba(61,107,229,1);border:none;}");
 
     ui->lbCityName->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(255,255,255,1);}");
-    //ui->lbCityName->setText("武汉");
 
     ui->lbTmp->setStyleSheet("QLabel{border:none;background:transparent;font-size:32px;font-weight:400;color:rgba(255,255,255,1);}");
-    //ui->lbTmp->setText("60");
 
     ui->lbTmpUnit->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(255,255,255,1);}");
-    //ui->lbTmpUnit->setText("℃");
 
     ui->lbwea->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(255,255,255,1);}");
-    //ui->lbwea->setText("晴");
 
     ui->btnDelete->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/city_delete.png);}");
     ui->btnDelete->hide();
@@ -139,7 +135,7 @@ void citycollectionitem::onWeatherDataReply()
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 
     int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    qDebug()<<"value of statusCode is: "<<statusCode;
+    qDebug()<<"Reply value of getting weather data by URL is: "<<statusCode;
 
     if(reply->error() != QNetworkReply::NoError) {
         qDebug() << "reply error!";

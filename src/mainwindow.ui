@@ -52,9 +52,9 @@
     <widget class="QLabel" name="lbCurrTmp">
      <property name="geometry">
       <rect>
-       <x>354</x>
+       <x>351</x>
        <y>85</y>
-       <width>110</width>
+       <width>116</width>
        <height>100</height>
       </rect>
      </property>

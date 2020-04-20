@@ -27,6 +27,12 @@
 #include <QFile>
 #include <QTimer>
 
+#include <QtDBus/QDBusConnection>
+#include <QtDBus/QDBusMessage>
+#include <QtDBus/QDBusInterface>
+#include <QtDBus/QDBusObjectPath>
+#include <QtDBus/QDBusReply>
+
 WeatherManager::WeatherManager(QObject *parent) : QObject(parent)
 {
     m_geoipWorker = new GeoIpWorker();
@@ -112,5 +118,35 @@ void WeatherManager::setAutomaticCity(const QString &cityName)
         emit this->requestAutoLocationData(info, true);
     } else {
         emit this->requestAutoLocationData(info, false);
+    }
+}
+
+int WeatherManager::getTaskBarPos(QString str)
+{
+    QDBusInterface interface( "com.ukui.panel.desktop",
+                              "/",
+                              "com.ukui.panel.desktop",
+                              QDBusConnection::sessionBus() );
+
+    QDBusReply<int> reply = interface.call("GetPanelPosition", str);
+    if (reply.isValid()) {
+        return reply;
+    } else {
+        return 0;
+    }
+}
+
+int WeatherManager::getTaskBarHeight(QString str)
+{
+    QDBusInterface interface( "com.ukui.panel.desktop",
+                              "/",
+                              "com.ukui.panel.desktop",
+                              QDBusConnection::sessionBus() );
+
+    QDBusReply<int> reply = interface.call("GetPanelSize", str);
+    if (reply.isValid()) {
+        return reply;
+    } else {
+        return 46;
     }
 }

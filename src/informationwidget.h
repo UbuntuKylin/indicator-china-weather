@@ -30,7 +30,6 @@ private:
 
     void editQssString();
     void initControlQss();
-    void initControlData();
 
     QString convertCodeToBackgroud(int code);
 

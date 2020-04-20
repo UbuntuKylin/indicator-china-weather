@@ -25,7 +25,7 @@
 
 CityAddSearchBox::CityAddSearchBox(QWidget* parent)
     :QLineEdit(parent)
-    , m_searchText(tr("搜索"))
+    , m_searchText("搜索")
     , m_searchPixmap(QPixmap(":/res/control_icons/search_city.png"))
 {
     this->setFixedSize(470, 30);
