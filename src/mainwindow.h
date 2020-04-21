@@ -49,6 +49,9 @@ public:
     ~MainWindow();
 
 public slots:
+    void createTrayIcon();
+    void handleIconClicked();
+
     void onRefreshMainWindowWeather();
     void onHandelAbnormalSituation(QString abnormalText);
 
@@ -85,9 +88,6 @@ private:
     void checkSingle();
 
     bool isFileExist(QString fullFileName);
-
-    void createTrayIcon();
-    void handleIconClicked();
 
     void onSearchBoxEdited();
     void searchCityName();

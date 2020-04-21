@@ -28,13 +28,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     judgeSystemLanguage();
 
+    //单例运行
+    //checkSingle();
+
     //先注册结构体，这样才能作为信号与槽的参数
     qRegisterMetaType<ObserveWeather>();
     qRegisterMetaType<ForecastWeather>();
     qRegisterMetaType<LifeStyle>();
-
-    //单例运行
-    checkSingle();
 
     //设置主界面样式
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
@@ -307,9 +307,9 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
     switch(reason){
     case QSystemTrayIcon::Trigger:
     case QSystemTrayIcon::MiddleClick:
-        handleIconClicked();
         if(this->isHidden()){
-            this->showNormal();
+            //this->showNormal();
+            handleIconClicked();
         }else{
             this->hide();
         }
@@ -381,6 +381,10 @@ void MainWindow::handleIconClicked()
             this->move(availableGeometry.x() + availableGeometry.width() - this->width(), availableGeometry.y() + d);
         }
     }
+
+    this->showNormal();
+    this->raise();
+    this->activateWindow();
 }
 
 //定时更新主界面天气
