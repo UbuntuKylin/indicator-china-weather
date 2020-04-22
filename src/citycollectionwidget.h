@@ -75,7 +75,7 @@ private:
     QPoint winPos;
     QPoint dragPos;
 
-    int cityNumber;
+    int m_citynumber; //当前收藏城市数量
 };
 
 #endif // CITYCOLLECTION_H

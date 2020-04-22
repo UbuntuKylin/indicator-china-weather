@@ -27,10 +27,10 @@ LeftUpCityBtn::LeftUpCityBtn(QWidget *parent) : QWidget(parent)
 
     m_layout = new QHBoxLayout(this);
 
-    m_addCityBtn = new QPushButton(this);
-    m_addCityBtn->setFocusPolicy(Qt::NoFocus);
+    m_addCityBtn = new QLabel(this);
+    //m_addCityBtn->setFocusPolicy(Qt::NoFocus);
     m_addCityBtn->setFixedSize(20, 20);
-    m_addCityBtn->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(':/res/control_icons/add_normal_btn.png');}");
+    m_addCityBtn->setStyleSheet("QLabel{border:0px;background:transparent;background-image:url(':/res/control_icons/add_normal_btn.png');}");
     // m_addCityBtn->setCursor(QCursor(Qt::PointingHandCursor));
     // m_iconLabel->setScaledContents(true);//自动缩放,显示图像大小自动调整为Qlabel大小
 
@@ -59,7 +59,7 @@ void LeftUpCityBtn::enterEvent(QEvent *event)
 {
     QWidget::enterEvent(event);
 
-    m_addCityBtn->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(':/res/control_icons/add_hover_btn.png');}");
+    m_addCityBtn->setStyleSheet("QLabel{border:0px;background:transparent;background-image:url(':/res/control_icons/add_hover_btn.png');}");
 
     this->m_mouseHover = true;
 }
@@ -68,7 +68,7 @@ void LeftUpCityBtn::leaveEvent(QEvent *event)
 {
     QWidget::leaveEvent(event);
 
-    m_addCityBtn->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(':/res/control_icons/add_normal_btn.png');}");
+    m_addCityBtn->setStyleSheet("QLabel{border:0px;background:transparent;background-image:url(':/res/control_icons/add_normal_btn.png');}");
 
     this->m_mouseHover = false;
 }
@@ -76,7 +76,7 @@ void LeftUpCityBtn::leaveEvent(QEvent *event)
 void LeftUpCityBtn::mousePressEvent(QMouseEvent *event)
 {
     QWidget::mousePressEvent(event);
-    m_addCityBtn->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(':/res/control_icons/add_pressed_btn.png');}");
+    m_addCityBtn->setStyleSheet("QLabel{border:0px;background:transparent;background-image:url(':/res/control_icons/add_pressed_btn.png');}");
 
     if (!is_open_city_collect_widget) {
         CityCollectionWidget *m_citycollectionwidget = new CityCollectionWidget();

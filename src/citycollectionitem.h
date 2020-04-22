@@ -23,13 +23,15 @@ public:
     explicit citycollectionitem(QWidget *parent = nullptr);
     ~citycollectionitem();
 
-    void setItemWidgetState(bool isShowNormal, bool isCurrentCity);
+    void setItemWidgetState(bool isShowNormal, bool isCurrentCity, int collCityNum);
     void setCityWeather(ObserveWeather observeweather);
     void setCurrentWeather(QString cityId);
     QString convertCodeToBackgroud(int code);
 
     QString m_city_id = "";
+    bool is_curr_city = false;
     bool is_normal_item = true;
+    int m_collcitynum;
 
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
@@ -44,7 +46,6 @@ private slots:
 
 private:
     Ui::citycollectionitem *ui;
-
     QNetworkAccessManager *m_networkManager = nullptr;
 
 signals:

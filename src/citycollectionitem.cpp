@@ -30,9 +30,11 @@ citycollectionitem::citycollectionitem(QWidget *parent) :
     ui->lbwea->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(255,255,255,1);}");
 
     ui->btnDelete->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/city_delete.png);}");
+    ui->btnDelete->setFocusPolicy(Qt::NoFocus);
     ui->btnDelete->hide();
 
     ui->btnAddCity->setStyleSheet("QPushButton{border:0px;background:transparent;}");
+    ui->btnAddCity->setFocusPolicy(Qt::NoFocus);
     ui->btnAddCity->hide();
 
     ui->lbAddCity->setStyleSheet("QLabel{border:0px;background:transparent;background-image:url(:/res/control_icons/city_add.png);}");
@@ -53,8 +55,14 @@ bool citycollectionitem::eventFilter(QObject *obj, QEvent *event)
 {
     if (obj == this){
         if(event->type() == QEvent::HoverEnter) {
-            if (this->is_normal_item){
-                ui->btnDelete->show();
+            if (this->is_normal_item) {
+                if (this->is_curr_city) {
+                    if (this->m_collcitynum != 0) {
+                        ui->btnDelete->show();
+                    }
+                } else {
+                    ui->btnDelete->show();
+                }
             }
             return true;
         } else if(event->type() == QEvent::HoverLeave){
@@ -66,7 +74,7 @@ bool citycollectionitem::eventFilter(QObject *obj, QEvent *event)
     return QWidget::eventFilter(obj,event);
 }
 
-void citycollectionitem::setItemWidgetState(bool isShowNormal, bool isCurrentCity)
+void citycollectionitem::setItemWidgetState(bool isShowNormal, bool isCurrentCity, int collCityNum)
 {
     if (isCurrentCity) { //如果是当前城市
         ui->lbCityName->show();
@@ -92,7 +100,9 @@ void citycollectionitem::setItemWidgetState(bool isShowNormal, bool isCurrentCit
         }
     }
 
+    this->m_collcitynum = collCityNum;
     this->is_normal_item = isShowNormal;
+    this->is_curr_city = isCurrentCity;
 }
 
 void citycollectionitem::setCityWeather(ObserveWeather observeweather)

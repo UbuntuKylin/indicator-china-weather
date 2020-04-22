@@ -45,6 +45,7 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     ui->lbLeftUpTitle->setText("麒麟天气");
 
     ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}");
+    ui->btnCancel->setFocusPolicy(Qt::NoFocus);
 
     ui->lbCityCurrent->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(68,68,68,1);}");
     ui->lbCityCurrent->setText("当前城市");
@@ -54,7 +55,7 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
 
     ui->lbCityCount->setStyleSheet("QLabel{border:none;background:transparent;font-size:12px;font-weight:400;color:rgba(68,68,68,1);}");
     ui->lbCityCount->setText("0/8");
-    cityNumber = 0;
+    m_citynumber = 0;
 
     m_tipIcon = new QLabel(this);
     m_tipIcon->setFixedSize(127 ,93);
@@ -106,8 +107,8 @@ void CityCollectionWidget::onWeatherDataRequest()
             urlPrefix.append("+");
         }
     }
-    cityNumber = cityList.size()-2;
-    QString citynumber = QString::number(cityNumber) + "/8";
+    m_citynumber = cityList.size()-2;
+    QString citynumber = QString::number(m_citynumber) + "/8";
     ui->lbCityCount->setText(citynumber);
 
     QNetworkRequest request;
@@ -210,7 +211,7 @@ void CityCollectionWidget::onWeatherDataReply()
                     if (i==0) { //当前城市
                         citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
                         m_currentcity->move(35, 81);
-                        m_currentcity->setItemWidgetState(true, true);
+                        m_currentcity->setItemWidgetState(true, true, m_citynumber);
                         m_currentcity->setCityWeather(observeweather);
                         m_currentcity->show();
                         connect(m_currentcity, SIGNAL(requestDeleteCity(QString)), this, SLOT(onRequestDeleteCity(QString)) );
@@ -218,7 +219,7 @@ void CityCollectionWidget::onWeatherDataReply()
                     } else {
                         citycollectionitem *m_collecity = new citycollectionitem(ui->backwidget);
                         m_collecity->move(35 + column*170, 242 + row*100); //m_currentcity->move(35 + j*170, 242 + i*100);
-                        m_collecity->setItemWidgetState(true, false);
+                        m_collecity->setItemWidgetState(true, false, m_citynumber);
                         m_collecity->setCityWeather(observeweather);
                         m_collecity->show();
                         connect(m_collecity, SIGNAL(requestDeleteCity(QString)), this, SLOT(onRequestDeleteCity(QString)) );
@@ -233,7 +234,7 @@ void CityCollectionWidget::onWeatherDataReply()
                 } //end for (int i=0; i< strList.size()-1; i++)
                 citycollectionitem *m_lastitem = new citycollectionitem(ui->backwidget);
                 m_lastitem->move(35 + column*170, 242 + row*100);
-                m_lastitem->setItemWidgetState(false, false);
+                m_lastitem->setItemWidgetState(false, false, m_citynumber);
                 m_lastitem->show();
                 connect(m_lastitem, SIGNAL(showCityAddWiget()), this, SLOT(onShowCityAddWiget()) );
             }
@@ -245,7 +246,7 @@ void CityCollectionWidget::setCurrentCity()
 {
     citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
     m_currentcity->move(35, 81);
-    m_currentcity->setItemWidgetState(true, true);
+    m_currentcity->setItemWidgetState(true, true, m_citynumber);
     m_currentcity->show();
 
     QString strCurrCity = readCollectedCity();
@@ -288,7 +289,7 @@ void CityCollectionWidget::showCollectCity(int x, int y, bool isShowNormal, QStr
 {
     citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
     m_currentcity->move(x, y); //m_currentcity->move(35 + j*170, 242 + i*100);
-    m_currentcity->setItemWidgetState(isShowNormal, false);
+    m_currentcity->setItemWidgetState(isShowNormal, false, m_citynumber);
     m_currentcity->show();
     m_currentcity->setCurrentWeather(cityId);
     connect(m_currentcity, SIGNAL(showCityAddWiget()), this, SLOT(onShowCityAddWiget()) );
@@ -355,9 +356,14 @@ void CityCollectionWidget::onRequestAddNewCity(QString cityId)
         listSavedCityId.replace(8, cityId); //收藏城市已经有8个，替换最后一个收藏城市
     }else {
         listSavedCityId.append(cityId); //若收藏城市未满8个,将新添加的城市加到最后
-        cityNumber += 1;
-        QString citynumber = QString::number(cityNumber) + "/8";
+        m_citynumber += 1;
+        QString citynumber = QString::number(m_citynumber) + "/8";
         ui->lbCityCount->setText(citynumber);
+        if (m_citynumber == 1) {
+            QList<citycollectionitem *> cityitemlist = ui->backwidget->findChildren<citycollectionitem *>();
+            citycollectionitem *firstitem = cityitemlist.at(0);
+            firstitem->setItemWidgetState(true, false, m_citynumber);
+        }
     }
 
     QString newStrCityId = "";
@@ -383,6 +389,10 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
         return;
     }
 
+    m_citynumber -= 1;
+    QString citynumber = QString::number(m_citynumber) + "/8";
+    ui->lbCityCount->setText(citynumber);
+
     //删掉对应的城市
     QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
     for(int i = 0;i < cityItemList.size(); i ++){
@@ -406,7 +416,7 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
         citycollectionitem *newCityItem = newCityItemList.at(i);
         if (i == 0) {
             newCityItem->move(35, 81); //当前城市
-            newCityItem->setItemWidgetState(true, true);
+            newCityItem->setItemWidgetState(true, true, m_citynumber);
         } else {
             newCityItem->move(35 + column*170, 242 + row*100); //收藏城市
             column += 1;
@@ -432,10 +442,6 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
     } else {
         qDebug()<<"delete one element from collected city list failed";
     }
-
-    cityNumber -= 1;
-    QString citynumber = QString::number(cityNumber) + "/8";
-    ui->lbCityCount->setText(citynumber);
 }
 
 void CityCollectionWidget::onChangeCurrentCity(QString cityId)

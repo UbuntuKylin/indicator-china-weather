@@ -32,7 +32,7 @@ private:
     bool is_open_city_collect_widget = false;
 
     QHBoxLayout *m_layout = nullptr;
-    QPushButton *m_addCityBtn = nullptr;
+    QLabel *m_addCityBtn = nullptr;
     QLabel *m_addCityLabel = nullptr;
 
 signals:

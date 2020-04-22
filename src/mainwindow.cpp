@@ -73,6 +73,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_delegate = new LeftUpSearchDelegate(m_searchView);
     m_proxyModel = new QSortFilterProxyModel(m_searchView);
     m_model = new QStandardItemModel();
+    m_searchView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_searchView->move(100, 49);
     m_searchView->resize(178,205);
     m_searchView->hide();
@@ -507,6 +508,12 @@ void MainWindow::onSetForecastWeather(ForecastWeather m_forecastweather)
 //设置实况天气
 void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
 {
+    if (m_observeweather.tmp != "") {
+        if (m_hintWidget->isVisible()) {
+            m_hintWidget->setVisible(false);
+        }
+    }
+
     //主界面UI变化,控件间的距离自适应
     m_searchView->hide();
     m_leftupsearchbox->setText("");

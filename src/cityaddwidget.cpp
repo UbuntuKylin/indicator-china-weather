@@ -30,6 +30,7 @@ CityAddition::CityAddition(QWidget *parent) :
     ui->lbLeftUpTitle->setText("麒麟天气");
 
     ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}");
+    ui->btnCancel->setFocusPolicy(Qt::NoFocus);
 
     m_cityaddsearchbox = new CityAddSearchBox(this);
     m_cityaddsearchbox->move(35, 93);
