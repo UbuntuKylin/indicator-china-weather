@@ -65,7 +65,8 @@ void LeftUpSearchView::mouseReleaseEvent(QMouseEvent *e)
         ItemData data = variant.value<ItemData>();
         // qDebug() << "Index : " << sourceIndex.row();
         // emit requestSetCityName(data.cityName);
-        m_weatherWorker->onWeatherDataRequest(data.cityId); //获取选取城市的天气数据
+        //m_weatherWorker->onWeatherDataRequest(data.cityId); //获取选取城市的天气数据
+        requestWeatherData(data.cityId);
     }
 }
 

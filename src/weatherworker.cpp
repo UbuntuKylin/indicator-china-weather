@@ -155,8 +155,6 @@ void WeatherWorker::AccessDedirectUrlWithPost(const QString &redirectUrl)
 //利用连接请求网络数据
 void WeatherWorker::onWeatherDataRequest(const QString &cityId)
 {
-
-
     if (cityId.isEmpty()) {
         return;
     }

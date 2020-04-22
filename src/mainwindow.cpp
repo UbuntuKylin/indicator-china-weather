@@ -556,6 +556,13 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
     readFile.close();
 
     QStringList readCityIdList = readCityId.split(",");
+    for (int i=1; i<readCityIdList.size()-1; i++) { //减1因为readCityIdList最后一项为空
+        QString str = readCityIdList.at(i);
+        if (str == m_observeweather.id) {
+            readCityIdList.removeOne(m_observeweather.id);
+            break;
+        }
+    }
     readCityIdList.replace(0, m_observeweather.id);
 
     QString writeCityId = "";
