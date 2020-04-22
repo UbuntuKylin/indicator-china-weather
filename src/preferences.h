@@ -46,7 +46,7 @@ public:
     void removeCityInfoFromPref(const QString &id, bool isActive);
     void reloadCityList();
     bool isCityIdExist(const QString &id);
-    bool isCitiesCountOverMax();
+    bool isCitiesCountOverMax(int maxNum);
     void setDefaultCity();
 
     QString m_currentCity;

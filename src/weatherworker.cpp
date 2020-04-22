@@ -670,7 +670,7 @@ void WeatherWorker::setAutomaticCity(const QString &cityName)
                 id.remove(0, 2);//remove "CN"
                 QString name = resultList.at(2);
 
-                if (m_preferences->isCitiesCountOverMax()) {
+                if (m_preferences->isCitiesCountOverMax(10)) {
                     if (m_preferences->isCityIdExist(id)) {
                         //从已有列表中将自动定位的城市设置为默认城市
                         m_preferences->setCurrentCityIdAndName(name);

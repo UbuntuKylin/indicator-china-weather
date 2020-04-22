@@ -494,7 +494,7 @@ void SettingDialog::initSearch()
         for (const LocationData &line : m_searchModel->locationList()) {//it must exits.
             if (line.id == selectCityId) {
                 //emit this->requestAddCityToMenu(line);
-                if (m_preferences->isCitiesCountOverMax()) {
+                if (m_preferences->isCitiesCountOverMax(10)) {
                     m_settingTitleBar->showWarnInfo(tr("Only 10 cities can be added at most!"));//最多只能添加10个城市
                     break;
                 }

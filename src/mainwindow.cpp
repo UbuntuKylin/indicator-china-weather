@@ -186,7 +186,7 @@ MainWindow::MainWindow(QWidget *parent)
                 file.open(QIODevice::ReadOnly | QIODevice::Text);
                 QByteArray cityId = file.readAll();
                 m_cityId = (QString(cityId));
-                m_cityId.trimmed();
+                m_cityId = m_cityId.trimmed();
                 file.close();
             }
 

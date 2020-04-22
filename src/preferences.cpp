@@ -614,10 +614,10 @@ bool Preferences::isCityIdExist(const QString &id)
     return b;
 }
 
-bool Preferences::isCitiesCountOverMax()
+bool Preferences::isCitiesCountOverMax(int maxNum)
 {
     bool b = false;
-    if (m_cities.count() >= 10) {
+    if (m_cities.count() >= maxNum) {
         b = true;
         return b;
     }

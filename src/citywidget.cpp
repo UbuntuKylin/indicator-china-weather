@@ -168,7 +168,7 @@ void CityWidget::loadCityItems()
 
 void CityWidget::addCityItem(const CitySettingData &info)
 {
-    if (m_preferences->isCitiesCountOverMax()) {
+    if (m_preferences->isCitiesCountOverMax(11)) {
         emit responseCityError(QString(tr("Only 10 cities can be added at most!")));//最多只能添加10个城市
         return;
     }
