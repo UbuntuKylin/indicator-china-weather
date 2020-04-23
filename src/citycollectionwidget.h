@@ -39,10 +39,6 @@ public slots:
     void onRequestDeleteCity(QString cityId);
     void onChangeCurrentCity(QString cityId);
 
-signals:
-    void sendCurrentCityId(QString id);
-    void requestChangeWidgetState();
-
 protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
@@ -67,8 +63,6 @@ private:
     void writeCollectedCity(QString cityId);
     QString readCollectedCity();
 
-    void setCurrentCity();
-    void setCollectCity();
     void showCollectCity(int x, int y, bool isShowNormal, QString cityId);
 
     bool isPress;
@@ -76,6 +70,12 @@ private:
     QPoint dragPos;
 
     int m_citynumber; //当前收藏城市数量
+
+signals:
+    void sendCurrentCityId(QString id);
+    void requestChangeWidgetState();
+
+    void threadFinish();
 };
 
 #endif // CITYCOLLECTION_H

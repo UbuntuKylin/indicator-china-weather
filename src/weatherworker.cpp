@@ -349,5 +349,6 @@ void WeatherWorker::onWeatherDataReply()
 
             }
         }
-    }
+    } //end if (jsonObject.contains("KylinWeather"))
+    emit this->m_threadfinish();
 }

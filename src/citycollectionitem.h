@@ -10,6 +10,7 @@
 
 #include <QWidget>
 #include <QTime>
+#include <QThread>
 
 namespace Ui {
 class citycollectionitem;
@@ -37,6 +38,7 @@ protected:
     bool eventFilter(QObject *obj, QEvent *event);
 
 private slots:
+    void onThreadStart();
     void onWeatherDataRequest(const QString &cityId);
     void onWeatherDataReply();
 
@@ -52,6 +54,8 @@ signals:
     void changeCurrentCity(QString cityId);
     void showCityAddWiget();
     void requestDeleteCity(QString cityId);
+    void requestGetWeatherData(QString cityId);
+    void mThreadFinish();
 };
 
 #endif // CITYCOLLECTIONITEM_H

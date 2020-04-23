@@ -60,6 +60,7 @@ signals:
     void requestSetObserveWeather(ObserveWeather observeweather);
     void requestSetForecastWeather(ForecastWeather forecastweather);
     void requestSetLifeStyle(LifeStyle lifestyle);
+    void m_threadfinish();
 
     void requestPostHostInfoToWeatherServer();
     void requestTestNetwork();

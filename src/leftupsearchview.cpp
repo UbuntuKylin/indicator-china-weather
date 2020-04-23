@@ -21,6 +21,7 @@
 #include "weatherworker.h"
 
 #include <QScrollBar>
+#include <QThread>
 
 LeftUpSearchView::LeftUpSearchView(QWidget *parent)
     : QListView(parent)
@@ -70,6 +71,24 @@ void LeftUpSearchView::mouseReleaseEvent(QMouseEvent *e)
     }
 }
 
+void LeftUpSearchView::onThreadStart()
+{
+    emit requestGetWeatherData(m_cityid);
+}
+
 void LeftUpSearchView::requestWeatherData(QString cityId){
-    m_weatherWorker->onWeatherDataRequest(cityId);
+    if (!cityId.isEmpty()) {
+        m_cityid = cityId;
+    } else {
+        m_cityid = "101010100";
+    }
+
+    QThread *m_thread = new QThread();
+    m_weatherWorker->moveToThread(m_thread);
+    connect(m_thread, SIGNAL(finished()), m_thread, SLOT(deleteLater()));
+    connect(m_thread, SIGNAL(started()), this, SLOT(onThreadStart()));
+    connect(this, SIGNAL(requestGetWeatherData(QString)), m_weatherWorker, SLOT(onWeatherDataRequest(QString)));
+    connect(m_weatherWorker, SIGNAL(m_threadfinish()), m_thread, SLOT(quit()));
+    m_thread->start();
+    //m_weatherWorker->onWeatherDataRequest(cityId); //被以上线程替代
 }

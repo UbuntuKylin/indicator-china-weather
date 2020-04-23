@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QApplication>
 #include <QStringList>
+#include <QThread>
 
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -81,10 +82,14 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
 
     m_networkManager = new QNetworkAccessManager(this);
 
-    onWeatherDataRequest(); //获取当前城市与收藏城市天气
+    QThread *thread = new QThread();
+    this->moveToThread(thread);
+    connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
+    connect(thread, SIGNAL(started()), this, SLOT(onWeatherDataRequest()));
+    connect(this, SIGNAL(threadFinish()), thread, SLOT(quit()));
+    thread->start();
 
-    //setCurrentCity(); //显示当前城市
-    //setCollectCity(); //显示收藏城市
+    // onWeatherDataRequest(); //获取当前城市与收藏城市天气
 }
 
 CityCollectionWidget::~CityCollectionWidget()
@@ -240,49 +245,7 @@ void CityCollectionWidget::onWeatherDataReply()
             }
         }
     } //end if (jsonObject.contains("KylinWeather"))
-}
-
-void CityCollectionWidget::setCurrentCity()
-{
-    citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
-    m_currentcity->move(35, 81);
-    m_currentcity->setItemWidgetState(true, true, m_citynumber);
-    m_currentcity->show();
-
-    QString strCurrCity = readCollectedCity();
-    QStringList listCityId = strCurrCity.split(",");
-    QString cityId = "";
-    if (listCityId.size() > 1){
-        cityId = listCityId.at(0);
-    } else {
-        cityId = "101010100"; //使用北京的ID
-    }
-    m_currentcity->setCurrentWeather(cityId);
-    connect(m_currentcity, SIGNAL(requestDeleteCity(QString)), this, SLOT(onRequestDeleteCity(QString)) );
-    connect(m_currentcity, SIGNAL(changeCurrentCity(QString)), this, SLOT(onChangeCurrentCity(QString)) );
-}
-
-void CityCollectionWidget::setCollectCity()
-{
-    QString strSavedCity = readCollectedCity();
-
-    QStringList listSavedCityId = strSavedCity.split(",");
-    int cityNumber = listSavedCityId.size() - 1; //减掉一个含空字符的项
-
-    int row = 0; //当前行
-    int column = 0; //当前列
-    if (cityNumber > 1){
-        //先不考虑当前城市这个item
-        for (int i=1;i<cityNumber;i++){
-            showCollectCity(35 + column*170, 242 + row*100, true, listSavedCityId.at(i));
-            column += 1;
-            if (column == 3){
-                column = 0;
-                row += 1;
-            }
-        }
-    }
-    showCollectCity(35 + column*170, 242 + row*100, false, "");
+    emit this->threadFinish();
 }
 
 void CityCollectionWidget::showCollectCity(int x, int y, bool isShowNormal, QString cityId)
