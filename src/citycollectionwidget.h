@@ -63,6 +63,7 @@ private:
     void writeCollectedCity(QString cityId);
     QString readCollectedCity();
 
+    void showAllCityWeather();
     void showCollectCity(int x, int y, bool isShowNormal, QString cityId);
 
     bool isPress;

@@ -82,19 +82,23 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
 
     m_networkManager = new QNetworkAccessManager(this);
 
-    QThread *thread = new QThread();
-    this->moveToThread(thread);
-    connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
-    connect(thread, SIGNAL(started()), this, SLOT(onWeatherDataRequest()));
-    connect(this, SIGNAL(threadFinish()), thread, SLOT(quit()));
-    thread->start();
-
+    showAllCityWeather(); //利用线程方法显示所有城市天气
     // onWeatherDataRequest(); //获取当前城市与收藏城市天气
 }
 
 CityCollectionWidget::~CityCollectionWidget()
 {
     delete ui;
+}
+
+void CityCollectionWidget::showAllCityWeather()
+{
+    QThread *thread = new QThread();
+    this->moveToThread(thread);
+    connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
+    connect(thread, SIGNAL(started()), this, SLOT(onWeatherDataRequest()));
+    connect(this, SIGNAL(threadFinish()), thread, SLOT(quit()));
+    thread->start();
 }
 
 void CityCollectionWidget::onWeatherDataRequest()
@@ -198,18 +202,18 @@ void CityCollectionWidget::onWeatherDataReply()
                     }
 
                     observeweather.tmp = m_json.value("tmp").toString();
-                    observeweather.wind_sc = m_json.value("wind_sc").toString();
+                    //observeweather.wind_sc = m_json.value("wind_sc").toString();
                     observeweather.cond_txt = m_json.value("cond_txt").toString();
-                    observeweather.vis = m_json.value("vis").toString();
-                    observeweather.hum = m_json.value("hum").toString();
+                    //observeweather.vis = m_json.value("vis").toString();
+                    //observeweather.hum = m_json.value("hum").toString();
                     observeweather.cond_code = m_json.value("cond_code").toString();
-                    observeweather.wind_deg = m_json.value("wind_deg").toString();
-                    observeweather.pcpn = m_json.value("pcpn").toString();
-                    observeweather.pres = m_json.value("pres").toString();
-                    observeweather.wind_spd = m_json.value("wind_spd").toString();
-                    observeweather.wind_dir = m_json.value("wind_dir").toString();
-                    observeweather.fl = m_json.value("fl").toString();
-                    observeweather.cloud = m_json.value("cloud").toString();
+                    //observeweather.wind_deg = m_json.value("wind_deg").toString();
+                    //observeweather.pcpn = m_json.value("pcpn").toString();
+                    //observeweather.pres = m_json.value("pres").toString();
+                    //observeweather.wind_spd = m_json.value("wind_spd").toString();
+                    //observeweather.wind_dir = m_json.value("wind_dir").toString();
+                    //observeweather.fl = m_json.value("fl").toString();
+                    //observeweather.cloud = m_json.value("cloud").toString();
                     observeweather.id = m_json.value("id").toString();
                     observeweather.city = m_json.value("location").toString();
 
@@ -439,7 +443,8 @@ void CityCollectionWidget::onChangeCurrentCity(QString cityId)
 
     writeCollectedCity(newStrCityId);
 
-    onWeatherDataRequest(); //重新获取当前城市与收藏城市天气
+    showAllCityWeather();
+    //onWeatherDataRequest(); //重新获取当前城市与收藏城市天气
 }
 
 void CityCollectionWidget::writeCollectedCity(QString cityId)
