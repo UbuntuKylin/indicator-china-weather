@@ -153,6 +153,7 @@ void MainWindow::initControlQss()
     ui->btnCancel->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_normal_btn.png);}"
                                "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
+    ui->btnCancel->hide();
 
     ui->lbCurrTmp->setStyleSheet("QLabel{border:none;background:transparent;font-size:110px;font-family:Microsoft YaHei;font-weight:300;color:rgba(255,255,255,1);line-height:100px;}");
     ui->lbCurrTmp->setAlignment(Qt::AlignCenter);
