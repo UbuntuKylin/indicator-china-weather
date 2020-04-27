@@ -509,9 +509,7 @@ void MainWindow::onSetForecastWeather(ForecastWeather m_forecastweather)
 void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
 {
     if (m_observeweather.tmp != "") {
-        if (m_hintWidget->isVisible()) {
-            m_hintWidget->setVisible(false);
-        }
+        m_hintWidget->setVisible(false);
     }
 
     //主界面UI变化,控件间的距离自适应
