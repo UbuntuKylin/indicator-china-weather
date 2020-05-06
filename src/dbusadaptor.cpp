@@ -37,6 +37,7 @@ void DbusAdaptor::showMainWindow()
 {
     // handle method call com.kylin.weather.showMainWindow
     //edited the code manually by lixiang
-    parent()->handleIconClicked();
+    //parent()->handleIconClicked();
+    parent()->handleIconClickedSub();
 }
 

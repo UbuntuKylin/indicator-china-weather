@@ -51,6 +51,7 @@ public:
 public slots:
     void createTrayIcon();
     void handleIconClicked();
+    void handleIconClickedSub();
 
     void onRefreshMainWindowWeather();
     void onHandelAbnormalSituation(QString abnormalText);
@@ -99,6 +100,10 @@ private:
 
     QString convertCodeToBackgroud(int code);
     void convertCodeToTrayIcon(QString code);
+
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
 
     bool isPress;
     QPoint winPos;

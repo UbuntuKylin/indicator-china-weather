@@ -37,7 +37,8 @@ MainWindow::MainWindow(QWidget *parent) :
     qRegisterMetaType<LifeStyle>();
 
     //设置主界面样式
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
+    //this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::Tool);
     this->setFocusPolicy(Qt::StrongFocus);//this->setFocusPolicy(Qt::NoFocus);
     this->setWindowTitle(tr("Kylin Weather"));
     this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
@@ -153,7 +154,7 @@ void MainWindow::initControlQss()
     ui->btnCancel->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_normal_btn.png);}"
                                "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
-    ui->btnCancel->hide();
+    //ui->btnCancel->hide();
 
     ui->lbCurrTmp->setStyleSheet("QLabel{border:none;background:transparent;font-size:110px;font-family:Microsoft YaHei;font-weight:300;color:rgba(255,255,255,1);line-height:100px;}");
     ui->lbCurrTmp->setAlignment(Qt::AlignCenter);
@@ -311,7 +312,8 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
     case QSystemTrayIcon::MiddleClick:
         if(this->isHidden()){
             //this->showNormal();
-            handleIconClicked();
+            //handleIconClicked(); //靠近任务栏显示
+            handleIconClickedSub(); //显示在屏幕中央
         }else{
             this->hide();
         }
@@ -383,6 +385,16 @@ void MainWindow::handleIconClicked()
             this->move(availableGeometry.x() + availableGeometry.width() - this->width(), availableGeometry.y() + d);
         }
     }
+
+    this->showNormal();
+    this->raise();
+    this->activateWindow();
+}
+
+void MainWindow::handleIconClickedSub()
+{
+    QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
+    this->move((availableGeometry.width() - this->width())/2, (availableGeometry.height() - this->height())/2);
 
     this->showNormal();
     this->raise();
@@ -648,6 +660,25 @@ void MainWindow::on_btnMinimize_clicked()
 
 void MainWindow::on_btnCancel_clicked()
 {
-    QApplication* app;
-    app->exit(0);
+    this->setVisible(false);
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *event){
+    if(event->button() == Qt::LeftButton){
+        this->isPress = true;
+        this->winPos = this->pos();
+        this->dragPos = event->globalPos();
+        event->accept();
+    }
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *event){
+    this->isPress = false;
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event){
+    if(this->isPress){
+        this->move(this->winPos - (this->dragPos - event->globalPos()));
+        event->accept();
+    }
 }

@@ -26,7 +26,7 @@
     <widget class="QPushButton" name="btnMinimize">
      <property name="geometry">
       <rect>
-       <x>820</x>
+       <x>797</x>
        <y>4</y>
        <width>30</width>
        <height>30</height>
@@ -39,7 +39,7 @@
     <widget class="QPushButton" name="btnCancel">
      <property name="geometry">
       <rect>
-       <x>770</x>
+       <x>831</x>
        <y>4</y>
        <width>30</width>
        <height>30</height>
