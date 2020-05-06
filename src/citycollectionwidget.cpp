@@ -82,8 +82,8 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
 
     m_networkManager = new QNetworkAccessManager(this);
 
-    showAllCityWeather(); //利用线程方法显示所有城市天气
-    // onWeatherDataRequest(); //获取当前城市与收藏城市天气
+    //showAllCityWeather(); //利用线程方法显示所有城市天气
+    onWeatherDataRequest(); //获取当前城市与收藏城市天气
 }
 
 CityCollectionWidget::~CityCollectionWidget()

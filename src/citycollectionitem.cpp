@@ -124,15 +124,15 @@ void citycollectionitem::setCurrentWeather(QString cityId)
     this->m_city_id = cityId;
 
     if (!cityId.isEmpty()) {
-        QThread *mThread = new QThread();
-        this->moveToThread(mThread);
-        connect(mThread, SIGNAL(finished()), mThread, SLOT(deleteLater()));
-        connect(mThread, SIGNAL(started()), this, SLOT(onThreadStart()));
-        connect(this, SIGNAL(requestGetWeatherData(QString)), this, SLOT(onWeatherDataRequest(QString)));
-        connect(this, SIGNAL(mThreadFinish()), mThread, SLOT(quit()));
-        mThread->start();
+        //QThread *mThread = new QThread();
+        //this->moveToThread(mThread);
+        //connect(mThread, SIGNAL(finished()), mThread, SLOT(deleteLater()));
+        //connect(mThread, SIGNAL(started()), this, SLOT(onThreadStart()));
+        //connect(this, SIGNAL(requestGetWeatherData(QString)), this, SLOT(onWeatherDataRequest(QString)));
+        //connect(this, SIGNAL(mThreadFinish()), mThread, SLOT(quit()));
+        //mThread->start();
 
-        //onWeatherDataRequest(cityId);
+        onWeatherDataRequest(cityId);
     }
 }
 

@@ -83,12 +83,12 @@ void LeftUpSearchView::requestWeatherData(QString cityId){
         m_cityid = "101010100";
     }
 
-    QThread *m_thread = new QThread();
-    m_weatherWorker->moveToThread(m_thread);
-    connect(m_thread, SIGNAL(finished()), m_thread, SLOT(deleteLater()));
-    connect(m_thread, SIGNAL(started()), this, SLOT(onThreadStart()));
-    connect(this, SIGNAL(requestGetWeatherData(QString)), m_weatherWorker, SLOT(onWeatherDataRequest(QString)));
-    connect(m_weatherWorker, SIGNAL(m_threadfinish()), m_thread, SLOT(quit()));
-    m_thread->start();
-    //m_weatherWorker->onWeatherDataRequest(cityId); //被以上线程替代
+    //QThread *m_thread = new QThread();
+    //m_weatherWorker->moveToThread(m_thread);
+    //connect(m_thread, SIGNAL(finished()), m_thread, SLOT(deleteLater()));
+    //connect(m_thread, SIGNAL(started()), this, SLOT(onThreadStart()));
+    //connect(this, SIGNAL(requestGetWeatherData(QString)), m_weatherWorker, SLOT(onWeatherDataRequest(QString)));
+    //connect(m_weatherWorker, SIGNAL(m_threadfinish()), m_thread, SLOT(quit()));
+    //m_thread->start();
+    m_weatherWorker->onWeatherDataRequest(cityId); //被以上线程替代
 }
