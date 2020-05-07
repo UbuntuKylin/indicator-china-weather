@@ -37,11 +37,12 @@ MainWindow::MainWindow(QWidget *parent) :
     qRegisterMetaType<LifeStyle>();
 
     //设置主界面样式
-    //this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::Tool);
+    this->setWindowFlags(Qt::FramelessWindowHint);
+    //this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::Tool);
     this->setFocusPolicy(Qt::StrongFocus);//this->setFocusPolicy(Qt::NoFocus);
     this->setWindowTitle(tr("Kylin Weather"));
     this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
+    this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/indicator-china-weather.png")) );
 
     QPainterPath path;
     auto rect = this->rect();
@@ -207,25 +208,30 @@ void MainWindow::initConnections()
     });
 
     connect(m_leftupcitybtn, &LeftUpCityBtn::sendCurrentCityId, this, [=] (QString id) {
-        m_searchView->requestWeatherData(id);
-    });
-
-    connect(m_searchView, &LeftUpSearchView::requestSetObserveWeather, this, [=] (ObserveWeather observerdata) {
-        this->onSetObserveWeather(observerdata);
-    });
-
-    connect(m_searchView, &LeftUpSearchView::requestSetForecastWeather, this, [=] (ForecastWeather forecastweather) {
-        this->onSetForecastWeather(forecastweather);
-    });
-
-    connect(m_searchView, &LeftUpSearchView::requestSetLifeStyle, this, [=] (LifeStyle lifestyle) {
-        this->onSetLifeStyle(lifestyle);
+        m_weatherManager->startGetTheWeatherData(id);
     });
 
     connect(m_searchView, SIGNAL(requestSetCityName(QString)), m_leftupcitybtn, SIGNAL(requestSetCityName(QString)) );
 
+    connect(m_searchView, &LeftUpSearchView::requestSetNewCityWeather, this, [=] (QString id) {
+        m_weatherManager->startGetTheWeatherData(id);
+    });
+
+    //收到信号带来的数据时，更新主界面天气数据
+    connect(m_weatherManager, &WeatherManager::requestSetObserveWeather, this, [=] (ObserveWeather observerdata) {
+        this->onSetObserveWeather(observerdata);
+    });
+
+    connect(m_weatherManager, &WeatherManager::requestSetForecastWeather, this, [=] (ForecastWeather forecastweather) {
+        this->onSetForecastWeather(forecastweather);
+    });
+
+    connect(m_weatherManager, &WeatherManager::requestSetLifeStyle, this, [=] (LifeStyle lifestyle) {
+        this->onSetLifeStyle(lifestyle);
+    });
+
     //获取天气数据时发生了异常
-    connect(m_searchView, &LeftUpSearchView::responseFailure, this, [=] (int code) {
+    connect(m_weatherManager, &WeatherManager::responseFailure, this, [=] (int code) {
         onHandelAbnormalSituation("Get weather data failed!");
 
         m_hintWidget->setVisible(true);
@@ -246,7 +252,7 @@ void MainWindow::initConnections()
             QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
             QString collectPath = homePath.at(0) + "/.config/china-weather-data";
             if (!isFileExist(collectPath)){
-                m_searchView->requestWeatherData("101010100");//文件不存在时默认设置为北京
+                m_weatherManager->startGetTheWeatherData("101010100");
 
                 QFile file(collectPath);
                 if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
@@ -268,7 +274,7 @@ void MainWindow::initConnections()
                 }
 
                 QStringList listCityId = readCityId.split(",");
-                m_searchView->requestWeatherData(listCityId.at(0));
+                m_weatherManager->startGetTheWeatherData(listCityId.at(0));
             }
         } else {
             if (status == "Fail") {
@@ -276,7 +282,7 @@ void MainWindow::initConnections()
             } else {
                 onHandelAbnormalSituation("Unable to access the Internet");
             }
-            emit m_searchView->responseFailure(404);
+            emit m_weatherManager->responseFailure(404);
         }
     });
 
@@ -654,8 +660,8 @@ QString MainWindow::convertCodeToBackgroud(int code)
 
 void MainWindow::on_btnMinimize_clicked()
 {
-    //QWidget::showMinimized();
-    this->setVisible(false);
+    QWidget::showMinimized();
+    //this->setVisible(false);
 }
 
 void MainWindow::on_btnCancel_clicked()

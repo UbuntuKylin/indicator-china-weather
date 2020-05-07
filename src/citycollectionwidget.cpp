@@ -82,23 +82,12 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
 
     m_networkManager = new QNetworkAccessManager(this);
 
-    //showAllCityWeather(); //利用线程方法显示所有城市天气
     onWeatherDataRequest(); //获取当前城市与收藏城市天气
 }
 
 CityCollectionWidget::~CityCollectionWidget()
 {
     delete ui;
-}
-
-void CityCollectionWidget::showAllCityWeather()
-{
-    QThread *thread = new QThread();
-    this->moveToThread(thread);
-    connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
-    connect(thread, SIGNAL(started()), this, SLOT(onWeatherDataRequest()));
-    connect(this, SIGNAL(threadFinish()), thread, SLOT(quit()));
-    thread->start();
 }
 
 void CityCollectionWidget::onWeatherDataRequest()
@@ -249,7 +238,7 @@ void CityCollectionWidget::onWeatherDataReply()
             }
         }
     } //end if (jsonObject.contains("KylinWeather"))
-    emit this->threadFinish();
+    //emit this->threadFinish();
 }
 
 void CityCollectionWidget::showCollectCity(int x, int y, bool isShowNormal, QString cityId)
@@ -443,8 +432,7 @@ void CityCollectionWidget::onChangeCurrentCity(QString cityId)
 
     writeCollectedCity(newStrCityId);
 
-    showAllCityWeather();
-    //onWeatherDataRequest(); //重新获取当前城市与收藏城市天气
+    onWeatherDataRequest(); //重新获取当前城市与收藏城市天气
 }
 
 void CityCollectionWidget::writeCollectedCity(QString cityId)

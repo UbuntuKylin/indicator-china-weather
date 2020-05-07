@@ -66,6 +66,7 @@ WeatherWorker::WeatherWorker(QObject *parent) :
 
     connect(this, &WeatherWorker::requestTestNetwork, this, &WeatherWorker::onResponseTestNetwork);
     connect(this, &WeatherWorker::requestPostHostInfoToWeatherServer, this, &WeatherWorker::onPostHostInfoToWeatherServer);
+    connect(this, &WeatherWorker::requestGetTheWeatherData, this, &WeatherWorker::onWeatherDataRequest);
 }
 
 WeatherWorker::~WeatherWorker()
@@ -350,5 +351,4 @@ void WeatherWorker::onWeatherDataReply()
             }
         }
     } //end if (jsonObject.contains("KylinWeather"))
-    emit this->m_threadfinish();
 }

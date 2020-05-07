@@ -21,7 +21,6 @@
 #include "weatherworker.h"
 
 #include <QScrollBar>
-#include <QThread>
 
 LeftUpSearchView::LeftUpSearchView(QWidget *parent)
     : QListView(parent)
@@ -43,13 +42,6 @@ LeftUpSearchView::LeftUpSearchView(QWidget *parent)
                                              "QScrollBar::add-page:vertical{background-color:transparent;}" \
                                              "QScrollBar::down-arrow:vertical{background-color:transparent;}" \
                                              "QScrollBar::add-line:vertical{subcontrol-origin:margin;border:none;height:6px;}");
-
-    m_weatherWorker = new WeatherWorker(this);
-
-    connect(m_weatherWorker, SIGNAL(requestSetObserveWeather(ObserveWeather)), this, SIGNAL(requestSetObserveWeather(ObserveWeather)));
-    connect(m_weatherWorker, SIGNAL(requestSetForecastWeather(ForecastWeather)), this, SIGNAL(requestSetForecastWeather(ForecastWeather)));
-    connect(m_weatherWorker, SIGNAL(requestSetLifeStyle(LifeStyle)), this, SIGNAL(requestSetLifeStyle(LifeStyle)));
-    connect(m_weatherWorker, SIGNAL(responseFailure(int)), this, SIGNAL(responseFailure(int)));
 }
 
 LeftUpSearchView::~LeftUpSearchView()
@@ -61,34 +53,22 @@ void LeftUpSearchView::mouseReleaseEvent(QMouseEvent *e)
 {
     QModelIndexList sourceIndexList = this->selectionModel()->selectedIndexes();
 
-    foreach (QModelIndex sourceIndex, sourceIndexList){
+    foreach (QModelIndex sourceIndex, sourceIndexList) {
         QVariant variant = sourceIndex.data(Qt::UserRole);
         ItemData data = variant.value<ItemData>();
         // qDebug() << "Index : " << sourceIndex.row();
         // emit requestSetCityName(data.cityName);
-        //m_weatherWorker->onWeatherDataRequest(data.cityId); //获取选取城市的天气数据
+
         requestWeatherData(data.cityId);
     }
 }
 
-void LeftUpSearchView::onThreadStart()
-{
-    emit requestGetWeatherData(m_cityid);
-}
-
-void LeftUpSearchView::requestWeatherData(QString cityId){
+void LeftUpSearchView::requestWeatherData(QString cityId) {
     if (!cityId.isEmpty()) {
         m_cityid = cityId;
     } else {
         m_cityid = "101010100";
     }
 
-    //QThread *m_thread = new QThread();
-    //m_weatherWorker->moveToThread(m_thread);
-    //connect(m_thread, SIGNAL(finished()), m_thread, SLOT(deleteLater()));
-    //connect(m_thread, SIGNAL(started()), this, SLOT(onThreadStart()));
-    //connect(this, SIGNAL(requestGetWeatherData(QString)), m_weatherWorker, SLOT(onWeatherDataRequest(QString)));
-    //connect(m_weatherWorker, SIGNAL(m_threadfinish()), m_thread, SLOT(quit()));
-    //m_thread->start();
-    m_weatherWorker->onWeatherDataRequest(cityId); //被以上线程替代
+    emit requestSetNewCityWeather(m_cityid);
 }

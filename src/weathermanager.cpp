@@ -20,7 +20,6 @@
 #include "weathermanager.h"
 #include "weatherworker.h"
 #include "geoipworker.h"
-#include "data.h"
 
 #include <QDebug>
 #include <QThread>
@@ -33,18 +32,59 @@
 #include <QtDBus/QDBusObjectPath>
 #include <QtDBus/QDBusReply>
 
+namespace {
+
+void quitThread(QThread *thread)
+{
+    Q_ASSERT(thread);
+    if (thread) {
+        thread->quit();
+        if (!thread->wait(2000)) {
+            thread->terminate();
+            thread->wait();
+        }
+    }
+}
+
+} // namespace
+
 WeatherManager::WeatherManager(QObject *parent) : QObject(parent)
 {
     m_geoipWorker = new GeoIpWorker();
     m_weatherWorker = new WeatherWorker();
+    m_geoipThread = new QThread(this);
+    m_weatherThread = new QThread(this);
 
-    connect(m_weatherWorker, &WeatherWorker::nofityNetworkStatus, this, &WeatherManager::nofityNetworkStatus);
-    connect(m_geoipWorker, &GeoIpWorker::automaticLocationFinished, this, &WeatherManager::setAutomaticCity);
+    this->initConnections();
+
+    QTimer::singleShot(1, this, [=] {
+        m_geoipThread->start();
+        m_weatherThread->start();
+    });
 }
 
 WeatherManager::~WeatherManager()
 {
+    quitThread(m_geoipThread);
+    quitThread(m_weatherThread);
+}
 
+void WeatherManager::initConnections()
+{
+    connect(m_geoipThread, &QThread::finished, m_geoipWorker, &GeoIpWorker::deleteLater);
+    connect(m_weatherThread, &QThread::finished, m_weatherWorker, &WeatherWorker::deleteLater);
+    connect(m_weatherWorker, &WeatherWorker::nofityNetworkStatus, this, &WeatherManager::nofityNetworkStatus);
+    connect(m_geoipWorker, &GeoIpWorker::automaticLocationFinished, this, &WeatherManager::setAutomaticCity);
+    connect(m_weatherWorker, &WeatherWorker::responseFailure, this, &WeatherManager::responseFailure);
+
+    connect(m_weatherWorker, SIGNAL(requestSetObserveWeather(ObserveWeather)), this, SIGNAL(requestSetObserveWeather(ObserveWeather)));
+    connect(m_weatherWorker, SIGNAL(requestSetForecastWeather(ForecastWeather)), this, SIGNAL(requestSetForecastWeather(ForecastWeather)));
+    connect(m_weatherWorker, SIGNAL(requestSetLifeStyle(LifeStyle)), this, SIGNAL(requestSetLifeStyle(LifeStyle)));
+}
+
+void WeatherManager::startGetTheWeatherData(QString cityId)
+{
+    emit m_weatherWorker->requestGetTheWeatherData(cityId);
 }
 
 void WeatherManager::startTestNetwork()

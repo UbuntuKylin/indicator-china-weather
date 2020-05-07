@@ -60,8 +60,9 @@ signals:
     void requestSetObserveWeather(ObserveWeather observeweather);
     void requestSetForecastWeather(ForecastWeather forecastweather);
     void requestSetLifeStyle(LifeStyle lifestyle);
-    void m_threadfinish();
 
+    void requestGetTheWeatherData(QString cityId);
+    void requestGetCityWeatherData(QString cityIds);
     void requestPostHostInfoToWeatherServer();
     void requestTestNetwork();
     void nofityNetworkStatus(const QString &status);

@@ -20,6 +20,8 @@
 #ifndef WEATHER_MANAGER_H
 #define WEATHER_MANAGER_H
 
+#include "data.h"
+
 #include <QObject>
 
 class QThread;
@@ -34,6 +36,9 @@ public:
     explicit WeatherManager(QObject *parent = nullptr);
     ~WeatherManager();
 
+    void initConnections();
+
+    void startGetTheWeatherData(QString cityId);
     void startTestNetwork();
     void postSystemInfoToServer();
     void startAutoLocationTask();
@@ -44,6 +49,8 @@ public:
 private:
     WeatherWorker *m_weatherWorker = nullptr;
     GeoIpWorker *m_geoipWorker = nullptr;
+    QThread *m_geoipThread = nullptr;
+    QThread *m_weatherThread = nullptr;
 
 private slots:
     void setAutomaticCity(const QString& cityName);
@@ -51,6 +58,11 @@ private slots:
 signals:
     void requestAutoLocationData(const CitySettingData & info, bool success);
     void nofityNetworkStatus(const QString &status);
+    void responseFailure(int code);
+
+    void requestSetObserveWeather(ObserveWeather observerdata);
+    void requestSetForecastWeather(ForecastWeather forecastweather);
+    void requestSetLifeStyle(LifeStyle lifestyle);
 };
 
 #endif // WEATHER_MANAGER_H
