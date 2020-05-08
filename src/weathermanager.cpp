@@ -80,6 +80,9 @@ void WeatherManager::initConnections()
     connect(m_weatherWorker, SIGNAL(requestSetObserveWeather(ObserveWeather)), this, SIGNAL(requestSetObserveWeather(ObserveWeather)));
     connect(m_weatherWorker, SIGNAL(requestSetForecastWeather(ForecastWeather)), this, SIGNAL(requestSetForecastWeather(ForecastWeather)));
     connect(m_weatherWorker, SIGNAL(requestSetLifeStyle(LifeStyle)), this, SIGNAL(requestSetLifeStyle(LifeStyle)));
+
+    connect(this, SIGNAL(requestShowCollCityWeather()), m_weatherWorker, SLOT(onCityWeatherDataRequest()) );
+    connect(m_weatherWorker, &WeatherWorker::requestSetCityWeather, this, &WeatherManager::requestSetCityWeather);
 }
 
 void WeatherManager::startGetTheWeatherData(QString cityId)

@@ -52,7 +52,7 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     ui->lbCityCurrent->setText("当前城市");
 
     ui->lbCityCollect->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(68,68,68,1);}");
-    ui->lbCityCollect->setText("收藏城市y");
+    ui->lbCityCollect->setText("收藏城市");
 
     ui->lbCityCount->setStyleSheet("QLabel{border:none;background:transparent;font-size:12px;font-weight:400;color:rgba(68,68,68,1);}");
     ui->lbCityCount->setText("0/8");
@@ -81,8 +81,6 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     connect(m_cityaddition, SIGNAL(requestAddNewCity(QString)), this, SLOT(onRequestAddNewCity(QString)) );
 
     m_networkManager = new QNetworkAccessManager(this);
-
-    onWeatherDataRequest(); //获取当前城市与收藏城市天气
 }
 
 CityCollectionWidget::~CityCollectionWidget()
@@ -90,164 +88,148 @@ CityCollectionWidget::~CityCollectionWidget()
     delete ui;
 }
 
-void CityCollectionWidget::onWeatherDataRequest()
+void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
 {
-    //http://service.ubuntukylin.com:8001/weather/api/3.0/heweather_simple_s6/?cityids=101250101+101010100+101030100+101020100
+    if (weather_data != "") {
+        QStringList strList = weather_data.split(";");
 
-    QString urlPrefix = "http://service.ubuntukylin.com:8001/weather/api/3.0/heweather_simple_s6/?cityids=";
-    QString savedCity = readCollectedCity();
-    QStringList cityList = savedCity.split(","); //cityList最后一项为空字符
-    for (int i=0; i<cityList.size()-1; i++) {
-        if (i == cityList.size()-2) {
-            urlPrefix.append(cityList.at(i));
+        if (isAddCity) {
+            //开始移动控件
+            if (strList.size() <= 2) {
+                return;
+            }
+
+            int pos = strList.size() - 2; //最后一个城市在列表中的位置
+            QString addCityWeatherData = strList.at(pos); //获得新增城市的天气数据
+
+            QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
+
+            int itemNum = cityItemList.size();
+
+            citycollectionitem *lastCityItem = cityItemList.at(itemNum-1); //删除最后一项
+            delete lastCityItem;
+            itemNum -= 1;
+
+            if (itemNum <= 1) {
+                showCollectCity(35, 242, true, addCityWeatherData); //添加新增加的收藏城市
+                showCollectCity(35 + 170, 242, false, ""); //添加最后一项
+            }
+
+            if (itemNum > 1 && itemNum < 9) {
+                int row(0), column(0);
+                for (int i = 1;i < itemNum; i ++) {
+                    column += 1;
+                    if (column == 3) {
+                        column = 0;
+                        row += 1;
+                    }
+                }
+                showCollectCity(35 + column*170, 242 + row*100, true, addCityWeatherData); //添加新增加的收藏城市
+
+                column += 1;
+                if (column == 3) {
+                    column = 0;
+                    row += 1;
+                }
+                showCollectCity(35 + column*170, 242 + row*100, false, ""); //添加最后一项
+            }
+
+            if (itemNum >= 9) {
+                QList<citycollectionitem *> m_cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
+                citycollectionitem *m_lastCityItem = m_cityItemList.at(m_cityItemList.size() - 1); //删除最后一项
+                delete m_lastCityItem;
+                showCollectCity(35 + 1*170, 242 + 2*100, true, addCityWeatherData); //添加新增加的收藏城市
+                showCollectCity(35 + 2*170, 242 + 2*100, false, ""); //添加最后一项
+            }
+
+            isAddCity = false;
         } else {
-            urlPrefix.append(cityList.at(i));
-            urlPrefix.append("+");
-        }
-    }
-    m_citynumber = cityList.size()-2;
-    QString citynumber = QString::number(m_citynumber) + "/8";
-    ui->lbCityCount->setText(citynumber);
+            m_citynumber = strList.size()-2;
+            QString citynumber = QString::number(m_citynumber) + "/8";
+            ui->lbCityCount->setText(citynumber);
 
-    QNetworkRequest request;
-    request.setUrl(urlPrefix);
-    QNetworkReply *reply = m_networkManager->get(request);
-    connect(reply, &QNetworkReply::finished, this, &CityCollectionWidget::onWeatherDataReply );
+            int row = 0; //当前行
+            int column = 0; //当前列
+            for (int i=0; i< strList.size()-1; i++) {
+                QString eachCityData = strList.at(i); //得到每个城市的实时天气数据
+                ObserveWeather observeweather;
+                QJsonObject m_json;
+                if (!eachCityData.isEmpty()) {
+                    QStringList eachKeyList = eachCityData.split(",");
+                    foreach (QString strKey, eachKeyList) {
+                        if (!strKey.isEmpty()) {
+                            m_json.insert(strKey.split("=").at(0), strKey.split("=").at(1));
+                        }
+                    }
+                }
+
+                observeweather.tmp = m_json.value("tmp").toString();
+                observeweather.cond_txt = m_json.value("cond_txt").toString();
+                observeweather.cond_code = m_json.value("cond_code").toString();
+                observeweather.id = m_json.value("id").toString();
+                observeweather.city = m_json.value("location").toString();
+
+                if (i==0) { //当前城市
+                    citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
+                    m_currentcity->move(35, 81);
+                    m_currentcity->setItemWidgetState(true, true, m_citynumber);
+                    m_currentcity->setCityWeather(observeweather);
+                    m_currentcity->show();
+                    connect(m_currentcity, SIGNAL(requestDeleteCity(QString)), this, SLOT(onRequestDeleteCity(QString)) );
+                    connect(m_currentcity, SIGNAL(changeCurrentCity(QString)), this, SLOT(onChangeCurrentCity(QString)) );
+                } else {
+                    citycollectionitem *m_collecity = new citycollectionitem(ui->backwidget);
+                    m_collecity->move(35 + column*170, 242 + row*100); //m_currentcity->move(35 + j*170, 242 + i*100);
+                    m_collecity->setItemWidgetState(true, false, m_citynumber);
+                    m_collecity->setCityWeather(observeweather);
+                    m_collecity->show();
+                    connect(m_collecity, SIGNAL(requestDeleteCity(QString)), this, SLOT(onRequestDeleteCity(QString)) );
+                    connect(m_collecity, SIGNAL(changeCurrentCity(QString)), this, SLOT(onChangeCurrentCity(QString)) );
+
+                    column += 1;
+                    if (column == 3){
+                        column = 0;
+                        row += 1;
+                    }
+                }
+            } //end for (int i=0; i< strList.size()-1; i++)
+            citycollectionitem *m_lastitem = new citycollectionitem(ui->backwidget);
+            m_lastitem->move(35 + column*170, 242 + row*100);
+            m_lastitem->setItemWidgetState(false, false, m_citynumber);
+            m_lastitem->show();
+            connect(m_lastitem, SIGNAL(showCityAddWiget()), this, SLOT(onShowCityAddWiget()) );
+        }
+    } //end if (weather_data != "")
 }
 
-void CityCollectionWidget::onWeatherDataReply()
+void CityCollectionWidget::showCollectCity(int x, int y, bool isShowNormal, QString weatherStr)
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
-
-    int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    qDebug()<<"Reply value of getting weather data by URL is: "<<statusCode;
-
-    if (statusCode == 301 || statusCode == 302) {//redirect
-        return;
-    } else if (statusCode == 400) {
-        qDebug() << "Weather: Network error (HTTP400/Bad Request)";
-        return;
-    } else if (statusCode == 403) {
-        qDebug() << "Weather: Username or password invalid (permission denied)";
-        return;
-    } else if (statusCode == 200) {
-        // 200 is normal status
-    } else {
-        m_tipIcon->show();
-        m_tipLabel->show();
-        return;
-    }
-
-    if(reply->error() != QNetworkReply::NoError) {
-        qDebug() << "reply error!";
-        return;
-    }
-
-    QByteArray ba = reply->readAll();
-    //QString reply_content = QString::fromUtf8(ba);
-    //qDebug() <<reply_content;
-    reply->close();
-    reply->deleteLater();
-
-    QJsonParseError err;
-    QJsonDocument jsonDocument = QJsonDocument::fromJson(ba, &err);
-    if (err.error != QJsonParseError::NoError) {// Json type error
-        qDebug() << "Json type error";
-        return;
-    }
-    if (jsonDocument.isNull() || jsonDocument.isEmpty()) {
-        qDebug() << "Json null or empty!";
-        return;
-    }
-
-    QJsonObject jsonObject = jsonDocument.object();
-    if (jsonObject.isEmpty() || jsonObject.size() == 0) {
-        qDebug() << "Json object null or empty!";
-        return;
-    }
-    if (jsonObject.contains("KylinWeather")) {
-        QJsonObject mainObj = jsonObject.value("KylinWeather").toObject();
-        if (mainObj.isEmpty() || mainObj.size() == 0) {
-            return;
-        }
-        if (mainObj.contains("weather")) {
-            QString weather_msg = mainObj.value("weather").toString();
-            if (weather_msg != "") {
-                QStringList strList = weather_msg.split(";");
-
-                int row = 0; //当前行
-                int column = 0; //当前列
-                for (int i=0; i< strList.size()-1; i++) {
-                    QString eachCityData = strList.at(i); //得到每个城市的实时天气数据
-                    ObserveWeather observeweather;
-                    QJsonObject m_json;
-                    if (!eachCityData.isEmpty()) {
-                        QStringList eachKeyList = eachCityData.split(",");
-                        foreach (QString strKey, eachKeyList) {
-                            if (!strKey.isEmpty()) {
-                                m_json.insert(strKey.split("=").at(0), strKey.split("=").at(1));
-                            }
-                        }
-                    }
-
-                    observeweather.tmp = m_json.value("tmp").toString();
-                    //observeweather.wind_sc = m_json.value("wind_sc").toString();
-                    observeweather.cond_txt = m_json.value("cond_txt").toString();
-                    //observeweather.vis = m_json.value("vis").toString();
-                    //observeweather.hum = m_json.value("hum").toString();
-                    observeweather.cond_code = m_json.value("cond_code").toString();
-                    //observeweather.wind_deg = m_json.value("wind_deg").toString();
-                    //observeweather.pcpn = m_json.value("pcpn").toString();
-                    //observeweather.pres = m_json.value("pres").toString();
-                    //observeweather.wind_spd = m_json.value("wind_spd").toString();
-                    //observeweather.wind_dir = m_json.value("wind_dir").toString();
-                    //observeweather.fl = m_json.value("fl").toString();
-                    //observeweather.cloud = m_json.value("cloud").toString();
-                    observeweather.id = m_json.value("id").toString();
-                    observeweather.city = m_json.value("location").toString();
-
-                    if (i==0) { //当前城市
-                        citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
-                        m_currentcity->move(35, 81);
-                        m_currentcity->setItemWidgetState(true, true, m_citynumber);
-                        m_currentcity->setCityWeather(observeweather);
-                        m_currentcity->show();
-                        connect(m_currentcity, SIGNAL(requestDeleteCity(QString)), this, SLOT(onRequestDeleteCity(QString)) );
-                        connect(m_currentcity, SIGNAL(changeCurrentCity(QString)), this, SLOT(onChangeCurrentCity(QString)) );
-                    } else {
-                        citycollectionitem *m_collecity = new citycollectionitem(ui->backwidget);
-                        m_collecity->move(35 + column*170, 242 + row*100); //m_currentcity->move(35 + j*170, 242 + i*100);
-                        m_collecity->setItemWidgetState(true, false, m_citynumber);
-                        m_collecity->setCityWeather(observeweather);
-                        m_collecity->show();
-                        connect(m_collecity, SIGNAL(requestDeleteCity(QString)), this, SLOT(onRequestDeleteCity(QString)) );
-                        connect(m_collecity, SIGNAL(changeCurrentCity(QString)), this, SLOT(onChangeCurrentCity(QString)) );
-
-                        column += 1;
-                        if (column == 3){
-                            column = 0;
-                            row += 1;
-                        }
-                    }
-                } //end for (int i=0; i< strList.size()-1; i++)
-                citycollectionitem *m_lastitem = new citycollectionitem(ui->backwidget);
-                m_lastitem->move(35 + column*170, 242 + row*100);
-                m_lastitem->setItemWidgetState(false, false, m_citynumber);
-                m_lastitem->show();
-                connect(m_lastitem, SIGNAL(showCityAddWiget()), this, SLOT(onShowCityAddWiget()) );
+    ObserveWeather observeweather;
+    if (!weatherStr.isEmpty()) {
+        QJsonObject m_json;
+        if (!weatherStr.isEmpty()) {
+            QStringList eachKeyList = weatherStr.split(",");
+            foreach (QString strKey, eachKeyList) {
+                if (!strKey.isEmpty()) {
+                    m_json.insert(strKey.split("=").at(0), strKey.split("=").at(1));
+                }
             }
         }
-    } //end if (jsonObject.contains("KylinWeather"))
-    //emit this->threadFinish();
-}
+        observeweather.tmp = m_json.value("tmp").toString();
+        observeweather.cond_txt = m_json.value("cond_txt").toString();
+        observeweather.cond_code = m_json.value("cond_code").toString();
+        observeweather.id = m_json.value("id").toString();
+        observeweather.city = m_json.value("location").toString();
+    }
 
-void CityCollectionWidget::showCollectCity(int x, int y, bool isShowNormal, QString cityId)
-{
     citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
     m_currentcity->move(x, y); //m_currentcity->move(35 + j*170, 242 + i*100);
     m_currentcity->setItemWidgetState(isShowNormal, false, m_citynumber);
+    if (isShowNormal) {
+        m_currentcity->setCityWeather(observeweather);
+    }
     m_currentcity->show();
-    m_currentcity->setCurrentWeather(cityId);
+    //m_currentcity->setCurrentWeather(cityId);
     connect(m_currentcity, SIGNAL(showCityAddWiget()), this, SLOT(onShowCityAddWiget()) );
     connect(m_currentcity, SIGNAL(requestDeleteCity(QString)), this, SLOT(onRequestDeleteCity(QString)) );
     connect(m_currentcity, SIGNAL(changeCurrentCity(QString)), this, SLOT(onChangeCurrentCity(QString)) );
@@ -257,57 +239,16 @@ void CityCollectionWidget::onRequestAddNewCity(QString cityId)
 {
     m_cityaddition->hide(); //隐藏 搜索及添加城市窗口
 
-    //第一步 判断已收藏城市中是否已近有需要添加的城市
+    //判断已收藏城市中是否已经有需要添加的城市
     QString strSavedCity = readCollectedCity();
     QStringList listSavedCityId = strSavedCity.split(",");
     foreach (QString strCityId, listSavedCityId) {
-        if (strCityId == cityId) { //若已有需要添加的城市，则返回
+        if (strCityId == cityId) { //若收藏城市列表中已有需要添加的城市，则返回
             return;
         }
     }
 
-    //第二步 移动控件
-    QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
-
-    int itemNum = cityItemList.size();
-
-    citycollectionitem *lastCityItem = cityItemList.at(itemNum-1); //删除最后一项
-    delete lastCityItem;
-    itemNum -= 1;
-
-    if (itemNum <= 1) {
-        showCollectCity(35, 242, true, cityId); //添加新增加的收藏城市
-        showCollectCity(35 + 170, 242, false, ""); //添加最后一项
-    }
-
-    if (itemNum > 1 && itemNum < 9) {
-        int row(0), column(0);
-        for (int i = 1;i < itemNum; i ++) {
-            column += 1;
-            if (column == 3) {
-                column = 0;
-                row += 1;
-            }
-        }
-        showCollectCity(35 + column*170, 242 + row*100, true, cityId); //添加新增加的收藏城市
-
-        column += 1;
-        if (column == 3) {
-            column = 0;
-            row += 1;
-        }
-        showCollectCity(35 + column*170, 242 + row*100, false, ""); //添加最后一项
-    }
-
-    if (itemNum >= 9) {
-        QList<citycollectionitem *> m_cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
-        citycollectionitem *m_lastCityItem = m_cityItemList.at(m_cityItemList.size() - 1); //删除最后一项
-        delete m_lastCityItem;
-        showCollectCity(35 + 1*170, 242 + 2*100, true, cityId); //添加新增加的收藏城市
-        showCollectCity(35 + 2*170, 242 + 2*100, false, ""); //添加最后一项
-    }
-
-    //第三步 将新增城市写入列表
+    //将新增城市写入列表
     if (listSavedCityId.size() == 10){ //包含最后一项为空字符串的项
         listSavedCityId.replace(8, cityId); //收藏城市已经有8个，替换最后一个收藏城市
     }else {
@@ -331,6 +272,8 @@ void CityCollectionWidget::onRequestAddNewCity(QString cityId)
     }
 
     writeCollectedCity(newStrCityId);
+    isAddCity = true;
+    emit requestShowCollCityWeather();
 }
 
 void CityCollectionWidget::onRequestDeleteCity(QString cityId)
@@ -432,7 +375,7 @@ void CityCollectionWidget::onChangeCurrentCity(QString cityId)
 
     writeCollectedCity(newStrCityId);
 
-    onWeatherDataRequest(); //重新获取当前城市与收藏城市天气
+    emit requestShowCollCityWeather();
 }
 
 void CityCollectionWidget::writeCollectedCity(QString cityId)

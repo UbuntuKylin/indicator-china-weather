@@ -81,11 +81,15 @@ void LeftUpCityBtn::mousePressEvent(QMouseEvent *event)
     if (!is_open_city_collect_widget) {
         CityCollectionWidget *m_citycollectionwidget = new CityCollectionWidget();
         connect(m_citycollectionwidget, &CityCollectionWidget::sendCurrentCityId, this, &LeftUpCityBtn::sendCurrentCityId);
+        connect(m_citycollectionwidget, &CityCollectionWidget::requestShowCollCityWeather, this, &LeftUpCityBtn::requestShowCollCityWeather);
+        connect(this, SIGNAL(requestSetCityWeather(QString)), m_citycollectionwidget, SLOT(onRequestSetCityWeather(QString)));
         connect(m_citycollectionwidget, &CityCollectionWidget::requestChangeWidgetState, this, [=] () {
             is_open_city_collect_widget = false;
             m_citycollectionwidget->deleteLater();
         });
         m_citycollectionwidget->show();
+
+        emit requestShowCollCityWeather();
 
         is_open_city_collect_widget = true;
     }

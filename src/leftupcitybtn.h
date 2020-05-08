@@ -20,6 +20,8 @@ public:
 
 signals:
     void sendCurrentCityId(QString id);
+    void requestShowCollCityWeather();
+    void requestSetCityWeather(QString weather_data);
 
 protected:
     void enterEvent(QEvent *event) Q_DECL_OVERRIDE;

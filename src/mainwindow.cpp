@@ -207,15 +207,23 @@ void MainWindow::initConnections()
         }
     });
 
-    connect(m_leftupcitybtn, &LeftUpCityBtn::sendCurrentCityId, this, [=] (QString id) {
-        m_weatherManager->startGetTheWeatherData(id);
-    });
-
     connect(m_searchView, SIGNAL(requestSetCityName(QString)), m_leftupcitybtn, SIGNAL(requestSetCityName(QString)) );
 
     connect(m_searchView, &LeftUpSearchView::requestSetNewCityWeather, this, [=] (QString id) {
         m_weatherManager->startGetTheWeatherData(id);
     });
+
+    connect(m_leftupcitybtn, &LeftUpCityBtn::sendCurrentCityId, this, [=] (QString id) {
+        m_weatherManager->startGetTheWeatherData(id);
+    });
+
+    connect(m_leftupcitybtn, SIGNAL(requestShowCollCityWeather()), m_weatherManager, SIGNAL(requestShowCollCityWeather()));
+
+    //获取传过来的收藏城市的天气数据，并传给显示收藏城市窗口
+    connect(m_weatherManager, SIGNAL(requestSetCityWeather(QString)), m_leftupcitybtn, SIGNAL(requestSetCityWeather(QString)));
+    //connect(m_weatherManager, &WeatherManager::requestSetCityWeather, this, [=] (QString weather_data) {
+    //   qDebug()<<weather_data;
+    //});
 
     //收到信号带来的数据时，更新主界面天气数据
     connect(m_weatherManager, &WeatherManager::requestSetObserveWeather, this, [=] (ObserveWeather observerdata) {

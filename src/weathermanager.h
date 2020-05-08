@@ -56,9 +56,12 @@ private slots:
     void setAutomaticCity(const QString& cityName);
 
 signals:
+    void requestShowCollCityWeather();
+
     void requestAutoLocationData(const CitySettingData & info, bool success);
     void nofityNetworkStatus(const QString &status);
     void responseFailure(int code);
+    void requestSetCityWeather(QString weather_data);
 
     void requestSetObserveWeather(ObserveWeather observerdata);
     void requestSetForecastWeather(ForecastWeather forecastweather);

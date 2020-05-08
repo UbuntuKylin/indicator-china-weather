@@ -352,3 +352,100 @@ void WeatherWorker::onWeatherDataReply()
         }
     } //end if (jsonObject.contains("KylinWeather"))
 }
+
+//获取收藏城市天气数据
+void WeatherWorker::onCityWeatherDataRequest()
+{
+    QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+    QString collectPath = homePath.at(0) + "/.config/china-weather-data";
+
+    QString savedCity;
+    QFile file(collectPath);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QByteArray cityId = file.readAll();
+        savedCity = (QString(cityId));
+        file.close();
+    } else {
+        savedCity = "101010100,101020100,101030100,101040100,101280101,101280601,";
+    }
+
+    QString urlPrefix = "http://service.ubuntukylin.com:8001/weather/api/3.0/heweather_simple_s6/?cityids=";
+    QStringList cityList = savedCity.split(","); //cityList最后一项为空字符
+    for (int i=0; i<cityList.size()-1; i++) {
+        if (i == cityList.size()-2) {
+            urlPrefix.append(cityList.at(i));
+        } else {
+            urlPrefix.append(cityList.at(i));
+            urlPrefix.append("+");
+        }
+    }
+
+    QNetworkRequest request;
+    request.setUrl(urlPrefix);
+    QNetworkReply *reply = m_networkManager->get(request);
+    connect(reply, &QNetworkReply::finished, this, &WeatherWorker::onCityWeatherDataReply );
+}
+
+
+//处理收藏城市天气数据并发送出去
+void WeatherWorker::onCityWeatherDataReply()
+{
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+
+    int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    qDebug()<<"Reply value of getting weather data by URL is: "<<statusCode;
+
+    if (statusCode == 301 || statusCode == 302) {//redirect
+        return;
+    } else if (statusCode == 400) {
+        qDebug() << "Weather: Network error (HTTP400/Bad Request)";
+        return;
+    } else if (statusCode == 403) {
+        qDebug() << "Weather: Username or password invalid (permission denied)";
+        return;
+    } else if (statusCode == 200) {
+        // 200 is normal status
+    } else {
+        return;
+    }
+
+    if(reply->error() != QNetworkReply::NoError) {
+        qDebug() << "reply error!";
+        return;
+    }
+
+    QByteArray ba = reply->readAll();
+    //QString reply_content = QString::fromUtf8(ba);
+    //qDebug() <<reply_content;
+    reply->close();
+    reply->deleteLater();
+
+    QJsonParseError err;
+    QJsonDocument jsonDocument = QJsonDocument::fromJson(ba, &err);
+    if (err.error != QJsonParseError::NoError) {// Json type error
+        qDebug() << "Json type error";
+        return;
+    }
+    if (jsonDocument.isNull() || jsonDocument.isEmpty()) {
+        qDebug() << "Json null or empty!";
+        return;
+    }
+
+    QJsonObject jsonObject = jsonDocument.object();
+    if (jsonObject.isEmpty() || jsonObject.size() == 0) {
+        qDebug() << "Json object null or empty!";
+        return;
+    }
+    if (jsonObject.contains("KylinWeather")) {
+        QJsonObject mainObj = jsonObject.value("KylinWeather").toObject();
+        if (mainObj.isEmpty() || mainObj.size() == 0) {
+            return;
+        }
+        if (mainObj.contains("weather")) {
+            QString weather_msg = mainObj.value("weather").toString();
+            if (weather_msg != "") {
+                emit requestSetCityWeather(weather_msg);
+            }
+        }
+    } //end if (jsonObject.contains("KylinWeather"))
+}

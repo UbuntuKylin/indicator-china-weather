@@ -39,15 +39,14 @@ public slots:
     void onRequestDeleteCity(QString cityId);
     void onChangeCurrentCity(QString cityId);
 
+    void onRequestSetCityWeather(QString weather_data);
+
 protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
 
 private slots:
-    void onWeatherDataRequest();
-    void onWeatherDataReply();
-
     void on_btnCancel_clicked();
 
     void onShowCityAddWiget();
@@ -63,16 +62,17 @@ private:
     void writeCollectedCity(QString cityId);
     QString readCollectedCity();
 
-    void showCollectCity(int x, int y, bool isShowNormal, QString cityId);
+    void showCollectCity(int x, int y, bool isShowNormal, QString weatherStr);
 
     bool isPress;
     QPoint winPos;
     QPoint dragPos;
-
     int m_citynumber; //当前收藏城市数量
+    bool isAddCity = false;
 
 signals:
     void sendCurrentCityId(QString id);
+    void requestShowCollCityWeather();
     void requestChangeWidgetState();
 
     void threadFinish();
