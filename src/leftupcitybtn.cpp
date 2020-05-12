@@ -91,7 +91,7 @@ void LeftUpCityBtn::mousePressEvent(QMouseEvent *event)
 
         emit requestShowCollCityWeather();
 
-        is_open_city_collect_widget = true;
+        is_open_city_collect_widget = true; //为真时无法打开新的收藏窗口
     }
 }
 

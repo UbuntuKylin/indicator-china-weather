@@ -327,20 +327,16 @@ QString Information::convertCodeToBackgroud(int code)
         return ":/res/control_icons/weather-rain.png";
     }
     else if (code <= 499 && code >= 400) {
-        //return ":/res/control_icons/weather-snow.png";
-        return ":/res/control_icons/weather-few-clouds.png";
+        return ":/res/control_icons/weather-snow.png";
     }
     else if (code <= 502 && code >= 500) {
-        //return ":/res/control_icons/weather-fog.png";
-        return ":/res/control_icons/weather-few-clouds.png";
+        return ":/res/control_icons/weather-fog.png";
     }
     else if (code <= 508 && code >= 503) {
-        //return ":/res/control_icons/weather-sandstorm.png";
-        return ":/res/control_icons/weather-few-clouds.png";
+        return ":/res/control_icons/weather-sandstorm.png";
     }
     else if (code <= 515 && code >= 509) {
-        //return ":/res/control_icons/weather-fog.png";
-        return ":/res/control_icons/weather-few-clouds.png";
+        return ":/res/control_icons/weather-fog.png";
     }
     else if (code <= 999 && code >= 900) {
         return ":/res/control_icons/weather-none.png";

@@ -57,9 +57,7 @@ bool citycollectionitem::eventFilter(QObject *obj, QEvent *event)
         if(event->type() == QEvent::HoverEnter) {
             if (this->is_normal_item) {
                 if (this->is_curr_city) {
-                    if (this->m_collcitynum != 0) {
-                        ui->btnDelete->show();
-                    }
+                    ui->btnDelete->hide();
                 } else {
                     ui->btnDelete->show();
                 }

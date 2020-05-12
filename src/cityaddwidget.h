@@ -28,6 +28,8 @@ private slots:
 
     void onRequestClearLineEdit();
 
+    void on_btnReturn_clicked();
+
 private:
     Ui::cityaddition *ui;
 
@@ -46,6 +48,7 @@ private:
 
 signals:
     void hideCityAddWiget();
+    void requestChangeWidgetState();
     void requestAddNewCity(QString cityId);
 };
 

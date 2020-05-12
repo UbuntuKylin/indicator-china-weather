@@ -45,7 +45,9 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");
     ui->lbLeftUpTitle->setText("麒麟天气");
 
-    ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}");
+    ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
+                               "QPushButton:Hover{border:0px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
+                               "QPushButton:Pressed{border:0px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
     ui->btnCancel->setFocusPolicy(Qt::NoFocus);
 
     ui->lbCityCurrent->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(68,68,68,1);}");
@@ -78,6 +80,7 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     m_cityaddition->move(0, 0);
     m_cityaddition->hide();
     connect(m_cityaddition, SIGNAL(hideCityAddWiget()), this, SLOT(onHideCityAddWiget()) );
+    connect(m_cityaddition, SIGNAL(requestChangeWidgetState()), this, SIGNAL(requestChangeWidgetState()) );
     connect(m_cityaddition, SIGNAL(requestAddNewCity(QString)), this, SLOT(onRequestAddNewCity(QString)) );
 
     m_networkManager = new QNetworkAccessManager(this);
@@ -347,10 +350,10 @@ void CityCollectionWidget::onChangeCurrentCity(QString cityId)
 {
     emit sendCurrentCityId(cityId); //发信号更新主界面
 
-    QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
-    foreach (citycollectionitem *cityItem, cityItemList) {
-        delete cityItem;
-    }
+    //QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
+    //foreach (citycollectionitem *cityItem, cityItemList) {
+    //    delete cityItem;
+    //}
 
     //更新城市列表
     QString strSavedCity = readCollectedCity();
@@ -375,7 +378,8 @@ void CityCollectionWidget::onChangeCurrentCity(QString cityId)
 
     writeCollectedCity(newStrCityId);
 
-    emit requestShowCollCityWeather();
+    emit requestChangeWidgetState(); //隐藏显示收藏城市列表窗口
+    //emit requestShowCollCityWeather();
 }
 
 void CityCollectionWidget::writeCollectedCity(QString cityId)

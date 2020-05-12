@@ -155,7 +155,6 @@ void MainWindow::initControlQss()
     ui->btnCancel->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_normal_btn.png);}"
                                "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
-    //ui->btnCancel->hide();
 
     ui->lbCurrTmp->setStyleSheet("QLabel{border:none;background:transparent;font-size:110px;font-family:Microsoft YaHei;font-weight:300;color:rgba(255,255,255,1);line-height:100px;}");
     ui->lbCurrTmp->setAlignment(Qt::AlignCenter);
@@ -214,6 +213,9 @@ void MainWindow::initConnections()
     });
 
     connect(m_leftupcitybtn, &LeftUpCityBtn::sendCurrentCityId, this, [=] (QString id) {
+        if(this->isHidden()){
+            handleIconClickedSub(); //显示在屏幕中央
+        }
         m_weatherManager->startGetTheWeatherData(id);
     });
 
@@ -314,7 +316,7 @@ void MainWindow::createTrayIcon()
 {
     m_trayIcon = new QSystemTrayIcon(this);
     m_trayIcon->setToolTip(QString(tr("Kylin Weather")));
-    m_trayIcon->setIcon(QIcon(":/res/control_icons/indicator-china-weather.png"));
+    m_trayIcon->setIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/indicator-china-weather.png")) );
     m_trayIcon->setVisible(true);
 }
 
@@ -431,7 +433,7 @@ void MainWindow::onHandelAbnormalSituation(QString abnormalText){
 //处理异常时的主界面显示
 void MainWindow::setAbnormalMainWindow()
 {
-    m_trayIcon->setIcon(QIcon(":/res/control_icons/indicator-china-weather.png"));
+    m_trayIcon->setIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/indicator-china-weather.png")) );
 
     ui->lbCurrTmp->setText("");
     ui->lbCurrTmpUnit->setText("");
@@ -581,18 +583,35 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
     readFile.close();
 
     QStringList readCityIdList = readCityId.split(",");
-    for (int i=1; i<readCityIdList.size()-1; i++) { //减1因为readCityIdList最后一项为空
+
+    //若收藏城市列表中已经有搜索的新城市，则去掉。减1因为readCityIdList最后一项为空
+    for (int i=1; i<readCityIdList.size()-1; i++) {
         QString str = readCityIdList.at(i);
         if (str == m_observeweather.id) {
             readCityIdList.removeOne(m_observeweather.id);
             break;
         }
     }
+
+    //将上一个当前城市放入收藏列表中
+    QString oldCurrentCityId = readCityIdList.at(0);
+    if  (oldCurrentCityId != m_observeweather.id) {
+        if (readCityIdList.size() == 10) {
+            //收藏列表已经有8个城市，替换最后一个
+            readCityIdList.replace(8, oldCurrentCityId);
+        }
+        if (readCityIdList.size() <= 9) {
+            //收藏列表少于8个城市，将上一个当前城市放入末尾
+            readCityIdList.append(oldCurrentCityId);
+        }
+    }
+
+    //将列表中第一个城市设置为当前搜索的新城市
     readCityIdList.replace(0, m_observeweather.id);
 
     QString writeCityId = "";
     foreach (QString strCity, readCityIdList) {
-        if (strCity != ""){
+        if (strCity != "") {
             writeCityId.append(strCity);
             writeCityId.append(",");
         }
@@ -607,7 +626,7 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
 void MainWindow::convertCodeToTrayIcon(QString code)
 {
     if (code.isEmpty()) {
-        m_trayIcon->setIcon(QIcon(":/res/control_icons/indicator-china-weather.png"));
+        m_trayIcon->setIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/indicator-china-weather.png")) );
         return;
     }
 
