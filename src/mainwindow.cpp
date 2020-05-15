@@ -87,6 +87,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_locationWorker = new LocationWorker(this);
     m_weatherManager = new WeatherManager(this);
+    m_weatherManager->initConnectionInfo(); //get information about network connection
 
     initConnections(); //建立信号与槽的连接
 
@@ -305,6 +306,12 @@ void MainWindow::initConnections()
         }
     });
 
+    //网络连接由无到有时触发天气界面更新
+    connect(m_weatherManager, &WeatherManager::newNetworkConnectionCreated, this, [=] () {
+        qDebug()<<"需要更新天气界面";
+        onRefreshMainWindowWeather();
+    });
+
     connect(m_hintWidget, &PromptWidget::requestRetryAccessWeather, this, [=] () {
         qDebug()<<"debug: retry to refreah mainwindow weather";
         onRefreshMainWindowWeather();
@@ -316,7 +323,7 @@ void MainWindow::createTrayIcon()
 {
     m_trayIcon = new QSystemTrayIcon(this);
     m_trayIcon->setToolTip(QString(tr("Kylin Weather")));
-    m_trayIcon->setIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/indicator-china-weather.png")) );
+    m_trayIcon->setIcon(QIcon::fromTheme(QString("indicator-china-weather"), QIcon(QString(":/res/control_icons/indicator-china-weather.png"))) );
     m_trayIcon->setVisible(true);
 }
 
@@ -433,7 +440,7 @@ void MainWindow::onHandelAbnormalSituation(QString abnormalText){
 //处理异常时的主界面显示
 void MainWindow::setAbnormalMainWindow()
 {
-    m_trayIcon->setIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/indicator-china-weather.png")) );
+    m_trayIcon->setIcon(QIcon::fromTheme(QString("indicator-china-weather"), QIcon(QString(":/res/control_icons/indicator-china-weather.png"))) );
 
     ui->lbCurrTmp->setText("");
     ui->lbCurrTmpUnit->setText("");
@@ -626,7 +633,7 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
 void MainWindow::convertCodeToTrayIcon(QString code)
 {
     if (code.isEmpty()) {
-        m_trayIcon->setIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/indicator-china-weather.png")) );
+        m_trayIcon->setIcon(QIcon::fromTheme(QString("indicator-china-weather"), QIcon(QString(":/res/control_icons/indicator-china-weather.png"))) );
         return;
     }
 

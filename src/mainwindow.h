@@ -35,7 +35,6 @@
 #include <QTimer>
 #include <QFileInfo>
 #include <QLocale>
-#include <QGraphicsDropShadowEffect>
 
 namespace Ui {
 class MainWindow;

@@ -23,6 +23,7 @@
 #include "data.h"
 
 #include <QObject>
+#include <QDBusObjectPath>
 
 class QThread;
 class CitySettingData;
@@ -37,6 +38,7 @@ public:
     ~WeatherManager();
 
     void initConnections();
+    void initConnectionInfo();
 
     void startGetTheWeatherData(QString cityId);
     void startTestNetwork();
@@ -52,8 +54,13 @@ private:
     QThread *m_geoipThread = nullptr;
     QThread *m_weatherThread = nullptr;
 
+    QStringList oldPathInfo;
+    QList<QDBusObjectPath> oldPaths;
+
 private slots:
     void setAutomaticCity(const QString& cityName);
+    void onPropertiesChanged(QVariantMap qvm);
+    void onTimeFinished();
 
 signals:
     void requestShowCollCityWeather();
@@ -66,6 +73,8 @@ signals:
     void requestSetObserveWeather(ObserveWeather observerdata);
     void requestSetForecastWeather(ForecastWeather forecastweather);
     void requestSetLifeStyle(LifeStyle lifestyle);
+
+    void newNetworkConnectionCreated();
 };
 
 #endif // WEATHER_MANAGER_H

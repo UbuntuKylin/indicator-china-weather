@@ -32,6 +32,8 @@
 #include <QtDBus/QDBusObjectPath>
 #include <QtDBus/QDBusReply>
 
+#include <unistd.h>
+
 namespace {
 
 void quitThread(QThread *thread)
@@ -83,6 +85,11 @@ void WeatherManager::initConnections()
 
     connect(this, SIGNAL(requestShowCollCityWeather()), m_weatherWorker, SLOT(onCityWeatherDataRequest()) );
     connect(m_weatherWorker, &WeatherWorker::requestSetCityWeather, this, &WeatherManager::requestSetCityWeather);
+
+    QDBusConnection::systemBus().connect(QString("org.freedesktop.NetworkManager"),
+                                         QString("/org/freedesktop/NetworkManager"),
+                                         QString("org.freedesktop.NetworkManager"),
+                                         QString("PropertiesChanged"), this, SLOT(onPropertiesChanged(QVariantMap) ) );
 }
 
 void WeatherManager::startGetTheWeatherData(QString cityId)
@@ -192,4 +199,85 @@ int WeatherManager::getTaskBarHeight(QString str)
     } else {
         return 46;
     }
+}
+
+
+void WeatherManager::initConnectionInfo()
+{
+    QDBusInterface interface( "org.freedesktop.NetworkManager",
+                              "/org/freedesktop/NetworkManager",
+                              "org.freedesktop.DBus.Properties",
+                              QDBusConnection::systemBus() );
+
+    QDBusMessage result = interface.call("Get", "org.freedesktop.NetworkManager", "ActiveConnections");
+    QList<QVariant> outArgs = result.arguments();
+    QVariant first = outArgs.at(0);
+    QDBusVariant dbvFirst = first.value<QDBusVariant>();
+    QVariant vFirst = dbvFirst.variant();
+    QDBusArgument dbusArgs = vFirst.value<QDBusArgument>();
+
+    QDBusObjectPath objPath;
+    dbusArgs.beginArray();
+    while (!dbusArgs.atEnd()) {
+        dbusArgs >> objPath;
+        oldPaths.append(objPath);
+        qDebug() <<"debug: *****path is: "<< objPath.path();
+
+        QDBusInterface interface( "org.freedesktop.NetworkManager",
+                                  objPath.path(),
+                                  "org.freedesktop.DBus.Properties",
+                                  QDBusConnection::systemBus() );
+
+        QDBusReply<QVariant> reply = interface.call("Get", "org.freedesktop.NetworkManager.Connection.Active", "Type");
+        qDebug()<<"debug: *****connection type is: "<<reply.value().toString();
+        oldPathInfo.append(reply.value().toString());
+    }
+    dbusArgs.endArray();
+}
+
+void WeatherManager::onPropertiesChanged(QVariantMap qvm)
+{
+    for(QString keyStr : qvm.keys()) {
+        if (keyStr == "ActiveConnections") {
+            const QDBusArgument &dbusArg = qvm.value(keyStr).value<QDBusArgument>();
+            QList<QDBusObjectPath> newPaths;
+            dbusArg >> newPaths;
+            QStringList newPathInfo;
+            foreach (QDBusObjectPath objPath, newPaths) {
+                //qDebug()<<"dbug: bbbbb  "<<objPath.path();
+
+                QDBusInterface interface( "org.freedesktop.NetworkManager",
+                                          objPath.path(),
+                                          "org.freedesktop.DBus.Properties",
+                                          QDBusConnection::systemBus() );
+
+                QDBusReply<QVariant> reply = interface.call("Get", "org.freedesktop.NetworkManager.Connection.Active", "Type");
+                //qDebug()<<"dbug: ccccc "<<reply.value().toString();
+                newPathInfo.append(reply.value().toString());
+            }
+
+            // 当前的网络连接个数由0个增为1个时，触发天气界面更新
+            if (newPaths.size() == 1) {
+                if (oldPaths.size() == 0) {
+                    QTimer::singleShot(4*1000, this, SLOT(onTimeFinished() ));
+                }
+            }
+
+            bool isChangeOldPathInfo = true;
+            for (int k=0; k<newPathInfo.size(); k++) {
+                if (newPathInfo.at(k) == "") {
+                    isChangeOldPathInfo = false;
+                }
+            }
+            if (isChangeOldPathInfo) {
+                oldPathInfo = newPathInfo;
+            }
+            oldPaths = newPaths;
+        }
+    }
+}
+
+void WeatherManager::onTimeFinished()
+{
+    emit newNetworkConnectionCreated();
 }

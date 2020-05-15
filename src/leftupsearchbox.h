@@ -2,6 +2,7 @@
 #define LEFTUPSEARCHBOX_H
 
 #include <QLineEdit>
+#include <QMouseEvent>
 
 class LeftUpSearchBox : public QLineEdit
 {
