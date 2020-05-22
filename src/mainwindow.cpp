@@ -323,7 +323,7 @@ void MainWindow::createTrayIcon()
 {
     m_trayIcon = new QSystemTrayIcon(this);
     m_trayIcon->setToolTip(QString(tr("Kylin Weather")));
-    m_trayIcon->setIcon(QIcon::fromTheme(QString("indicator-china-weather"), QIcon(QString(":/res/control_icons/indicator-china-weather.png"))) );
+    m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
     m_trayIcon->setVisible(true);
 }
 
@@ -440,7 +440,7 @@ void MainWindow::onHandelAbnormalSituation(QString abnormalText){
 //处理异常时的主界面显示
 void MainWindow::setAbnormalMainWindow()
 {
-    m_trayIcon->setIcon(QIcon::fromTheme(QString("indicator-china-weather"), QIcon(QString(":/res/control_icons/indicator-china-weather.png"))) );
+    m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
 
     ui->lbCurrTmp->setText("");
     ui->lbCurrTmpUnit->setText("");
@@ -633,7 +633,7 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
 void MainWindow::convertCodeToTrayIcon(QString code)
 {
     if (code.isEmpty()) {
-        m_trayIcon->setIcon(QIcon::fromTheme(QString("indicator-china-weather"), QIcon(QString(":/res/control_icons/indicator-china-weather.png"))) );
+        m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
         return;
     }
 
