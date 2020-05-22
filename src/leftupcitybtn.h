@@ -19,9 +19,9 @@ public:
     explicit LeftUpCityBtn(QWidget *parent=0);
 
 signals:
-    void sendCurrentCityId(QString id);
-    void requestShowCollCityWeather();
-    void requestSetCityWeather(QString weather_data);
+    void sendCurrentCityId(QString id); //发送到主界面更新主界面天气
+    void requestShowCollCityWeather(); //显示收藏城市列表天气
+    void requestSetCityWeather(QString weather_data); //发送出去显示主界面城市天气
 
 protected:
     void enterEvent(QEvent *event) Q_DECL_OVERRIDE;
@@ -38,7 +38,7 @@ private:
     QLabel *m_addCityLabel = nullptr;
 
 signals:
-    void requestSetCityName(QString cityName);
+    void requestSetCityName(QString cityName); //在搜索列表中选中一个城市后，左上角城市名需要更改
 };
 
 #endif // LEFTUPCITYBTN_H

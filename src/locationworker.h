@@ -36,6 +36,7 @@ public:
     explicit WorkerThread(LocationWorker *parent);
     ~WorkerThread() {}
 
+    //从文件china-city-list.csv中查找子串，并将城市数据保存在LocationData结构体中
     void run() Q_DECL_OVERRIDE;
 };
 
@@ -47,6 +48,7 @@ public:
     explicit LocationWorker(QObject *parent = 0);
     ~LocationWorker();
 
+    //将匹配到的每个城市加入一个列表中
     QList<LocationData> exactMatchCity(const QString &inputText) const;
 
 private:

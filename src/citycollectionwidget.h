@@ -35,10 +35,16 @@ public:
     ~CityCollectionWidget();
 
 public slots:
+    //add a new collected city in the collected city list.
     void onRequestAddNewCity(QString cityId);
+
+    //delete a collected city from the collected city list.
     void onRequestDeleteCity(QString cityId);
+
+    //change current city after click a city in collected city list
     void onChangeCurrentCity(QString cityId);
 
+    //slot function to set weather data
     void onRequestSetCityWeather(QString weather_data);
 
 protected:
@@ -59,16 +65,24 @@ private:
     QLabel *m_tipIcon = nullptr;
     QLabel *m_tipLabel = nullptr;
 
+    //save new city list to configre file
     void writeCollectedCity(QString cityId);
+    //get city list data saved in configure before
     QString readCollectedCity();
 
+    /*
+    * handle weather data(weatherStr) and create connect about some signal and slot
+    * parameter x and y mean position of item
+    * parameter isShowNormal mean whether add city item
+    * parameter weatherStr is string about current weather
+    */
     void showCollectCity(int x, int y, bool isShowNormal, QString weatherStr);
 
     bool isPress;
     QPoint winPos;
     QPoint dragPos;
-    int m_citynumber; //当前收藏城市数量
-    bool isAddCity = false;
+    int m_citynumber; //number of current collection cities
+    bool isAddCity = false; //whether add a new collect city
 
 signals:
     void sendCurrentCityId(QString id);

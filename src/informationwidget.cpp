@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2013 ~ 2020 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ *
+ * Authors:
+ *  Kobe Lee    lixiang@kylinos.cn/kobe24_lixiang@126.com
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "informationwidget.h"
 #include "ui_informationwidget.h"
 #include "weatherworker.h"
@@ -50,6 +69,7 @@ void Information::initControlQss()
 {
     /******************天气预报***************************/
 
+    //设置星期
     ui->lbDay_1->setStyleSheet(lbDayQss);
     ui->lbDay_1->setAlignment(Qt::AlignCenter);
     ui->lbDay_2->setStyleSheet(lbDayQss);
@@ -65,6 +85,7 @@ void Information::initControlQss()
     ui->lbDay_7->setStyleSheet(lbDayQss);
     ui->lbDay_7->setAlignment(Qt::AlignCenter);
 
+    //设置日期
     ui->lbDate_1->setStyleSheet(lbDateQss);
     ui->lbDate_1->setAlignment(Qt::AlignCenter);
     ui->lbDate_2->setStyleSheet(lbDateQss);
@@ -80,6 +101,7 @@ void Information::initControlQss()
     ui->lbDate_7->setStyleSheet(lbDateQss);
     ui->lbDate_7->setAlignment(Qt::AlignCenter);
 
+    //设置图标控件
     ui->lbIcon_1->setStyleSheet(lbIconQss);
     ui->lbIcon_2->setStyleSheet(lbIconQss);
     ui->lbIcon_3->setStyleSheet(lbIconQss);
@@ -88,6 +110,7 @@ void Information::initControlQss()
     ui->lbIcon_6->setStyleSheet(lbIconQss);
     ui->lbIcon_7->setStyleSheet(lbIconQss);
 
+    //设置显示温度控件
     ui->lbTmp_1->setStyleSheet(lbTmpQss);
     ui->lbTmp_1->setAlignment(Qt::AlignCenter);
     ui->lbTmp_2->setStyleSheet(lbTmpQss);
@@ -103,7 +126,7 @@ void Information::initControlQss()
     ui->lbTmp_7->setStyleSheet(lbTmpQss);
     ui->lbTmp_7->setAlignment(Qt::AlignCenter);
 
-
+    //设置显示天气描述控件
     ui->lbWea_1->setStyleSheet(lbWeaQss);
     ui->lbWea_1->setAlignment(Qt::AlignCenter);
     ui->lbWea_2->setStyleSheet(lbWeaQss);
@@ -119,7 +142,7 @@ void Information::initControlQss()
     ui->lbWea_7->setStyleSheet(lbWeaQss);
     ui->lbWea_7->setAlignment(Qt::AlignCenter);
 
-
+    //分割线设置
     ui->line_1->setStyleSheet(lineLinearGradientQss);
     ui->line_2->setStyleSheet(lineLinearGradientQss);
     ui->line_3->setStyleSheet(lineLinearGradientQss);
@@ -136,45 +159,53 @@ void Information::initControlQss()
 
     /******************生活指数***************************/
 
+    //生活指数
     ui->lbLifeStyle->setStyleSheet(lbLifeStyleQss);
     ui->lbLifeStyle->setText("生活指数");
 
+    //穿衣指数
     ui->lb_drsg->setStyleSheet(lbIndexQss);
     ui->lb_drsg_brf->setStyleSheet(lbIndexBrfQss);
     ui->lb_drsg_icon->setStyleSheet(lbIndexIconQss);
     ui->lb_drsg_icon->setStyleSheet("QLabel{background-image:url(:/res/control_icons/index_clothe.png);}");
     ui->lb_drsg->setText("穿衣指数");
 
+    //感冒指数
     ui->lb_flu->setStyleSheet(lbIndexQss);
     ui->lb_flu_brf->setStyleSheet(lbIndexBrfQss);
     ui->lb_flu_icon->setStyleSheet(lbIndexIconQss);
     ui->lb_flu_icon->setStyleSheet("QLabel{background-image:url(:/res/control_icons/index_flu.png);}");
     ui->lb_flu->setText("感冒指数");
 
+    //紫外线指数
     ui->lb_uv->setStyleSheet(lbIndexQss);
     ui->lb_uv_brf->setStyleSheet(lbIndexBrfQss);
     ui->lb_uv_icon->setStyleSheet(lbIndexIconQss);
     ui->lb_uv_icon->setStyleSheet("QLabel{background-image:url(:/res/control_icons/index_uv.png);}");
     ui->lb_uv->setText("紫外线指数");
 
+    //洗车指数
     ui->lb_cw->setStyleSheet(lbIndexQss);
     ui->lb_cw_brf->setStyleSheet(lbIndexBrfQss);
     ui->lb_cw_icon->setStyleSheet(lbIndexIconQss);
     ui->lb_cw_icon->setStyleSheet("QLabel{background-image:url(:/res/control_icons/index_cash_wash.png);}");
     ui->lb_cw->setText("洗车指数");
 
+    //空气指数
     ui->lb_air->setStyleSheet(lbIndexQss);
     ui->lb_air_brf->setStyleSheet(lbIndexBrfQss);
     ui->lb_air_icon->setStyleSheet(lbIndexIconQss);
     ui->lb_air_icon->setStyleSheet("QLabel{background-image:url(:/res/control_icons/index_air.png);}");
     ui->lb_air->setText("空气指数");
 
+    //运动指数
     ui->lb_sport->setStyleSheet(lbIndexQss);
     ui->lb_sport_brf->setStyleSheet(lbIndexBrfQss);
     ui->lb_sport_icon->setStyleSheet(lbIndexIconQss);
     ui->lb_sport_icon->setStyleSheet("QLabel{background-image:url(:/res/control_icons/index_sport.png);}");
     ui->lb_sport->setText("运动指数");
 
+    //分割线
     ui->lineH->setStyleSheet(lineQss);
     ui->lineV_1->setStyleSheet(lineQss);
     ui->lineV_2->setStyleSheet(lineQss);
@@ -192,7 +223,7 @@ void Information::onSetForecastWeather(ForecastWeather forecastweather)
     }
 
     //获取星期
-    QDateTime current_date_time = QDateTime::currentDateTime();
+    QDateTime current_date_time = QDateTime::currentDateTime();//获取系统现在的日期
     QString current_week_1 = "今天";//current_date_time.toString("ddd");
     QString current_week_2 = current_date_time.addDays(+1).toString("ddd");
     QString current_week_3 = current_date_time.addDays(+2).toString("ddd");
@@ -293,17 +324,17 @@ void Information::onSetForecastWeather(ForecastWeather forecastweather)
 
 void Information::onSetLifeStyle(LifeStyle lifestyle)
 {
-    ui->lb_drsg_brf->setText(lifestyle.drsg_brf);
+    ui->lb_drsg_brf->setText(lifestyle.drsg_brf); //穿衣指数
 
-    ui->lb_flu_brf->setText(lifestyle.flu_brf);
+    ui->lb_flu_brf->setText(lifestyle.flu_brf); //感冒指数
 
-    ui->lb_uv_brf->setText(lifestyle.uv_brf);
+    ui->lb_uv_brf->setText(lifestyle.uv_brf); //紫外线指数
 
-    ui->lb_cw_brf->setText(lifestyle.cw_brf);
+    ui->lb_cw_brf->setText(lifestyle.cw_brf); //洗车指数
 
-    ui->lb_air_brf->setText(lifestyle.air_brf);
+    ui->lb_air_brf->setText(lifestyle.air_brf); //空气指数
 
-    ui->lb_sport_brf->setText(lifestyle.sport_brf);
+    ui->lb_sport_brf->setText(lifestyle.sport_brf); //运动指数
 }
 
 QString Information::convertCodeToBackgroud(int code)

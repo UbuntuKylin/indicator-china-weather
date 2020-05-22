@@ -12,6 +12,7 @@ public:
     explicit LeftUpSearchBox(QWidget* parent = 0);
 
 protected:
+    // set the display style of the searchbox.
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
 private:

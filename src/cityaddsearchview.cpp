@@ -28,9 +28,12 @@ CityAddSearchView::CityAddSearchView(QWidget *parent)
     this->setMouseTracking(true);
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+    //set style of listview widget
     this->setStyleSheet("QListView{margin:0px;padding:0px;border:1px solid rgba(207,207,207,1);border-radius:4px;outline:none;background:rgba(255,255,255,1);}"
                         "QListView::item:selected:active{background:rgba(238,242,253,1);}"
                         "QListView::item:hover{background:rgba(238,242,253,1);}");
+
+    //set style of scroll bar
     this->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 0px 0px 0px;background-color:rgb(255,255,255,100);border:0px;width:2px;}" \
                                              "QScrollBar::sub-line:vertical{subcontrol-origin:margin;border:1px solid red;height:13px;}" \
                                              "QScrollBar::up-arrow:vertical{subcontrol-origin:margin;background-color:blue;height:13px;}" \
@@ -54,8 +57,8 @@ void CityAddSearchView::mouseReleaseEvent(QMouseEvent *e)
 
     foreach (QModelIndex sourceIndex, sourceIndexList){
         QVariant variant = sourceIndex.data(Qt::UserRole);
-        ItemData data = variant.value<ItemData>();
-        qDebug() << "Index : " << sourceIndex.row();
+        ItemData data = variant.value<ItemData>(); //get data of the selected item
+        qDebug() << "Index : " << sourceIndex.row(); //show contents of the selected item
         emit requestClearLineEdit();
         emit requestAddNewCity(data.cityId);
     }

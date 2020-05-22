@@ -80,16 +80,23 @@ void LeftUpCityBtn::mousePressEvent(QMouseEvent *event)
 
     if (!is_open_city_collect_widget) {
         CityCollectionWidget *m_citycollectionwidget = new CityCollectionWidget();
+        //接收来自收藏城市窗口发来的信号，再发送一个信号到主窗口
         connect(m_citycollectionwidget, &CityCollectionWidget::sendCurrentCityId, this, &LeftUpCityBtn::sendCurrentCityId);
+
+        //requestShowCollCityWeather信号会一直传到weathermanager.cpp，用于获取收藏列表中城市的实时天气
         connect(m_citycollectionwidget, &CityCollectionWidget::requestShowCollCityWeather, this, &LeftUpCityBtn::requestShowCollCityWeather);
+
+        //接收来自主窗口的天气数据，再发送到收藏城市列表窗口
         connect(this, SIGNAL(requestSetCityWeather(QString)), m_citycollectionwidget, SLOT(onRequestSetCityWeather(QString)));
+
+        //收到关闭窗口的消息
         connect(m_citycollectionwidget, &CityCollectionWidget::requestChangeWidgetState, this, [=] () {
             is_open_city_collect_widget = false;
-            m_citycollectionwidget->deleteLater();
+            m_citycollectionwidget->deleteLater(); //销毁窗口
         });
         m_citycollectionwidget->show();
 
-        emit requestShowCollCityWeather();
+        emit requestShowCollCityWeather(); //发送该信号，显示收藏城市窗口各城市的事实天气
 
         is_open_city_collect_widget = true; //为真时无法打开新的收藏窗口
     }

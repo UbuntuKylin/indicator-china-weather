@@ -17,12 +17,13 @@ public:
     void requestWeatherData(QString cityId);
 
 protected:
+    // handle click event of searchview, send signal when mouse release.
     void mouseReleaseEvent(QMouseEvent *e) override;
 
 signals:
-    void requestSetCityName(QString cityName);
-    void requestGetWeatherData(QString id);
-    void requestSetNewCityWeather(QString id);
+    void requestSetCityName(QString cityName); //点击选中列表中某一个城市后发出，通知更改左上角城市名
+    //void requestGetWeatherData(QString id); //发送出去用于获取数据并在主界面显示
+    void requestSetNewCityWeather(QString id); //发送出去用于获取数据并在主界面显示
 
 private:
     QString m_cityid;

@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2013 ~ 2020 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ *
+ * Authors:
+ *  Kobe Lee    lixiang@kylinos.cn/kobe24_lixiang@126.com
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "citycollectionitem.h"
 #include "ui_citycollectionitem.h"
 
@@ -54,16 +73,16 @@ citycollectionitem::~citycollectionitem()
 bool citycollectionitem::eventFilter(QObject *obj, QEvent *event)
 {
     if (obj == this){
-        if(event->type() == QEvent::HoverEnter) {
-            if (this->is_normal_item) {
-                if (this->is_curr_city) {
+        if(event->type() == QEvent::HoverEnter) { //show close button when hover enter city item
+            if (this->is_normal_item) { //if item is not add city item
+                if (this->is_curr_city) { //if item is not current city item, mean can not delete current city
                     ui->btnDelete->hide();
                 } else {
                     ui->btnDelete->show();
                 }
             }
             return true;
-        } else if(event->type() == QEvent::HoverLeave){
+        } else if(event->type() == QEvent::HoverLeave){ //hide close button when hover leave city item
             ui->btnDelete->hide();
             return true;
         }
@@ -74,22 +93,22 @@ bool citycollectionitem::eventFilter(QObject *obj, QEvent *event)
 
 void citycollectionitem::setItemWidgetState(bool isShowNormal, bool isCurrentCity, int collCityNum)
 {
-    if (isCurrentCity) { //如果是当前城市
+    if (isCurrentCity) { //set current city item style
         ui->lbCityName->show();
         ui->lbTmp->show();
         ui->lbTmpUnit->show();
         ui->lbwea->show();
         ui->lbAddCity->hide();
         ui->btnAddCity->hide();
-    } else { //如果不是当前城市
+    } else {
         ui->btnAddCity->show();
-        if (isShowNormal) {
+        if (isShowNormal) { //set collected city item style
             ui->lbCityName->show();
             ui->lbTmp->show();
             ui->lbTmpUnit->show();
             ui->lbwea->show();
             ui->lbAddCity->hide();
-        } else {
+        } else { //set add city item style
             ui->lbCityName->hide();
             ui->lbTmp->hide();
             ui->lbTmpUnit->hide();
@@ -105,15 +124,15 @@ void citycollectionitem::setItemWidgetState(bool isShowNormal, bool isCurrentCit
 
 void citycollectionitem::setCityWeather(ObserveWeather observeweather)
 {
-    ui->lbTmp->setText(observeweather.tmp);
-    ui->lbwea->setText(observeweather.cond_txt);
-    ui->lbTmpUnit->setText("℃");
+    ui->lbTmp->setText(observeweather.tmp); //set current temperature
+    ui->lbwea->setText(observeweather.cond_txt); //set current wrather describe
+    ui->lbTmpUnit->setText("℃"); //set temperature unit
     QString weather_code = observeweather.cond_code;
     int code  = weather_code.toInt();
     QString returnStr = convertCodeToBackgroud(code);
     QString picStr = QString("QLabel{background-image:url(%1);}").arg(returnStr);
-    ui->lbBackImage->setStyleSheet(picStr);
-    ui->lbCityName->setText(observeweather.city);
+    ui->lbBackImage->setStyleSheet(picStr); //add background image 
+    ui->lbCityName->setText(observeweather.city); //add city name 
     this->m_city_id = observeweather.id;
 }
 

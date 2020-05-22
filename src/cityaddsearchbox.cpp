@@ -44,22 +44,24 @@ void CityAddSearchBox::paintEvent(QPaintEvent *event)
     QLineEdit::paintEvent(event);
 
     if (!this->hasFocus() && this->text().isEmpty()) {
+        // show icon and tips when the focus is not on searchbox
         QPainter painter(this);
         painter.setOpacity(0.5);
 
-        QFont curFont = painter.font();//QGuiApplication::font();
-        curFont.setPixelSize(14);//font.setPointSize(14);
+        QFont curFont = painter.font(); //QGuiApplication::font();
+        curFont.setPixelSize(14); //font.setPointSize(14);
         curFont.setFamily("Microsoft YaHei");
         QPen pen(Qt::black);
         painter.setPen(pen);
         painter.setFont(curFont);
 
         QRect iconRect(QPoint(210, 7), m_searchPixmap.size()/qApp->devicePixelRatio());
-        painter.drawPixmap(iconRect, m_searchPixmap);
+        painter.drawPixmap(iconRect, m_searchPixmap); //add icon in searchbox
 
         QRect textRect(235, 3, 30, 28);
-        painter.drawText(textRect, m_searchText);
+        painter.drawText(textRect, m_searchText); //add text in searchbox
     } else {
+        // show cursor when the focus is on searchbox, and set the icon left
         QPainter painter(this);
         painter.setOpacity(0.5);
 

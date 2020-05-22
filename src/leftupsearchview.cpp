@@ -67,6 +67,7 @@ void LeftUpSearchView::requestWeatherData(QString cityId) {
     if (!cityId.isEmpty()) {
         m_cityid = cityId;
     } else {
+        //如果为空时默认显示北京(101010100)天气
         m_cityid = "101010100";
     }
 

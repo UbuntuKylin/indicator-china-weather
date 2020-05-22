@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2013 ~ 2020 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ *
+ * Authors:
+ *  Kobe Lee    lixiang@kylinos.cn/kobe24_lixiang@126.com
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "cityaddwidget.h"
 #include "ui_cityaddwidget.h"
 #include "citycollectionwidget.h"
@@ -12,15 +31,17 @@ CityAddition::CityAddition(QWidget *parent) :
     ui->setupUi(this);
 
     this->setWindowFlags(Qt::FramelessWindowHint);
-    this->setFocusPolicy(Qt::StrongFocus);
-    this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
+    this->setFocusPolicy(Qt::StrongFocus);//set focus type of window
+    this->setAttribute(Qt::WA_TranslucentBackground);// set window background transparency
+
+    // set style of widget and icon in taskbar
     QPainterPath path;
     auto rect = this->rect();
     rect.adjust(1, 1, -1, -1);
-    path.addRoundedRect(rect, 6, 6);
+    path.addRoundedRect(rect, 6, 6); //set border radius
     setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
     this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
-    this->setWindowIcon(QIcon(":/res/control_icons/indicator-china-weather.png") );
+    this->setWindowIcon(QIcon(":/res/control_icons/indicator-china-weather.png") ); //set taskbar icon
 
     ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(207,207,207,1);border-radius:6px;background:rgba(255,255,255,1);}");
 
@@ -78,23 +99,23 @@ void CityAddition::onSearchBoxEdited()
 {
     searchCityName();
 
-    m_cityaddsearchview->setItemDelegate(m_cityaddsearchdelegate);       //为视图设置委托
+    m_cityaddsearchview->setItemDelegate(m_cityaddsearchdelegate); //Set delegation for view
     m_proxyModel->setSourceModel(m_model);
     m_proxyModel->setFilterRole(Qt::UserRole);
     m_proxyModel->setDynamicSortFilter(true);
-    m_cityaddsearchview->setModel(m_proxyModel);                  //为委托设置模型
-    m_cityaddsearchview->setViewMode(QListView::IconMode); //设置Item图标显示
-    m_cityaddsearchview->setDragEnabled(false);            //控件不允许拖动
+    m_cityaddsearchview->setModel(m_proxyModel); //Set up model for delegation
+    m_cityaddsearchview->setViewMode(QListView::IconMode); //set icon display for item
+    m_cityaddsearchview->setDragEnabled(false); //control does not allow dragging
 }
 
 void CityAddition::searchCityName()
 {
-    const QString inputText = m_cityaddsearchbox->text().trimmed();
+    const QString inputText = m_cityaddsearchbox->text().trimmed(); //get data from search box
     if (inputText.isEmpty())
         return;
 
     QList<LocationData> searchResultList;
-    searchResultList = m_locationWorker->exactMatchCity(inputText);
+    searchResultList = m_locationWorker->exactMatchCity(inputText); //match cities in the city list file, and add the matched cities to the list
 
     if (searchResultList.isEmpty()) {
         qDebug()<<"fail to search city information";
@@ -103,24 +124,24 @@ void CityAddition::searchCityName()
         delete m_model;
         m_model = new QStandardItemModel();
 
+        //Access data of each item in the lisearchResultListst, and add the acquired data to listview in turn
         foreach(LocationData m_locationdata, searchResultList){
             QStandardItem *Item = new QStandardItem;
-
             ItemData itemData;
 
-            itemData.cityId = QString(m_locationdata.id);
-            itemData.cityName = QString(m_locationdata.city);
-            itemData.cityProvince = QString(m_locationdata.province);
-            Item->setData(QVariant::fromValue(itemData),Qt::UserRole); //整体存取
+            itemData.cityId = QString(m_locationdata.id); //get id of city
+            itemData.cityName = QString(m_locationdata.city); //get the city name
+            itemData.cityProvince = QString(m_locationdata.province); //get province of this city
+            Item->setData(QVariant::fromValue(itemData),Qt::UserRole); //save city data
 
-            m_model->appendRow(Item); //追加Item
+            m_model->appendRow(Item); //add item to listview
         }
     }
 }
 
 void CityAddition::onRequestClearLineEdit()
 {
-    m_cityaddsearchview->hide();
+    m_cityaddsearchview->hide(); //hide search and add collect city widget
     m_cityaddsearchbox->setText("");
 }
 

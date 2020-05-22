@@ -20,7 +20,10 @@ public:
     ~Information();
 
 public slots:
+    //set forecast weather in mainwindow
     void onSetForecastWeather(ForecastWeather forecastweather);
+
+    //set lifestyle index in mainwindow
     void onSetLifeStyle(LifeStyle lifestyle);
 
 private:
@@ -28,10 +31,10 @@ private:
 
     Ui::information *ui;
 
-    void editQssString();
-    void initControlQss();
+    void editQssString(); //set style of forecast control and lifestyle control
+    void initControlQss(); //initial data of some control
 
-    QString convertCodeToBackgroud(int code);
+    QString convertCodeToBackgroud(int code); //update background image according to weather code
 
     QString lbDayQss, lbDateQss, lbIconQss, lbTmpQss, lbWeaQss;
     QString lbLifeStyleQss;

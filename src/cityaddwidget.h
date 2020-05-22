@@ -24,10 +24,13 @@ public:
     ~CityAddition();
 
 private slots:
+    // click to close window.
     void on_btnCancel_clicked();
 
+    // line edit stay original state after selecting a new collected city.
     void onRequestClearLineEdit();
 
+    // click to return collected cities window.
     void on_btnReturn_clicked();
 
 private:
@@ -42,14 +45,16 @@ private:
 
     LocationWorker *m_locationWorker = nullptr;
 
+    // search and show cities in list from file china-city-list.csv
     void searchCityName();
 
+    // handle when search box edited,
     void onSearchBoxEdited();
 
 signals:
-    void hideCityAddWiget();
-    void requestChangeWidgetState();
-    void requestAddNewCity(QString cityId);
+    void hideCityAddWiget(); //send this signal to hide collected city add widget
+    void requestChangeWidgetState(); // send this signal to collected both add collect city widget and show city list widget
+    void requestAddNewCity(QString cityId); // send this signal to add new collected city in collected city list
 };
 
 #endif // CITYADDITION_H
