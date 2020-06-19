@@ -21,6 +21,7 @@
 #include "data.h"
 
 #include <QPainter>
+#include <QPainterPath>
 #include <QStyledItemDelegate>
 #include <QStyle>
 #include <QEvent>

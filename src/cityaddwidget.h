@@ -6,6 +6,7 @@
 #include "cityaddsearchdelegate.h"
 #include "locationworker.h"
 
+#include <QPainterPath>
 #include <QWidget>
 #include <QButtonGroup>
 #include <QObjectUserData>

@@ -35,6 +35,7 @@
 #include <QTimer>
 #include <QFileInfo>
 #include <QLocale>
+#include <QPainterPath>
 
 namespace Ui {
 class MainWindow;

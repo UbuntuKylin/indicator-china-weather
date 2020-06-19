@@ -34,6 +34,7 @@
 #include <QEventLoop>
 #include <QFile>
 #include <QApplication>
+#include <QPainterPath>
 #include <QStringList>
 #include <QUrl>
 #include <QVariant>
