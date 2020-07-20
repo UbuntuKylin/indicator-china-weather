@@ -45,6 +45,7 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->setFixedSize(580, 560);
     this->setWindowFlags(Qt::FramelessWindowHint);
     this->setAttribute(Qt::WA_TranslucentBackground); // set window background transparency
 

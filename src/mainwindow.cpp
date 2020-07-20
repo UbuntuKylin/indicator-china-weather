@@ -37,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     qRegisterMetaType<LifeStyle>();
 
     //设置主界面样式
+    this->setFixedSize(865, 520);
     this->setWindowFlags(Qt::FramelessWindowHint);
     //this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::Tool);
     this->setFocusPolicy(Qt::StrongFocus);//this->setFocusPolicy(Qt::NoFocus);

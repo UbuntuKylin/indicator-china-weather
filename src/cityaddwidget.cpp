@@ -30,6 +30,7 @@ CityAddition::CityAddition(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->setFixedSize(580, 560);
     this->setWindowFlags(Qt::FramelessWindowHint);
     this->setFocusPolicy(Qt::StrongFocus);//set focus type of window
     this->setAttribute(Qt::WA_TranslucentBackground);// set window background transparency
