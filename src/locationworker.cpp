@@ -64,6 +64,7 @@ void WorkerThread::run()
             data.province = resultList.at(7);
             data.admin_district_en = resultList.at(8);
             data.admin_district = resultList.at(9);
+            data.shorthand = resultList.at(10);
 
             m_worker->m_locatonList << data; //将数据存入m_locatonList中
 
@@ -93,7 +94,7 @@ QList<LocationData> LocationWorker::exactMatchCity(const QString &inputText) con
     QList<LocationData> searchedList;
 
     for (const LocationData line : m_locatonList) { //m_worker->m_locatonList << data;
-        if (line.id == inputText || line.city.contains(inputText) || line.city_en.contains(inputText) || line.province == inputText || line.province_en == inputText || line.admin_district.contains(inputText) || line.admin_district_en.contains(inputText)) {
+        if (line.shorthand == inputText || line.id == inputText || line.city.contains(inputText) || line.city_en.contains(inputText) || line.province == inputText || line.province_en == inputText || line.admin_district.contains(inputText) || line.admin_district_en.contains(inputText)) {
             searchedList.append(line); //将数据加入列表
         }
     }
