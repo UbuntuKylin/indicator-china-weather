@@ -111,6 +111,7 @@ struct LocationData {
     QString province;
     QString admin_district_en;
     QString admin_district;
+    QString shorthand;
 };
 
 class CitySettingData
