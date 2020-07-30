@@ -27,11 +27,31 @@
 #include <QDir>
 
 #include <signal.h>
+#include <X11/Xlib.h>
+
+int getScreenWidth() {
+    Display *disp = XOpenDisplay(NULL);
+    Screen *scrn = DefaultScreenOfDisplay(disp);
+    if (NULL == scrn) {
+        return 0;
+    }
+    int width = scrn->width;
+
+    if (NULL != disp) {
+        XCloseDisplay(disp);
+    }
+    return width;
+}
 
 int main(int argc, char *argv[])
 {
     signal(SIGINT, [](int) { QApplication::quit(); });// 设置退出信号
-    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
+    if (getScreenWidth() > 2560) {
+        #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
+                QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+        #endif
+    }
 
     QApplication a(argc, argv);
 
