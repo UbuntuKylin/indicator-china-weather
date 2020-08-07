@@ -509,6 +509,7 @@ void MainWindow::searchCityName()
     searchResultList = m_locationWorker->exactMatchCity(inputText);
 
     if (searchResultList.isEmpty()) {
+        m_model->clear();
         qDebug()<<"fail to search city information";
     }
     else {

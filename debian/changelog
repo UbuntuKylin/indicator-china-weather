@@ -1,8 +1,12 @@
+indicator-china-weather (3.1.0-3) unstable; urgency=medium
+
+  * 无匹配结果时候选列表为空
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Fri, 7 Aug 2020 17:30:56 +0800
+
 indicator-china-weather (3.1.0-2) unstable; urgency=medium
 
-  * set window fixedsize to avoid window size changed by press alt and f8
-  * Add files via upload
-  * Solve the problem of double magnification on special laptops
+  * 匹配城市首字母缩写
 
  -- liuyuhui <liuyuhui@kylinos.cn>  Thu, 30 Jul 2020 15:33:56 +0800
 
