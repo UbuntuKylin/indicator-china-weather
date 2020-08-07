@@ -1,6 +1,7 @@
 indicator-china-weather (3.1.0-3) unstable; urgency=medium
 
   * 无匹配结果时候选列表为空
+  * 非开机自启时，在第一次运行就弹出天气界面
 
  -- liuyuhui <liuyuhui@kylinos.cn>  Fri, 7 Aug 2020 17:30:56 +0800
 

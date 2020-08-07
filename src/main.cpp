@@ -26,6 +26,8 @@
 #include <QObject>
 #include <QDir>
 
+#include <QFile>
+
 #include <signal.h>
 #include <X11/Xlib.h>
 
@@ -47,6 +49,7 @@ int main(int argc, char *argv[])
 {
     signal(SIGINT, [](int) { QApplication::quit(); });// 设置退出信号
 
+    //自适应高清屏幕
     if (getScreenWidth() > 2560) {
         #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
                 QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -90,7 +93,16 @@ int main(int argc, char *argv[])
     }
 
     MainWindow w;
-    //w.show();
+
+    bool autostart=false;
+    //读取开机启动服务列表，判断是否开机启动
+    QString homepath="/.config/autostart/indicator-china-weather.desktop";
+    QFile file(QStandardPaths::writableLocation(QStandardPaths::HomeLocation)+homepath);
+    if(file.exists())
+    {
+        autostart=true;
+        w.show();
+    }
     DbusAdaptor adaptor(&w);
     Q_UNUSED(adaptor);
     auto connection = QDBusConnection::sessionBus();
