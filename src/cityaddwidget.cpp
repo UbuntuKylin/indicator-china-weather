@@ -119,15 +119,27 @@ void CityAddition::searchCityName()
     searchResultList = m_locationWorker->exactMatchCity(inputText); //match cities in the city list file, and add the matched cities to the list
 
     if (searchResultList.isEmpty()) {
-        m_model->clear();
         qDebug()<<"fail to search city information";
+        m_model->clear();//清空上次遗留结果
+        m_cityaddsearchview->resize(470,47);//只保留一行
+        QStandardItem *Item = new QStandardItem;
+        ItemData itemData;
+
+        itemData.cityName = QString("无匹配城市");//提示用户，将内容显示为无匹配城市
+        itemData.cityProvince = QString("请重新输入");
+        Item->setData(QVariant::fromValue(itemData),Qt::UserRole); //整体存取
+
+        m_model->appendRow(Item); //追加Item
+        m_cityaddsearchview->setAttribute(Qt::WA_TransparentForMouseEvents, true);//无结果时点击搜索栏无效果
+
     }
     else {
         delete m_model;
         m_model = new QStandardItemModel();
-
+        int tempNumsOfCityInSearchResultList = 0;//列表中城市数量计数
         //Access data of each item in the lisearchResultListst, and add the acquired data to listview in turn
         foreach(LocationData m_locationdata, searchResultList){
+            tempNumsOfCityInSearchResultList++;
             QStandardItem *Item = new QStandardItem;
             ItemData itemData;
 
@@ -137,6 +149,14 @@ void CityAddition::searchCityName()
             Item->setData(QVariant::fromValue(itemData),Qt::UserRole); //save city data
 
             m_model->appendRow(Item); //add item to listview
+        }
+        if ( tempNumsOfCityInSearchResultList > 5 )//搜索栏默认大小为5行，搜索结果大于5时用滚轮滚动显示
+        {
+            m_cityaddsearchview->resize(470,227);
+        }
+        else if ( tempNumsOfCityInSearchResultList > 0 )//小于5时，有几个结果显示几行
+        {
+            m_cityaddsearchview->resize(470,tempNumsOfCityInSearchResultList * 45 + 2);
         }
     }
 }

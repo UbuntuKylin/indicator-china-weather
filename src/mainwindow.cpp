@@ -509,14 +509,26 @@ void MainWindow::searchCityName()
     searchResultList = m_locationWorker->exactMatchCity(inputText);
 
     if (searchResultList.isEmpty()) {
-        m_model->clear();
+        m_model->clear();//清空上一次搜索结果
+        m_searchView->resize(178,55);//只保留一行大小
+        //m_searchView->hide();//或一行不保留，无提示
+        QStandardItem *Item = new QStandardItem;
+        ItemData itemData;
+
+        itemData.cityName = QString("无匹配城市");//无匹配搜索结果时，提示用户无结果
+        itemData.cityProvince = QString("请重新输入");
+        Item->setData(QVariant::fromValue(itemData),Qt::UserRole); //整体存取
+
+        m_model->appendRow(Item); //追加Item
+        m_searchView->setAttribute(Qt::WA_TransparentForMouseEvents, true);//无结果时点击搜索栏无效果
         qDebug()<<"fail to search city information";
     }
     else {
         delete m_model;
         m_model = new QStandardItemModel();
-
+        int tempNumsOfCityInSearchResultList = 0;//搜索列表中城市数量
         foreach(LocationData m_locationdata, searchResultList){
+            tempNumsOfCityInSearchResultList++;//计数
             QStandardItem *Item = new QStandardItem;
 
             ItemData itemData;
@@ -527,6 +539,14 @@ void MainWindow::searchCityName()
             Item->setData(QVariant::fromValue(itemData),Qt::UserRole); //整体存取
 
             m_model->appendRow(Item); //追加Item
+        }
+        if ( tempNumsOfCityInSearchResultList > 4 )//默认显示4行，结果数大于4时，按默认大小显示
+        {
+            m_searchView->resize(178,205);
+        }
+        else//结果小于4时，按城市数量显示行数
+        {
+            m_searchView->resize(178,tempNumsOfCityInSearchResultList * 50 + 5);
         }
     }
 }
