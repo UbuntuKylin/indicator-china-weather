@@ -25,9 +25,6 @@
 #include <QLibraryInfo>
 #include <QObject>
 #include <QDir>
-
-#include <QFile>
-
 #include <signal.h>
 #include <X11/Xlib.h>
 
@@ -94,15 +91,11 @@ int main(int argc, char *argv[])
 
     MainWindow w;
 
-    bool autostart=false;
     //读取开机启动服务列表，判断是否开机启动
     QString homepath="/.config/autostart/indicator-china-weather.desktop";
     QFile file(QStandardPaths::writableLocation(QStandardPaths::HomeLocation)+homepath);
     if(file.exists())
-    {
-        autostart=true;
         w.show();
-    }
     DbusAdaptor adaptor(&w);
     Q_UNUSED(adaptor);
     auto connection = QDBusConnection::sessionBus();

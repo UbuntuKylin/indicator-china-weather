@@ -119,6 +119,7 @@ void CityAddition::searchCityName()
     searchResultList = m_locationWorker->exactMatchCity(inputText); //match cities in the city list file, and add the matched cities to the list
 
     if (searchResultList.isEmpty()) {
+        m_model->clear();
         qDebug()<<"fail to search city information";
     }
     else {
