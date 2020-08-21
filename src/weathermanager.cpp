@@ -56,6 +56,8 @@ WeatherManager::WeatherManager(QObject *parent) : QObject(parent)
     m_weatherWorker = new WeatherWorker();
     m_geoipThread = new QThread(this);
     m_weatherThread = new QThread(this);
+    m_geoipWorker->moveToThread(m_geoipThread);
+    m_weatherWorker->moveToThread(m_weatherThread);
 
     this->initConnections();
 
