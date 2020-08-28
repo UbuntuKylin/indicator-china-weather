@@ -45,6 +45,8 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    initGsetting();
+
     this->setFixedSize(580, 560);
     this->setWindowFlags(Qt::FramelessWindowHint);
     this->setAttribute(Qt::WA_TranslucentBackground); // set window background transparency
@@ -411,38 +413,12 @@ void CityCollectionWidget::onChangeCurrentCity(QString cityId)
 
 void CityCollectionWidget::writeCollectedCity(QString cityId)
 {
-    QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
-    QString collectPath = homePath.at(0) + "/.config/china-weather-data";
-
-    QFile file(collectPath);
-    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        // open file succcessfully
-        file.write(cityId.toUtf8());
-        file.close();
-    } else {
-        //print information if write data failed
-        qDebug()<<"Can not write city id data to ~/.config/china-weather-data";
-    }
+    setCityList(cityId);
 }
 
 QString CityCollectionWidget::readCollectedCity()
 {
-    QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
-    QString collectPath = homePath.at(0) + "/.config/china-weather-data";
-
-    QString readCityId;
-    QFile file(collectPath);
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        // open file succcessfully
-        QByteArray cityId = file.readAll();
-        readCityId = (QString(cityId));
-        file.close();
-    } else {
-        // using the following data if open file failed
-        readCityId = "101010100,101020100,101030100,101040100,101280101,101280601,";
-    }
-
-    return readCityId;
+    return getCityList();
 }
 
 void CityCollectionWidget::onShowCityAddWiget()
@@ -479,4 +455,28 @@ void CityCollectionWidget::mouseMoveEvent(QMouseEvent *event){
 void CityCollectionWidget::on_btnCancel_clicked()
 {
     emit requestChangeWidgetState();
+}
+
+void CityCollectionWidget::initGsetting()
+{
+    if(QGSettings::isSchemaInstalled(CHINAWEATHERDATA))
+        m_pWeatherData = new QGSettings(CHINAWEATHERDATA);
+    return;
+}
+
+QString CityCollectionWidget::getCityList()
+{
+    QString str="";
+    if (m_pWeatherData != nullptr) {
+        QStringList keyList = m_pWeatherData->keys();
+        if (keyList.contains("citylist")) {
+            str = m_pWeatherData->get("citylist").toString();
+        }
+    }
+    return str;
+}
+
+void CityCollectionWidget::setCityList(QString str)
+{
+    m_pWeatherData->set("citylist", str);
 }

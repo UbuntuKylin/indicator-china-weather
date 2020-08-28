@@ -1,6 +1,8 @@
 #ifndef CITYCOLLECTION_H
 #define CITYCOLLECTION_H
 
+#define CHINAWEATHERDATA "org.china-weather-data.settings"
+
 #include <QWidget>
 #include <QMouseEvent>
 #include <QRect>
@@ -17,6 +19,7 @@
 
 #include <unistd.h>
 
+#include <QGSettings>
 #include "data.h"
 
 class CityAddition;
@@ -58,6 +61,7 @@ private slots:
     void onShowCityAddWiget();
     void onHideCityAddWiget();
 
+
 private:
     Ui::citycollectionwidget *ui;
     QNetworkAccessManager *m_networkManager= nullptr;
@@ -83,6 +87,12 @@ private:
     QPoint dragPos;
     int m_citynumber; //number of current collection cities
     bool isAddCity = false; //whether add a new collect city
+
+    // getstting初始化、值获取、 设置getsetting值
+    void initGsetting();
+    QString getCityList();
+    void setCityList(QString str);
+    QGSettings  *m_pWeatherData= nullptr;
 
 signals:
     void sendCurrentCityId(QString id);
