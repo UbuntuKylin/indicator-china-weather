@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#define CHINAWEATHERDATA "org.china-weather-data.settings"
+
 #include "mainwindow.h"
 #include "leftupcitybtn.h"
 #include "leftupsearchbox.h"
@@ -36,6 +38,8 @@
 #include <QFileInfo>
 #include <QLocale>
 #include <QPainterPath>
+
+#include <QGSettings>
 
 namespace Ui {
 class MainWindow;
@@ -89,8 +93,6 @@ private:
     void judgeSystemLanguage();
     void checkSingle();
 
-    bool isFileExist(QString fullFileName);
-
     void onSearchBoxEdited();
     void searchCityName();
 
@@ -109,6 +111,13 @@ private:
     bool isPress;
     QPoint winPos;
     QPoint dragPos;
+
+    // getstting初始化、值获取、 设置getsetting值
+    void initGsetting();
+    QString getCityList();
+    void setCityList(QString str);
+    QGSettings  *m_pWeatherData= nullptr;
+    QString firstGetCityList="";
 };
 
 #endif // MAINWINDOW_H

@@ -20,6 +20,8 @@
 #ifndef WEATHERWORKER_H
 #define WEATHERWORKER_H
 
+#define CHINAWEATHERDATA "org.china-weather-data.settings"
+
 #include <QObject>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
@@ -29,6 +31,9 @@
 #include <QStandardPaths>
 
 #include "data.h"
+
+#include <QGSettings>
+#include <QDateTime>
 
 class WeatherWorker : public QObject
 {
@@ -57,6 +62,12 @@ private:
     QString m_hostInfoParameters;
 
     QString m_currentcityname = "";
+
+    // getstting初始化、值获取、 设置getsetting值
+    void initGsetting();
+    QString getCityList();
+    void setCityWeatherNow(QString str);
+    QGSettings  *m_pWeatherData= nullptr;
 
 signals:
     void setLocationData();

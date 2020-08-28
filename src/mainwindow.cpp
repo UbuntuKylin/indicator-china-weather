@@ -28,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     judgeSystemLanguage();
 
+    initGsetting();//初始化Gsetting
+
     //单例运行
     //checkSingle();
 
@@ -132,16 +134,6 @@ void MainWindow::checkSingle()
         qDebug()<<"Can't lock single file, indicator-china-weather is already running!";
         exit(0);
     }
-}
-
-//配置文件是否存在
-bool MainWindow::isFileExist(QString fullFileName)
-{
-    QFileInfo fileInfo(fullFileName);
-    if(fileInfo.isFile()) {
-        return true;
-    }
-    return false;
 }
 
 //初始化各控件样式
@@ -261,33 +253,9 @@ void MainWindow::initConnections()
             //m_weatherManager->startAutoLocationTask();//开始自动定位城市
 
             //CN101010100,beijing,北京,CN,China,中国
-            QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
-            QString collectPath = homePath.at(0) + "/.config/china-weather-data";
-            if (!isFileExist(collectPath)){
-                m_weatherManager->startGetTheWeatherData("101010100");
-
-                QFile file(collectPath);
-                if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-                    file.write("101010100,");
-                    file.close();
-                } else {
-                    qDebug()<<"Can not write city id data to ~/.config/china-weather-data";
-                }
-
-            } else {
-                QFile file(collectPath); //文件存在时根据保存的默认城市进行设置
-                QString readCityId;
-                if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                    QByteArray cityId = file.readAll();
-                    readCityId = (QString(cityId));
-                    file.close();
-                } else {
-                    readCityId = "101010100,";
-                }
-
-                QStringList listCityId = readCityId.split(",");
-                m_weatherManager->startGetTheWeatherData(listCityId.at(0));
-            }
+            // m_weatherManager->startGetTheWeatherData("101010100");
+            QStringList listCityId = getCityList().split(",");
+            m_weatherManager->startGetTheWeatherData(listCityId.at(0));
         } else {
             if (status == "Fail") {
                 onHandelAbnormalSituation("Without wired Carrier");
@@ -602,16 +570,7 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
     }
 
     //更新保存城市列表文件china-weather-data
-    QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
-    QString collectPath = homePath.at(0) + "/.config/china-weather-data";
-
-    QFile readFile(collectPath);
-    readFile.open(QIODevice::ReadOnly | QIODevice::Text);
-    QByteArray cityId = readFile.readAll();
-    QString readCityId = (QString(cityId));
-    readFile.close();
-
-    QStringList readCityIdList = readCityId.split(",");
+    QStringList readCityIdList = getCityList().split(",");
 
     //若收藏城市列表中已经有搜索的新城市，则去掉。减1因为readCityIdList最后一项为空
     for (int i=1; i<readCityIdList.size()-1; i++) {
@@ -645,10 +604,7 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
             writeCityId.append(",");
         }
     }
-    QFile writeFile(collectPath);
-    writeFile.open(QIODevice::WriteOnly | QIODevice::Text);
-    writeFile.write(writeCityId.toUtf8().data());
-    writeFile.close();
+    setCityList(writeCityId);
 }
 
 //根据天气情况设置托盘图标
@@ -743,4 +699,44 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event){
         this->move(this->winPos - (this->dragPos - event->globalPos()));
         event->accept();
     }
+}
+
+void MainWindow::initGsetting()
+{
+    if(QGSettings::isSchemaInstalled(CHINAWEATHERDATA))
+    {
+        m_pWeatherData = new QGSettings(CHINAWEATHERDATA);
+        firstGetCityList=m_pWeatherData->get("citylist").toString();
+        //监听key的value是否发生了变化
+        connect(m_pWeatherData, &QGSettings::changed, this, [=] (const QString &key)
+        {
+            if (key == "citylist")
+            {
+                QString nowCityList=m_pWeatherData->get("citylist").toString();
+                if(nowCityList!=firstGetCityList)
+                {
+                    m_weatherManager->startGetTheWeatherData(nowCityList.split(",").at(0));
+                    firstGetCityList=nowCityList;
+                }
+            }
+        });
+    }
+    return;
+}
+
+QString MainWindow::getCityList()
+{
+    QString str="";
+    if (m_pWeatherData != nullptr) {
+        QStringList keyList = m_pWeatherData->keys();
+        if (keyList.contains("citylist")) {
+            str = m_pWeatherData->get("citylist").toString();
+        }
+    }
+    return str;
+}
+
+void MainWindow::setCityList(QString str)
+{
+    m_pWeatherData->set("citylist", str);
 }

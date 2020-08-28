@@ -49,7 +49,8 @@ int main(int argc, char *argv[])
     //自适应高清屏幕
     if (getScreenWidth() > 2560) {
         #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
-                QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+                QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+                QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
         #endif
     }
 

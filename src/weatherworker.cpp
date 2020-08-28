@@ -67,6 +67,8 @@ WeatherWorker::WeatherWorker(QObject *parent) :
     connect(this, &WeatherWorker::requestTestNetwork, this, &WeatherWorker::onResponseTestNetwork);
     connect(this, &WeatherWorker::requestPostHostInfoToWeatherServer, this, &WeatherWorker::onPostHostInfoToWeatherServer);
     connect(this, &WeatherWorker::requestGetTheWeatherData, this, &WeatherWorker::onWeatherDataRequest);
+
+    initGsetting();
 }
 
 WeatherWorker::~WeatherWorker()
@@ -300,6 +302,18 @@ void WeatherWorker::onWeatherDataReply()
                     m_observeweather.fl = m_json.value("fl").toString();
                     m_observeweather.cloud = m_json.value("cloud").toString();
 
+                    QString weatherNow="";
+                    QDateTime datatime=QDateTime(QDateTime::currentDateTime());
+                    weatherNow.append(datatime.toString("yyyy-MM-dd hh:mm:ss")+",");//
+                    weatherNow.append(m_observeweather.id+",");//
+                    weatherNow.append(m_observeweather.city+",");//
+                    weatherNow.append(m_observeweather.cond_txt+",");//
+                    weatherNow.append(m_observeweather.hum+"%,");//
+                    weatherNow.append(m_observeweather.tmp+"℃,");//
+                    weatherNow.append(m_observeweather.wind_dir+",");//
+                    weatherNow.append(m_observeweather.wind_sc+"级,");//
+                    setCityWeatherNow(weatherNow);//YYF 写入配置文件供其他组件调用
+
                     emit this->requestSetObserveWeather(m_observeweather);//用于设置主窗口
 
                 }
@@ -356,21 +370,8 @@ void WeatherWorker::onWeatherDataReply()
 //获取收藏城市天气数据
 void WeatherWorker::onCityWeatherDataRequest()
 {
-    QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
-    QString collectPath = homePath.at(0) + "/.config/china-weather-data";
-
-    QString savedCity;
-    QFile file(collectPath);
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QByteArray cityId = file.readAll();
-        savedCity = (QString(cityId));
-        file.close();
-    } else {
-        savedCity = "101010100,101020100,101030100,101040100,101280101,101280601,";
-    }
-
     QString urlPrefix = "http://service.ubuntukylin.com:8001/weather/api/3.0/heweather_simple_s6/?cityids=";
-    QStringList cityList = savedCity.split(","); //cityList最后一项为空字符
+    QStringList cityList = getCityList().split(","); //cityList最后一项为空字符
     for (int i=0; i<cityList.size()-1; i++) {
         if (i == cityList.size()-2) {
             urlPrefix.append(cityList.at(i));
@@ -448,4 +449,28 @@ void WeatherWorker::onCityWeatherDataReply()
             }
         }
     } //end if (jsonObject.contains("KylinWeather"))
+}
+void WeatherWorker::initGsetting()
+{
+    if(QGSettings::isSchemaInstalled(CHINAWEATHERDATA))
+        m_pWeatherData = new QGSettings(CHINAWEATHERDATA);
+    return;
+}
+
+QString WeatherWorker::getCityList()
+{
+    QString str="";
+    if (m_pWeatherData != nullptr) {
+        QStringList keyList = m_pWeatherData->keys();
+        if (keyList.contains("citylist"))
+        {
+            str = m_pWeatherData->get("citylist").toString();
+        }
+    }
+    return str;
+}
+
+void WeatherWorker::setCityWeatherNow(QString str)
+{
+    m_pWeatherData->set("weather", str);
 }

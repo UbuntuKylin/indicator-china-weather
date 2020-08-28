@@ -1,4 +1,10 @@
-indicator-china-weather (3.1.0-3) unstable; urgency=medium
+indicator-china-weather (3.1.0-5) v100; urgency=medium
+
+  * 将配置文件改为gsetting形式，供其他组件调用
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Wed, 26 Aug 2020 17:15:22 +0800
+
+indicator-china-weather (3.1.0-4) unstable; urgency=medium
 
   * 无匹配结果时候选列表为空
   * 非开机自启时，在第一次运行就弹出天气界面

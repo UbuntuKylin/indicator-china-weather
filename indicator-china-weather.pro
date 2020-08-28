@@ -28,7 +28,10 @@ appdesktop.path = /usr/share/applications/
 startdesktop.files += indicator-china-weather.desktop
 startdesktop.path = /etc/xdg/autostart/
 
-INSTALLS += target icons qm_files appdesktop startdesktop
+schemes.files += data/org.china-weather-data.gschema.xml
+schemes.path = /usr/share/glib-2.0/schemas/
+    
+INSTALLS += target icons qm_files appdesktop startdesktop schemes
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -47,6 +50,7 @@ CONFIG += c++14
 CONFIG += qt warn_on
 CONFIG += release
 CONFIG += link_pkgconfig
+PKGCONFIG += gsettings-qt
 #PKGCONFIG += geoip
 
 LIBS += -lGeoIP
