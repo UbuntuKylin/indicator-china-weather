@@ -304,14 +304,15 @@ void WeatherWorker::onWeatherDataReply()
 
                     QString weatherNow="";
                     QDateTime datatime=QDateTime(QDateTime::currentDateTime());
-                    weatherNow.append(datatime.toString("yyyy-MM-dd hh:mm:ss")+",");//
-                    weatherNow.append(m_observeweather.id+",");//
-                    weatherNow.append(m_observeweather.city+",");//
-                    weatherNow.append(m_observeweather.cond_txt+",");//
-                    weatherNow.append(m_observeweather.hum+"%,");//
-                    weatherNow.append(m_observeweather.tmp+"℃,");//
-                    weatherNow.append(m_observeweather.wind_dir+",");//
-                    weatherNow.append(m_observeweather.wind_sc+"级,");//
+                    weatherNow.append(datatime.toString("yyyy-MM-dd hh:mm:ss")+",");//时间
+                    weatherNow.append(m_observeweather.id+",");//省市编码
+                    weatherNow.append(m_observeweather.city+",");//城市名称
+                    weatherNow.append(m_observeweather.cond_txt+",");//天气情况
+                    weatherNow.append(m_observeweather.hum+"%,");//湿度
+                    weatherNow.append(m_observeweather.tmp+"℃,");//温度
+                    weatherNow.append(m_observeweather.wind_dir+",");//风向
+                    weatherNow.append(m_observeweather.wind_sc+"级,");//风力
+                    weatherNow.append(weatherObj.value("admin_area").toString()+",");//省份
                     setCityWeatherNow(weatherNow);//YYF 写入配置文件供其他组件调用
 
                     emit this->requestSetObserveWeather(m_observeweather);//用于设置主窗口
