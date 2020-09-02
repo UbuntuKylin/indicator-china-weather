@@ -1,6 +1,7 @@
-indicator-china-weather (3.1.0-5) v100; urgency=medium
+indicator-china-weather (3.1.0-7) v100; urgency=medium
 
   * 将配置文件改为gsetting形式，供其他组件调用
+  * 监听配置文件更新，更新界面城市和天气信息
 
  -- liuyuhui <liuyuhui@kylinos.cn>  Wed, 26 Aug 2020 17:15:22 +0800
 
