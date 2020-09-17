@@ -482,7 +482,6 @@ void MainWindow::searchCityName()
         //m_searchView->hide();//或一行不保留，无提示
         QStandardItem *Item = new QStandardItem;
         ItemData itemData;
-
         itemData.cityName = QString("无匹配城市");//无匹配搜索结果时，提示用户无结果
         itemData.cityProvince = QString("请重新输入");
         Item->setData(QVariant::fromValue(itemData),Qt::UserRole); //整体存取
@@ -507,6 +506,7 @@ void MainWindow::searchCityName()
             Item->setData(QVariant::fromValue(itemData),Qt::UserRole); //整体存取
 
             m_model->appendRow(Item); //追加Item
+            m_searchView->setAttribute(Qt::WA_TransparentForMouseEvents,false);//有结果时点击搜索栏有效果
         }
         if ( tempNumsOfCityInSearchResultList > 4 )//默认显示4行，结果数大于4时，按默认大小显示
         {
