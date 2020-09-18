@@ -59,8 +59,8 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
     this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
     this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/indicator-china-weather.png")) ); //set taskbar icon
-    this->setWindowTitle(tr("Kylin Weather"));
-//    this->setWindowIconText("麒麟天气");
+    this->setWindowTitle(tr("麒麟天气"));
+
     QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
     this->move((availableGeometry.width()-this->width())/2, (availableGeometry.height()-this->height())/2);
 
