@@ -1,3 +1,9 @@
+indicator-china-weather (3.1.0-9) unstable; urgency=medium
+
+  * 修复BUG#19151，修复添加城市窗口名字为“Form”的问题
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Fri, 18 Sep 2020 10:15:56 +0800
+
 indicator-china-weather (3.1.0-8) unstable; urgency=medium
 
   * 修复BUG#18272，搜索结果不能点击
