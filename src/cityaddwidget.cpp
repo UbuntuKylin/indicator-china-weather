@@ -149,6 +149,7 @@ void CityAddition::searchCityName()
             Item->setData(QVariant::fromValue(itemData),Qt::UserRole); //save city data
 
             m_model->appendRow(Item); //add item to listview
+            m_cityaddsearchview->setAttribute(Qt::WA_TransparentForMouseEvents, false);//有结果时点击搜索栏有效果
         }
         if ( tempNumsOfCityInSearchResultList > 5 )//搜索栏默认大小为5行，搜索结果大于5时用滚轮滚动显示
         {
