@@ -673,11 +673,13 @@ QString MainWindow::convertCodeToBackgroud(int code)
 void MainWindow::on_btnMinimize_clicked()
 {
     QWidget::showMinimized();
+    m_leftupsearchbox->clear();
     //this->setVisible(false);
 }
 
 void MainWindow::on_btnCancel_clicked()
 {
+    m_leftupsearchbox->clear();
     this->setVisible(false);
 }
 
