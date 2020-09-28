@@ -50,8 +50,8 @@ CityAddition::CityAddition(QWidget *parent) :
     ui->lbLeftUpIcon->hide();
 
     ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");
-    ui->lbLeftUpTitle->setText("麒麟天气");
-    ui->lbLeftUpTitle->hide();
+    ui->lbLeftUpTitle->setText("返回");
+//    ui->lbLeftUpTitle->hide();
 
     ui->btnReturn->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/return_black.png);}"
                                "QPushButton:Hover{border:0px;border-radius:4px;background:#3d6be5;background-image:url(:/res/control_icons/return_white.png);}"
@@ -66,6 +66,11 @@ CityAddition::CityAddition(QWidget *parent) :
     m_cityaddsearchbox = new CityAddSearchBox(this);
     m_cityaddsearchbox->move(35, 93);
     m_cityaddsearchbox->show();
+
+    m_cityaddhotview = new CityAddHotView(this);
+    connect(m_cityaddhotview,&CityAddHotView::setHotCity,this,&CityAddition::setHotCity);
+    m_cityaddhotview->move(35,193);
+    m_cityaddhotview->show();
 
     m_cityaddsearchview = new CityAddSearchView(ui->backwidget);
     m_cityaddsearchdelegate = new CityAddSearchDelegate(m_cityaddsearchview);
@@ -82,8 +87,10 @@ CityAddition::CityAddition(QWidget *parent) :
     connect(m_cityaddsearchbox, &CityAddSearchBox::textChanged, this, [this] () {
         if (m_cityaddsearchbox->text().size() == 0){
             m_cityaddsearchview->hide();
+             m_cityaddhotview->show();
         }else{
             m_cityaddsearchview->show();
+            m_cityaddhotview->hide();
             onSearchBoxEdited();
         }
     });
