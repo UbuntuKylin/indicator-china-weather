@@ -1,9 +1,16 @@
+indicator-china-weather (3.1.0-11) unstable; urgency=medium
+
+  * 修复BUG#20147，优化添加界面设计和功能
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Mon, 28 Sep 2020 20:39:06 +0800
+
 indicator-china-weather (3.1.0-10) unstable; urgency=medium
 
   * 修复BUG#20038，修复关闭和最小化后再打开搜索框状态未还原的问题
   * 修复收藏界面子窗口搜索结果不能点击的问题
 
  -- liuyuhui <liuyuhui@kylinos.cn>  Fri, 25 Sep 2020 14:08:06 +0800
+
 indicator-china-weather (3.1.0-9) unstable; urgency=medium
 
   * 修复BUG#19151，修复添加城市窗口名字为“Form”的问题

@@ -67,6 +67,7 @@ unix {
 }
 
 SOURCES += src/main.cpp \
+    src/cityaddhotview.cpp \
     src/cityaddsearchbox.cpp \
     src/cityaddsearchdelegate.cpp \
     src/cityaddsearchview.cpp \
@@ -75,6 +76,7 @@ SOURCES += src/main.cpp \
     src/citycollectionwidget.cpp \
     src/dbusadaptor.cpp \
     src/geoipworker.cpp \
+    src/hotcity.cpp \
     src/informationwidget.cpp \
     src/leftupcitybtn.cpp \
     src/leftupsearchbox.cpp \
@@ -87,6 +89,7 @@ SOURCES += src/main.cpp \
     src/weatherworker.cpp
 
 HEADERS  += src/mainwindow.h \
+    src/cityaddhotview.h \
     src/cityaddsearchbox.h \
     src/cityaddsearchdelegate.h \
     src/cityaddsearchview.h \
@@ -96,6 +99,7 @@ HEADERS  += src/mainwindow.h \
     src/data.h \
     src/dbusadaptor.h \
     src/geoipworker.h \
+    src/hotcity.h \
     src/informationwidget.h \
     src/leftupcitybtn.h \
     src/leftupsearchbox.h \
