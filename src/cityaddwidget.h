@@ -5,6 +5,7 @@
 #include "cityaddsearchview.h"
 #include "cityaddsearchdelegate.h"
 #include "locationworker.h"
+#include "cityaddhotview.h"
 
 #include <QPainterPath>
 #include <QWidget>
@@ -38,7 +39,7 @@ private:
     Ui::cityaddition *ui;
 
     CityAddSearchBox *m_cityaddsearchbox = nullptr;
-
+    CityAddHotView *m_cityaddhotview = nullptr;
     CityAddSearchView *m_cityaddsearchview = nullptr;
     CityAddSearchDelegate *m_cityaddsearchdelegate = nullptr;
     QSortFilterProxyModel* m_proxyModel = nullptr;
@@ -53,6 +54,7 @@ private:
     void onSearchBoxEdited();
 
 signals:
+    void setHotCity(QString);
     void hideCityAddWiget(); //send this signal to hide collected city add widget
     void requestChangeWidgetState(); // send this signal to collected both add collect city widget and show city list widget
     void requestAddNewCity(QString cityId); // send this signal to add new collected city in collected city list

@@ -103,6 +103,7 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     m_tipLabel->hide();
 
     m_cityaddition = new CityAddition(this);
+    connect(m_cityaddition,&CityAddition::setHotCity,this,&CityCollectionWidget::onRequestAddNewCity);
     m_cityaddition->move(0, 0);
     m_cityaddition->hide();
     connect(m_cityaddition, SIGNAL(hideCityAddWiget()), this, SLOT(onHideCityAddWiget()) );
