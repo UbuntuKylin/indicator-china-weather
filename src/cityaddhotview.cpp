@@ -8,7 +8,7 @@ CityAddHotView::CityAddHotView(QWidget *parent) : QWidget(parent)
     this->setMouseTracking(true);
     m_addCityhot = new QLabel(this);
     m_addCityhot->setText("热门城市");
-    m_addCityhot->setStyleSheet("QLabel{color:#444444;font-size:14px;font-family:Microsoft YaHei;}");
+    m_addCityhot->setStyleSheet("QLabel{color:#444444;font-size:14px;}");
     m_addCityhot->move(0,0);
 
     m_addcity11 = new HotCity(this,"北京","101010100");

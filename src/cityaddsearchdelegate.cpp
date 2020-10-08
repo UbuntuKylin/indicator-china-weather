@@ -97,13 +97,13 @@ void CityAddSearchDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
 
         //painter->setPen(QPen(Qt::black));
         painter->setPen(QPen(QColor(68,68,68)));
-        painter->setFont(QFont("Microsoft YaHei", 13));
+        painter->setFont(QFont("", 13));
         painter->setOpacity(1);
         painter->drawText(NameRect,Qt::AlignLeft,data.cityName);
 
         //painter->setPen(QPen(Qt::black));
         painter->setPen(QPen(QColor(136,136,136)));
-        painter->setFont(QFont("Microsoft YaHei", 10));
+        painter->setFont(QFont("", 10));
         painter->setOpacity(1);
         painter->drawText(telRect,Qt::AlignLeft,data.cityProvince);
 

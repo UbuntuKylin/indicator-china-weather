@@ -277,8 +277,9 @@ void CityCollectionWidget::onRequestAddNewCity(QString cityId)
     //判断已收藏城市中是否已经有需要添加的城市
     QString strSavedCity = readCollectedCity();
     QStringList listSavedCityId = strSavedCity.split(",");
-    foreach (QString strCityId, listSavedCityId) {
-        if (strCityId == cityId) { //若收藏城市列表中已有需要添加的城市，则返回
+    for(QStringList::iterator it=listSavedCityId.begin()+1;it!=listSavedCityId.end();++it)
+    {
+        if (*it == cityId) { //若收藏城市列表中已有需要添加的城市，则返回
             return;
         }
     }
@@ -332,10 +333,10 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
     for(int i = 0;i < cityItemList.size(); i ++){
         citycollectionitem *cityItem = cityItemList.at(i);
         if (i == 0) {
-            if (cityItem->m_city_id == cityId) { //说明删除的是当前城市，以第一个收藏城市代替
-                emit sendCurrentCityId(listSavedCityId.at(1)); //发信号更新主界面
-                delete cityItem;
-            }
+//            if (cityItem->m_city_id == cityId) { //说明删除的是当前城市，以第一个收藏城市代替
+//                emit sendCurrentCityId(listSavedCityId.at(1)); //发信号更新主界面
+//                delete cityItem;
+//            }
         } else {
             if (cityItem->m_city_id == cityId) {
                 delete cityItem;
@@ -362,9 +363,8 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
     }
 
     //更新城市列表
-    bool isflag = listSavedCityId.removeOne(cityId); //从列表中删除预删除的城市
-    if (isflag) {
-        qDebug()<<"delete one element from collected city list successfully";
+    int citys=listSavedCityId.lastIndexOf(cityId);
+    listSavedCityId.removeAt(citys);
         QString newStrCityId = "";
         foreach(QString str, listSavedCityId){
             if (str != ""){
@@ -373,9 +373,7 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
             }
         }
         writeCollectedCity(newStrCityId); //将更新后的列表写入配置文件
-    } else {
-        qDebug()<<"delete one element from collected city list failed";
-    }
+
 }
 
 void CityCollectionWidget::onChangeCurrentCity(QString cityId)
@@ -388,26 +386,28 @@ void CityCollectionWidget::onChangeCurrentCity(QString cityId)
     //}
 
     //更新城市列表
+    QString newStrCityId = "";
     QString strSavedCity = readCollectedCity();
+
+    qDebug()<<strSavedCity ;
+
     QStringList listSavedCityId = strSavedCity.split(",");
 
-    QString firstId = listSavedCityId.at(0); //获取当前城市的id
-    listSavedCityId.replace(0, cityId); //将 cityId设为第一个城市，即当前城市
-
-    for (int i=1;i<listSavedCityId.size();i++){
-        if (cityId == listSavedCityId.at(i)){
-            listSavedCityId.replace(i, firstId); //如果收藏城市中有id和cityId相同的城市，将该城市id设为firstId
-        }
-    }
-
-    QString newStrCityId = "";
-    foreach(QString str, listSavedCityId){
-        if (str != ""){
-            newStrCityId.append(str);
+    for(QStringList::iterator it=listSavedCityId.begin();it!=listSavedCityId.end();++it)
+    {
+        if (*it != "")
+        {
+            if(it==listSavedCityId.begin())
+            {
+                newStrCityId.append(cityId);
+            }
+            else
+            {
+                newStrCityId.append(*it);
+            }
             newStrCityId.append(",");
         }
     }
-
     writeCollectedCity(newStrCityId);
 
     emit requestChangeWidgetState(); //隐藏显示收藏城市列表窗口

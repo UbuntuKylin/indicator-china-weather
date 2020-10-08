@@ -59,7 +59,7 @@ void Information::editQssString()
 
     lbIndexIconQss = "QLabel{border:none;background:transparent;}";
     lbIndexQss = "QLabel{border:none;background:transparent;font-size:12px;color:rgba(255,255,255,0.5);line-height:18px;}";
-    lbIndexBrfQss = "QLabel{border:none;background:transparent;font-size:16px;font-family:Microsoft YaHei;font-weight:400;color:rgba(255,255,255,1);line-height:18px;}";
+    lbIndexBrfQss = "QLabel{border:none;background:transparent;font-size:16px;font-weight:400;color:rgba(255,255,255,1);line-height:18px;}";
 
     lineQss = "border:none;background-color:rgba(255,255,255,0.1);";
     lineLinearGradientQss = "border:none;background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 255, 0), stop:0.5 rgba(255, 255, 255, 0.7), stop:1 rgba(255, 255, 255, 0));";
