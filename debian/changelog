@@ -1,3 +1,10 @@
+indicator-china-weather (3.1.0-13) unstable; urgency=medium
+
+  * 修复BUG#21004，修复界面边界处拖拽鼠标没有变化的问题
+  * 修复BUG#21005，修复对搜索列表城市点击没有颜色渐变的问题
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Fri, 9 Oct 2020 16:27:30 +0800
+
 indicator-china-weather (3.1.0-12) unstable; urgency=medium
 
   * 修复BUG#20238，修复搜索界面搜索的城市（浏览记录）会添加进收藏城市的问题

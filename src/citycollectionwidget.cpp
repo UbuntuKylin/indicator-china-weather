@@ -446,11 +446,13 @@ void CityCollectionWidget::mousePressEvent(QMouseEvent *event){
 
 void CityCollectionWidget::mouseReleaseEvent(QMouseEvent *event){
     this->isPress = false;
+    this->setCursor(Qt::ArrowCursor);
 }
 
 void CityCollectionWidget::mouseMoveEvent(QMouseEvent *event){
     if(this->isPress){
         this->move(this->winPos - (this->dragPos - event->globalPos()));
+        this->setCursor(Qt::ClosedHandCursor);
         event->accept();
     }
 }
