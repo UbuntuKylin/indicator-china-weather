@@ -29,7 +29,7 @@ LeftUpSearchBox::LeftUpSearchBox(QWidget* parent)
     , m_searchPixmap(QPixmap(":/res/control_icons/search.png"))
 {
     this->setFixedSize(180, 28);
-    this->setStyleSheet("QLineEdit{padding-left:31px;background:rgba(255,255,255,0.2);border-radius:4px;color:rgba(255,255,255,0.5);font-family:Microsoft YaHei;}");
+    this->setStyleSheet("QLineEdit{padding-left:31px;background:rgba(255,255,255,0.2);border-radius:4px;color:rgba(255,255,255,0.5);}");
     this->setFocusPolicy(Qt::ClickFocus);
 }
 
@@ -44,7 +44,6 @@ void LeftUpSearchBox::paintEvent(QPaintEvent *event)
 
         QFont curFont = painter.font(); //QGuiApplication::font();
         curFont.setPixelSize(14); //font.setPointSize(14);
-        curFont.setFamily("Microsoft YaHei");
         QPen pen(Qt::white);
         painter.setPen(pen);
         painter.setFont(curFont);

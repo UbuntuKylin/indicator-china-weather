@@ -1,3 +1,11 @@
+indicator-china-weather (3.1.0-12) unstable; urgency=medium
+
+  * 修复BUG#20238，修复搜索界面搜索的城市（浏览记录）会添加进收藏城市的问题
+  * 修复BUG#20241，修复无法收藏当前城市的问题
+  * 修复BUG#20024，修复从开始菜单启动不了麒麟天气的问题
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Thu, 8 Oct 2020 13:52:56 +0800
+
 indicator-china-weather (3.1.0-11) unstable; urgency=medium
 
   * 修复BUG#20147，优化添加界面设计和功能

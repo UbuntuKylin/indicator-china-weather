@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    judgeSystemLanguage();
+//    judgeSystemLanguage();
 
     initGsetting();//初始化Gsetting
 
@@ -150,7 +150,7 @@ void MainWindow::initControlQss()
                                "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
 
-    ui->lbCurrTmp->setStyleSheet("QLabel{border:none;background:transparent;font-size:110px;font-family:Microsoft YaHei;font-weight:300;color:rgba(255,255,255,1);line-height:100px;}");
+    ui->lbCurrTmp->setStyleSheet("QLabel{border:none;background:transparent;font-size:110px;font-weight:300;color:rgba(255,255,255,1);line-height:100px;}");
     ui->lbCurrTmp->setAlignment(Qt::AlignCenter);
 
     ui->lbCurrTmpUnit->setStyleSheet("QLabel{border:none;background:transparent;font-size:24px;color:rgba(255,255,255,1);line-height:14px;}");
@@ -573,26 +573,26 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
     QStringList readCityIdList = getCityList().split(",");
 
     //若收藏城市列表中已经有搜索的新城市，则去掉。减1因为readCityIdList最后一项为空
-    for (int i=1; i<readCityIdList.size()-1; i++) {
-        QString str = readCityIdList.at(i);
-        if (str == m_observeweather.id) {
-            readCityIdList.removeOne(m_observeweather.id);
-            break;
-        }
-    }
+//    for (int i=1; i<readCityIdList.size()-1; i++) {
+//        QString str = readCityIdList.at(i);
+//        if (str == m_observeweather.id) {
+//            readCityIdList.removeOne(m_observeweather.id);
+//            break;
+//        }
+//    }
 
     //将上一个当前城市放入收藏列表中
-    QString oldCurrentCityId = readCityIdList.at(0);
-    if  (oldCurrentCityId != m_observeweather.id) {
-        if (readCityIdList.size() == 10) {
-            //收藏列表已经有8个城市，替换最后一个
-            readCityIdList.replace(8, oldCurrentCityId);
-        }
-        if (readCityIdList.size() <= 9) {
-            //收藏列表少于8个城市，将上一个当前城市放入末尾
-            readCityIdList.append(oldCurrentCityId);
-        }
-    }
+//    QString oldCurrentCityId = readCityIdList.at(0);
+//    if  (oldCurrentCityId != m_observeweather.id) {
+//        if (readCityIdList.size() == 10) {
+//            //收藏列表已经有8个城市，替换最后一个
+//            readCityIdList.replace(8, oldCurrentCityId);
+//        }
+//        if (readCityIdList.size() <= 9) {
+//            //收藏列表少于8个城市，将上一个当前城市放入末尾
+//            readCityIdList.append(oldCurrentCityId);
+//        }
+//    }
 
     //将列表中第一个城市设置为当前搜索的新城市
     readCityIdList.replace(0, m_observeweather.id);

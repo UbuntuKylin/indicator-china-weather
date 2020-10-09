@@ -34,8 +34,7 @@ CityAddSearchBox::CityAddSearchBox(QWidget* parent)
                         "border:1px solid rgba(61,107,229,1);"
                         "border-radius:4px;"
                         "font-size:14px;"
-                        "color:rgba(0,0,0,1);"
-                        "font-family:Microsoft YaHei;}");
+                        "color:rgba(0,0,0,1);}");
     this->setFocusPolicy(Qt::ClickFocus);
 }
 
@@ -50,7 +49,6 @@ void CityAddSearchBox::paintEvent(QPaintEvent *event)
 
         QFont curFont = painter.font(); //QGuiApplication::font();
         curFont.setPixelSize(14); //font.setPointSize(14);
-        curFont.setFamily("Microsoft YaHei");
         QPen pen(Qt::black);
         painter.setPen(pen);
         painter.setFont(curFont);

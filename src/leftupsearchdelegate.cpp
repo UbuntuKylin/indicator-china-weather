@@ -96,13 +96,13 @@ void LeftUpSearchDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         //painter->setPen(QPen(Qt::black));
         painter->setPen(QPen(Qt::white));
-        painter->setFont(QFont("Microsoft YaHei", 15));
+        painter->setFont(QFont("", 15));
         painter->setOpacity(1);
         painter->drawText(NameRect, Qt::AlignLeft, data.cityName); //绘制城市名字
 
         //painter->setPen(QPen(Qt::black));
         painter->setPen(QPen(Qt::white));
-        painter->setFont(QFont("Microsoft YaHei", 12));
+        painter->setFont(QFont("", 12));
         painter->setOpacity(0.4);
         painter->drawText(telRect, Qt::AlignLeft, data.cityProvince); //绘制城市所属省份
 
