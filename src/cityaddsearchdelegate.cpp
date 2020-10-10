@@ -74,7 +74,7 @@ void CityAddSearchDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         if(option.state.testFlag(QStyle::State_Selected)) {
             //painter->setPen(QPen(Qt::blue));
             painter->setPen(Qt::NoPen);
-            painter->setBrush(QColor(238,242,253));
+            painter->setBrush(QColor(61,107,229));
             painter->setOpacity(1);
             painter->drawPath(path);
         } else if(option.state.testFlag(QStyle::State_MouseOver)) {
