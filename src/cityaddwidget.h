@@ -1,5 +1,6 @@
 #ifndef CITYADDITION_H
 #define CITYADDITION_H
+#define FITTHEMEWINDOW "org.ukui.style"
 
 #include "cityaddsearchbox.h"
 #include "cityaddsearchview.h"
@@ -12,7 +13,7 @@
 #include <QButtonGroup>
 #include <QObjectUserData>
 #include <QSortFilterProxyModel>
-
+#include <QGSettings>
 namespace Ui {
 class cityaddition;
 }
@@ -24,6 +25,9 @@ class CityAddition : public QWidget
 public:
     explicit CityAddition(QWidget *parent = nullptr);
     ~CityAddition();
+void getStr(QString str);
+
+
 
 private slots:
     // click to close window.

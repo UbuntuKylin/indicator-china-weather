@@ -11,7 +11,7 @@ class CityAddHotView : public QWidget
 
 public:
     explicit CityAddHotView(QWidget *parent = 0);
-
+    void ThemeCityHotView(QString str);
 public slots:
 
 signals:

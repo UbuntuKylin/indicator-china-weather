@@ -44,14 +44,14 @@ CityAddition::CityAddition(QWidget *parent) :
     this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
     this->setWindowIcon(QIcon(":/res/control_icons/indicator-china-weather.png") ); //set taskbar icon
 
-    ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(207,207,207,1);border-radius:6px;background:rgba(255,255,255,1);}");
+ //   ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(207,207,207,1);border-radius:6px;background:rgba(255,255,255,1);}");
 
     ui->lbLeftUpIcon->setStyleSheet("QLabel{border:none;background:transparent;background-image:url(':/res/control_icons/logo.png');}");
     ui->lbLeftUpIcon->hide();
 
     ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");
-    ui->lbLeftUpTitle->setText("返回");
-//    ui->lbLeftUpTitle->hide();
+
+    ui->lbLeftUpTitle->hide();
 
     ui->btnReturn->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/return_black.png);}"
                                "QPushButton:Hover{border:0px;border-radius:4px;background:#3d6be5;background-image:url(:/res/control_icons/return_white.png);}"
@@ -173,6 +173,7 @@ void CityAddition::onRequestClearLineEdit()
 {
     m_cityaddsearchview->hide(); //hide search and add collect city widget
     m_cityaddsearchbox->setText("");
+
 }
 
 void CityAddition::on_btnCancel_clicked()
@@ -184,3 +185,33 @@ void CityAddition::on_btnReturn_clicked()
 {
     emit hideCityAddWiget();
 }
+void CityAddition::getStr(QString str)
+{
+    m_cityaddsearchview->ThemeCitySearchView(str);
+    m_cityaddhotview->ThemeCityHotView(str);
+    m_cityaddsearchbox->ThemeCitySearchBox(str);
+
+     if("ukui-dark" == str)
+     {
+
+    ui->backwidget->setStyleSheet("QWidget{border-radius:6px;background:rgba(0,0,0,1);}");
+    ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_white.png);}"
+                               "QPushButton:Hover{border:0px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
+                               "QPushButton:Pressed{border:0px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
+    ui->btnReturn->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/return_white.png);}"
+                               "QPushButton:Hover{border:0px;border-radius:4px;background:#3d6be5;background-image:url(:/res/control_icons/return_white.png);}"
+                               "QPushButton:Pressed{border:0px;border-radius:4px;background:#3257ca;background-image:url(:/res/control_icons/return_white.png);}");
+}
+     else if("ukui-default" == str || "ukui-white" == str)
+     {
+         ui->backwidget->setStyleSheet("QWidget{border-radius:6px;background:rgba(255,255,255,1);}");
+         ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
+                                    "QPushButton:Hover{border:0px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
+                                    "QPushButton:Pressed{border:0px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
+         ui->btnReturn->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/return_black.png);}"
+                                    "QPushButton:Hover{border:0px;border-radius:4px;background:#3d6be5;background-image:url(:/res/control_icons/return_white.png);}"
+                                    "QPushButton:Pressed{border:0px;border-radius:4px;background:#3257ca;background-image:url(:/res/control_icons/return_white.png);}");
+     }
+
+}
+

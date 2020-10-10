@@ -2,6 +2,7 @@
 #define CITYCOLLECTION_H
 
 #define CHINAWEATHERDATA "org.china-weather-data.settings"
+#define FITTHEMEWINDOW "org.ukui.style"
 
 #include <QWidget>
 #include <QMouseEvent>
@@ -92,7 +93,10 @@ private:
     void initGsetting();
     QString getCityList();
     void setCityList(QString str);
+    void setThemeStyle();
     QGSettings  *m_pWeatherData= nullptr;
+    QGSettings *m_pThemeStyle = nullptr;
+
 
 signals:
     void sendCurrentCityId(QString id);
@@ -100,6 +104,7 @@ signals:
     void requestChangeWidgetState();
 
     void threadFinish();
+
 };
 
 #endif // CITYCOLLECTION_H

@@ -106,3 +106,44 @@ CityAddHotView::CityAddHotView(QWidget *parent) : QWidget(parent)
 //    m_citylayout = new QHBoxLayout(this);
 
 }
+void CityAddHotView::ThemeCityHotView(QString str)
+{
+    m_addcity11->onThemeChanged(str);
+    m_addcity12->onThemeChanged(str);
+    m_addcity13->onThemeChanged(str);
+    m_addcity14->onThemeChanged(str);
+    m_addcity15->onThemeChanged(str);
+    m_addcity16->onThemeChanged(str);
+    m_addcity17->onThemeChanged(str);
+    m_addcity18->onThemeChanged(str);
+
+    m_addcity21->onThemeChanged(str);
+    m_addcity22->onThemeChanged(str);
+    m_addcity23->onThemeChanged(str);
+    m_addcity24->onThemeChanged(str);
+    m_addcity25->onThemeChanged(str);
+    m_addcity26->onThemeChanged(str);
+    m_addcity27->onThemeChanged(str);
+    m_addcity28->onThemeChanged(str);
+
+    m_addcity31->onThemeChanged(str);
+    m_addcity32->onThemeChanged(str);
+    m_addcity33->onThemeChanged(str);
+    m_addcity34->onThemeChanged(str);
+    m_addcity35->onThemeChanged(str);
+    m_addcity36->onThemeChanged(str);
+    m_addcity37->onThemeChanged(str);
+
+    if("ukui-dark" == str)
+    {
+   qDebug()<<str;
+   m_addCityhot->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(255,255,255,1);}");
+//   ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");
+
+}
+    else if("ukui-default" == str || "ukui-white" == str)
+    {
+       m_addCityhot->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");
+
+    }
+}

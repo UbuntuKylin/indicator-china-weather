@@ -15,6 +15,7 @@ public:
     ~LeftUpSearchView();
 
     void requestWeatherData(QString cityId);
+    void ThemeLeftUpSearchView(QString str);
 
 protected:
     // handle click event of searchview, send signal when mouse release.

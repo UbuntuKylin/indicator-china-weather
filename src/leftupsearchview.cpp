@@ -73,3 +73,42 @@ void LeftUpSearchView::requestWeatherData(QString cityId) {
 
     emit requestSetNewCityWeather(m_cityid);
 }
+
+void LeftUpSearchView::ThemeLeftUpSearchView(QString str)
+{
+        if("ukui-dark" == str)
+        {
+       this->setStyleSheet("QListView{margin:0px;padding:0px;border:none;border-radius:4px;outline:none;background-color:rgba(0,0,0,0.25);}"
+                           "QListView::item:selected:!active{background-color:rgba(255,255,255,0.25);}"
+                           "QListView::item:selected:active{background-color:rgba(255,255,255,0.25);}"
+                           "QListView::item:hover{background-color:rgba(255,255,255,0.25);}");
+       this->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 0px 0px 0px;background-color:transparent;border:0px;width:1px;}" \
+                                                "QScrollBar::sub-line:vertical{subcontrol-origin:margin;border:none;height:6px;}" \
+                                                "QScrollBar::up-arrow:vertical{subcontrol-origin:margin;background-color:transparent;height:6px;}" \
+                                                "QScrollBar::sub-page:vertical{background-color:transparent;}" \
+                                                "QScrollBar::handle:vertical{background-color:transparent;width:1px;}" \
+                                                "QScrollBar::handle:vertical:hover{background-color:transparent;width:1px;}" \
+                                                "QScrollBar::handle:vertical:pressed{background-color:transparent;width:1px;}" \
+                                                "QScrollBar::add-page:vertical{background-color:transparent;}" \
+                                                "QScrollBar::down-arrow:vertical{background-color:transparent;}" \
+                                                "QScrollBar::add-line:vertical{subcontrol-origin:margin;border:none;height:6px;}");
+
+    }
+        else if("ukui-default" == str || "ukui-white" == str)
+        {
+            this->setStyleSheet("QListView{margin:0px;padding:0px;border:none;border-radius:4px;outline:none;background-color:rgba(255,255,255,0.25);}"
+                                "QListView::item:selected:!active{background-color:rgba(255,255,255,0.25);}"
+                                "QListView::item:selected:active{background-color:rgba(255,255,255,0.25);}"
+                                "QListView::item:hover{background-color:rgba(255,255,255,0.25);}");
+            this->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 0px 0px 0px;background-color:transparent;border:0px;width:1px;}" \
+                                                     "QScrollBar::sub-line:vertical{subcontrol-origin:margin;border:none;height:6px;}" \
+                                                     "QScrollBar::up-arrow:vertical{subcontrol-origin:margin;background-color:transparent;height:6px;}" \
+                                                     "QScrollBar::sub-page:vertical{background-color:transparent;}" \
+                                                     "QScrollBar::handle:vertical{background-color:transparent;width:1px;}" \
+                                                     "QScrollBar::handle:vertical:hover{background-color:transparent;width:1px;}" \
+                                                     "QScrollBar::handle:vertical:pressed{background-color:transparent;width:1px;}" \
+                                                     "QScrollBar::add-page:vertical{background-color:transparent;}" \
+                                                     "QScrollBar::down-arrow:vertical{background-color:transparent;}" \
+                                                     "QScrollBar::add-line:vertical{subcontrol-origin:margin;border:none;height:6px;}");
+        }
+}

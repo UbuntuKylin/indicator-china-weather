@@ -67,3 +67,24 @@ void CityAddSearchBox::paintEvent(QPaintEvent *event)
         painter.drawPixmap(iconRect, m_searchPixmap);
     }
 }
+void CityAddSearchBox::ThemeCitySearchBox(QString str)
+{
+    if("ukui-dark" == str)
+    {
+   this->setStyleSheet("QLineEdit{padding-left:31px;"
+                       "background:rgba(72,72,76,1);"
+                       "border:1px solid rgba(61,107,229,1);"
+                       "border-radius:4px;"
+                       "font-size:14px;"
+                       "color:rgba(0,0,0,1);}");
+}
+    else if("ukui-default" == str || "ukui-white" == str)
+    {
+        this->setStyleSheet("QLineEdit{padding-left:31px;"
+                            "background:rgba(248,248,248,1);"
+                            "border:1px solid rgba(61,107,229,1);"
+                            "border-radius:4px;"
+                            "font-size:14px;"
+                            "color:rgba(0,0,0,1);}");
+    }
+}
