@@ -28,10 +28,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 //    judgeSystemLanguage();
 
-    initGsetting();//初始化Gsetting
+
 
     //单例运行
-    //checkSingle();
+    checkSingle();
 
     //先注册结构体，这样才能作为信号与槽的参数
     qRegisterMetaType<ObserveWeather>();
@@ -100,6 +100,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_refreshweather->setTimerType(Qt::PreciseTimer);
     QObject::connect(m_refreshweather, SIGNAL(timeout()), this, SLOT(onRefreshMainWindowWeather()));
     m_refreshweather->start((20*60)*1000); //set time interval to refresh weather
+    initGsetting();//初始化Gsetting
 }
 
 MainWindow::~MainWindow()
@@ -725,9 +726,30 @@ void MainWindow::initGsetting()
             }
         });
     }
-    return;
-}
+    if(QGSettings::isSchemaInstalled(FITTHEMEWINDOW))
+    {
+        m_pThemeStyle = new QGSettings(FITTHEMEWINDOW);
+        connect(m_pThemeStyle,&QGSettings::changed,this, [=] (const QString &key)
+        {
+            if(key == "styleName")
+            {
 
+                    setThemeStyle();
+            }
+        });
+    }
+    setThemeStyle();
+    return;
+
+}
+void MainWindow::setThemeStyle()
+{
+  QString nowThemeStyle = m_pThemeStyle->get("styleName").toString();
+
+  m_leftupsearchbox->ThemeLeftUpSearchBox(nowThemeStyle);
+  m_searchView->ThemeLeftUpSearchView(nowThemeStyle);
+
+}
 QString MainWindow::getCityList()
 {
     QString str="";

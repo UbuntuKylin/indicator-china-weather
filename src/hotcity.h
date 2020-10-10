@@ -8,12 +8,13 @@ class HotCity : public QPushButton
 
 public:
     HotCity(QWidget *parent,QString name, QString code);
-
+    void onThemeChanged(QString str);
 signals:
     void hotCityClick(QString);
 
 public slots:
     void onHotCityClick();
+
 private:
     QString cityCode="";
 };

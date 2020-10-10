@@ -1,3 +1,11 @@
+
+indicator-china-weather (3.1.0-14) unstable; urgency=medium
+
+  * 修复BUG#21125，修复开始菜单打开麒麟天气，任务栏会闪的问题
+  * 适配深色主题
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Sat, 10 Oct 2020 20:17:02 +0800
+
 indicator-china-weather (3.1.0-13) unstable; urgency=medium
 
   * 修复BUG#21004，修复界面边界处拖拽鼠标没有变化的问题

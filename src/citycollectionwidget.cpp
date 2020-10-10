@@ -45,7 +45,6 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    initGsetting();
 
     this->setFixedSize(580, 560);
     this->setWindowFlags(Qt::FramelessWindowHint);
@@ -111,6 +110,7 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     connect(m_cityaddition, SIGNAL(requestAddNewCity(QString)), this, SLOT(onRequestAddNewCity(QString)) );
 
     m_networkManager = new QNetworkAccessManager(this);
+    initGsetting();
 
 }
 
@@ -464,11 +464,75 @@ void CityCollectionWidget::on_btnCancel_clicked()
 
 void CityCollectionWidget::initGsetting()
 {
+
     if(QGSettings::isSchemaInstalled(CHINAWEATHERDATA))
         m_pWeatherData = new QGSettings(CHINAWEATHERDATA);
+
+    if(QGSettings::isSchemaInstalled(FITTHEMEWINDOW))
+    {
+        m_pThemeStyle = new QGSettings(FITTHEMEWINDOW);
+
+        connect(m_pThemeStyle,&QGSettings::changed,this, [=] (const QString &key)
+        {
+            if(key == "styleName")
+            {
+
+                    setThemeStyle();
+            }
+        });
+    }
+    setThemeStyle();
     return;
 }
+void CityCollectionWidget::setThemeStyle()
+{
+  QString nowThemeStyle = m_pThemeStyle->get("styleName").toString();
 
+    m_cityaddition->getStr(nowThemeStyle);
+
+  if("ukui-dark" == nowThemeStyle)
+  {
+
+    ui->backwidget->setStyleSheet("QWidget{border-radius:6px;background:rgba(0,0,0,1);}");
+
+    ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(255,255,255,1);}");
+    ui->lbLeftUpTitle->setText("麒麟天气");
+
+    ui->lbCityCurrent->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(255,255,255,1);}");
+    ui->lbCityCurrent->setText("当前城市");
+
+    ui->lbCityCollect->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(255,255,255,1);}");
+    ui->lbCityCollect->setText("收藏城市");
+
+    ui->lbCityCount->setStyleSheet("QLabel{border:none;background:transparent;font-size:12px;font-weight:400;color:rgba(255,255,255,1);}");
+    ui->lbCityCount->setText("0/8");
+
+    ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_white.png);}"
+                               "QPushButton:Hover{border:0px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
+                               "QPushButton:Pressed{border:0px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
+
+
+  }
+  else if("ukui-default" == nowThemeStyle || "ukui-white" == nowThemeStyle)
+  {  
+      ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(207,207,207,1);border-radius:6px;background:rgba(255,255,255,1);}");
+      ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");
+      ui->lbLeftUpTitle->setText("麒麟天气");
+      ui->lbCityCurrent->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(68,68,68,1);}");
+      ui->lbCityCurrent->setText("当前城市");
+
+      ui->lbCityCollect->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(68,68,68,1);}");
+      ui->lbCityCollect->setText("收藏城市");
+
+      ui->lbCityCount->setStyleSheet("QLabel{border:none;background:transparent;font-size:12px;font-weight:400;color:rgba(68,68,68,1);}");
+      ui->lbCityCount->setText("0/8");
+
+      ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
+                                 "QPushButton:Hover{border:0px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
+                                 "QPushButton:Pressed{border:0px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
+
+  }
+}
 QString CityCollectionWidget::getCityList()
 {
     QString str="";

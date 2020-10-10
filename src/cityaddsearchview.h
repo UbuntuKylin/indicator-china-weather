@@ -12,7 +12,7 @@ class CityAddSearchView : public QListView
 public:
     explicit CityAddSearchView(QWidget *parent = 0);
     ~CityAddSearchView();
-
+    void ThemeCitySearchView(QString str);
 protected:
     // handle click event of searchview, send signal when mouse release.
     void mouseReleaseEvent(QMouseEvent *e) override;

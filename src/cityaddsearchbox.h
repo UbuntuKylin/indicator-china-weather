@@ -9,6 +9,7 @@ class CityAddSearchBox : public QLineEdit
 
 public:
     explicit CityAddSearchBox(QWidget* parent = 0);
+    void ThemeCitySearchBox(QString str);
 
 protected:
     // set the display style of the searchbox.

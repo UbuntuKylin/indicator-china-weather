@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #define CHINAWEATHERDATA "org.china-weather-data.settings"
+#define FITTHEMEWINDOW "org.ukui.style"
 
 #include "mainwindow.h"
 #include "leftupcitybtn.h"
@@ -116,7 +117,10 @@ private:
     void initGsetting();
     QString getCityList();
     void setCityList(QString str);
+    void setThemeStyle();
+
     QGSettings  *m_pWeatherData= nullptr;
+    QGSettings  *m_pThemeStyle= nullptr;
     QString firstGetCityList="";
 };
 
