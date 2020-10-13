@@ -149,7 +149,7 @@ void citycollectionitem::setCurrentWeather(QString cityId)
         connect(this, SIGNAL(mThreadFinish()), mThread, SLOT(quit()));
         mThread->start();
 
-        //onWeatherDataRequest(cityId);DbusAdaptor
+        //onWeatherDataRequest(cityId);
     }
 }
 
