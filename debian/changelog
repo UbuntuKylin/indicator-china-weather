@@ -1,3 +1,9 @@
+indicator-china-weather (3.1.0-16) unstable; urgency=medium
+
+  * 修复BUG#21458，修复无法通过开始菜单打开麒麟天气的问题
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Tue, 13 Oct 2020 15:51:32 +0800
+
 indicator-china-weather (3.1.0-15) unstable; urgency=medium
 
   * 提供dbus接口，供其它控件调用
