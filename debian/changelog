@@ -1,3 +1,9 @@
+indicator-china-weather (3.1.0-15) unstable; urgency=medium
+
+  * 提供dbus接口，供其它控件调用
+  * 修复收藏城市为0时，当前城市悬停可删除的问题
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Tue, 13 Oct 2020 11:26:17 +0800
 
 indicator-china-weather (3.1.0-14) unstable; urgency=medium
 

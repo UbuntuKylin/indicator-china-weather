@@ -69,7 +69,7 @@ void CityAddSearchBox::paintEvent(QPaintEvent *event)
 }
 void CityAddSearchBox::ThemeCitySearchBox(QString str)
 {
-    if("ukui-dark" == str)
+    if("ukui-dark" == str || "ukui-black" == str)
     {
    this->setStyleSheet("QLineEdit{padding-left:31px;"
                        "background:rgba(72,72,76,1);"

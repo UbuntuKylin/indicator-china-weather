@@ -313,6 +313,7 @@ void WeatherWorker::onWeatherDataReply()
                     weatherNow.append(m_observeweather.wind_dir+",");//风向
                     weatherNow.append(m_observeweather.wind_sc+"级,");//风力
                     weatherNow.append(weatherObj.value("admin_area").toString()+",");//省份
+                    weatherNow.append(m_observeweather.cond_code+",");
                     setCityWeatherNow(weatherNow);//YYF 写入配置文件供其他组件调用
 
                     emit this->requestSetObserveWeather(m_observeweather);//用于设置主窗口

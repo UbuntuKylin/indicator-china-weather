@@ -134,16 +134,12 @@ void CityAddHotView::ThemeCityHotView(QString str)
     m_addcity36->onThemeChanged(str);
     m_addcity37->onThemeChanged(str);
 
-    if("ukui-dark" == str)
+    if("ukui-dark" == str || "ukui-black" == str)
     {
-   qDebug()<<str;
-   m_addCityhot->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(255,255,255,1);}");
-//   ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");
-
+       m_addCityhot->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(255,255,255,1);}");
 }
     else if("ukui-default" == str || "ukui-white" == str)
     {
        m_addCityhot->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");
-
     }
 }

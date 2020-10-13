@@ -76,7 +76,7 @@ void LeftUpSearchView::requestWeatherData(QString cityId) {
 
 void LeftUpSearchView::ThemeLeftUpSearchView(QString str)
 {
-        if("ukui-dark" == str)
+        if("ukui-dark" == str || "ukui-black" == str)
         {
        this->setStyleSheet("QListView{margin:0px;padding:0px;border:none;border-radius:4px;outline:none;background-color:rgba(0,0,0,0.25);}"
                            "QListView::item:selected:!active{background-color:rgba(255,255,255,0.25);}"
