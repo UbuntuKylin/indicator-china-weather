@@ -191,7 +191,7 @@ void CityAddition::getStr(QString str)
     m_cityaddhotview->ThemeCityHotView(str);
     m_cityaddsearchbox->ThemeCitySearchBox(str);
 
-     if("ukui-dark" == str)
+     if("ukui-dark" == str || "ukui-black" == str)
      {
 
     ui->backwidget->setStyleSheet("QWidget{border-radius:6px;background:rgba(0,0,0,1);}");

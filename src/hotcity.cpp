@@ -19,7 +19,7 @@ void HotCity::onHotCityClick()
 }
 void HotCity::onThemeChanged(QString str)
 {
-    if("ukui-dark" == str)
+    if("ukui-dark" == str || "ukui-black" == str)
    {
         this->setStyleSheet("QPushButton{color:rgba(255,255,255,0.9);font-size:14px;}"
                         "QPushButton:Hover{color:#3E6CE5;font-size:14px;}"

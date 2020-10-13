@@ -295,7 +295,7 @@ void CityCollectionWidget::onRequestAddNewCity(QString cityId)
         if (m_citynumber == 1) {
             QList<citycollectionitem *> cityitemlist = ui->backwidget->findChildren<citycollectionitem *>();
             citycollectionitem *firstitem = cityitemlist.at(0);
-            firstitem->setItemWidgetState(true, false, m_citynumber);
+            firstitem->setItemWidgetState(true,true, m_citynumber);
         }
     }
 
@@ -490,7 +490,7 @@ void CityCollectionWidget::setThemeStyle()
 
     m_cityaddition->getStr(nowThemeStyle);
 
-  if("ukui-dark" == nowThemeStyle)
+  if("ukui-dark" == nowThemeStyle || "ukui-black" == nowThemeStyle)
   {
 
     ui->backwidget->setStyleSheet("QWidget{border-radius:6px;background:rgba(0,0,0,1);}");

@@ -72,6 +72,28 @@ int main(int argc, char *argv[])
             a.installTranslator(&qt_trans);
     }
 
+    QCommandLineParser parser;
+    parser.setApplicationDescription(QCoreApplication::translate("main", "KilinWeather"));
+    parser.addHelpOption();
+    parser.addVersionOption();
+
+    QCommandLineOption swOption(QStringLiteral("show"),QCoreApplication::translate("main", "show indicator-china-weather test"));
+
+    parser.addOptions({swOption});
+    parser.process(a);
+
+    if(parser.isSet(swOption))
+    {
+        QDBusInterface *interface = new QDBusInterface("com.kylin.weather",
+                                                       "/com/kylin/weather",
+                                                       "com.kylin.weather",
+                                                       QDBusConnection::sessionBus(),
+                                                       NULL);
+
+        QDBusMessage msg = interface->call(QStringLiteral("showMainWindow"));
+        return 0;
+    }
+
     MainWindow w;
 
     //读取开机启动服务列表，判断是否开机启动

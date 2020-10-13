@@ -64,7 +64,7 @@ void LeftUpSearchBox::paintEvent(QPaintEvent *event)
 }
 void LeftUpSearchBox::ThemeLeftUpSearchBox(QString str)
 {
-    if("ukui-dark" == str)
+    if("ukui-dark" == str || "ukui-black" == str)
     {
    this->setStyleSheet("QLineEdit{padding-left:31px;background:rgba(0,0,0,0.2);border-radius:4px;color:rgba(255,255,255,0.5);}");
 
