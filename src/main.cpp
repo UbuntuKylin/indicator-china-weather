@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
     parser.addOptions({swOption});
     parser.process(a);
 
-    if(parser.isSet(swOption))
+    if(parser.isSet(swOption) || !QDBusConnection::sessionBus().registerService("com.kylin.weather"))
     {
         QDBusInterface *interface = new QDBusInterface("com.kylin.weather",
                                                        "/com/kylin/weather",
