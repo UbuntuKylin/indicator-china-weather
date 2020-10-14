@@ -513,7 +513,7 @@ void CityCollectionWidget::setThemeStyle()
 
 
   }
-  else if("ukui-default" == nowThemeStyle || "ukui-white" == nowThemeStyle)
+  else if("ukui-default" == nowThemeStyle || "ukui-white" == nowThemeStyle || "ukui-light" == nowThemeStyle)
   {  
       ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(207,207,207,1);border-radius:6px;background:rgba(255,255,255,1);}");
       ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");

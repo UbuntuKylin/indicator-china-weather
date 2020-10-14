@@ -25,6 +25,9 @@
    <property name="text">
     <string/>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QLabel" name="lbLifeStyle">
    <property name="geometry">
@@ -42,7 +45,7 @@
   <widget class="QLabel" name="lb_uv_brf">
    <property name="geometry">
     <rect>
-     <x>507</x>
+     <x>504</x>
      <y>316</y>
      <width>50</width>
      <height>19</height>
@@ -50,6 +53,9 @@
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="lb_sport_icon">
@@ -81,7 +87,7 @@
   <widget class="QLabel" name="lb_cw_brf">
    <property name="geometry">
     <rect>
-     <x>710</x>
+     <x>707</x>
      <y>316</y>
      <width>50</width>
      <height>19</height>
@@ -89,6 +95,9 @@
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="lb_drsg">
@@ -102,6 +111,9 @@
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="Line" name="lineV_2">
@@ -155,6 +167,9 @@
    <property name="text">
     <string/>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QLabel" name="lb_uv_icon">
    <property name="geometry">
@@ -172,7 +187,7 @@
   <widget class="QLabel" name="lb_drsg_brf">
    <property name="geometry">
     <rect>
-     <x>101</x>
+     <x>96</x>
      <y>316</y>
      <width>50</width>
      <height>19</height>
@@ -180,6 +195,9 @@
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="lb_uv">
@@ -193,6 +211,9 @@
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="lb_air_icon">
@@ -211,7 +232,7 @@
   <widget class="QLabel" name="lb_air_brf">
    <property name="geometry">
     <rect>
-     <x>101</x>
+     <x>96</x>
      <y>395</y>
      <width>50</width>
      <height>19</height>
@@ -219,6 +240,9 @@
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="lb_flu_icon">
@@ -243,14 +267,20 @@
      <height>13</height>
     </rect>
    </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="lb_sport_brf">
    <property name="geometry">
     <rect>
-     <x>301</x>
+     <x>299</x>
      <y>395</y>
      <width>50</width>
      <height>19</height>
@@ -258,6 +288,9 @@
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="lb_cw">
@@ -271,6 +304,9 @@
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="Line" name="lineV_3">
@@ -302,7 +338,7 @@
   <widget class="QLabel" name="lb_flu_brf">
    <property name="geometry">
     <rect>
-     <x>304</x>
+     <x>299</x>
      <y>316</y>
      <width>50</width>
      <height>19</height>
@@ -310,6 +346,9 @@
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="lbWea_7">

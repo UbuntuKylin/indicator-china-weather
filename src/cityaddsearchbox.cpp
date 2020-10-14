@@ -78,7 +78,7 @@ void CityAddSearchBox::ThemeCitySearchBox(QString str)
                        "font-size:14px;"
                        "color:rgba(0,0,0,1);}");
 }
-    else if("ukui-default" == str || "ukui-white" == str)
+    else if("ukui-default" == str || "ukui-white" == str || "ukui-light" == str)
     {
         this->setStyleSheet("QLineEdit{padding-left:31px;"
                             "background:rgba(248,248,248,1);"
