@@ -25,7 +25,7 @@ void HotCity::onThemeChanged(QString str)
                         "QPushButton:Hover{color:#3E6CE5;font-size:14px;}"
                         "QPushButton:Pressed{color:#4260C4;font-size:14px;}");
     }
-    else if ("ukui-default" == str || "ukui-white" == str)
+    else if ("ukui-default" == str || "ukui-white" == str || "ukui-light" == str)
     {
         this->setStyleSheet("QPushButton{color:#444444;font-size:14px;}"
                             "QPushButton:Hover{color:#3E6CE5;font-size:14px;}"

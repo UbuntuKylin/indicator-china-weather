@@ -69,7 +69,7 @@ void LeftUpSearchBox::ThemeLeftUpSearchBox(QString str)
    this->setStyleSheet("QLineEdit{padding-left:31px;background:rgba(0,0,0,0.2);border-radius:4px;color:rgba(255,255,255,0.5);}");
 
 }
-    else if("ukui-default" == str || "ukui-white" == str)
+    else if("ukui-default" == str || "ukui-white" == str || "ukui-light" == str)
     {
        this->setStyleSheet("QLineEdit{padding-left:31px;background:rgba(255,255,255,0.2);border-radius:4px;color:rgba(255,255,255,0.5);}");
     }

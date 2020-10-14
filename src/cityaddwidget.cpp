@@ -202,7 +202,7 @@ void CityAddition::getStr(QString str)
                                "QPushButton:Hover{border:0px;border-radius:4px;background:#3d6be5;background-image:url(:/res/control_icons/return_white.png);}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:#3257ca;background-image:url(:/res/control_icons/return_white.png);}");
 }
-     else if("ukui-default" == str || "ukui-white" == str)
+     else if("ukui-default" == str || "ukui-white" == str  || "ukui-light" == str)
      {
          ui->backwidget->setStyleSheet("QWidget{border-radius:6px;background:rgba(255,255,255,1);}");
          ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"

@@ -166,6 +166,7 @@ void Information::initControlQss()
     //穿衣指数
     ui->lb_drsg->setStyleSheet(lbIndexQss);
     ui->lb_drsg_brf->setStyleSheet(lbIndexBrfQss);
+    ui->lb_uv_brf->move(96,316);
     ui->lb_drsg_icon->setStyleSheet(lbIndexIconQss);
     ui->lb_drsg_icon->setStyleSheet("QLabel{background-image:url(:/res/control_icons/index_clothe.png);}");
     ui->lb_drsg->setText("穿衣指数");
@@ -173,6 +174,7 @@ void Information::initControlQss()
     //感冒指数
     ui->lb_flu->setStyleSheet(lbIndexQss);
     ui->lb_flu_brf->setStyleSheet(lbIndexBrfQss);
+    ui->lb_uv_brf->move(299,316);
     ui->lb_flu_icon->setStyleSheet(lbIndexIconQss);
     ui->lb_flu_icon->setStyleSheet("QLabel{background-image:url(:/res/control_icons/index_flu.png);}");
     ui->lb_flu->setText("感冒指数");
@@ -180,6 +182,7 @@ void Information::initControlQss()
     //紫外线指数
     ui->lb_uv->setStyleSheet(lbIndexQss);
     ui->lb_uv_brf->setStyleSheet(lbIndexBrfQss);
+    ui->lb_uv_brf->move(504,316);
     ui->lb_uv_icon->setStyleSheet(lbIndexIconQss);
     ui->lb_uv_icon->setStyleSheet("QLabel{background-image:url(:/res/control_icons/index_uv.png);}");
     ui->lb_uv->setText("紫外线指数");
@@ -187,6 +190,7 @@ void Information::initControlQss()
     //洗车指数
     ui->lb_cw->setStyleSheet(lbIndexQss);
     ui->lb_cw_brf->setStyleSheet(lbIndexBrfQss);
+    ui->lb_cw_brf->move(707,316);
     ui->lb_cw_icon->setStyleSheet(lbIndexIconQss);
     ui->lb_cw_icon->setStyleSheet("QLabel{background-image:url(:/res/control_icons/index_cash_wash.png);}");
     ui->lb_cw->setText("洗车指数");
@@ -194,6 +198,7 @@ void Information::initControlQss()
     //空气指数
     ui->lb_air->setStyleSheet(lbIndexQss);
     ui->lb_air_brf->setStyleSheet(lbIndexBrfQss);
+    ui->lb_air_brf->move(96,395);
     ui->lb_air_icon->setStyleSheet(lbIndexIconQss);
     ui->lb_air_icon->setStyleSheet("QLabel{background-image:url(:/res/control_icons/index_air.png);}");
     ui->lb_air->setText("空气指数");
@@ -201,6 +206,7 @@ void Information::initControlQss()
     //运动指数
     ui->lb_sport->setStyleSheet(lbIndexQss);
     ui->lb_sport_brf->setStyleSheet(lbIndexBrfQss);
+    ui->lb_sport_brf->move(299,395);
     ui->lb_sport_icon->setStyleSheet(lbIndexIconQss);
     ui->lb_sport_icon->setStyleSheet("QLabel{background-image:url(:/res/control_icons/index_sport.png);}");
     ui->lb_sport->setText("运动指数");
