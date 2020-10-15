@@ -67,6 +67,7 @@ void CityAddSearchBox::paintEvent(QPaintEvent *event)
         painter.drawPixmap(iconRect, m_searchPixmap);
     }
 }
+//主题适配
 void CityAddSearchBox::ThemeCitySearchBox(QString str)
 {
     if("ukui-dark" == str || "ukui-black" == str)

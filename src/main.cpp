@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
         else
             a.installTranslator(&qt_trans);
     }
-
+//提供DBus接口，添加show参数
     QCommandLineParser parser;
     parser.setApplicationDescription(QCoreApplication::translate("main", "KilinWeather"));
     parser.addHelpOption();

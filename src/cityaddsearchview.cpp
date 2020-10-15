@@ -27,6 +27,7 @@ CityAddSearchView::CityAddSearchView(QWidget *parent)
 {
     this->setMouseTracking(true);
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    this->setFocusPolicy(Qt::NoFocus);//设置焦点类型
 
     //set style of listview widget
     this->setStyleSheet("QListView{margin:0px;padding:0px;border:1px solid rgba(207,207,207,1);border-radius:4px;outline:none;background:rgba(255,255,255,1);}"
@@ -63,7 +64,7 @@ void CityAddSearchView::mouseReleaseEvent(QMouseEvent *e)
         emit requestAddNewCity(data.cityId);
     }
 }
-
+//主题适配
 void CityAddSearchView::ThemeCitySearchView(QString str)
 {
     if("ukui-dark" == str || "ukui-black" == str)

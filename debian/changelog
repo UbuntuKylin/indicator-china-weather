@@ -1,3 +1,9 @@
+indicator-china-weather (3.1.0-18) unstable; urgency=low
+
+  * 修复BUG#20336，修复键盘响应的问题
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Thu, 15 Oct 2020 19:50:32 +0800
+
 indicator-china-weather (3.1.0-17) unstable; urgency=medium
 
   * 修复BUG#21536，修复麒麟天气界面布局不规范的问题

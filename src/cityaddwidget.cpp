@@ -32,7 +32,7 @@ CityAddition::CityAddition(QWidget *parent) :
 
     this->setFixedSize(580, 560);
     this->setWindowFlags(Qt::FramelessWindowHint);
-    this->setFocusPolicy(Qt::StrongFocus);//set focus type of window
+    this->setFocusPolicy(Qt::ClickFocus);//设置焦点类型
     this->setAttribute(Qt::WA_TranslucentBackground);// set window background transparency
 
     // set style of widget and icon in taskbar
@@ -185,6 +185,7 @@ void CityAddition::on_btnReturn_clicked()
 {
     emit hideCityAddWiget();
 }
+//主题适配
 void CityAddition::getStr(QString str)
 {
     m_cityaddsearchview->ThemeCitySearchView(str);
@@ -214,4 +215,13 @@ void CityAddition::getStr(QString str)
      }
 
 }
-
+//鼠标点击外部，收起搜索列表
+bool CityAddition::event(QEvent *event)
+{
+//    if(m_searchView == nullptr)return QWidget::event(event);
+    if (event->type() == QEvent::MouseButtonPress)
+    {
+        m_cityaddsearchbox->clear();
+    }
+    return QWidget::event(event);
+}
