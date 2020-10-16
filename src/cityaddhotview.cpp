@@ -106,6 +106,7 @@ CityAddHotView::CityAddHotView(QWidget *parent) : QWidget(parent)
 //    m_citylayout = new QHBoxLayout(this);
 
 }
+//主题适配
 void CityAddHotView::ThemeCityHotView(QString str)
 {
     m_addcity11->onThemeChanged(str);

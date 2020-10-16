@@ -109,6 +109,7 @@ private:
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
 
+    bool event(QEvent *event);
     bool isPress;
     QPoint winPos;
     QPoint dragPos;

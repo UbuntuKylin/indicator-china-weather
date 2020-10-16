@@ -6,6 +6,7 @@ HotCity::HotCity(QWidget *parent,QString name, QString code)
     QSize size(30,18);
     this->setFixedSize(size);
     this->setText(name);
+    this->setFocusPolicy(Qt::NoFocus);//设置焦点类型
     cityCode=code;
     connect(this,&HotCity::clicked,this,&HotCity::onHotCityClick);
     this->setStyleSheet("QPushButton{color:#444444;font-size:14px;}"
@@ -17,6 +18,7 @@ void HotCity::onHotCityClick()
 {
     emit hotCityClick(cityCode);
 }
+//主题适配
 void HotCity::onThemeChanged(QString str)
 {
     if("ukui-dark" == str || "ukui-black" == str)

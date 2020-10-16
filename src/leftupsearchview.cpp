@@ -27,6 +27,7 @@ LeftUpSearchView::LeftUpSearchView(QWidget *parent)
 {
     this->setMouseTracking(true);
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    this->setFocusPolicy(Qt::NoFocus);//设置焦点类型
 
     this->setStyleSheet("QListView{margin:0px;padding:0px;border:none;border-radius:4px;outline:none;background-color:rgba(255,255,255,0.25);}"
                         "QListView::item:selected:!active{background-color:rgba(255,255,255,0.25);}"
@@ -73,7 +74,7 @@ void LeftUpSearchView::requestWeatherData(QString cityId) {
 
     emit requestSetNewCityWeather(m_cityid);
 }
-
+//主题适配
 void LeftUpSearchView::ThemeLeftUpSearchView(QString str)
 {
         if("ukui-dark" == str || "ukui-black" == str)

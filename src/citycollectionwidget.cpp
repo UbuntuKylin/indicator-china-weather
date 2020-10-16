@@ -484,6 +484,7 @@ void CityCollectionWidget::initGsetting()
     setThemeStyle();
     return;
 }
+//主题适配
 void CityCollectionWidget::setThemeStyle()
 {
   QString nowThemeStyle = m_pThemeStyle->get("styleName").toString();

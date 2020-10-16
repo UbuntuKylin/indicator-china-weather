@@ -56,6 +56,7 @@ private:
 
     // handle when search box edited,
     void onSearchBoxEdited();
+    bool event(QEvent *event);
 
 signals:
     void setHotCity(QString);

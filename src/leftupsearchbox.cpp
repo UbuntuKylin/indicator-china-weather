@@ -61,7 +61,7 @@ void LeftUpSearchBox::paintEvent(QPaintEvent *event)
         QRect iconRect(QPoint(9, 6), m_searchPixmap.size()/qApp->devicePixelRatio());
         painter.drawPixmap(iconRect, m_searchPixmap);
     }
-}
+}//主题适配
 void LeftUpSearchBox::ThemeLeftUpSearchBox(QString str)
 {
     if("ukui-dark" == str || "ukui-black" == str)

@@ -42,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setFixedSize(865, 520);
     this->setWindowFlags(Qt::FramelessWindowHint);
     //this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::Tool);
-    this->setFocusPolicy(Qt::StrongFocus);//this->setFocusPolicy(Qt::NoFocus);
+    this->setFocusPolicy(Qt::ClickFocus);//this->setFocusPolicy(Qt::NoFocus);//设置焦点类型
     this->setWindowTitle(tr("Kylin Weather"));
     this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/indicator-china-weather.png")) );
@@ -146,10 +146,12 @@ void MainWindow::initControlQss()
     ui->btnMinimize->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/min_normal_btn.png);}"
                                "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/min_hover_btn.png);}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/min_pressed_btn.png);}");
+    ui->btnMinimize->setFocusPolicy(Qt::NoFocus);//设置焦点类型
 
     ui->btnCancel->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_normal_btn.png);}"
                                "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
+    ui->btnCancel->setFocusPolicy(Qt::NoFocus);//设置焦点类型
 
     ui->lbCurrTmp->setStyleSheet("QLabel{border:none;background:transparent;font-size:110px;font-weight:300;color:rgba(255,255,255,1);line-height:100px;}");
     ui->lbCurrTmp->setAlignment(Qt::AlignCenter);
@@ -163,6 +165,7 @@ void MainWindow::initControlQss()
     ui->lbCurrHum->setAlignment(Qt::AlignCenter);
 
     m_scrollarea = new QScrollArea(ui->centralwidget);
+    m_scrollarea->setFocusPolicy(Qt::NoFocus);//设置焦点类型
     m_scrollarea->setFixedSize(858, 220);
     m_scrollarea->move(4, 290);
     m_scrollarea->setStyleSheet("QScrollArea{border:none;border-radius:4px;background:transparent;color:rgba(255,255,255,1);}");
@@ -185,9 +188,9 @@ void MainWindow::initControlQss()
     m_scrollwidget->setStyleSheet("QWidget{border:none;border-radius:4px;background:transparent;color:rgba(255,255,255,1);}");
     m_scrollarea->setWidget(m_scrollwidget);
     m_scrollwidget->move(0, 0);
-
     m_information = new Information(m_scrollwidget);
     m_information->move(0,0);
+
 }
 
 void MainWindow::initConnections()
@@ -704,6 +707,16 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event){
         this->setCursor(Qt::ClosedHandCursor);
         event->accept();
     }
+}
+//鼠标点击外部，收起搜索列表
+bool MainWindow::event(QEvent *event)
+{
+//    if(m_searchView == nullptr)return QWidget::event(event);
+    if (event->type() == QEvent::MouseButtonPress)
+    {
+        m_leftupsearchbox->clear();
+    }
+    return QWidget::event(event);
 }
 
 void MainWindow::initGsetting()
