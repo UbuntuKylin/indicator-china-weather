@@ -1,3 +1,10 @@
+indicator-china-weather (3.1.0-20) unstable; urgency=medium
+
+  * 修复BUG#21900，修复城市管理再次点击时置前的问题
+  * 修复初次窗口显示在屏幕中间问题
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Fri, 16 Oct 2020 17:19:10 +0800
+
 indicator-china-weather (3.1.0-19) unstable; urgency=medium
 
   * 修复BUG#21879，修复城市管理，切换主题后收藏城市提示归0的问题
