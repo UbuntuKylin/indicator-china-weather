@@ -1,3 +1,10 @@
+indicator-china-weather (3.1.0-19) unstable; urgency=medium
+
+  * 修复BUG#21879，修复城市管理，切换主题后收藏城市提示归0的问题
+  * 修复BUG#21880，修复城市管理，收藏城市温度处于个位数时ui适配异常的问题
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Fri, 16 Oct 2020 14:13:10 +0800
+
 indicator-china-weather (3.1.0-18) unstable; urgency=low
 
   * 修复BUG#20336，修复键盘响应的问题

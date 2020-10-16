@@ -505,8 +505,7 @@ void CityCollectionWidget::setThemeStyle()
     ui->lbCityCollect->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(255,255,255,1);}");
     ui->lbCityCollect->setText("收藏城市");
 
-    ui->lbCityCount->setStyleSheet("QLabel{border:none;background:transparent;font-size:12px;font-weight:400;color:rgba(255,255,255,1);}");
-    ui->lbCityCount->setText("0/8");
+    ui->lbCityCount->setStyleSheet("QLabel{border:none;background:transparent;font-size:12px;font-weight:400;color:rgba(255,255,255,1);}");;
 
     ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_white.png);}"
                                "QPushButton:Hover{border:0px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
@@ -526,7 +525,6 @@ void CityCollectionWidget::setThemeStyle()
       ui->lbCityCollect->setText("收藏城市");
 
       ui->lbCityCount->setStyleSheet("QLabel{border:none;background:transparent;font-size:12px;font-weight:400;color:rgba(68,68,68,1);}");
-      ui->lbCityCount->setText("0/8");
 
       ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
                                  "QPushButton:Hover{border:0px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
