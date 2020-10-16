@@ -127,6 +127,17 @@ void citycollectionitem::setCityWeather(ObserveWeather observeweather)
     ui->lbTmp->setText(observeweather.tmp); //set current temperature
     ui->lbwea->setText(observeweather.cond_txt); //set current wrather describe
     ui->lbTmpUnit->setText("℃"); //set temperature unit
+    //
+   if(observeweather.tmp.toInt() > -10 && observeweather.tmp.toInt() < 10){
+       ui->lbTmp->setGeometry(18,56,18,28);
+       ui->lbTmpUnit->move(39,56);
+       ui->lbwea->move(62,72);
+     }else{
+       ui->lbTmp->setGeometry(18,56,39,28);
+       ui->lbTmpUnit->move(60,56);
+       ui->lbwea->move(80,72);
+   }
+   //
     QString weather_code = observeweather.cond_code;
     int code  = weather_code.toInt();
     QString returnStr = convertCodeToBackgroud(code);
