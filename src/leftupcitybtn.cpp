@@ -79,7 +79,7 @@ void LeftUpCityBtn::mousePressEvent(QMouseEvent *event)
     m_addCityBtn->setStyleSheet("QLabel{border:0px;background:transparent;background-image:url(':/res/control_icons/add_pressed_btn.png');}");
 
     if (!is_open_city_collect_widget) {
-        CityCollectionWidget *m_citycollectionwidget = new CityCollectionWidget();
+        m_citycollectionwidget = new CityCollectionWidget();
         //接收来自收藏城市窗口发来的信号，再发送一个信号到主窗口
         connect(m_citycollectionwidget, &CityCollectionWidget::sendCurrentCityId, this, &LeftUpCityBtn::sendCurrentCityId);
 
@@ -99,6 +99,11 @@ void LeftUpCityBtn::mousePressEvent(QMouseEvent *event)
         emit requestShowCollCityWeather(); //发送该信号，显示收藏城市窗口各城市的事实天气
 
         is_open_city_collect_widget = true; //为真时无法打开新的收藏窗口
+    }else{
+        if(nullptr != m_citycollectionwidget){
+            m_citycollectionwidget->activateWindow();
+            return;
+        }
     }
 }
 

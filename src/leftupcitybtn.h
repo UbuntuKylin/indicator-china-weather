@@ -10,6 +10,7 @@
 #include <QDebug>
 
 #include "data.h"
+#include "citycollectionwidget.h"
 
 class LeftUpCityBtn : public QWidget
 {
@@ -36,6 +37,8 @@ private:
     QHBoxLayout *m_layout = nullptr;
     QLabel *m_addCityBtn = nullptr;
     QLabel *m_addCityLabel = nullptr;
+
+    CityCollectionWidget *m_citycollectionwidget;
 
 signals:
     void requestSetCityName(QString cityName); //在搜索列表中选中一个城市后，左上角城市名需要更改
