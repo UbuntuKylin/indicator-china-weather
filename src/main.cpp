@@ -101,7 +101,6 @@ int main(int argc, char *argv[])
     QFile file(QStandardPaths::writableLocation(QStandardPaths::HomeLocation)+homepath);
     if(file.exists())
         w.handleIconClickedSub(); //显示在屏幕中央
-        w.show();
     DbusAdaptor adaptor(&w);
     Q_UNUSED(adaptor);
     auto connection = QDBusConnection::sessionBus();
