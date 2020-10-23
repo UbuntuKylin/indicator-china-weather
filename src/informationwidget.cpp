@@ -229,7 +229,7 @@ void Information::onSetForecastWeather(ForecastWeather forecastweather)
     }
 
     //获取星期
-    QDateTime current_date_time = QDateTime::currentDateTime();//获取系统现在的日期
+    QDateTime current_date_time = QDateTime::fromString(forecastweather.dateTime,"yyyy-MM-dd");//将从服务器上获取到的日期处理成特定格式
     QString current_week_1 = "今天";//current_date_time.toString("ddd");
     QString current_week_2 = current_date_time.addDays(+1).toString("ddd");
     QString current_week_3 = current_date_time.addDays(+2).toString("ddd");
@@ -239,7 +239,7 @@ void Information::onSetForecastWeather(ForecastWeather forecastweather)
     QString current_week_7 = current_date_time.addDays(+6).toString("ddd");
 
     //获取日期
-    QDateTime time = QDateTime::currentDateTime();//获取系统现在的时间
+    QDateTime time = QDateTime::fromString(forecastweather.dateTime,"yyyy-MM-dd");//将从服务器上获取到的日期处理成特定格式
     QString date_1 = time.toString("M月d日"); //设置显示格式
     QString date_2 = time.addDays(+1).toString("M月d日");
     QString date_3 = time.addDays(+2).toString("M月d日");

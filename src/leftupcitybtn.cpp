@@ -101,6 +101,7 @@ void LeftUpCityBtn::mousePressEvent(QMouseEvent *event)
         is_open_city_collect_widget = true; //为真时无法打开新的收藏窗口
     }else{
         if(nullptr != m_citycollectionwidget){
+            m_citycollectionwidget->show();
             m_citycollectionwidget->activateWindow();
             return;
         }
