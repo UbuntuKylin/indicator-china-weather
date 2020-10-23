@@ -51,6 +51,7 @@ struct ObserveWeather
     QString wind_dir;//风向 	西北
     QString wind_sc;//风力 	3 (0:静风  1:1级风)
     QString wind_spd;//风速，公里/小时 km/h 	15
+    QString serveTime;//天气信息的更新时间
 };
 
 struct ForecastWeather
@@ -79,6 +80,7 @@ struct ForecastWeather
     QString wind_sc;//风力 	1-2 (级风)
     QString wind_spd;//风速，公里/小时 	14
     QString date;//日期
+    QString dateTime;//当前城市信息更新日期
 };
 
 struct LifeStyle

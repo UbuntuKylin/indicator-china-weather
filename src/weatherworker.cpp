@@ -301,10 +301,11 @@ void WeatherWorker::onWeatherDataReply()
                     m_observeweather.wind_dir = m_json.value("wind_dir").toString();
                     m_observeweather.fl = m_json.value("fl").toString();
                     m_observeweather.cloud = m_json.value("cloud").toString();
+                    m_observeweather.serveTime =weatherObj.value("update_time").toString();
 
                     QString weatherNow="";
-                    QDateTime datatime=QDateTime(QDateTime::currentDateTime());
-                    weatherNow.append(datatime.toString("yyyy-MM-dd hh:mm:ss")+",");//时间
+
+                    weatherNow.append(m_observeweather.serveTime+",");//时间
                     weatherNow.append(m_observeweather.id+",");//省市编码
                     weatherNow.append(m_observeweather.city+",");//城市名称
                     weatherNow.append(m_observeweather.cond_txt+",");//天气情况
@@ -358,6 +359,7 @@ void WeatherWorker::onWeatherDataReply()
                             m_forecastweather.cond_code_n = m_json.value("cond_code_n").toString();
                             m_forecastweather.pres = m_json.value("pres").toString();
                             m_forecastweather.tmp_min = m_json.value("tmp_min").toString();
+                            m_forecastweather.dateTime=m_observeweather.serveTime.split(" ").first();
 
                             emit this->requestSetForecastWeather(m_forecastweather);
                         }

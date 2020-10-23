@@ -33,7 +33,6 @@
 #include "data.h"
 
 #include <QGSettings>
-#include <QDateTime>
 
 class WeatherWorker : public QObject
 {
