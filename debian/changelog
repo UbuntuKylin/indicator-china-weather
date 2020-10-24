@@ -1,3 +1,17 @@
+indicator-china-weather (3.1.0-22) unstable; urgency=medium
+
+  * 修复BUG#22187，修复存在添加城市界面时异常关闭麒麟天气，无法再次打开添加城市界面的问题
+  * 修复BUG#22194，修复更改系统时间，麒麟天气中的日期也随之改变的问题
+  * 修复BUG#22512，修复温度值为零下时，温度值显示不全的问题
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Sat, 24 Oct 2020 13:46:10 +0800
+
+indicator-china-weather (3.1.0-21) unstable; urgency=medium
+
+  * 修复开机直接弹出界面的问题
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Thu, 22 Oct 2020 09:26:33 +0800
+
 indicator-china-weather (3.1.0-20) unstable; urgency=medium
 
   * 修复BUG#21900，修复城市管理再次点击时置前的问题
