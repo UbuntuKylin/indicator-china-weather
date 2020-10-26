@@ -23,6 +23,7 @@ signals:
     void sendCurrentCityId(QString id); //发送到主界面更新主界面天气
     void requestShowCollCityWeather(); //显示收藏城市列表天气
     void requestSetCityWeather(QString weather_data); //发送出去显示主界面城市天气
+    void updatecity();
 
 protected:
     void enterEvent(QEvent *event) Q_DECL_OVERRIDE;

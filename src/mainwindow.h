@@ -122,6 +122,8 @@ private:
     QGSettings  *m_pWeatherData= nullptr;
     QGSettings  *m_pThemeStyle= nullptr;
     QString firstGetCityList="";
+signals:
+    void updatecity();
 };
 
 #endif // MAINWINDOW_H

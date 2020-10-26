@@ -52,6 +52,7 @@ LeftUpCityBtn::LeftUpCityBtn(QWidget *parent) : QWidget(parent)
 
     connect(this, &LeftUpCityBtn::requestSetCityName, this, [=] (QString cityName) {
         m_addCityLabel->setText(cityName);
+
     });
 }
 
@@ -82,6 +83,9 @@ void LeftUpCityBtn::mousePressEvent(QMouseEvent *event)
         m_citycollectionwidget = new CityCollectionWidget();
         //接收来自收藏城市窗口发来的信号，再发送一个信号到主窗口
         connect(m_citycollectionwidget, &CityCollectionWidget::sendCurrentCityId, this, &LeftUpCityBtn::sendCurrentCityId);
+
+        //给收藏城市窗口发送信号进行更新
+        connect(this,&LeftUpCityBtn::updatecity,m_citycollectionwidget,&CityCollectionWidget::updatecity);
 
         //requestShowCollCityWeather信号会一直传到weathermanager.cpp，用于获取收藏列表中城市的实时天气
         connect(m_citycollectionwidget, &CityCollectionWidget::requestShowCollCityWeather, this, &LeftUpCityBtn::requestShowCollCityWeather);

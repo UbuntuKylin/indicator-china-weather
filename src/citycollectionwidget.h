@@ -51,6 +51,8 @@ public slots:
     //slot function to set weather data
     void onRequestSetCityWeather(QString weather_data);
 
+    void updatecity();
+
 protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
@@ -88,6 +90,7 @@ private:
     QPoint dragPos;
     int m_citynumber; //number of current collection cities
     bool isAddCity = false; //whether add a new collect city
+    bool is_open_city_collect_widget = false;
 
     // getstting初始化、值获取、 设置getsetting值
     void initGsetting();

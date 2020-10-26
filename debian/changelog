@@ -1,8 +1,9 @@
 indicator-china-weather (3.1.0-23) unstable; urgency=medium
 
   * 兼容VNC模式，优化main.cpp结构代码及单例逻辑
+  * 修复在主界面和城市管理界面同时打开时，界面不同步的问题
 
- -- liuyuhui <liuyuhui@kylinos.cn>  Mon, 26 Oct 2020 08:57:00 +0800
+ -- liuyuhui <liuyuhui@kylinos.cn>  Mon, 26 Oct 2020 18:45:00 +0800
 
 indicator-china-weather (3.1.0-22) unstable; urgency=medium
 
