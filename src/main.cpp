@@ -28,7 +28,8 @@
 #include <signal.h>
 #include <X11/Xlib.h>
 
-#include "qtsingleapplication.h"
+#include <QtSingleApplication>
+
 bool onlyOne(QtSingleApplication &a)
 {
     if (a.isRunning()) {
@@ -121,7 +122,7 @@ void responseCommand(QtSingleApplication &a)
 
 int main(int argc, char *argv[])
 {
-    QString id = QString(QLatin1String(getenv("DISPLAY")));
+    QString id = QString("indicator-china-weather-"+QLatin1String(getenv("DISPLAY")));
     QtSingleApplication a(id, argc, argv);
     responseCommand(a);//响应外部DBus命令
     if(onlyOne(a))return 0;

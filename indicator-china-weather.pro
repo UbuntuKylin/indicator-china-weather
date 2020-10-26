@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 QT       += network
-
+include(src/qtsingleapplication/qtsingleapplication.pri)
 isEqual(QT_MAJOR_VERSION, 5) {
     QT += widgets gui core dbus
 }
@@ -85,10 +85,6 @@ SOURCES += src/main.cpp \
     src/locationworker.cpp \
     src/mainwindow.cpp \
     src/promptwidget.cpp \
-    src/qtlocalpeer.cpp \
-    src/qtlockedfile.cpp \
-    src/qtlockedfile_unix.cpp \
-    src/qtsingleapplication.cpp \
     src/weathermanager.cpp \
     src/weatherworker.cpp
 
@@ -111,9 +107,6 @@ HEADERS  += src/mainwindow.h \
     src/leftupsearchview.h \
     src/locationworker.h \
     src/promptwidget.h \
-    src/qtlocalpeer.h \
-    src/qtlockedfile.h \
-    src/qtsingleapplication.h \
     src/weathermanager.h \
     src/weatherworker.h
 
@@ -131,3 +124,5 @@ FORMS += \
     src/citycollectionwidget.ui \
     src/informationwidget.ui \
     src/mainwindow.ui
+
+DISTFILES +=
