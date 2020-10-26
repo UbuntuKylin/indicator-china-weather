@@ -28,15 +28,23 @@
 #include <signal.h>
 #include <X11/Xlib.h>
 
-int main(int argc, char *argv[])
+#include "qtsingleapplication.h"
+bool onlyOne(QtSingleApplication &a)
+{
+    if (a.isRunning()) {
+        a.sendMessage(QApplication::arguments().length() > 1 ? QApplication::arguments().at(1) : a.applicationFilePath());
+        qDebug() << "Can't lock single file, indicator-china-weather is already running!";
+        return true;
+    }
+    return false;
+}
+
+void setAttribute(QtSingleApplication &a)
 {
     signal(SIGINT, [](int) { QApplication::quit(); });// 设置退出信号
-
     //自适应高清屏幕
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-
-    QApplication a(argc, argv);
 
     QIcon::setThemeName("ukui-icon-theme-default");
 
@@ -44,7 +52,10 @@ int main(int argc, char *argv[])
     a.setApplicationName("Kylin Weather (indicator-china-weather)");
     a.setApplicationVersion("3.1.0");
     a.setQuitOnLastWindowClosed(false);//Avoid that after hiding mainwindow, close the sub window would cause the program exit
+}
 
+void translation(QtSingleApplication &a)
+{
     QTranslator app_trans;
     QTranslator qt_trans;
     QString locale = QLocale::system().name();
@@ -71,7 +82,20 @@ int main(int argc, char *argv[])
         else
             a.installTranslator(&qt_trans);
     }
-//提供DBus接口，添加show参数
+}
+
+void showThis(MainWindow &w)
+{
+    //读取开机启动服务列表，判断是否开机启动
+    QString homepath="/.config/autostart/indicator-china-weather.desktop";
+    QFile file(QStandardPaths::writableLocation(QStandardPaths::HomeLocation)+homepath);
+    if(file.exists())
+        w.handleIconClickedSub(); //显示在屏幕中央
+}
+
+void responseCommand(QtSingleApplication &a)
+{
+    //提供DBus接口，添加show参数
     QCommandLineParser parser;
     parser.setApplicationDescription(QCoreApplication::translate("main", "KilinWeather"));
     parser.addHelpOption();
@@ -84,36 +108,34 @@ int main(int argc, char *argv[])
 
     if(parser.isSet(swOption) || !QDBusConnection::sessionBus().registerService("com.kylin.weather"))
     {
-        QDBusInterface *interface = new QDBusInterface("com.kylin.weather",
-                                                       "/com/kylin/weather",
-                                                       "com.kylin.weather",
-                                                       QDBusConnection::sessionBus(),
-                                                       NULL);
+        if(!a.isRunning())return;
+            QDBusInterface *interface = new QDBusInterface("com.kylin.weather",
+                                                           "/com/kylin/weather",
+                                                           "com.kylin.weather",
+                                                           QDBusConnection::sessionBus(),
+                                                           NULL);
 
-        QDBusMessage msg = interface->call(QStringLiteral("showMainWindow"));
-        return 0;
+            interface->call(QStringLiteral("showMainWindow"));
     }
+}
+
+int main(int argc, char *argv[])
+{
+    QString id = QString(QLatin1String(getenv("DISPLAY")));
+    QtSingleApplication a(id, argc, argv);
+    responseCommand(a);//响应外部DBus命令
+    if(onlyOne(a))return 0;
+    setAttribute(a);//设置属性
+    translation(a);//翻译
 
     MainWindow w;
+    showThis(w);//读取开机启动服务列表，判断是否开机启动
 
-    //读取开机启动服务列表，判断是否开机启动
-    QString homepath="/.config/autostart/indicator-china-weather.desktop";
-    QFile file(QStandardPaths::writableLocation(QStandardPaths::HomeLocation)+homepath);
-    if(file.exists())
-        w.handleIconClickedSub(); //显示在屏幕中央
+    //建立DBus服务（YYF 经自测封装到函数里会导致程序在响应DBus信号时异常结束）
     DbusAdaptor adaptor(&w);
     Q_UNUSED(adaptor);
     auto connection = QDBusConnection::sessionBus();
-    if (!connection.registerService("com.kylin.weather") || !connection.registerObject("/com/kylin/weather", &w)) {
-        qCritical() << "QDbus register service failed reason:" << connection.lastError();
-        QDBusInterface iface("com.kylin.weather",
-                                       "/com/kylin/weather",
-                                       "com.kylin.weather",
-                                       connection);
-        iface.call("showMainWindow");
-
-        return 0;
-    }
+    qDebug()<<"建立DBus服务成功： "<< (connection.registerService("com.kylin.weather")&&connection.registerObject("/com/kylin/weather", &w));
 
     return a.exec();
 }

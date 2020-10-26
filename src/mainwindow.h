@@ -92,7 +92,6 @@ private:
     QTimer *m_refreshweather;
 
     void judgeSystemLanguage();
-    void checkSingle();
 
     void onSearchBoxEdited();
     void searchCityName();

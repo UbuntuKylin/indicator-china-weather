@@ -1,3 +1,9 @@
+indicator-china-weather (3.1.0-23) unstable; urgency=medium
+
+  * 兼容VNC模式，优化main.cpp结构代码及单例逻辑
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Mon, 26 Oct 2020 08:57:00 +0800
+
 indicator-china-weather (3.1.0-22) unstable; urgency=medium
 
   * 修复BUG#22187，修复存在添加城市界面时异常关闭麒麟天气，无法再次打开添加城市界面的问题

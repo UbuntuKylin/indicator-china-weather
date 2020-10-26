@@ -28,11 +28,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 //    judgeSystemLanguage();
 
-
-
-    //单例运行
-    checkSingle();
-
     //先注册结构体，这样才能作为信号与槽的参数
     qRegisterMetaType<ObserveWeather>();
     qRegisterMetaType<ForecastWeather>();
@@ -118,21 +113,6 @@ void MainWindow::judgeSystemLanguage()
         return;
     } else {
         qDebug() << "Non-chinese system";
-        exit(0);
-    }
-}
-
-//单例模式
-void MainWindow::checkSingle()
-{
-    QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
-    QString lockPath = homePath.at(0) + "/.config/china-weather-lock";
-    int fd = open(lockPath.toUtf8().data(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
-
-    if (fd < 0) { exit(1); }
-
-    if (lockf(fd, F_TLOCK, 0)) {
-        qDebug()<<"Can't lock single file, indicator-china-weather is already running!";
         exit(0);
     }
 }

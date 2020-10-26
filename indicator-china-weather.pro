@@ -85,6 +85,10 @@ SOURCES += src/main.cpp \
     src/locationworker.cpp \
     src/mainwindow.cpp \
     src/promptwidget.cpp \
+    src/qtlocalpeer.cpp \
+    src/qtlockedfile.cpp \
+    src/qtlockedfile_unix.cpp \
+    src/qtsingleapplication.cpp \
     src/weathermanager.cpp \
     src/weatherworker.cpp
 
@@ -107,6 +111,9 @@ HEADERS  += src/mainwindow.h \
     src/leftupsearchview.h \
     src/locationworker.h \
     src/promptwidget.h \
+    src/qtlocalpeer.h \
+    src/qtlockedfile.h \
+    src/qtsingleapplication.h \
     src/weathermanager.h \
     src/weatherworker.h
 
