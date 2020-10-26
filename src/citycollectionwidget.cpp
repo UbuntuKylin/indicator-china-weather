@@ -118,121 +118,166 @@ CityCollectionWidget::~CityCollectionWidget()
 {
     delete ui;
 }
+//同步主界面搜索城市与当前城市
+void CityCollectionWidget::updatecity()
+{
+    is_open_city_collect_widget = true;
+    emit requestShowCollCityWeather();
 
+}
 void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
 {
-    if (weather_data != "") {
-        QStringList strList = weather_data.split(";");
+    if (weather_data == "")return;
 
-        if (isAddCity) {
-            //start moving control if task is add a new collect city
-            if (strList.size() <= 2) {
-                return;
-            }
+    QStringList strList = weather_data.split(";");
 
-            int pos = strList.size() - 2; //the order number of last city in list
-            QString addCityWeatherData = strList.at(pos); //get weather data for new cities
 
-            QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
+    if(is_open_city_collect_widget)
+    {
+        is_open_city_collect_widget=false;
 
-            int itemNum = cityItemList.size();
+        QRect rec(QPoint(35,81),QSize(170,100));
+        QString weatherStr=strList.first();
 
-            citycollectionitem *lastCityItem = cityItemList.at(itemNum-1); 
-            delete lastCityItem; //delete last item
-            itemNum -= 1;
-
-            if (itemNum <= 1) {
-                showCollectCity(35, 242, true, addCityWeatherData); //add a new collection city
-                showCollectCity(35 + 170, 242, false, ""); //create add collect city item
-            }
-
-            if (itemNum > 1 && itemNum < 9) {
-                int row(0), column(0);
-                for (int i = 1;i < itemNum; i ++) {
-                    column += 1;
-                    if (column == 3) {
-                        column = 0;
-                        row += 1;
+        ObserveWeather observeweather;
+        if (!weatherStr.isEmpty()) {
+            QJsonObject m_json;
+            if (!weatherStr.isEmpty()) {
+                QStringList eachKeyList = weatherStr.split(",");
+                foreach (QString strKey, eachKeyList) {
+                    if (!strKey.isEmpty()) {
+                        //等号左边为键，右边为值
+                        m_json.insert(strKey.split("=").at(0), strKey.split("=").at(1));
                     }
                 }
-                showCollectCity(35 + column*170, 242 + row*100, true, addCityWeatherData); //add a new collection city
+            }
+            observeweather.tmp = m_json.value("tmp").toString();
+            observeweather.cond_txt = m_json.value("cond_txt").toString();
+            observeweather.cond_code = m_json.value("cond_code").toString();
+            observeweather.id = m_json.value("id").toString();
+            observeweather.city = m_json.value("location").toString();
+        }
 
+        QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
+        for(citycollectionitem * changeItem:cityItemList)
+        {
+            if(changeItem->geometry()==rec)
+              {
+                changeItem->setCityWeather( observeweather);
+            }
+         }
+        return;
+}
+
+    if (isAddCity) {
+        //start moving control if task is add a new collect city
+        if (strList.size() <= 2) {
+            return;
+        }
+//
+        int pos = strList.size() - 2; //the order number of last city in list
+        QString addCityWeatherData = strList.at(pos); //get weather data for new cities
+
+        QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
+
+        int itemNum = cityItemList.size();
+
+        citycollectionitem *lastCityItem = cityItemList.at(itemNum-1);
+        delete lastCityItem; //delete last item
+
+        itemNum -= 1;
+
+        if (itemNum <= 1) {
+            showCollectCity(35, 242, true, addCityWeatherData); //add a new collection city
+            showCollectCity(35 + 170, 242, false, ""); //create add collect city item
+        }
+
+        if (itemNum > 1 && itemNum < 9) {
+            int row(0), column(0);
+            for (int i = 1;i < itemNum; i ++) {
                 column += 1;
                 if (column == 3) {
                     column = 0;
                     row += 1;
                 }
-                showCollectCity(35 + column*170, 242 + row*100, false, ""); //create add collect city item
             }
+            showCollectCity(35 + column*170, 242 + row*100, true,addCityWeatherData); //add a new collection city
 
-            if (itemNum >= 9) {
-                //replace last collect city as new add city
-                QList<citycollectionitem *> m_cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
-                citycollectionitem *m_lastCityItem = m_cityItemList.at(m_cityItemList.size() - 1); //delete last item
-                delete m_lastCityItem;
-                showCollectCity(35 + 1*170, 242 + 2*100, true, addCityWeatherData); //add a new collection city
-                showCollectCity(35 + 2*170, 242 + 2*100, false, ""); //create add collect city item
+            column += 1;
+            if (column == 3) {
+                column = 0;
+                row += 1;
             }
-
-            isAddCity = false;
-        } else {
-            m_citynumber = strList.size()-2;
-            QString citynumber = QString::number(m_citynumber) + "/8";
-            ui->lbCityCount->setText(citynumber); //show number of collected cities
-
-            int row = 0; //current row
-            int column = 0; //cuerrent column
-            for (int i=0; i< strList.size()-1; i++) {
-                QString eachCityData = strList.at(i); //get real-time weather data of each city
-                ObserveWeather observeweather;
-                QJsonObject m_json;
-                if (!eachCityData.isEmpty()) {
-                    QStringList eachKeyList = eachCityData.split(",");
-                    foreach (QString strKey, eachKeyList) {
-                        if (!strKey.isEmpty()) {
-                            m_json.insert(strKey.split("=").at(0), strKey.split("=").at(1)); //change data to json format
-                        }
-                    }
-                }
-
-                observeweather.tmp = m_json.value("tmp").toString();
-                observeweather.cond_txt = m_json.value("cond_txt").toString();
-                observeweather.cond_code = m_json.value("cond_code").toString();
-                observeweather.id = m_json.value("id").toString();
-                observeweather.city = m_json.value("location").toString();
-
-                if (i==0) { //current city
-                    citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
-                    m_currentcity->move(35, 81);
-                    m_currentcity->setItemWidgetState(true, true, m_citynumber);
-                    m_currentcity->setCityWeather(observeweather);
-                    m_currentcity->show();
-                    connect(m_currentcity, SIGNAL(requestDeleteCity(QString)), this, SLOT(onRequestDeleteCity(QString)) );
-                    connect(m_currentcity, SIGNAL(changeCurrentCity(QString)), this, SLOT(onChangeCurrentCity(QString)) );
-                } else { //collected city
-                    citycollectionitem *m_collecity = new citycollectionitem(ui->backwidget);
-                    m_collecity->move(35 + column*170, 242 + row*100); //m_currentcity->move(35 + j*170, 242 + i*100);
-                    m_collecity->setItemWidgetState(true, false, m_citynumber);
-                    m_collecity->setCityWeather(observeweather);
-                    m_collecity->show();
-                    connect(m_collecity, SIGNAL(requestDeleteCity(QString)), this, SLOT(onRequestDeleteCity(QString)) );
-                    connect(m_collecity, SIGNAL(changeCurrentCity(QString)), this, SLOT(onChangeCurrentCity(QString)) );
-
-                    column += 1;
-                    if (column == 3){
-                        column = 0;
-                        row += 1;
-                    }
-                }
-            } //end for (int i=0; i< strList.size()-1; i++)
-            //add collect city item
-            citycollectionitem *m_lastitem = new citycollectionitem(ui->backwidget);
-            m_lastitem->move(35 + column*170, 242 + row*100);
-            m_lastitem->setItemWidgetState(false, false, m_citynumber);
-            m_lastitem->show();
-            connect(m_lastitem, SIGNAL(showCityAddWiget()), this, SLOT(onShowCityAddWiget()) );
+            showCollectCity(35 + column*170, 242 + row*100, false, ""); //create add collect city item
         }
-    } //end if (weather_data != "")
+
+        if (itemNum >= 9) {
+            //replace last collect city as new add city
+            QList<citycollectionitem *> m_cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
+            citycollectionitem *m_lastCityItem = m_cityItemList.at(m_cityItemList.size() - 1); //delete last item
+            delete m_lastCityItem;
+            showCollectCity(35 + 1*170, 242 + 2*100, true, addCityWeatherData); //add a new collection city
+            showCollectCity(35 + 2*170, 242 + 2*100, false, ""); //create add collect city item
+        }
+
+        isAddCity = false;
+    } else {
+        m_citynumber = strList.size()-2;
+        QString citynumber = QString::number(m_citynumber) + "/8";
+        ui->lbCityCount->setText(citynumber); //show number of collected cities
+
+        int row = 0; //current row
+        int column = 0; //cuerrent column
+        for (int i=0; i< strList.size()-1; i++) {
+            QString eachCityData = strList.at(i); //get real-time weather data of each city
+            ObserveWeather observeweather;
+            QJsonObject m_json;
+            if (!eachCityData.isEmpty()) {
+                QStringList eachKeyList = eachCityData.split(",");
+                foreach (QString strKey, eachKeyList) {
+                    if (!strKey.isEmpty()) {
+                        m_json.insert(strKey.split("=").at(0), strKey.split("=").at(1)); //change data to json format
+                    }
+                }
+            }
+
+            observeweather.tmp = m_json.value("tmp").toString();
+            observeweather.cond_txt = m_json.value("cond_txt").toString();
+            observeweather.cond_code = m_json.value("cond_code").toString();
+            observeweather.id = m_json.value("id").toString();
+            observeweather.city = m_json.value("location").toString();
+
+            if (i==0) { //current city
+                citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
+                m_currentcity->move(35, 81);
+                m_currentcity->setItemWidgetState(true, true, m_citynumber);
+                m_currentcity->setCityWeather(observeweather);
+                m_currentcity->show();
+                connect(m_currentcity, SIGNAL(requestDeleteCity(QString)), this, SLOT(onRequestDeleteCity(QString)) );
+                connect(m_currentcity, SIGNAL(changeCurrentCity(QString)), this, SLOT(onChangeCurrentCity(QString)) );
+            } else { //collected city
+                citycollectionitem *m_collecity = new citycollectionitem(ui->backwidget);
+                m_collecity->move(35 + column*170, 242 + row*100); //m_currentcity->move(35 + j*170, 242 + i*100);
+                m_collecity->setItemWidgetState(true, false, m_citynumber);
+                m_collecity->setCityWeather(observeweather);
+                m_collecity->show();
+                connect(m_collecity, SIGNAL(requestDeleteCity(QString)), this, SLOT(onRequestDeleteCity(QString)) );
+                connect(m_collecity, SIGNAL(changeCurrentCity(QString)), this, SLOT(onChangeCurrentCity(QString)) );
+
+                column += 1;
+                if (column == 3){
+                    column = 0;
+                    row += 1;
+                }
+            }
+        } //end for (int i=0; i< strList.size()-1; i++)
+        //add collect city item
+        citycollectionitem *m_lastitem = new citycollectionitem(ui->backwidget);
+        m_lastitem->move(35 + column*170, 242 + row*100);
+        m_lastitem->setItemWidgetState(false, false, m_citynumber);
+        m_lastitem->show();
+        connect(m_lastitem, SIGNAL(showCityAddWiget()), this, SLOT(onShowCityAddWiget()) );//收藏界面的“+”按钮的信号，按下，打开搜索窗口
+    }
 }
 
 void CityCollectionWidget::showCollectCity(int x, int y, bool isShowNormal, QString weatherStr)

@@ -198,7 +198,8 @@ void MainWindow::initConnections()
     });
 
     connect(m_leftupcitybtn, SIGNAL(requestShowCollCityWeather()), m_weatherManager, SIGNAL(requestShowCollCityWeather()));
-
+   //同步主界面和收藏界面当前城市信息
+    connect(this,&MainWindow::updatecity,m_leftupcitybtn,&LeftUpCityBtn::updatecity);
     //获取传过来的收藏城市的天气数据，并传给显示收藏城市窗口
     connect(m_weatherManager, SIGNAL(requestSetCityWeather(QString)), m_leftupcitybtn, SIGNAL(requestSetCityWeather(QString)));
     //connect(m_weatherManager, &WeatherManager::requestSetCityWeather, this, [=] (QString weather_data) {
@@ -711,10 +712,11 @@ void MainWindow::initGsetting()
             if (key == "citylist")
             {
                 QString nowCityList=m_pWeatherData->get("citylist").toString();
-                if(nowCityList!=firstGetCityList)
+                if(nowCityList.split(",").first()!=firstGetCityList.split(",").first())
                 {
                     m_weatherManager->startGetTheWeatherData(nowCityList.split(",").at(0));
                     firstGetCityList=nowCityList;
+                    emit updatecity();
                 }
             }
         });
