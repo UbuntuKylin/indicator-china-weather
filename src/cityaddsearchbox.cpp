@@ -25,8 +25,7 @@
 
 CityAddSearchBox::CityAddSearchBox(QWidget* parent)
     :QLineEdit(parent)
-    , m_searchText("搜索")
-    , m_searchPixmap(QPixmap(":/res/control_icons/search_city.png"))
+
 {
     this->setFixedSize(470, 30);
     this->setStyleSheet("QLineEdit{padding-left:31px;"
@@ -36,40 +35,22 @@ CityAddSearchBox::CityAddSearchBox(QWidget* parent)
                         "font-size:14px;"
                         "color:rgba(0,0,0,1);}");
     this->setFocusPolicy(Qt::ClickFocus);
+    m_searchText = QString("搜索");
+    m_searchPixmap = (QPixmap(":/res/control_icons/search_city.png"));
+
 }
 
 void CityAddSearchBox::paintEvent(QPaintEvent *event)
 {
     QLineEdit::paintEvent(event);
+    drawbackground();
 
-    if (!this->hasFocus() && this->text().isEmpty()) {
-        // show icon and tips when the focus is not on searchbox
-        QPainter painter(this);
-        painter.setOpacity(0.5);
-
-        QFont curFont = painter.font(); //QGuiApplication::font();
-        curFont.setPixelSize(14); //font.setPointSize(14);
-        QPen pen(Qt::black);
-        painter.setPen(pen);
-        painter.setFont(curFont);
-
-        QRect iconRect(QPoint(210, 7), m_searchPixmap.size()/qApp->devicePixelRatio());
-        painter.drawPixmap(iconRect, m_searchPixmap); //add icon in searchbox
-
-        QRect textRect(235, 3, 30, 28);
-        painter.drawText(textRect, m_searchText); //add text in searchbox
-    } else {
-        // show cursor when the focus is on searchbox, and set the icon left
-        QPainter painter(this);
-        painter.setOpacity(0.5);
-
-        QRect iconRect(QPoint(9, 7), m_searchPixmap.size()/qApp->devicePixelRatio());
-        painter.drawPixmap(iconRect, m_searchPixmap);
-    }
 }
 //主题适配
 void CityAddSearchBox::ThemeCitySearchBox(QString str)
 {
+    m_ThemeStyle = str;
+
     if("ukui-dark" == str || "ukui-black" == str)
     {
    this->setStyleSheet("QLineEdit{padding-left:31px;"
@@ -77,7 +58,9 @@ void CityAddSearchBox::ThemeCitySearchBox(QString str)
                        "border:1px solid rgba(61,107,229,1);"
                        "border-radius:4px;"
                        "font-size:14px;"
-                       "color:rgba(0,0,0,1);}");
+                       "color:rgba(255,255,255,1);}");
+   m_searchPixmap = (QPixmap(":/res/control_icons/search.png"));
+
 }
     else if("ukui-default" == str || "ukui-white" == str || "ukui-light" == str)
     {
@@ -87,5 +70,42 @@ void CityAddSearchBox::ThemeCitySearchBox(QString str)
                             "border-radius:4px;"
                             "font-size:14px;"
                             "color:rgba(0,0,0,1);}");
+        m_searchPixmap = (QPixmap(":/res/control_icons/search_city.png"));
     }
+}
+//按主题更改paintevent
+void CityAddSearchBox::drawbackground()
+{
+        if (!this->hasFocus() && this->text().isEmpty()) {
+            QPainter painter(this);
+            painter.setOpacity(0.5);
+
+            QFont curFont = painter.font();
+            curFont.setPixelSize(14);
+            if("ukui-dark" ==  m_ThemeStyle|| "ukui-black" == m_ThemeStyle)
+            {
+                QPen pen(Qt::white);
+                painter.setPen(pen);
+                painter.setFont(curFont);
+            } else if("ukui-default" == m_ThemeStyle || "ukui-white" == m_ThemeStyle || "ukui-light" == m_ThemeStyle)
+              {
+                    QPen pen(Qt::black);
+                    painter.setPen(pen);
+                    painter.setFont(curFont);
+              }
+
+            QRect iconRect(QPoint(210, 7), m_searchPixmap.size()/qApp->devicePixelRatio());
+            painter.drawPixmap(iconRect, m_searchPixmap);
+
+            QRect textRect(235, 3, 30, 28);
+            painter.drawText(textRect, m_searchText);
+
+        } else {
+            QPainter painter(this);
+            painter.setOpacity(0.5);
+
+            QRect iconRect(QPoint(9, 7), m_searchPixmap.size()/qApp->devicePixelRatio());
+            painter.drawPixmap(iconRect, m_searchPixmap);
+        }
+
 }

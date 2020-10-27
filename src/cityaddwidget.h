@@ -5,6 +5,7 @@
 #include "cityaddsearchbox.h"
 #include "cityaddsearchview.h"
 #include "cityaddsearchdelegate.h"
+#include "darkcityaddsearchdelegate.h"
 #include "locationworker.h"
 #include "cityaddhotview.h"
 
@@ -46,10 +47,13 @@ private:
     CityAddHotView *m_cityaddhotview = nullptr;
     CityAddSearchView *m_cityaddsearchview = nullptr;
     CityAddSearchDelegate *m_cityaddsearchdelegate = nullptr;
+    DarkCityAddSearchDelegate *m_darkcityaddsearchdelegate = nullptr;
     QSortFilterProxyModel* m_proxyModel = nullptr;
     QStandardItemModel *m_model = nullptr;
 
     LocationWorker *m_locationWorker = nullptr;
+    QString ThemeStyle;
+
 
     // search and show cities in list from file china-city-list.csv
     void searchCityName();

@@ -74,6 +74,7 @@ SOURCES += src/main.cpp \
     src/cityaddwidget.cpp \
     src/citycollectionitem.cpp \
     src/citycollectionwidget.cpp \
+    src/darkcityaddsearchdelegate.cpp \
     src/dbusadaptor.cpp \
     src/geoipworker.cpp \
     src/hotcity.cpp \
@@ -96,6 +97,7 @@ HEADERS  += src/mainwindow.h \
     src/cityaddwidget.h \
     src/citycollectionitem.h \
     src/citycollectionwidget.h \
+    src/darkcityaddsearchdelegate.h \
     src/data.h \
     src/dbusadaptor.h \
     src/geoipworker.h \

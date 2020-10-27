@@ -14,10 +14,12 @@ public:
 protected:
     // set the display style of the searchbox.
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
-
 private:
     QString m_searchText;
     QPixmap m_searchPixmap;
+    QString m_ThemeStyle;
+
+    void drawbackground();
 };
 
 #endif // CITYADDSEARCHBOX_H

@@ -423,7 +423,7 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
 
 void CityCollectionWidget::onChangeCurrentCity(QString cityId)
 {
-    emit sendCurrentCityId(cityId); //发信号更新主界面
+//    emit sendCurrentCityId(cityId); //发信号更新主界面
 
     //QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
     //foreach (citycollectionitem *cityItem, cityItemList) {
