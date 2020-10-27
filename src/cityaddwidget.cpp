@@ -74,6 +74,7 @@ CityAddition::CityAddition(QWidget *parent) :
 
     m_cityaddsearchview = new CityAddSearchView(ui->backwidget);
     m_cityaddsearchdelegate = new CityAddSearchDelegate(m_cityaddsearchview);
+    m_darkcityaddsearchdelegate = new DarkCityAddSearchDelegate(m_cityaddsearchview);
     m_proxyModel = new QSortFilterProxyModel(m_cityaddsearchview);
     m_model = new QStandardItemModel();
     m_cityaddsearchview->move(35, 125);
@@ -106,8 +107,13 @@ CityAddition::~CityAddition()
 void CityAddition::onSearchBoxEdited()
 {
     searchCityName();
-
-    m_cityaddsearchview->setItemDelegate(m_cityaddsearchdelegate); //Set delegation for view
+   if("ukui-dark" == ThemeStyle || "ukui-black" == ThemeStyle)
+   {
+        m_cityaddsearchview->setItemDelegate(m_darkcityaddsearchdelegate); //Set delegation for view
+   }else if("ukui-default" == ThemeStyle || "ukui-white" == ThemeStyle || "ukui-light" == ThemeStyle)
+   {
+        m_cityaddsearchview->setItemDelegate(m_cityaddsearchdelegate);
+   }
     m_proxyModel->setSourceModel(m_model);
     m_proxyModel->setFilterRole(Qt::UserRole);
     m_proxyModel->setDynamicSortFilter(true);
@@ -188,6 +194,9 @@ void CityAddition::on_btnReturn_clicked()
 //主题适配
 void CityAddition::getStr(QString str)
 {
+
+    ThemeStyle = str;
+    onSearchBoxEdited();
     m_cityaddsearchview->ThemeCitySearchView(str);
     m_cityaddhotview->ThemeCityHotView(str);
     m_cityaddsearchbox->ThemeCitySearchBox(str);

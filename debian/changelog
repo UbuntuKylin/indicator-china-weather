@@ -1,3 +1,9 @@
+indicator-china-weather (3.1.0-24) unstable; urgency=medium
+
+  * 修复添加城市界面主题适配的问题
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Tue, 27 Oct 2020 14:52:01 +0800
+
 indicator-china-weather (3.1.0-23) unstable; urgency=medium
 
   * 兼容VNC模式，优化main.cpp结构代码及单例逻辑

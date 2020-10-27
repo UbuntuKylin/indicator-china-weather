@@ -55,36 +55,6 @@ void setAttribute(QtSingleApplication &a)
     a.setQuitOnLastWindowClosed(false);//Avoid that after hiding mainwindow, close the sub window would cause the program exit
 }
 
-void translation(QtSingleApplication &a)
-{
-    QTranslator app_trans;
-    QTranslator qt_trans;
-    QString locale = QLocale::system().name();
-
-    QString trans_path;
-    if (QDir("/usr/share/indicator-china-weather/translations").exists()) {
-        trans_path = "/usr/share/indicator-china-weather/translations";
-    }
-    else {
-        trans_path = qApp->applicationDirPath() + "/translations";
-    }
-
-    QString qt_trans_path;
-    qt_trans_path = QLibraryInfo::location(QLibraryInfo::TranslationsPath);// /usr/share/qt5/translations
-
-    if (locale == "zh_CN") {
-        if(!app_trans.load("indicator-china-weather_" + locale + ".qm", trans_path))
-            qDebug() << "Load translation file："<< "indicator-china-weather_" + locale + ".qm from" << trans_path << "failed!";
-        else
-            a.installTranslator(&app_trans);
-
-        if(!qt_trans.load("qt_" + locale + ".qm", qt_trans_path))
-            qDebug() << "Load translation file："<< "qt_" + locale + ".qm from" << qt_trans_path << "failed!";
-        else
-            a.installTranslator(&qt_trans);
-    }
-}
-
 void showThis(MainWindow &w)
 {
     //读取开机启动服务列表，判断是否开机启动
@@ -127,7 +97,32 @@ int main(int argc, char *argv[])
     responseCommand(a);//响应外部DBus命令
     if(onlyOne(a))return 0;
     setAttribute(a);//设置属性
-    translation(a);//翻译
+
+    //翻译（YYF 经自测封装到函数里会导致程序部分翻译文件失效）
+    QTranslator app_trans;
+    QTranslator qt_trans;
+    QString locale = QLocale::system().name();
+    QString trans_path;
+    if (QDir("/usr/share/indicator-china-weather/translations").exists()) {
+        trans_path = "/usr/share/indicator-china-weather/translations";
+    }
+    else {
+        trans_path = qApp->applicationDirPath() + "/translations";
+    }
+    QString qt_trans_path;
+    qt_trans_path = QLibraryInfo::location(QLibraryInfo::TranslationsPath);// /usr/share/qt5/translations
+
+    if (locale == "zh_CN") {
+        if(!app_trans.load("indicator-china-weather_" + locale + ".qm", trans_path))
+            qDebug() << "Load translation file："<< "indicator-china-weather_" + locale + ".qm from" << trans_path << "failed!";
+        else
+            a.installTranslator(&app_trans);
+
+        if(!qt_trans.load("qt_" + locale + ".qm", qt_trans_path))
+            qDebug() << "Load translation file："<< "qt_" + locale + ".qm from" << qt_trans_path << "failed!";
+        else
+            a.installTranslator(&qt_trans);
+    }
 
     MainWindow w;
     showThis(w);//读取开机启动服务列表，判断是否开机启动
