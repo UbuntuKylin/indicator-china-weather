@@ -1,8 +1,9 @@
 indicator-china-weather (3.1.0-24) unstable; urgency=medium
 
-  * 修复添加城市界面主题适配的问题
+  * 修复城市管理-添加城市界面主题适配的问题
+  * 修复BUG#22832，修复城市管理-添加城市界面边框无阴影的问题
 
- -- liuyuhui <liuyuhui@kylinos.cn>  Tue, 27 Oct 2020 14:52:01 +0800
+ -- liuyuhui <liuyuhui@kylinos.cn>  Wed, 28 Oct 2020 09:10:01 +0800
 
 indicator-china-weather (3.1.0-23) unstable; urgency=medium
 
