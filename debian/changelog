@@ -1,3 +1,10 @@
+indicator-china-weather (3.1.0-25) unstable; urgency=medium
+
+  * 添加托盘右键菜单功能
+  * 修复部分翻译没有生效的问题
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Fri, 30 Oct 2020 09:20:01 +0800
+
 indicator-china-weather (3.1.0-24) unstable; urgency=medium
 
   * 修复城市管理-添加城市界面主题适配的问题

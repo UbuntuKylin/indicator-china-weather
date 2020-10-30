@@ -39,6 +39,7 @@
 #include <QFileInfo>
 #include <QLocale>
 #include <QPainterPath>
+#include <QMenu>
 
 #include <QGSettings>
 
@@ -90,7 +91,9 @@ private:
     Information *m_information;
     QSystemTrayIcon *m_trayIcon = nullptr;
     QTimer *m_refreshweather;
-
+    QMenu *m_mainMenu = nullptr;
+    QAction *m_openAction;
+    QAction *m_quitAction;
     void judgeSystemLanguage();
 
     void onSearchBoxEdited();
@@ -122,6 +125,8 @@ private:
     QGSettings  *m_pWeatherData= nullptr;
     QGSettings  *m_pThemeStyle= nullptr;
     QString firstGetCityList="";
+
+    QString nowThemeStyle;
 signals:
     void updatecity();
 };

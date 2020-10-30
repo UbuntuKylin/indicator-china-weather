@@ -54,6 +54,28 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //创建托盘图标
     this->createTrayIcon();
+    //添加托盘菜单
+    m_mainMenu = new QMenu(this);
+//    m_mainMenu->addSeparator();
+    m_openAction = new QAction(tr("Open Kylin Weather"),this);//打开麒麟天气
+    m_quitAction = new QAction(tr("Exit"),this);//退出
+    m_mainMenu->addAction(m_openAction);
+//    m_openAction->setIcon(QIcon::fromTheme(QString("indicator-china-weather"), QIcon(QString(":/res/control_icons/indicator-china-weather_min.png"))) );
+    m_openAction->setIcon(QIcon(QString(":/res/control_icons/indicator-china-weather_min.png")) );
+    m_mainMenu->addAction(m_quitAction);
+    m_quitAction->setIcon(QIcon::fromTheme(QString("exit-symbolic"), QIcon(QString(":/res/control_icons/quit_normal.png"))) );
+//    m_quitAction->setIcon(QIcon(QString(":/res/control_icons/quit_normal.png")));
+
+    connect(m_openAction, &QAction::triggered, this, [=] {
+        if(this->isHidden()){
+        this->show();}
+        else{
+            return;
+        }
+    });
+    connect(m_quitAction, &QAction::triggered, qApp, &QApplication::quit);
+    m_trayIcon->setContextMenu(m_mainMenu);
+
     connect(m_trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
 
     //ui->widget_normal->show();
@@ -79,7 +101,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_searchView->hide();
 
     m_hintWidget = new PromptWidget(this);
-    m_hintWidget->setIconAndText(":/res/control_icons/network_warn.png", tr("Network not connected"));
+    m_hintWidget->setIconAndText(":/res/control_icons/network_warn.png", tr("Network not connected"));//网络未连接
     m_hintWidget->move((this->width() - m_hintWidget->width())/2, 100);
     m_hintWidget->setVisible(false);
 
@@ -226,9 +248,9 @@ void MainWindow::initConnections()
         m_hintWidget->setVisible(true);
 
         if (code == 0) {
-            m_hintWidget->setIconAndText(":/res/control_icons/network_warn.png", tr("Incorrect access address"));
+            m_hintWidget->setIconAndText(":/res/control_icons/network_warn.png", tr("Incorrect access address"));//访问地址异常
         } else {
-            m_hintWidget->setIconAndText(":/res/control_icons/network_warn.png", QString(tr("Network error code:%1")).arg(QString::number(code)));
+            m_hintWidget->setIconAndText(":/res/control_icons/network_warn.png", QString(tr("Network error code:%1")).arg(QString::number(code)));//网络错误代码
         }
     });
 
@@ -301,6 +323,7 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
     case QSystemTrayIcon::Context:
         //右键点击托盘图标弹出菜单
         //showTrayIconMenu(); //显示右键菜单
+        m_mainMenu->show();
         break;
     default:
         break;
@@ -395,7 +418,7 @@ void MainWindow::onHandelAbnormalSituation(QString abnormalText){
 void MainWindow::setAbnormalMainWindow()
 {
     m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
-
+//    m_openAction->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
     ui->lbCurrTmp->setText("");
     ui->lbCurrTmpUnit->setText("");
     ui->lbCurrWea->setText("");
@@ -546,7 +569,7 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
 
     ui->lbCurrWea->setText(m_observeweather.cond_txt);
 
-    QString strHum = "湿度 " + m_observeweather.hum + "%   " + m_observeweather.wind_dir + " " + m_observeweather.wind_sc + "级";
+    QString strHum = "湿度 " + m_observeweather.hum + "%   " + m_observeweather.wind_dir + " " + m_observeweather.wind_sc + "级";//  Humidity-湿度
     ui->lbCurrHum->setText(strHum);
 
     if (m_observeweather.city != "") {
@@ -597,12 +620,14 @@ void MainWindow::convertCodeToTrayIcon(QString code)
 {
     if (code.isEmpty()) {
         m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
+//        m_openAction->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
         return;
     }
 
     //QString strIcon = QString(":/res/weather_icons/white/%1.png").arg(code);
     //m_trayIcon->setIcon(QIcon(strIcon));
     m_trayIcon->setIcon(QIcon::fromTheme(QString("%1").arg(code), QIcon(QString(":/res/weather_icons/white/%1.png").arg(code))) );
+//    m_openAction->setIcon(QIcon::fromTheme(QString("%1").arg(code), QIcon(QString(":/res/weather_icons/white/%1.png").arg(code))));
 }
 
 //根据天气情况设置主界面背景贴图
@@ -739,11 +764,27 @@ void MainWindow::initGsetting()
 }
 void MainWindow::setThemeStyle()
 {
-  QString nowThemeStyle = m_pThemeStyle->get("styleName").toString();
+  nowThemeStyle = m_pThemeStyle->get("styleName").toString();
 
   m_leftupsearchbox->ThemeLeftUpSearchBox(nowThemeStyle);
   m_searchView->ThemeLeftUpSearchView(nowThemeStyle);
-
+    if("ukui-dark" == nowThemeStyle|| "ukui-black" == nowThemeStyle)
+    {
+//        m_mainMenu ->setStyleSheet("QMenu {border:1px solid rgba(207,207,207,1);border-radius:4px;background-color:rgba(255,255,255,0.6);margin:1px;padding:5px;}\
+//                          QMenu::item {color: rgba(0,0,0,0.6);}\
+//                          QMenu::item:selected {border-radius:4px;background-color:rgba(0,0,0,0.25);}\
+//                          QMenu::item:pressed {border-radius:4px;background-color: rgba(0,0,0,0.25);}");
+        m_mainMenu ->setStyleSheet("QMenu {margin:2px;padding:5px;}");
+  }
+    else if("ukui-default" ==nowThemeStyle || "ukui-white" == nowThemeStyle || "ukui-light" == nowThemeStyle)
+    {
+//        m_mainMenu ->setStyleSheet("QMenu {background-color:rgba(0,0,0,0.6);margin:1px;padding:5px;}\
+//                                    QMenu::item {color: rgb(225,225,225);}\
+//                                    QMenu::item:selected {border-radius:4px;background-color:rgba(255,255,255,0.25);}\
+//                                    QMenu::item:pressed {border-radius:4px;background-color: rgba(255,255,255,0.25);}");
+          m_mainMenu ->setStyleSheet("QMenu {margin:2px;padding:5px;}");
+  }
+//QMenu::icon{position:absolute;padding-left:10px;padding-top:5px;padding-bottom:5px;}
 }
 QString MainWindow::getCityList()
 {

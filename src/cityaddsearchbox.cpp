@@ -35,7 +35,7 @@ CityAddSearchBox::CityAddSearchBox(QWidget* parent)
                         "font-size:14px;"
                         "color:rgba(0,0,0,1);}");
     this->setFocusPolicy(Qt::ClickFocus);
-    m_searchText = QString("搜索");
+    m_searchText = QString(tr("search"));//搜索
     m_searchPixmap = (QPixmap(":/res/control_icons/search_city.png"));
 
 }

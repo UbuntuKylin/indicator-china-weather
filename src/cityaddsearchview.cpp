@@ -69,7 +69,6 @@ void CityAddSearchView::ThemeCitySearchView(QString str)
 {
     if("ukui-dark" == str || "ukui-black" == str)
     {
-   qDebug()<<str;
    this->setStyleSheet("QListView{margin:0px;padding:0px;border-radius:4px;outline:none;background:rgba(48,48,51,1);}"
                        "QListView::item:selected:active{background:rgba(238,242,253,1);}"
                        "QListView::item:hover{background:rgba(238,242,253,1);}");
