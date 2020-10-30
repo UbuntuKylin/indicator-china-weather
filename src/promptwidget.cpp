@@ -62,7 +62,7 @@ PromptWidget::PromptWidget(QWidget *parent) : QFrame(parent)
     m_retryBtn->setFocusPolicy(Qt::NoFocus);
     m_retryBtn->setStyleSheet("QPushButton{border:1px solid #e0e0e0;text-align:center;font-size:14px;color:#ffffff;background:rgba(255,255,255,0);}"
                               "QPushButton:hover{border:1px solid #e0e0e0;text-align:center;font-size:14px;color:#ffffff;background:rgba(255,255,255,0.15);}");
-    m_retryBtn->setText(tr("重试"));
+    m_retryBtn->setText(tr("retry"));//重试
 
     m_vlayout->addWidget(m_iconLabel, 0, Qt::AlignHCenter);
     m_vlayout->addWidget(m_textLabel, 0, Qt::AlignHCenter);

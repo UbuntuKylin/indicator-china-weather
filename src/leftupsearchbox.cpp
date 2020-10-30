@@ -25,7 +25,7 @@
 
 LeftUpSearchBox::LeftUpSearchBox(QWidget* parent)
     :QLineEdit(parent)
-    , m_searchText(tr("搜索"))
+    , m_searchText(tr("search"))
     , m_searchPixmap(QPixmap(":/res/control_icons/search.png"))
 {
     this->setFixedSize(180, 28);
