@@ -132,7 +132,12 @@ void citycollectionitem::setCityWeather(ObserveWeather observeweather)
        ui->lbTmp->setGeometry(18,56,18,28);
        ui->lbTmpUnit->move(39,56);
        ui->lbwea->move(62,72);
-     }else{
+     }else if(observeweather.tmp.toInt() < -9){
+       ui->lbTmp->setGeometry(18,56,57,28);
+       ui->lbTmpUnit->move(71,56);
+       ui->lbwea->move(91,72);
+   }
+   else{
        ui->lbTmp->setGeometry(18,56,39,28);
        ui->lbTmpUnit->move(60,56);
        ui->lbwea->move(80,72);

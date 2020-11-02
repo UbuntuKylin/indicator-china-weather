@@ -40,6 +40,7 @@
 #include <QLocale>
 #include <QPainterPath>
 #include <QMenu>
+#include <QAction>
 
 #include <QGSettings>
 

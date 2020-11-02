@@ -1,3 +1,9 @@
+indicator-china-weather (3.1.0-26) unstable; urgency=medium
+
+  * 修复BUG#23379，修复温度值显示不全的问题
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Mon, 02 Nov 2020 10:40:25 +0800
+
 indicator-china-weather (3.1.0-25) unstable; urgency=medium
 
   * 添加托盘右键菜单功能

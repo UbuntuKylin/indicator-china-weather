@@ -561,9 +561,21 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
 
     ui->lbCurrTmp->setText(m_observeweather.tmp);
     int m_size1 = m_observeweather.tmp.size();
+
+    if(m_size1 == 3){
+
+        ui->lbCurrTmp->setGeometry(351,85,148,100);
+        ui->lbCurrTmpUnit->move(447 + 30*(m_size1-1), 95);
+        ui->lbCurrWea->move(450 + 30*(m_size1-1), 165);
+
+    }
+    else if(m_size1 == 1 || m_size1 ==2){
+
+    ui->lbCurrTmp->setGeometry(351,85,116,100);
     ui->lbCurrTmpUnit->move(451 + 30*(m_size1-1), 95);
     ui->lbCurrWea->move(454 + 30*(m_size1-1), 165);
 
+}
 
     ui->lbCurrTmpUnit->setText("℃");
 
@@ -770,17 +782,17 @@ void MainWindow::setThemeStyle()
   m_searchView->ThemeLeftUpSearchView(nowThemeStyle);
     if("ukui-dark" == nowThemeStyle|| "ukui-black" == nowThemeStyle)
     {
-//        m_mainMenu ->setStyleSheet("QMenu {border:1px solid rgba(207,207,207,1);border-radius:4px;background-color:rgba(255,255,255,0.6);margin:1px;padding:5px;}\
-//                          QMenu::item {color: rgba(0,0,0,0.6);}\
-//                          QMenu::item:selected {border-radius:4px;background-color:rgba(0,0,0,0.25);}\
+//        m_mainMenu ->setStyleSheet("QMenu {border:1px solid rgba(207,207,207,1);border-radius:4px;background-color:rgba(255,255,255,0.6);margin:1px;padding:5px;}"
+//                          "QMenu::item {color: rgba(0,0,0,0.6);}"
+//                          "QMenu::item:selected {border-radius:4px;background-color:rgba(0,0,0,0.25);}"
 //                          QMenu::item:pressed {border-radius:4px;background-color: rgba(0,0,0,0.25);}");
         m_mainMenu ->setStyleSheet("QMenu {margin:2px;padding:5px;}");
   }
     else if("ukui-default" ==nowThemeStyle || "ukui-white" == nowThemeStyle || "ukui-light" == nowThemeStyle)
     {
-//        m_mainMenu ->setStyleSheet("QMenu {background-color:rgba(0,0,0,0.6);margin:1px;padding:5px;}\
-//                                    QMenu::item {color: rgb(225,225,225);}\
-//                                    QMenu::item:selected {border-radius:4px;background-color:rgba(255,255,255,0.25);}\
+//        m_mainMenu ->setStyleSheet("QMenu {background-color:rgba(0,0,0,0.6);margin:1px;padding:5px;}"
+//                                    "QMenu::item {color: rgb(225,225,225);}"
+//                                    "QMenu::item:selected {border-radius:4px;background-color:rgba(255,255,255,0.25);}"
 //                                    QMenu::item:pressed {border-radius:4px;background-color: rgba(255,255,255,0.25);}");
           m_mainMenu ->setStyleSheet("QMenu {margin:2px;padding:5px;}");
   }
