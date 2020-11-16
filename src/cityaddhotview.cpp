@@ -35,7 +35,7 @@ CityAddHotView::CityAddHotView(QWidget *parent) : QWidget(parent)
     connect(m_addcity16,&HotCity::hotCityClick,this,&CityAddHotView::setHotCity);
     m_addcity16->move(340,36);
 
-    m_addcity17 = new HotCity(this,"西安","101050311");
+    m_addcity17 = new HotCity(this,"西安","101110101");
     connect(m_addcity17,&HotCity::hotCityClick,this,&CityAddHotView::setHotCity);
     m_addcity17->move(408,36);
 

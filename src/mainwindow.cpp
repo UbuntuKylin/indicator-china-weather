@@ -21,7 +21,7 @@
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
+    QWidget(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -34,13 +34,22 @@ MainWindow::MainWindow(QWidget *parent) :
     qRegisterMetaType<LifeStyle>();
 
     //设置主界面样式
-    this->setFixedSize(865, 520);
+    this->setFixedSize(885, 540);
     this->setWindowFlags(Qt::FramelessWindowHint);
     //this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::Tool);
     this->setFocusPolicy(Qt::ClickFocus);//this->setFocusPolicy(Qt::NoFocus);//设置焦点类型
     this->setWindowTitle(tr("Kylin Weather"));
     this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/indicator-china-weather.png")) );
+
+    QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect(this);
+    shadow->setOffset(0, 0);
+    shadow->setColor(QColor(0,0,0,127));
+    shadow->setBlurRadius(13);
+    ui->centralwidget->setGraphicsEffect(shadow);
+    //给垂直布局器设置边距(此步很重要, 设置宽度为阴影的宽度)
+//    ui->centralwidget->setMargin(24);
+
 
     QPainterPath path;
     auto rect = this->rect();
@@ -142,17 +151,18 @@ void MainWindow::judgeSystemLanguage()
 //初始化各控件样式
 void MainWindow::initControlQss()
 {
-    ui->centralwidget->setStyleSheet("#centralwidget{border:1px solid rgba(255,255,255,0.05);border-radius:6px;background:rgba(19,19,20,0);}");
+    ui->centralwidget->setStyleSheet("#centralwidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(19,19,20,0);}");
     ui->centralwidget->setStyleSheet("#centralwidget{color:white;background-image:url(':/res/background/weather-clear.png');background-repeat:no-repeat;}");
-
+    ui->centralwidget->move(10,10);
+    ui->centralwidget->setFixedSize(865,520);
     ui->btnMinimize->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/min_normal_btn.png);}"
-                               "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/min_hover_btn.png);}"
-                               "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/min_pressed_btn.png);}");
+                               "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.1);background-image:url(:/res/control_icons/min_normal_btn.png);}"
+                               "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.15);background-image:url(:/res/control_icons/min_normal_btn.png);}");
     ui->btnMinimize->setFocusPolicy(Qt::NoFocus);//设置焦点类型
 
     ui->btnCancel->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_normal_btn.png);}"
-                               "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
-                               "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
+                               "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_normal_btn.png)}"
+                               "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
     ui->btnCancel->setFocusPolicy(Qt::NoFocus);//设置焦点类型
 
     ui->lbCurrTmp->setStyleSheet("QLabel{border:none;background:transparent;font-size:110px;font-weight:300;color:rgba(255,255,255,1);line-height:100px;}");
