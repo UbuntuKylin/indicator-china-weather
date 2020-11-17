@@ -45,10 +45,15 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-
-    this->setFixedSize(580, 560);
+    this->setFixedSize(600, 580);
     this->setWindowFlags(Qt::FramelessWindowHint);
     this->setAttribute(Qt::WA_TranslucentBackground); // set window background transparency
+
+    QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect(this);
+    shadow->setOffset(0, 0);
+    shadow->setColor(QColor(0,0,0,100));
+    shadow->setBlurRadius(13);
+    ui->backwidget->setGraphicsEffect(shadow);
 
     // set style of widget and icon in taskbar
     QPainterPath path;
@@ -63,16 +68,16 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
     this->move((availableGeometry.width()-this->width())/2, (availableGeometry.height()-this->height())/2);
 
-    ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(207,207,207,1);border-radius:6px;background:rgba(255,255,255,1);}");
+    ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(255,255,255,1);}");
 
     ui->lbLeftUpIcon->setStyleSheet("QLabel{border:none;background:transparent;background-image:url(':/res/control_icons/logo.png');}");
 
     ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");
     ui->lbLeftUpTitle->setText("麒麟天气");
 
-    ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
-                               "QPushButton:Hover{border:0px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
-                               "QPushButton:Pressed{border:0px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
+    ui->btnCancel->setStyleSheet("QPushButton{border:none;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
+                               "QPushButton:Hover{border:0px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_normal_btn.png);}"
+                               "QPushButton:Pressed{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_normal_btn.png);}");
     ui->btnCancel->setFocusPolicy(Qt::NoFocus);
 
     ui->lbCityCurrent->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(68,68,68,1);}");
@@ -539,7 +544,7 @@ void CityCollectionWidget::setThemeStyle()
   if("ukui-dark" == nowThemeStyle || "ukui-black" == nowThemeStyle)
   {
 
-    ui->backwidget->setStyleSheet("QWidget{border-radius:6px;background:rgba(0,0,0,1);}");
+    ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(31, 32, 34, 1);}");
 
     ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(255,255,255,1);}");
     ui->lbLeftUpTitle->setText("麒麟天气");
@@ -553,14 +558,14 @@ void CityCollectionWidget::setThemeStyle()
     ui->lbCityCount->setStyleSheet("QLabel{border:none;background:transparent;font-size:12px;font-weight:400;color:rgba(255,255,255,1);}");;
 
     ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_white.png);}"
-                               "QPushButton:Hover{border:0px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
-                               "QPushButton:Pressed{border:0px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
+                               "QPushButton:Hover{border:0px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_white.png);}"
+                               "QPushButton:Pressed{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_white.png);}");
 
 
   }
   else if("ukui-default" == nowThemeStyle || "ukui-white" == nowThemeStyle || "ukui-light" == nowThemeStyle)
   {  
-      ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(207,207,207,1);border-radius:6px;background:rgba(255,255,255,1);}");
+      ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(255,255,255,1);}");
       ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");
       ui->lbLeftUpTitle->setText("麒麟天气");
       ui->lbCityCurrent->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(68,68,68,1);}");
@@ -571,9 +576,10 @@ void CityCollectionWidget::setThemeStyle()
 
       ui->lbCityCount->setStyleSheet("QLabel{border:none;background:transparent;font-size:12px;font-weight:400;color:rgba(68,68,68,1);}");
 
-      ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
-                                 "QPushButton:Hover{border:0px;background:transparent;background-image:url(:/res/control_icons/close_hover_btn.png);}"
-                                 "QPushButton:Pressed{border:0px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
+      ui->btnCancel->setStyleSheet("QPushButton{border:none;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
+                                 "QPushButton:Hover{border:0px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_normal_btn.png);}"
+                                 "QPushButton:Pressed{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_normal_btn.png);}");
+
 
   }
 }

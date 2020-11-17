@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>580</width>
-    <height>560</height>
+    <width>600</width>
+    <height>580</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QLabel" name="lbLeftUpIcon">
    <property name="geometry">
     <rect>
-     <x>11</x>
-     <y>15</y>
+     <x>21</x>
+     <y>25</y>
      <width>16</width>
      <height>16</height>
     </rect>
@@ -29,8 +29,8 @@
   <widget class="QLabel" name="lbLeftUpTitle">
    <property name="geometry">
     <rect>
-     <x>42</x>
-     <y>14</y>
+     <x>54</x>
+     <y>24</y>
      <width>68</width>
      <height>21</height>
     </rect>
@@ -42,8 +42,8 @@
   <widget class="QPushButton" name="btnCancel">
    <property name="geometry">
     <rect>
-     <x>540</x>
-     <y>10</y>
+     <x>556</x>
+     <y>14</y>
      <width>30</width>
      <height>30</height>
     </rect>
@@ -55,8 +55,8 @@
   <widget class="QWidget" name="backwidget" native="true">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>0</y>
+     <x>10</x>
+     <y>10</y>
      <width>580</width>
      <height>560</height>
     </rect>
@@ -64,8 +64,8 @@
    <widget class="QPushButton" name="btnReturn">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>10</y>
+      <x>4</x>
+      <y>4</y>
       <width>30</width>
       <height>30</height>
      </rect>

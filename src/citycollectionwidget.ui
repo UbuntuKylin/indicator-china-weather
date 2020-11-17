@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>580</width>
-    <height>560</height>
+    <width>600</width>
+    <height>580</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QLabel" name="lbLeftUpIcon">
    <property name="geometry">
     <rect>
-     <x>11</x>
-     <y>15</y>
-     <width>16</width>
-     <height>16</height>
+     <x>21</x>
+     <y>25</y>
+     <width>17</width>
+     <height>17</height>
     </rect>
    </property>
    <property name="text">
@@ -29,8 +29,8 @@
   <widget class="QLabel" name="lbLeftUpTitle">
    <property name="geometry">
     <rect>
-     <x>35</x>
-     <y>14</y>
+     <x>46</x>
+     <y>24</y>
      <width>56</width>
      <height>17</height>
     </rect>
@@ -42,8 +42,8 @@
   <widget class="QPushButton" name="btnCancel">
    <property name="geometry">
     <rect>
-     <x>540</x>
-     <y>6</y>
+     <x>556</x>
+     <y>14</y>
      <width>30</width>
      <height>30</height>
     </rect>
@@ -55,8 +55,8 @@
   <widget class="QLabel" name="lbCityCurrent">
    <property name="geometry">
     <rect>
-     <x>35</x>
-     <y>66</y>
+     <x>45</x>
+     <y>76</y>
      <width>72</width>
      <height>17</height>
     </rect>
@@ -68,8 +68,8 @@
   <widget class="QLabel" name="lbCityCollect">
    <property name="geometry">
     <rect>
-     <x>35</x>
-     <y>213</y>
+     <x>45</x>
+     <y>223</y>
      <width>72</width>
      <height>19</height>
     </rect>
@@ -81,8 +81,8 @@
   <widget class="QLabel" name="lbCityCount">
    <property name="geometry">
     <rect>
-     <x>516</x>
-     <y>221</y>
+     <x>526</x>
+     <y>231</y>
      <width>19</width>
      <height>11</height>
     </rect>
@@ -94,8 +94,8 @@
   <widget class="QWidget" name="backwidget" native="true">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>0</y>
+     <x>10</x>
+     <y>10</y>
      <width>580</width>
      <height>560</height>
     </rect>
