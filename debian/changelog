@@ -1,8 +1,8 @@
 indicator-china-weather (3.1.0-27) unstable; urgency=medium
 
   * 添加外边框阴影，修改窗口右上角按钮样式
-  * 修复热门城市界面部分城市与主窗口城市天气显示不一致的问题
-  * 修复城市管理界面按钮锯齿问题
+  * BUG#25325修复热门城市界面部分城市与主窗口城市天气显示不一致的问题
+  * BUG#25316修复城市管理界面按钮锯齿问题
 
  -- liuyuhui <liuyuhui@kylinos.cn>  Mon, 16 Nov 2020 15:40:25 +0800
 

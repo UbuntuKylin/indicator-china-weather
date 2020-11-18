@@ -71,7 +71,7 @@
     <name>main</name>
     <message>
         <location filename="../src/main.cpp" line="71"/>
-        <source>KilinWeather</source>
+        <source>KylinWeather</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

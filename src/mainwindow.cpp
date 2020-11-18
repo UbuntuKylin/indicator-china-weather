@@ -64,7 +64,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //创建托盘图标
     this->createTrayIcon();
     //添加托盘菜单
-    m_mainMenu = new QMenu(this);
+    m_mainMenu = new QMenu;
 //    m_mainMenu->addSeparator();
     m_openAction = new QAction(tr("Open Kylin Weather"),this);//打开麒麟天气
     m_quitAction = new QAction(tr("Exit"),this);//退出
@@ -82,7 +82,8 @@ MainWindow::MainWindow(QWidget *parent) :
             return;
         }
     });
-    connect(m_quitAction, &QAction::triggered, qApp, &QApplication::quit);
+    //connect(m_quitAction, &QAction::triggered, qApp, &QApplication::quit);
+    connect(m_quitAction, &QAction::triggered, this,&MainWindow::closeActivated);
     m_trayIcon->setContextMenu(m_mainMenu);
 
     connect(m_trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
@@ -339,7 +340,36 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
         break;
     }
 }
+void MainWindow::closeActivated()
+{
+    //托盘退出默认关闭开机自启
+    QString autostart=QStandardPaths::standardLocations(QStandardPaths::HomeLocation)[0]+"/.config/autostart/indicator-china-weather.desktop";
+    QFile file(autostart);
+    if(!file.exists())
+    {
+        QString path="/etc/xdg/autostart/indicator-china-weather.desktop";
+        QFileInfo file2(path);
+        if(!file2.exists())
+        {
+            qDebug()<<"/etc/xdg/autostart/目录下无麒麟天气快捷方式";
+        }
+        else
+        {
+            QFile::copy(path,autostart);
+            if(file.exists())
+            {
+                if(file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append))
+                {
+                    file.write("\nHidden=true\n");
+                    file.close();
+                }
+            }
+        }
+    }
 
+    qApp->quit();
+    return;
+}
 //处理点击托盘图标事件
 void MainWindow::handleIconClicked()
 {
@@ -790,22 +820,22 @@ void MainWindow::setThemeStyle()
 
   m_leftupsearchbox->ThemeLeftUpSearchBox(nowThemeStyle);
   m_searchView->ThemeLeftUpSearchView(nowThemeStyle);
-    if("ukui-dark" == nowThemeStyle|| "ukui-black" == nowThemeStyle)
-    {
+//    if("ukui-dark" == nowThemeStyle|| "ukui-black" == nowThemeStyle)
+//    {
 //        m_mainMenu ->setStyleSheet("QMenu {border:1px solid rgba(207,207,207,1);border-radius:4px;background-color:rgba(255,255,255,0.6);margin:1px;padding:5px;}"
 //                          "QMenu::item {color: rgba(0,0,0,0.6);}"
 //                          "QMenu::item:selected {border-radius:4px;background-color:rgba(0,0,0,0.25);}"
 //                          QMenu::item:pressed {border-radius:4px;background-color: rgba(0,0,0,0.25);}");
-        m_mainMenu ->setStyleSheet("QMenu {margin:2px;padding:5px;}");
-  }
-    else if("ukui-default" ==nowThemeStyle || "ukui-white" == nowThemeStyle || "ukui-light" == nowThemeStyle)
-    {
+//        m_mainMenu ->setStyleSheet("QMenu {margin:2px;padding:5px;}");
+//  }
+//    else if("ukui-default" ==nowThemeStyle || "ukui-white" == nowThemeStyle || "ukui-light" == nowThemeStyle)
+//    {
 //        m_mainMenu ->setStyleSheet("QMenu {background-color:rgba(0,0,0,0.6);margin:1px;padding:5px;}"
 //                                    "QMenu::item {color: rgb(225,225,225);}"
 //                                    "QMenu::item:selected {border-radius:4px;background-color:rgba(255,255,255,0.25);}"
 //                                    QMenu::item:pressed {border-radius:4px;background-color: rgba(255,255,255,0.25);}");
-          m_mainMenu ->setStyleSheet("QMenu {margin:2px;padding:5px;}");
-  }
+//          m_mainMenu ->setStyleSheet("QMenu {margin:2px;padding:5px;}");
+//  }
 //QMenu::icon{position:absolute;padding-left:10px;padding-top:5px;padding-bottom:5px;}
 }
 QString MainWindow::getCityList()
