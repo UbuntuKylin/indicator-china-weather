@@ -1,8 +1,11 @@
 [Desktop Entry]
 Name=indicator-china-weather
 Name[zh_CN]=麒麟天气
+Name[bo_CN]=གྱི་ལིང་གནམ་གཤིས། 
+Comment[bo_CN]=ཀྲུང་གོའི་དུས་ལྟར་གནམ་གཤིས། 
 Comment=Indicator applet for current weather conditions in China
 Comment[zh_CN]=中国实时天气
+GenericName[bo_CN]=གྱི་ལིང་གནམ་གཤིས།
 GenericName=China Weather Applet
 Keywords=weather,china
 Exec=/usr/bin/indicator-china-weather %u

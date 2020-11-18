@@ -537,6 +537,11 @@ void CityCollectionWidget::initGsetting()
 //主题适配
 void CityCollectionWidget::setThemeStyle()
 {
+    if(m_pThemeStyle==nullptr)
+    {
+        m_cityaddition->getStr("ukui-default");
+        return;
+    }
   QString nowThemeStyle = m_pThemeStyle->get("styleName").toString();
 
     m_cityaddition->getStr(nowThemeStyle);

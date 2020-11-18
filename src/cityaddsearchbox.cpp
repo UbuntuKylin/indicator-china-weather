@@ -94,12 +94,12 @@ void CityAddSearchBox::drawbackground()
                     painter.setFont(curFont);
               }
 
-            bool chinese=(QLocale::system().name() != "zh_CN");
+            bool noChinese=(QLocale::system().name() != "zh_CN");
 
-            QRect iconRect(QPoint(210-13*chinese, 7), m_searchPixmap.size()/qApp->devicePixelRatio());
+            QRect iconRect(QPoint(210-13*noChinese, 7), m_searchPixmap.size()/qApp->devicePixelRatio());
             painter.drawPixmap(iconRect, m_searchPixmap);
 
-            QRect textRect(235-13*chinese, 3, 43, 28);
+            QRect textRect(235-13*noChinese, 3, 43, 28);
             painter.drawText(textRect, m_searchText);
 
         } else {
