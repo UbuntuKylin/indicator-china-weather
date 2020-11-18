@@ -48,12 +48,12 @@ void LeftUpSearchBox::paintEvent(QPaintEvent *event)
         painter.setPen(pen);
         painter.setFont(curFont);
 
-        bool chinese=(QLocale::system().name() != "zh_CN");
+        bool noChinese=(QLocale::system().name() != "zh_CN");
 
-        QRect iconRect(QPoint(65-13*chinese, 7), m_searchPixmap.size()/qApp->devicePixelRatio());
+        QRect iconRect(QPoint(65-13*noChinese, 7), m_searchPixmap.size()/qApp->devicePixelRatio());
         painter.drawPixmap(iconRect, m_searchPixmap); //add icon in searchbox
 
-        QRect textRect(87-13*chinese, 3, 43, 28);
+        QRect textRect(87-13*noChinese, 3, 43, 28);
         painter.drawText(textRect, m_searchText); //add text in searchbox
     } else {
         // show cursor when the focus is on searchbox, and set the icon left

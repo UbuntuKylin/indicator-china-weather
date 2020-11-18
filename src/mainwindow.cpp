@@ -816,6 +816,7 @@ void MainWindow::initGsetting()
 }
 void MainWindow::setThemeStyle()
 {
+  if(nowThemeStyle==nullptr)return;
   nowThemeStyle = m_pThemeStyle->get("styleName").toString();
 
   m_leftupsearchbox->ThemeLeftUpSearchBox(nowThemeStyle);

@@ -1,3 +1,10 @@
+indicator-china-weather (3.1.0-29) unstable; urgency=medium
+
+  * 修复新版麒麟天气v10闪退问题（v10无需适配系统主题，未做空指针校验）
+  * desktop 文件添加藏文翻译
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Wed, 18 Nov 2020 20:40:25 +0800
+
 indicator-china-weather (3.1.0-28) unstable; urgency=medium
 
   * 修复BUG#24496，系统英文状态下，搜索框文字显示不全
