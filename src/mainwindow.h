@@ -44,6 +44,7 @@
 
 #include <QGSettings>
 #include <QGraphicsDropShadowEffect>
+
 namespace Ui {
 class MainWindow;
 }
@@ -74,6 +75,7 @@ private slots:
     void on_btnCancel_clicked();
 
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
+    void closeActivated();
 
 private:
     Ui::MainWindow *ui;

@@ -68,7 +68,7 @@ void responseCommand(QtSingleApplication &a)
 {
     //提供DBus接口，添加show参数
     QCommandLineParser parser;
-    parser.setApplicationDescription(QCoreApplication::translate("main", "KilinWeather"));
+    parser.setApplicationDescription(QCoreApplication::translate("main", "KylinWeather"));
     parser.addHelpOption();
     parser.addVersionOption();
 

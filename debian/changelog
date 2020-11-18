@@ -1,8 +1,16 @@
+indicator-china-weather (3.1.0-28) unstable; urgency=medium
+
+  * 修复BUG#24496，系统英文状态下，搜索框文字显示不全
+  * 修复BUG#23902，任务栏右键麒麟天气弹窗没有跟随系统主题透明度
+  * 修复BUG#25194，在开始菜单打开，只会在托盘处显示，主界面不会弹出到最前端
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Wed, 18 Nov 2020 15:40:25 +0800
+
 indicator-china-weather (3.1.0-27) unstable; urgency=medium
 
   * 添加外边框阴影，修改窗口右上角按钮样式
-  * 修复热门城市界面部分城市与主窗口城市天气显示不一致的问题
-  * 修复城市管理界面按钮锯齿问题
+  * 修复BUG#25325，热门城市界面部分城市与主窗口城市天气显示不一致的问题
+  * 修复BUG#25316，城市管理界面按钮锯齿问题
 
  -- liuyuhui <liuyuhui@kylinos.cn>  Mon, 16 Nov 2020 15:40:25 +0800
 
