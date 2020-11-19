@@ -94,8 +94,13 @@ QList<LocationData> LocationWorker::exactMatchCity(const QString &inputText) con
     QList<LocationData> searchedList;
 
     for (const LocationData line : m_locatonList) { //m_worker->m_locatonList << data;
-        if (line.shorthand == inputText || line.id == inputText || line.city.contains(inputText) || line.city_en.contains(inputText) || line.province == inputText || line.province_en == inputText || line.admin_district.contains(inputText) || line.admin_district_en.contains(inputText)) {
+        if (line.shorthand == inputText || line.id == inputText ||                                    //拼音和ID
+            line.province == inputText ||line.province_en == inputText ||                             //省
+//            line.admin_district.contains(inputText) || line.admin_district_en.contains(inputText) ||  //市
+            line.city.contains(inputText) || line.city_en.contains(inputText)                         //县
+            ) {
             searchedList.append(line); //将数据加入列表
+//            qDebug()<<line.province<<" | "<<line.admin_district<<" | "<<line.city;
         }
     }
 
