@@ -36,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //设置主界面样式
     this->setFixedSize(885, 540);
     this->setWindowFlags(Qt::FramelessWindowHint);
+    qDebug()<< this->windowState();
     //this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::Tool);
     this->setFocusPolicy(Qt::ClickFocus);//this->setFocusPolicy(Qt::NoFocus);//设置焦点类型
     this->setWindowTitle(tr("Kylin Weather"));

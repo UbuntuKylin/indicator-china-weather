@@ -1,3 +1,9 @@
+indicator-china-weather (3.1.0-30) unstable; urgency=medium
+
+  * 修复BUG#25786，去掉城市联想功能
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Thu, 19 Nov 2020 14:40:25 +0800
+
 indicator-china-weather (3.1.0-29) unstable; urgency=medium
 
   * 修复新版麒麟天气v10闪退问题（v10无需适配系统主题，未做空指针校验）
