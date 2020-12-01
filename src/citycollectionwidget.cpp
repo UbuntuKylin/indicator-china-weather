@@ -21,6 +21,7 @@
 #include "ui_citycollectionwidget.h"
 #include "cityaddwidget.h"
 #include "citycollectionitem.h"
+#include "xatom-helper.h"
 
 #include <QFile>
 #include <QApplication>
@@ -43,6 +44,15 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::citycollectionwidget)
 {
+
+    //use ukui-kwin to draw round corner and shadow.
+    MotifWmHints hints;
+    hints.flags = MWM_HINTS_FUNCTIONS|MWM_HINTS_DECORATIONS;
+    hints.functions = MWM_FUNC_ALL;
+    hints.decorations = MWM_DECOR_BORDER;
+    XAtomHelper::getInstance()->setWindowMotifHint(window()->winId(), hints);
+    setContentsMargins(0, 0, 0, 0);
+
     ui->setupUi(this);
 
     this->setFixedSize(600, 580);

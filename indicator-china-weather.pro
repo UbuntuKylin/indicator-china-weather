@@ -6,7 +6,7 @@
 QT       += network
 include(src/qtsingleapplication/qtsingleapplication.pri)
 isEqual(QT_MAJOR_VERSION, 5) {
-    QT += widgets gui core dbus
+    QT += widgets gui core dbus KWindowSystem x11extras
 }
 
 TARGET = indicator-china-weather
@@ -39,6 +39,7 @@ INSTALLS += target icons qm_files appdesktop startdesktop schemes
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 
+LIBS += -lpthread
 LIBS += -lX11
 
 # You can also make your code fail to compile if you use deprecated APIs.
@@ -87,7 +88,8 @@ SOURCES += src/main.cpp \
     src/mainwindow.cpp \
     src/promptwidget.cpp \
     src/weathermanager.cpp \
-    src/weatherworker.cpp
+    src/weatherworker.cpp \
+    src/xatom-helper.cpp
 
 HEADERS  += src/mainwindow.h \
     src/cityaddhotview.h \
@@ -110,7 +112,8 @@ HEADERS  += src/mainwindow.h \
     src/locationworker.h \
     src/promptwidget.h \
     src/weathermanager.h \
-    src/weatherworker.h
+    src/weatherworker.h \
+    src/xatom-helper.h
 
 
 RESOURCES += \
