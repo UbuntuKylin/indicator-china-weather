@@ -98,12 +98,14 @@ void LeftUpCityBtn::mousePressEvent(QMouseEvent *event)
             is_open_city_collect_widget = false;
             m_citycollectionwidget->deleteLater(); //销毁窗口
         });
-        m_citycollectionwidget->show();
-
         emit requestShowCollCityWeather(); //发送该信号，显示收藏城市窗口各城市的事实天气
-
         is_open_city_collect_widget = true; //为真时无法打开新的收藏窗口
-    }else{
+
+        //! \brief 模态对话框会阻塞，发信号和设置is_open_city_collect_widget都要在exec之前
+        m_citycollectionwidget->exec();
+    }
+    //! \note CityCollectionWidget打开后会阻塞主窗口，是不是可以把这个判断删掉了
+    else{
         if(nullptr != m_citycollectionwidget){
             m_citycollectionwidget->show();
             m_citycollectionwidget->activateWindow();

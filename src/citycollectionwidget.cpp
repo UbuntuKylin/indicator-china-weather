@@ -40,13 +40,14 @@
 #include <QVariant>
 
 CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
-    QWidget(parent),
+    QDialog(parent),
     ui(new Ui::citycollectionwidget)
 {
     ui->setupUi(this);
 
     this->setFixedSize(600, 580);
-    this->setWindowFlags(Qt::FramelessWindowHint);
+    //! \bug 会导致dialog和主窗口被识别成两个窗口，在平板模式下发生异常
+//    this->setWindowFlags(Qt::FramelessWindowHint);
     this->setAttribute(Qt::WA_TranslucentBackground); // set window background transparency
 
     QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect(this);
@@ -172,7 +173,7 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
             }
          }
         return;
-}
+    }
 
     if (isAddCity) {
         //start moving control if task is add a new collect city
@@ -229,7 +230,7 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
     } else {
         m_citynumber = strList.size()-2;
         QString citynumber = QString::number(m_citynumber) + "/8";
-        ui->lbCityCount->setText(citynumber); //show number of collected cities
+//        ui->lbCityCount->setText(citynumber); //show number of collected cities
 
         int row = 0; //current row
         int column = 0; //cuerrent column
