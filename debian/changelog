@@ -1,3 +1,9 @@
+indicator-china-weather (3.1.0-31) unstable; urgency=medium
+
+  * 部分兼容窗管
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Wed, 2 Dec 2020 10:40:25 +0800
+
 indicator-china-weather (3.1.0-30) unstable; urgency=medium
 
   * 修复BUG#25786，去掉城市联想功能
