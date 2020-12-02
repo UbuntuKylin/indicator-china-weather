@@ -72,38 +72,22 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     rect.adjust(1, 1, -1, -1);
     path.addRoundedRect(rect, 6, 6); //set border radius
     setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
-    this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
     this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/indicator-china-weather.png")) ); //set taskbar icon
     this->setWindowTitle(tr("Kylin Weather"));
 
     QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
     this->move((availableGeometry.width()-this->width())/2, (availableGeometry.height()-this->height())/2);
 
-    ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(255,255,255,1);}");
-
-    ui->lbLeftUpIcon->setStyleSheet("QLabel{border:none;background:transparent;background-image:url(':/res/control_icons/logo.png');}");
-
-    ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");
-    ui->lbLeftUpTitle->setText("麒麟天气");
-
-    ui->btnCancel->setStyleSheet("QPushButton{border:none;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
-                               "QPushButton:Hover{border:0px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_normal_btn.png);}"
-                               "QPushButton:Pressed{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_normal_btn.png);}");
     ui->btnCancel->setFocusPolicy(Qt::NoFocus);
-
-    ui->lbCityCurrent->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(68,68,68,1);}");
+    ui->lbLeftUpTitle->setText(tr("Kylin Weather"));
+    ui->lbCityCollect->setText("收藏城市");
     ui->lbCityCurrent->setText("当前城市");
 
-    ui->lbCityCollect->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(68,68,68,1);}");
-    ui->lbCityCollect->setText("收藏城市");
-
-    ui->lbCityCount->setStyleSheet("QLabel{border:none;background:transparent;font-size:12px;font-weight:400;color:rgba(68,68,68,1);}");
     ui->lbCityCount->setText("0/8");
     m_citynumber = 0;
 
     m_tipIcon = new QLabel(this);
     m_tipIcon->setFixedSize(127 ,93);
-    m_tipIcon->setStyleSheet("QLabel{border:none;background-color:transparent;}");
     m_tipIcon->setPixmap(QPixmap(":/res/control_icons/unlink.png"));
     m_tipIcon->move((this->width()-m_tipIcon->width())/2, 180);
     m_tipIcon->hide();
@@ -112,7 +96,6 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     m_tipLabel->setWordWrap(true);
     m_tipLabel->setAlignment(Qt::AlignCenter);
     m_tipLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
-    m_tipLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
     m_tipLabel->setText("当前网络异常，请检查网络设置");//Current Network Exception, Please Check Network Settings
     m_tipLabel->move(0, 300);
     m_tipLabel->hide();
@@ -125,9 +108,24 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     connect(m_cityaddition, SIGNAL(requestChangeWidgetState()), this, SIGNAL(requestChangeWidgetState()) );
     connect(m_cityaddition, SIGNAL(requestAddNewCity(QString)), this, SLOT(onRequestAddNewCity(QString)) );
 
+
+    //   this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
+    //    ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(255,255,255,1);}");
+    ui->backwidget->setStyleSheet("QWidget{background:rgba(255,255,255,1);}");
+
+    ui->lbLeftUpIcon->setStyleSheet("QLabel{border:none;background:transparent;background-image:url(':/res/control_icons/logo.png');}");
+    ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");
+    ui->btnCancel->setStyleSheet("QPushButton{border:none;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
+                                 "QPushButton:Hover{border:0px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_normal_btn.png);}"
+                                 "QPushButton:Pressed{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_normal_btn.png);}");
+    ui->lbCityCurrent->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(68,68,68,1);}");
+    ui->lbCityCollect->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(68,68,68,1);}");
+    ui->lbCityCount->setStyleSheet("QLabel{border:none;background:transparent;font-size:12px;font-weight:400;color:rgba(68,68,68,1);}");
+    m_tipIcon->setStyleSheet("QLabel{border:none;background-color:transparent;}");
+    m_tipLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
+
     m_networkManager = new QNetworkAccessManager(this);
     initGsetting();
-
 }
 
 CityCollectionWidget::~CityCollectionWidget()
@@ -560,19 +558,12 @@ void CityCollectionWidget::setThemeStyle()
   if("ukui-dark" == nowThemeStyle || "ukui-black" == nowThemeStyle)
   {
 
-    ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(31, 32, 34, 1);}");
-
+    //ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(31, 32, 34, 1);}");
+      ui->backwidget->setStyleSheet("QWidget{background:rgba(31, 32, 34, 1);}");
     ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(255,255,255,1);}");
-    ui->lbLeftUpTitle->setText("麒麟天气");
-
     ui->lbCityCurrent->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(255,255,255,1);}");
-    ui->lbCityCurrent->setText("当前城市");
-
     ui->lbCityCollect->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(255,255,255,1);}");
-    ui->lbCityCollect->setText("收藏城市");
-
     ui->lbCityCount->setStyleSheet("QLabel{border:none;background:transparent;font-size:12px;font-weight:400;color:rgba(255,255,255,1);}");;
-
     ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_white.png);}"
                                "QPushButton:Hover{border:0px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_white.png);}"
                                "QPushButton:Pressed{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_white.png);}");
@@ -581,22 +572,15 @@ void CityCollectionWidget::setThemeStyle()
   }
   else if("ukui-default" == nowThemeStyle || "ukui-white" == nowThemeStyle || "ukui-light" == nowThemeStyle)
   {  
-      ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(255,255,255,1);}");
+     // ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(255,255,255,1);}");
+      ui->backwidget->setStyleSheet("QWidget{background:rgba(255,255,255,1);}");
       ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");
-      ui->lbLeftUpTitle->setText("麒麟天气");
       ui->lbCityCurrent->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(68,68,68,1);}");
-      ui->lbCityCurrent->setText("当前城市");
-
       ui->lbCityCollect->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(68,68,68,1);}");
-      ui->lbCityCollect->setText("收藏城市");
-
       ui->lbCityCount->setStyleSheet("QLabel{border:none;background:transparent;font-size:12px;font-weight:400;color:rgba(68,68,68,1);}");
-
       ui->btnCancel->setStyleSheet("QPushButton{border:none;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
                                  "QPushButton:Hover{border:0px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_normal_btn.png);}"
                                  "QPushButton:Pressed{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_normal_btn.png);}");
-
-
   }
 }
 QString CityCollectionWidget::getCityList()
