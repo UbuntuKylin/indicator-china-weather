@@ -60,11 +60,11 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
 //    this->setWindowFlags(Qt::FramelessWindowHint);
     this->setAttribute(Qt::WA_TranslucentBackground); // set window background transparency
 
-    QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect(this);
-    shadow->setOffset(0, 0);
-    shadow->setColor(QColor(0,0,0,100));
-    shadow->setBlurRadius(13);
-    ui->backwidget->setGraphicsEffect(shadow);
+//    QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect(this);
+//    shadow->setOffset(0, 0);
+//    shadow->setColor(QColor(0,0,0,100));
+//    shadow->setBlurRadius(13);
+//    ui->backwidget->setGraphicsEffect(shadow);
 
     // set style of widget and icon in taskbar
     QPainterPath path;
