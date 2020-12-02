@@ -4,7 +4,7 @@
 #define CHINAWEATHERDATA "org.china-weather-data.settings"
 #define FITTHEMEWINDOW "org.ukui.style"
 
-#include <QWidget>
+#include <QDialog>
 #include <QMouseEvent>
 #include <QRect>
 #include <QScreen>
@@ -31,7 +31,7 @@ namespace Ui {
 class citycollectionwidget;
 }
 
-class CityCollectionWidget : public QWidget
+class CityCollectionWidget : public QDialog
 {
     Q_OBJECT
 
