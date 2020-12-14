@@ -128,6 +128,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_refreshweather->setTimerType(Qt::PreciseTimer);
     QObject::connect(m_refreshweather, SIGNAL(timeout()), this, SLOT(onRefreshMainWindowWeather()));
     m_refreshweather->start((20*60)*1000); //set time interval to refresh weather
+    qDebug()<<"initGsetting in MainWindows";
     initGsetting();//初始化Gsetting
 }
 
@@ -780,6 +781,7 @@ bool MainWindow::event(QEvent *event)
 
 void MainWindow::initGsetting()
 {
+    qDebug()<<"jianting gsettings";
     if(QGSettings::isSchemaInstalled(CHINAWEATHERDATA))
     {
         m_pWeatherData = new QGSettings(CHINAWEATHERDATA);
@@ -801,9 +803,11 @@ void MainWindow::initGsetting()
     }
     if(QGSettings::isSchemaInstalled(FITTHEMEWINDOW))
     {
+        qDebug()<<"true schema is installed";
         m_pThemeStyle = new QGSettings(FITTHEMEWINDOW);
         connect(m_pThemeStyle,&QGSettings::changed,this, [=] (const QString &key)
         {
+            qDebug()<<"in slot functions";
             if(key == "styleName")
             {
 

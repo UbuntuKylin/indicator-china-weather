@@ -141,6 +141,7 @@ void CityCollectionWidget::updatecity()
 }
 void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
 {
+    qDebug()<<"33333";
     if (weather_data == "")return;
 
     QStringList strList = weather_data.split(";");
@@ -296,6 +297,7 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
 
 void CityCollectionWidget::showCollectCity(int x, int y, bool isShowNormal, QString weatherStr)
 {
+    qDebug()<<"444444";
     //首先将 weatherStr中天气数据保存在ObserveWeather结构体中
     ObserveWeather observeweather;
     if (!weatherStr.isEmpty()) {
@@ -403,7 +405,9 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
         }
     }
 
+    //删除后重新排列城市
     //重新排列现有收藏城市
+    qDebug()<<"重新排列现有城市";
     int row(0), column(0);
     QList<citycollectionitem *> newCityItemList = ui->backwidget->findChildren<citycollectionitem *>();
     for(int i = 0;i < newCityItemList.size(); i ++){
@@ -420,7 +424,9 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
             }
         }
     }
-
+qDebug()<<" 更新城市列表";
+   
+    qDebug()<<"更新前 listSavedCityId:"<<listSavedCityId;
     //更新城市列表
     int citys=listSavedCityId.lastIndexOf(cityId);
     listSavedCityId.removeAt(citys);
@@ -432,6 +438,7 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
             }
         }
         writeCollectedCity(newStrCityId); //将更新后的列表写入配置文件
+    qDebug()<<"更新后 listSavedCityId:"<<listSavedCityId;
 
 }
 
@@ -546,6 +553,7 @@ void CityCollectionWidget::initGsetting()
 //主题适配
 void CityCollectionWidget::setThemeStyle()
 {
+    qDebug()<<"in setThemeStyle";
     if(m_pThemeStyle==nullptr)
     {
         m_cityaddition->getStr("ukui-default");
