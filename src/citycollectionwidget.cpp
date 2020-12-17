@@ -141,7 +141,9 @@ void CityCollectionWidget::updatecity()
 }
 void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
 {
-    qDebug()<<"33333";
+    qDebug()<<"33333 begin";
+    qDebug()<<"weather_data:"<<weather_data;
+    qDebug()<<"isAddCity:"<<isAddCity;
     if (weather_data == "")return;
 
     QStringList strList = weather_data.split(";");
@@ -174,6 +176,7 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
         }
 
         QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
+        qDebug()<<" Num 178 有几个收藏的城市temNum:"<<cityItemList.size()-1;
         for(citycollectionitem * changeItem:cityItemList)
         {
             if(changeItem->geometry()==rec)
@@ -185,15 +188,18 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
     }
 
     if (isAddCity) {
+        qDebug()<<"in isAddCity";
         //start moving control if task is add a new collect city
         if (strList.size() <= 2) {
             return;
         }
 //
         int pos = strList.size() - 2; //the order number of last city in list
+        qDebug()<<"str中有几个城市 pos:"<<pos;
         QString addCityWeatherData = strList.at(pos); //get weather data for new cities
 
         QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
+        qDebug()<<" Num 199 有几个收藏的城市temNum:"<<cityItemList.size()-1;
 
         int itemNum = cityItemList.size();
 
@@ -201,7 +207,7 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
         delete lastCityItem; //delete last item
 
         itemNum -= 1;
-
+//点击+ 走入if 否则 else
         if (itemNum <= 1) {
             showCollectCity(35, 242, true, addCityWeatherData); //add a new collection city
             showCollectCity(35 + 170, 242, false, ""); //create add collect city item
@@ -229,15 +235,19 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
         if (itemNum >= 9) {
             //replace last collect city as new add city
             QList<citycollectionitem *> m_cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
+            qDebug()<<" Num 236 有几个收藏的城市temNum:"<<cityItemList.size()-1;
             citycollectionitem *m_lastCityItem = m_cityItemList.at(m_cityItemList.size() - 1); //delete last item
             delete m_lastCityItem;
             showCollectCity(35 + 1*170, 242 + 2*100, true, addCityWeatherData); //add a new collection city
             showCollectCity(35 + 2*170, 242 + 2*100, false, ""); //create add collect city item
         }
+        /* qDebug()<<"end in add city"; */
 
-        isAddCity = false;
+        /* isAddCity = false; */
     } else {
+        qDebug()<<"in else isAddCity";
         m_citynumber = strList.size()-2;
+        qDebug()<<"要显示的城市个数m_citynumber:"<<m_citynumber;
         QString citynumber = QString::number(m_citynumber) + "/8";
 //        ui->lbCityCount->setText(citynumber); //show number of collected cities
 
@@ -261,9 +271,11 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
             observeweather.cond_code = m_json.value("cond_code").toString();
             observeweather.id = m_json.value("id").toString();
             observeweather.city = m_json.value("location").toString();
-
+qDebug()<<"observeweather.city:"<<observeweather.city;
             if (i==0) { //current city
+                qDebug()<<"current city";
                 citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
+                qDebug()<<"new citycollectionitem at 275";
                 m_currentcity->move(35, 81);
                 m_currentcity->setItemWidgetState(true, true, m_citynumber);
                 m_currentcity->setCityWeather(observeweather);
@@ -271,7 +283,9 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
                 connect(m_currentcity, SIGNAL(requestDeleteCity(QString)), this, SLOT(onRequestDeleteCity(QString)) );
                 connect(m_currentcity, SIGNAL(changeCurrentCity(QString)), this, SLOT(onChangeCurrentCity(QString)) );
             } else { //collected city
+                qDebug()<<"collected city";
                 citycollectionitem *m_collecity = new citycollectionitem(ui->backwidget);
+                qDebug()<<"new citycollectionitem at 285";
                 m_collecity->move(35 + column*170, 242 + row*100); //m_currentcity->move(35 + j*170, 242 + i*100);
                 m_collecity->setItemWidgetState(true, false, m_citynumber);
                 m_collecity->setCityWeather(observeweather);
@@ -287,17 +301,22 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
             }
         } //end for (int i=0; i< strList.size()-1; i++)
         //add collect city item
+        qDebug()<<"m_sastitem->show() begin";
         citycollectionitem *m_lastitem = new citycollectionitem(ui->backwidget);
+                qDebug()<<"new citycollectionitem at 303";
         m_lastitem->move(35 + column*170, 242 + row*100);
         m_lastitem->setItemWidgetState(false, false, m_citynumber);
         m_lastitem->show();
+        qDebug()<<"m_sastitem->show() end";
         connect(m_lastitem, SIGNAL(showCityAddWiget()), this, SLOT(onShowCityAddWiget()) );//收藏界面的“+”按钮的信号，按下，打开搜索窗口
     }
+    qDebug()<<"333333 end";
 }
 
 void CityCollectionWidget::showCollectCity(int x, int y, bool isShowNormal, QString weatherStr)
 {
-    qDebug()<<"444444";
+    qDebug()<<"444444 begin";
+    qDebug()<<"weatherStr:"<<weatherStr;
     //首先将 weatherStr中天气数据保存在ObserveWeather结构体中
     ObserveWeather observeweather;
     if (!weatherStr.isEmpty()) {
@@ -319,6 +338,7 @@ void CityCollectionWidget::showCollectCity(int x, int y, bool isShowNormal, QStr
     }
 
     citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
+                qDebug()<<"new citycollectionitem at 337";
     m_currentcity->move(x, y); //m_currentcity->move(35 + j*170, 242 + i*100);
     m_currentcity->setItemWidgetState(isShowNormal, false, m_citynumber);
     if (isShowNormal) {
@@ -329,10 +349,12 @@ void CityCollectionWidget::showCollectCity(int x, int y, bool isShowNormal, QStr
     connect(m_currentcity, SIGNAL(showCityAddWiget()), this, SLOT(onShowCityAddWiget()) );
     connect(m_currentcity, SIGNAL(requestDeleteCity(QString)), this, SLOT(onRequestDeleteCity(QString)) );
     connect(m_currentcity, SIGNAL(changeCurrentCity(QString)), this, SLOT(onChangeCurrentCity(QString)) );
+    qDebug()<<"444444 end";
 }
 
 void CityCollectionWidget::onRequestAddNewCity(QString cityId)
 {
+    qDebug()<<"CityCollectionWidget::onRequestAddNewCity add city turns true";
     m_cityaddition->hide(); //隐藏 搜索及添加城市窗口
 
     //判断已收藏城市中是否已经有需要添加的城市
@@ -352,9 +374,11 @@ void CityCollectionWidget::onRequestAddNewCity(QString cityId)
         listSavedCityId.append(cityId); //若收藏城市未满8个,将新添加的城市加到最后
         m_citynumber += 1;
         QString citynumber = QString::number(m_citynumber) + "/8";
+    qDebug()<<" number 367 citynumber:"<<citynumber;
         ui->lbCityCount->setText(citynumber);
         if (m_citynumber == 1) {
             QList<citycollectionitem *> cityitemlist = ui->backwidget->findChildren<citycollectionitem *>();
+        qDebug()<<" Num 367 有几个收藏的城市temNum:"<<cityitemlist.size()-1;
             citycollectionitem *firstitem = cityitemlist.at(0);
             firstitem->setItemWidgetState(true,true, m_citynumber);
         }
@@ -369,12 +393,14 @@ void CityCollectionWidget::onRequestAddNewCity(QString cityId)
     }
 
     writeCollectedCity(newStrCityId);
+    qDebug()<<"chg isAddCity to true";
     isAddCity = true;
     emit requestShowCollCityWeather(); //发信号从网络获取数据用于显示城市天气
 }
 
 void CityCollectionWidget::onRequestDeleteCity(QString cityId)
 {
+    qDebug()<<"CityCollectionWidget::onRequestDeleteCity";
     qDebug()<<"debug: city id = "<<cityId;
 
     QString strSavedCity = readCollectedCity();
@@ -387,10 +413,12 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
 
     m_citynumber -= 1;
     QString citynumber = QString::number(m_citynumber) + "/8";
+    qDebug()<<" number 403 citynumber:"<<citynumber;
     ui->lbCityCount->setText(citynumber);
 
     //删掉对应的城市
     QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
+        qDebug()<<" Num 414 有几个收藏的城市temNum:"<<cityItemList.size()-1;
     for(int i = 0;i < cityItemList.size(); i ++){
         citycollectionitem *cityItem = cityItemList.at(i);
         if (i == 0) {
@@ -410,8 +438,10 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
     qDebug()<<"重新排列现有城市";
     int row(0), column(0);
     QList<citycollectionitem *> newCityItemList = ui->backwidget->findChildren<citycollectionitem *>();
+        qDebug()<<" Num 423 有几个收藏的城市temNum:"<<cityItemList.size()-1;
     for(int i = 0;i < newCityItemList.size(); i ++){
         citycollectionitem *newCityItem = newCityItemList.at(i);
+        qDebug()<<"重新排列citycollectionitem at 437";
         if (i == 0) {
             newCityItem->move(35, 81); //当前城市
             newCityItem->setItemWidgetState(true, true, m_citynumber);
@@ -444,6 +474,7 @@ qDebug()<<" 更新城市列表";
 
 void CityCollectionWidget::onChangeCurrentCity(QString cityId)
 {
+    qDebug()<<"CityCollectionWidget::onChangeCurrentCity";
 //    emit sendCurrentCityId(cityId); //发信号更新主界面
 
     //QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
