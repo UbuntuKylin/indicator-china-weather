@@ -249,7 +249,8 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
         m_citynumber = strList.size()-2;
         qDebug()<<"要显示的城市个数m_citynumber:"<<m_citynumber;
         QString citynumber = QString::number(m_citynumber) + "/8";
-//        ui->lbCityCount->setText(citynumber); //show number of collected cities
+        //fix bug 28524
+        ui->lbCityCount->setText(citynumber); //show number of collected cities
 
         int row = 0; //current row
         int column = 0; //cuerrent column
