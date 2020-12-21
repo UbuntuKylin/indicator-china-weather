@@ -128,7 +128,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_refreshweather->setTimerType(Qt::PreciseTimer);
     QObject::connect(m_refreshweather, SIGNAL(timeout()), this, SLOT(onRefreshMainWindowWeather()));
     m_refreshweather->start((20*60)*1000); //set time interval to refresh weather
-    qDebug()<<"initGsetting in MainWindows";
     initGsetting();//初始化Gsetting
 }
 
@@ -236,6 +235,7 @@ void MainWindow::initConnections()
    //同步主界面和收藏界面当前城市信息
     connect(this,&MainWindow::updatecity,m_leftupcitybtn,&LeftUpCityBtn::updatecity);
     //获取传过来的收藏城市的天气数据，并传给显示收藏城市窗口
+    qDebug()<<"MainWindow::initConnections获取传过来的收藏城市的天气数据，并传给显示收藏城市窗口";
     connect(m_weatherManager, SIGNAL(requestSetCityWeather(QString)), m_leftupcitybtn, SIGNAL(requestSetCityWeather(QString)));
     //connect(m_weatherManager, &WeatherManager::requestSetCityWeather, this, [=] (QString weather_data) {
     //   qDebug()<<weather_data;
@@ -270,6 +270,7 @@ void MainWindow::initConnections()
     //根据获取到网络探测的结果分别处理
     connect(m_weatherManager, &WeatherManager::nofityNetworkStatus, this, [=] (const QString &status) {
         if (status == "OK") {
+        qDebug()<<"check Network Status  OK";
             //m_weatherManager->startAutoLocationTask();//开始自动定位城市
 
             //CN101010100,beijing,北京,CN,China,中国
@@ -277,6 +278,8 @@ void MainWindow::initConnections()
             QStringList listCityId = getCityList().split(",");
             m_weatherManager->startGetTheWeatherData(listCityId.at(0));
         } else {
+
+        qDebug()<<"check Network Status  fail";
             if (status == "Fail") {
                 onHandelAbnormalSituation("Without wired Carrier");
             } else {
@@ -288,6 +291,7 @@ void MainWindow::initConnections()
 
     //自动定位成功后，更新各个控件的默认城市数据，并开始获取天气数据
     connect(m_weatherManager, &WeatherManager::requestAutoLocationData, this, [=] (const CitySettingData &info, bool success) {
+        qDebug()<<"需要更新天气界面";
         if (success) {
             //自动定位城市成功后，更新各个ui，然后获取天气数据
         } else {
@@ -781,7 +785,6 @@ bool MainWindow::event(QEvent *event)
 
 void MainWindow::initGsetting()
 {
-    qDebug()<<"jianting gsettings";
     if(QGSettings::isSchemaInstalled(CHINAWEATHERDATA))
     {
         m_pWeatherData = new QGSettings(CHINAWEATHERDATA);
@@ -803,11 +806,9 @@ void MainWindow::initGsetting()
     }
     if(QGSettings::isSchemaInstalled(FITTHEMEWINDOW))
     {
-        qDebug()<<"true schema is installed";
         m_pThemeStyle = new QGSettings(FITTHEMEWINDOW);
         connect(m_pThemeStyle,&QGSettings::changed,this, [=] (const QString &key)
         {
-            qDebug()<<"in slot functions";
             if(key == "styleName")
             {
 

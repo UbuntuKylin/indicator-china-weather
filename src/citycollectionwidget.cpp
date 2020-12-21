@@ -403,7 +403,8 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
         }
     }
 
-    //删除后重新排列城市
+    //重新排列现有收藏城市
+    int row(0), column(0);
     QList<citycollectionitem *> newCityItemList = ui->backwidget->findChildren<citycollectionitem *>();
     for(int i = 0;i < newCityItemList.size(); i ++){
         citycollectionitem *newCityItem = newCityItemList.at(i);
