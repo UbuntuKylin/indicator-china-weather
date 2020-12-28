@@ -295,14 +295,15 @@ void MainWindow::initConnections()
         }
     });
 
-    //替换下一行的信号槽1
+
+    //1*****addCityAction替换原来的m_leftupcitybtn*****
     connect(m_searchView, SIGNAL(requestSetCityName(QString)), addCityAction, SIGNAL(requestSetCityName(QString)) );
 //    connect(m_searchView, SIGNAL(requestSetCityName(QString)), m_leftupcitybtn, SIGNAL(requestSetCityName(QString)) );
 
     connect(m_searchView, &LeftUpSearchView::requestSetNewCityWeather, this, [=] (QString id) {
         m_weatherManager->startGetTheWeatherData(id);
     });
-    //替换下一行的信号槽2
+    //2*****addCityAction替换原来的m_leftupcitybtn*****
     connect(addCityAction,&AddCityAction::sendCurrentCityId, this, [=] (QString id) {
         if(this->isHidden()){
             handleIconClickedSub(); //显示在屏幕中央
@@ -316,15 +317,17 @@ void MainWindow::initConnections()
 //        m_weatherManager->startGetTheWeatherData(id);
 //    });
 
-    //替换下一行的信号槽3
+    //3*****addCityAction替换原来的m_leftupcitybtn*****
     connect(addCityAction, SIGNAL(requestShowCollCityWeather()), m_weatherManager, SIGNAL(requestShowCollCityWeather()));
 //    connect(m_leftupcitybtn, SIGNAL(requestShowCollCityWeather()), m_weatherManager, SIGNAL(requestShowCollCityWeather()));
+
     //同步主界面和收藏界面当前城市信息
-    //替换下一行的信号槽4
+    //4*****addCityAction替换原来的m_leftupcitybtn*****
     connect(this,&MainWindow::updatecity,addCityAction,&AddCityAction ::updatecity);
 //    connect(this,&MainWindow::updatecity,m_leftupcitybtn,&LeftUpCityBtn ::updatecity);
+
     //获取传过来的收藏城市的天气数据，并传给显示收藏城市窗口
-    //替换下一行的信号槽5
+    //5*****addCityAction替换原来的m_leftupcitybtn*****
     connect(m_weatherManager, SIGNAL(requestSetCityWeather(QString)), addCityAction, SIGNAL(requestSetCityWeather(QString)));
 //    connect(m_weatherManager, SIGNAL(requestSetCityWeather(QString)), m_leftupcitybtn, SIGNAL(requestSetCityWeather(QString)));
 
