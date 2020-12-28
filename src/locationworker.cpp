@@ -99,7 +99,16 @@ QList<LocationData> LocationWorker::exactMatchCity(const QString &inputText) con
 //            line.admin_district.contains(inputText) || line.admin_district_en.contains(inputText) ||  //市
             line.city.contains(inputText) || line.city_en.contains(inputText)                         //县
             ) {
-            searchedList.append(line); //将数据加入列表
+//            searchedList.append(line); //将数据加入列表
+            //保证完全匹配的字符串放在显示的第一个
+            if(inputText == line.city_en){
+                searchedList.insert(0,line);
+            }
+            else
+            {
+                qDebug()<<"not equal";
+                searchedList.append(line); //将数据加入列表
+            }
 //            qDebug()<<line.province<<" | "<<line.admin_district<<" | "<<line.city;
         }
     }

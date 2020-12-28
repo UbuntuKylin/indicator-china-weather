@@ -72,7 +72,7 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     rect.adjust(1, 1, -1, -1);
     path.addRoundedRect(rect, 6, 6); //set border radius
     setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
-    this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/indicator-china-weather.png")) ); //set taskbar icon
+    this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/logo_24.png")) ); //set taskbar icon
     this->setWindowTitle(tr("Kylin Weather"));
 
     QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
@@ -80,6 +80,7 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
 
     ui->btnCancel->setFocusPolicy(Qt::NoFocus);
     ui->lbLeftUpTitle->setText(tr("Kylin Weather"));
+    ui->lbLeftUpTitle->setFixedWidth(100);
     ui->lbCityCollect->setText("收藏城市");
     ui->lbCityCurrent->setText("当前城市");
 
@@ -115,7 +116,7 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
 
     ui->lbLeftUpIcon->setStyleSheet("QLabel{border:none;background:transparent;background-image:url(':/res/control_icons/logo.png');}");
     ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");
-    ui->btnCancel->setStyleSheet("QPushButton{border:none;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
+    ui->btnCancel->setStyleSheet("QPushButton{border-radius:4px;border:none;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
                                  "QPushButton:Hover{border:0px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_normal_btn.png);}"
                                  "QPushButton:Pressed{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_normal_btn.png);}");
     ui->lbCityCurrent->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(68,68,68,1);}");
@@ -233,12 +234,13 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
             showCollectCity(35 + 1*170, 242 + 2*100, true, addCityWeatherData); //add a new collection city
             showCollectCity(35 + 2*170, 242 + 2*100, false, ""); //create add collect city item
         }
+//        isAddCity = false;//2020.12.22英文情况下pc模式，对收藏城市进行增加删除关闭重新打开等操作，会出现多个+号和相同城市问题
 
-        isAddCity = false;
     } else {
         m_citynumber = strList.size()-2;
         QString citynumber = QString::number(m_citynumber) + "/8";
-//        ui->lbCityCount->setText(citynumber); //show number of collected cities
+        //#28524 天气首页点击左上角+号，弹出收藏城市显示为0/8，进行增删操作恢复正常，再次打开，依旧显示0/8
+        ui->lbCityCount->setText(citynumber); //show number of collected cities
 
         int row = 0; //current row
         int column = 0; //cuerrent column
@@ -564,7 +566,7 @@ void CityCollectionWidget::setThemeStyle()
     ui->lbCityCurrent->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(255,255,255,1);}");
     ui->lbCityCollect->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(255,255,255,1);}");
     ui->lbCityCount->setStyleSheet("QLabel{border:none;background:transparent;font-size:12px;font-weight:400;color:rgba(255,255,255,1);}");;
-    ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_white.png);}"
+    ui->btnCancel->setStyleSheet("QPushButton{border-radius:4px;border:0px;background:transparent;background-image:url(:/res/control_icons/close_white.png);}"
                                "QPushButton:Hover{border:0px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_white.png);}"
                                "QPushButton:Pressed{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_white.png);}");
 
@@ -578,7 +580,7 @@ void CityCollectionWidget::setThemeStyle()
       ui->lbCityCurrent->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(68,68,68,1);}");
       ui->lbCityCollect->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(68,68,68,1);}");
       ui->lbCityCount->setStyleSheet("QLabel{border:none;background:transparent;font-size:12px;font-weight:400;color:rgba(68,68,68,1);}");
-      ui->btnCancel->setStyleSheet("QPushButton{border:none;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
+      ui->btnCancel->setStyleSheet("QPushButton{border-radius:4px;border:none;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
                                  "QPushButton:Hover{border:0px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_normal_btn.png);}"
                                  "QPushButton:Pressed{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_normal_btn.png);}");
   }

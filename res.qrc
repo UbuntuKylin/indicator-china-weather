@@ -312,6 +312,10 @@
         <file>res/control_icons/weather-fog.png</file>
         <file>res/control_icons/weather-sandstorm.png</file>
         <file>res/control_icons/weather-snow.png</file>
+        <file>res/control_icons/open-menu.svg</file>
+        <file>res/control_icons/logo_24.png</file>
+        <file>res/control_icons/sleet.png</file>
+        <file>res/control_icons/snow.png</file>
     </qresource>
     <qresource prefix="/data">
         <file>data/china-city-list.csv</file>

@@ -39,6 +39,16 @@
         <translation>打开麒麟天气</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.cpp" line="69"/>
+        <source>Add City</source>
+        <translation>增加城市</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="74"/>
+        <source>About</source>
+        <translation>关于</translation>
+    </message>
+    <message>
         <location filename="../src/mainwindow.cpp" line="61"/>
         <source>Exit</source>
         <translation>退出</translation>
