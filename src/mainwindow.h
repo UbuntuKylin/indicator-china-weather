@@ -14,6 +14,7 @@
 #include "weathermanager.h"
 #include "promptwidget.h"
 #include "data.h"
+#include "citycollectionwidget.h"//需要
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -41,9 +42,16 @@
 #include <QPainterPath>
 #include <QMenu>
 #include <QAction>
+#include <QToolButton>
+
+#include <QPushButton>
+#include <QLabel>
 
 #include <QGSettings>
 #include <QGraphicsDropShadowEffect>
+
+#include "addcityaction.h"
+#include "daemondbus.h"
 
 namespace Ui {
 class MainWindow;
@@ -78,6 +86,10 @@ private slots:
     void closeActivated();
 
 private:
+
+    // 用户手册功能
+    DaemonDbus *mDaemonIpcDbus;
+
     Ui::MainWindow *ui;
     QScrollArea *m_scrollarea = nullptr;
     QWidget *m_scrollwidget = nullptr;
@@ -97,6 +109,22 @@ private:
     QMenu *m_mainMenu = nullptr;
     QAction *m_openAction;
     QAction *m_quitAction;
+
+    //*****2020.12.19增加
+    QPushButton *logoBtn;
+    QLabel *logolb;
+
+    QWidget *titleWid;
+    QHBoxLayout *titleLayout;
+
+    QPushButton *setBtn;
+    QMenu *menu ;
+    AddCityAction *addCityAction;
+    QAction *aboutAction;
+    QList<QAction *> actions ;
+    //*****2020.12.19增加
+
+
     void judgeSystemLanguage();
 
     void onSearchBoxEdited();
@@ -109,6 +137,9 @@ private:
 
     QString convertCodeToBackgroud(int code);
     void convertCodeToTrayIcon(QString code);
+
+    // 键盘响应事件
+    void keyPressEvent(QKeyEvent *event);
 
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
@@ -130,8 +161,17 @@ private:
     QString firstGetCityList="";
 
     QString nowThemeStyle;
+
+    QLabel *cityLabel;
+    bool is_open_city_collect_widget = false;
+    CityCollectionWidget *m_citycollectionwidget;
 signals:
+    void sendCurrentCityId(QString id);//发送到主界面更新主界面天气
+    void requestShowCollCityWeather(); //显示收藏城市列表天气
+    void requestSetCityWeather(QString weather_data); //发送出去显示主界面城市天气
     void updatecity();
+    void requestSetCityName(QString cityName);//在搜索列表中选中一个城市后，左上角城市名需要更改
+
 };
 
 #endif // MAINWINDOW_H

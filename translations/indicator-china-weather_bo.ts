@@ -38,6 +38,16 @@
         <source>Open Kylin Weather</source>
         <translation type="unfinished"></translation>
     </message>
+	<message>
+        <location filename="../src/mainwindow.cpp" line="69"/>
+        <source>Add City</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="74"/>
+        <source>About</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="61"/>
         <source>Exit</source>

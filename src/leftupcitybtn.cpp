@@ -35,7 +35,7 @@ LeftUpCityBtn::LeftUpCityBtn(QWidget *parent) : QWidget(parent)
     // m_iconLabel->setScaledContents(true);//自动缩放,显示图像大小自动调整为Qlabel大小
 
     m_addCityLabel = new QLabel(this);
-    m_addCityLabel->setFixedSize(80, 18);
+    m_addCityLabel->setFixedSize(80,18);
     m_addCityLabel->setAlignment(Qt::AlignVCenter);
     m_addCityLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#ffffff;font-size:16px;}");
 
@@ -47,7 +47,7 @@ LeftUpCityBtn::LeftUpCityBtn(QWidget *parent) : QWidget(parent)
     setLayout(m_layout);
     m_layout->setContentsMargins(1, 1, 1, 1);
 
-    m_addCityLabel->setText("N/A");
+    m_addCityLabel->setText("N/A");//需要//此处为加载时N/A
     setStyleSheet("QWidget{background-color:rgba(255,0,0,1);}");
 
     connect(this, &LeftUpCityBtn::requestSetCityName, this, [=] (QString cityName) {

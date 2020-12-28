@@ -1,3 +1,18 @@
+indicator-china-weather (3.1.0-32) v101; urgency=medium
+
+  * 调整麒麟天气主界面以及增加菜单栏和选项等功能
+  * 修复bug#29505：任务栏弹窗logo不对
+  * 修复bug#28846：4k屏下麒麟天气适配异常
+  * 修复bug#28562：添加城市界面显示异常
+  * 修复bug#28553：任务栏天气图标不对
+  * 修复bug#27705：城市收藏界面关闭按钮没有圆角
+  * 修复bug#27703：城市收藏，搜索界面四周有黑色框
+  * 修复bug#27701：城市收藏，收藏城市界面收藏数量提示异常
+  * 修复bug#27635：当前界面为麒麟天气时，按键F1不会进入到用户手册
+  * 修复bug#26698：主界面搜索框输入内容被切割、显示不完全
+
+ -- baijincheng <baijincheng@kylinos.cn>  Tue, 22 Dec 2020 18:33:00 +0800
+
 indicator-china-weather (3.1.0-31) unstable; urgency=medium
 
   * 部分兼容窗管

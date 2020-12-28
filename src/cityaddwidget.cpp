@@ -58,7 +58,7 @@ CityAddition::CityAddition(QWidget *parent) :
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:#3257ca;background-image:url(:/res/control_icons/return_white.png);}");
     ui->btnReturn->setFocusPolicy(Qt::NoFocus);
 
-    ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
+    ui->btnCancel->setStyleSheet("QPushButton{border:4px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
                                "QPushButton:Hover{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_normal_btn.png);}"
                                "QPushButton:Pressed{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_normal_btn.png);}");
     ui->btnCancel->setFocusPolicy(Qt::NoFocus);
@@ -204,7 +204,7 @@ void CityAddition::getStr(QString str)
      if("ukui-dark" == str || "ukui-black" == str)
      {
 
-    ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(31, 32, 34, 1);}");
+    ui->backwidget->setStyleSheet("QWidget{border:1px ;border-radius:6px;background:rgba(31, 32, 34, 1);}");
     ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_white.png);}"
                                "QPushButton:Hover{border:0px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_white.png);}"
                                "QPushButton:Pressed{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_white.png);}");
@@ -214,7 +214,7 @@ void CityAddition::getStr(QString str)
 }
      else if("ukui-default" == str || "ukui-white" == str  || "ukui-light" == str)
      {
-         ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(255,255,255,1);}");
+         ui->backwidget->setStyleSheet("QWidget{border:1px ;border-radius:6px;background:rgba(255,255,255,1);}");
 
          ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
                                     "QPushButton:Hover{border:0px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_white.png);}"

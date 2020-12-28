@@ -53,15 +53,15 @@ void CityAddSearchBox::ThemeCitySearchBox(QString str)
 
     if("ukui-dark" == str || "ukui-black" == str)
     {
-   this->setStyleSheet("QLineEdit{padding-left:31px;"
-                       "background:rgba(72,72,76,1);"
-                       "border:1px solid rgba(61,107,229,1);"
-                       "border-radius:4px;"
-                       "font-size:14px;"
-                       "color:rgba(255,255,255,1);}");
-   m_searchPixmap = (QPixmap(":/res/control_icons/search.png"));
+        this->setStyleSheet("QLineEdit{padding-left:31px;"
+                            "background:rgba(72,72,76,1);"
+                            "border:1px solid rgba(61,107,229,1);"
+                            "border-radius:4px;"
+                            "font-size:14px;"
+                            "color:rgba(255,255,255,1);}");
+        m_searchPixmap = (QPixmap(":/res/control_icons/search.png"));
 
-}
+    }
     else if("ukui-default" == str || "ukui-white" == str || "ukui-light" == str)
     {
         this->setStyleSheet("QLineEdit{padding-left:31px;"

@@ -43,9 +43,10 @@ bool onlyOne(QtSingleApplication &a)
 void setAttribute(QtSingleApplication &a)
 {
     signal(SIGINT, [](int) { QApplication::quit(); });// 设置退出信号
-    //自适应高清屏幕
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+
+//    //自适应高清屏幕
+//    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+//    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
     QIcon::setThemeName("ukui-icon-theme-default");
 
@@ -92,6 +93,15 @@ void responseCommand(QtSingleApplication &a)
 
 int main(int argc, char *argv[])
 {
+    #if(QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
+            QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+            QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    #endif
+
+    #if(QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+            QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+    #endif
+
     QString id = QString("indicator-china-weather-"+QLatin1String(getenv("DISPLAY")));
     QtSingleApplication a(id, argc, argv);
     responseCommand(a);//响应外部DBus命令

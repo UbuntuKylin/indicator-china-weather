@@ -3,7 +3,7 @@
 # Project created by QtCreator 2019-08-10T17:28:11
 #
 #-------------------------------------------------
-QT       += network
+QT       += network dbus
 include(src/qtsingleapplication/qtsingleapplication.pri)
 isEqual(QT_MAJOR_VERSION, 5) {
     QT += widgets gui core dbus KWindowSystem x11extras
@@ -67,7 +67,10 @@ unix {
     OBJECTS_DIR = .obj
 }
 
-SOURCES += src/main.cpp \
+SOURCES +=\
+    src/daemondbus.cpp \
+ src/main.cpp \
+    src/addcityaction.cpp \
     src/cityaddhotview.cpp \
     src/cityaddsearchbox.cpp \
     src/cityaddsearchdelegate.cpp \
@@ -92,6 +95,7 @@ SOURCES += src/main.cpp \
     src/xatom-helper.cpp
 
 HEADERS  += src/mainwindow.h \
+    src/addcityaction.h \
     src/cityaddhotview.h \
     src/cityaddsearchbox.h \
     src/cityaddsearchdelegate.h \
@@ -99,6 +103,7 @@ HEADERS  += src/mainwindow.h \
     src/cityaddwidget.h \
     src/citycollectionitem.h \
     src/citycollectionwidget.h \
+    src/daemondbus.h \
     src/darkcityaddsearchdelegate.h \
     src/data.h \
     src/dbusadaptor.h \
