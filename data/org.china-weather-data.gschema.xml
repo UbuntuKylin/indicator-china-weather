@@ -6,9 +6,9 @@
             <description>citylist</description>
        </key>
        <key name="weather" type="s">
-            <default>"1920-08-27 10:17:42,101310204,澄迈,小雨,95%,25℃,北风,1级,海南,305"</default>
+            <default>"1920-08-27 10:17:42,101010100,海淀,小雨,95%,25℃,北风,1级,北京,305"</default>
             <summary>thisweather</summary>
-            <description>this city weather now</description>
+            <description>current weather of this city</description>
        </key>
       </schema>
 </schemalist>
