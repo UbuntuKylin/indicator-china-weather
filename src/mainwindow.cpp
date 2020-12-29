@@ -295,7 +295,7 @@ void MainWindow::initConnections()
         }
     });
 
-
+    connect(m_leftupsearchbox,&LeftUpSearchBox::lineEditKeyEvent,m_searchView,&LeftUpSearchView::dealSearchBoxKeyPress);
     //1*****addCityAction替换原来的m_leftupcitybtn*****
     connect(m_searchView, SIGNAL(requestSetCityName(QString)), addCityAction, SIGNAL(requestSetCityName(QString)) );
 //    connect(m_searchView, SIGNAL(requestSetCityName(QString)), m_leftupcitybtn, SIGNAL(requestSetCityName(QString)) );

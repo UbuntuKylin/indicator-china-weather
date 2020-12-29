@@ -77,3 +77,30 @@ void LeftUpSearchBox::ThemeLeftUpSearchBox(QString str)
        this->setStyleSheet("QLineEdit{padding-left:31px;background:rgba(255,255,255,0.2);border-radius:4px;color:rgba(255,255,255,0.5);}");
     }
 }
+
+bool LeftUpSearchBox::event(QEvent *e){
+    if(e->type() == QEvent::FocusOut){
+        return QLineEdit::event(e);
+    }
+    if(e->type() == QEvent::KeyPress){
+        QKeyEvent *k = static_cast<QKeyEvent *>(e);
+        switch(k->key()){
+            case Qt::Key_Up:{
+                emit lineEditKeyEvent("up");
+//                return true;
+            break;
+            }
+            case Qt::Key_Down:{
+                emit lineEditKeyEvent("down");
+            //                return true;
+                        break;
+            }
+            case Qt::Key_Return:{
+                emit lineEditKeyEvent("enter");
+            //                return true;
+                        break;
+            }
+        }
+    }
+    return QLineEdit::event(e);
+}

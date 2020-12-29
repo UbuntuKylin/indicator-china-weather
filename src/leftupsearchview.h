@@ -20,7 +20,8 @@ public:
 protected:
     // handle click event of searchview, send signal when mouse release.
     void mouseReleaseEvent(QMouseEvent *e) override;
-
+public slots:
+    void dealSearchBoxKeyPress(QString str);
 signals:
     void requestSetCityName(QString cityName); //点击选中列表中某一个城市后发出，通知更改左上角城市名
     //void requestGetWeatherData(QString id); //发送出去用于获取数据并在主界面显示
@@ -28,6 +29,7 @@ signals:
 
 private:
     QString m_cityid;
+    void send();
 };
 
 #endif // LEFTUPSEARCHVIEW_H

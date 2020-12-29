@@ -106,7 +106,6 @@ QList<LocationData> LocationWorker::exactMatchCity(const QString &inputText) con
             }
             else
             {
-                qDebug()<<"not equal";
                 searchedList.append(line); //将数据加入列表
             }
 //            qDebug()<<line.province<<" | "<<line.admin_district<<" | "<<line.city;
