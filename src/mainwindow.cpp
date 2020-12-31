@@ -203,7 +203,7 @@ void MainWindow::initControlQss()
     titleLayout->addWidget(m_leftupsearchbox);//麒麟天气搜索栏
     titleLayout->addSpacing(4);
 //    titleLayout->addStretch();//添加伸缩
-    titleLayout->addWidget(setBtn);//设置按钮
+//    titleLayout->addWidget(setBtn);//设置按钮
     titleLayout->addWidget(ui->btnMinimize);
     titleLayout->addWidget(ui->btnCancel);
     titleLayout->setSpacing(4);
