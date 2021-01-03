@@ -4,6 +4,7 @@
 #include "data.h"
 
 #include <QWidget>
+#include <QFileInfo>
 
 class WeatherWorker;
 

@@ -687,6 +687,7 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
 
     int code  = m_observeweather.cond_code.toInt();
     convertCodeToTrayIcon(m_observeweather.cond_code);
+    qDebug()<<"mainwindows.cpppp"<<code;
     QString picStr = convertCodeToBackgroud(code);
     QString picQss = "#centralwidget{color:white;background-image:url(" + picStr + ");background-repeat:no-repeat;}";
     ui->centralwidget->setStyleSheet(picQss);
