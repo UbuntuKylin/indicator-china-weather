@@ -1,3 +1,14 @@
+indicator-china-weather (3.1.0-33) v101; urgency=medium
+
+  * 修复bug#30515 菜单按钮开发未完成，该功能已下线
+  * 修复bug#29599 默认地区海南改北京
+  * 修复bug#29121 导航键控制预选框
+  * 修复bug#30752 不同天气下显示的素材图一致
+  * 修复bug#28584 图标显示错误
+  * 修复bug#31114 搜索框位置错误
+
+ -- shixiaoshuo <shixiaoshuo@kylinos.cn>  Sun,3  Jan 2021 18:33:00 +0800
+
 indicator-china-weather (3.1.0-32) unstable; urgency=medium
 
   * 设计稿主界面改变：调整麒麟天气主界面以及增加菜单栏和选项等功能
