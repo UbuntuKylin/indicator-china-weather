@@ -133,37 +133,37 @@
     <message>
         <location filename="../src/menumodule.cpp" line="22"/>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>主题</translation>
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="24"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>帮助</translation>
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="26"/>
         <source>About</source>
-        <translation type="unfinished">关于</translation>
+        <translation>关于</translation>
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="28"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>退出</translation>
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="187"/>
         <source>indicator china weather</source>
-        <translation type="unfinished"></translation>
+        <translation>麒麟天气</translation>
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="229"/>
         <source>Version: </source>
-        <translation type="unfinished"></translation>
+        <translation>版本:</translation>
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="233"/>
         <source>Support: support@kylinos.cn</source>
-        <translation type="unfinished"></translation>
+        <translation>支持：support@kylinos.cn</translation>
     </message>
 </context>
 </TS>
