@@ -1,3 +1,9 @@
+indicator-china-weather (3.1.0-35) v101; urgency=medium
+
+  * 菜单按钮因可能导致功能缺失因此补充上线
+
+ -- shixiaoshuo <shixiaoshuo@kylinos.cn>  Tue,5  Jan 2021 10:33:00 +0800
+
 indicator-china-weather (3.1.0-33) v101; urgency=medium
 
   * 修复bug#30515 菜单按钮开发未完成，该功能已下线
