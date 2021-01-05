@@ -99,11 +99,11 @@ void menuModule::triggerMenu(QAction *act){
 
 
     QString str = act->text();
-    if("Quit" == str){
+    if(tr("Quit") == str){
         emit menuModuleClose();
-    }else if("About" == str){
+    }else if(tr("About") == str){
         aboutAction();
-    }else if("Help" == str){
+    }else if(tr("Help") == str){
         helpAction();
     }
 }
