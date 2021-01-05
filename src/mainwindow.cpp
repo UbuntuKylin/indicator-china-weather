@@ -136,6 +136,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //    m_searchView->move(100, 49);//2020.12.22
     m_searchView->resize(178,205);
     m_searchView->hide();
+    m_searchView->move(605,49);
 
     m_hintWidget = new PromptWidget(this);
     m_hintWidget->setIconAndText(":/res/control_icons/network_warn.png", tr("Network not connected"));//网络未连接
