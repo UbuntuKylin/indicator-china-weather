@@ -1,3 +1,17 @@
+indicator-china-weather (3.1.0-36) v101; urgency=medium
+
+  * 修复了一处因为gsetting文件初始化问题引起的严重BUG
+
+ -- shixiaoshuo <shixiaoshuo@kylinos.cn>  Fri,8  Jan 2021 10:33:00 +0800
+
+indicator-china-weather (3.1.0-35) v101; urgency=medium
+
+  * 菜单按钮功能上线。
+  * 修复高危BUG#32077 按钮位置异常
+  * 修复高优先BUG#30941 关于按钮无反应
+
+ -- shixiaoshuo <shixiaoshuo@kylinos.cn>  Thu,7  Jan 2021 10:33:00 +0800
+
 indicator-china-weather (3.1.0-34) v101; urgency=medium
 
   * 菜单按钮因可能导致功能缺失因此补充上线

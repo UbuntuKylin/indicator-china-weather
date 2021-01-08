@@ -58,9 +58,9 @@ void menuModule::initAction(){
 void menuModule::setThemeFromLocalThemeSetting(QList<QAction* > themeActions)
 {
 #if DEBUG_MENUMODULE
-    confPath = "org.kylin-usb-creator-data.settings";
+//    confPath = "org.kylin-usb-creator-data.settings";
 #endif
-    m_pGsettingThemeStatus = new QGSettings(confPath.toLocal8Bit());
+    m_pGsettingThemeStatus = new QGSettings(APPDATA);
     QString appConf = m_pGsettingThemeStatus->get("thememode").toString();
     if("lightonly" == appConf){
         themeStatus = themeLightOnly;
@@ -111,7 +111,7 @@ void menuModule::triggerMenu(QAction *act){
 void menuModule::triggerThemeMenu(QAction *act){
     if(!m_pGsettingThemeStatus)
     {
-        m_pGsettingThemeStatus = new QGSettings(confPath.toLocal8Bit());  //m_pGsettingThemeStatus指针重复使用避免占用栈空间
+        m_pGsettingThemeStatus = new QGSettings(APPDATA);  //m_pGsettingThemeStatus指针重复使用避免占用栈空间
     }
     QString str = act->text();
     if("Light" == str){
@@ -214,7 +214,7 @@ QVBoxLayout* menuModule::initBody(){
 #if DEBUG_MENUMODULE
     appVersion = "2020.12.12-test";
 #endif
-    appVersion = "3.1.0-33kord";
+    appVersion = "3.1.0-33";
     QLabel* bodyIcon = new QLabel();
     bodyIcon->setFixedSize(96,96);
     bodyIcon->setPixmap(QPixmap::fromImage(QImage(iconPath)));

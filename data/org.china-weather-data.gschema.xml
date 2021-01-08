@@ -10,5 +10,10 @@
             <summary>thisweather</summary>
             <description>current weather of this city</description>
        </key>
+       <key name="thememode" type="s">
+           <default>"auto"</default>
+           <summary>"record theme mode"</summary>
+           <description>record theme mode.there's three mode.auto,lightonly and darkonly</description>
+       </key>
       </schema>
 </schemalist>

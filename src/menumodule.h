@@ -1,7 +1,8 @@
 #ifndef MENUMODULE_H
 #define MENUMODULE_H
-#define DEBUG_MENUMODULE 1  //DEBUG模式开关，代码上线之前务必关掉
+#define DEBUG_MENUMODULE 0  //DEBUG模式开关，代码上线之前务必关掉
 #define FITTHEMEWINDOW "org.ukui.style"
+#define APPDATA "org.china-weather-data.settings"
 
 
 #include <QObject>
@@ -41,13 +42,13 @@ public:
     QString appVersion = "appVersion字段未填充!";
     QString appDesc = "appDesc字段未填充!";
     QString iconPath = "iconPath字段未填充!";
-    QString confPath = "gsetting文件路径未配置";
+    QString confPath = "org.china-weather-data.settings";
 
 private:
     QMenu *m_menu = nullptr;
     QMenu *themeMenu = nullptr;
     QSize iconSize;
-    QString appPath = "tools/kylin-usb-creator"; //拉起帮助菜单时使用appName字段
+//    QString appPath = "tools/kylin-usb-creator"; //拉起帮助菜单时使用appName字段
     QWidget *aboutWindow = nullptr;
     QGSettings *m_pGsettingThemeData = nullptr;
     QGSettings *m_pGsettingThemeStatus = nullptr;
