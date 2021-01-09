@@ -361,11 +361,12 @@ void MainWindow::initConnections()
     //根据获取到网络探测的结果分别处理
     connect(m_weatherManager, &WeatherManager::nofityNetworkStatus, this, [=] (const QString &status) {
         if (status == "OK") {
-            //m_weatherManager->startAutoLocationTask();//开始自动定位城市
+            m_weatherManager->startAutoLocationTask();//开始自动定位城市
 
             //CN101010100,beijing,北京,CN,China,中国
-            // m_weatherManager->startGetTheWeatherData("101010100");
+//            m_weatherManager->startGetTheWeatherData("101010100");
             QStringList listCityId = getCityList().split(",");
+            qDebug()<<"listCityId:"<<listCityId;
             m_weatherManager->startGetTheWeatherData(listCityId.at(0));
         } else {
             if (status == "Fail") {
@@ -381,6 +382,9 @@ void MainWindow::initConnections()
     connect(m_weatherManager, &WeatherManager::requestAutoLocationData, this, [=] (const CitySettingData &info, bool success) {
         if (success) {
             //自动定位城市成功后，更新各个ui，然后获取天气数据
+            m_weatherManager->startGetTheWeatherData(info.id);
+
+
         } else {
             //自动定位城市失败后，获取天气数据
         }
