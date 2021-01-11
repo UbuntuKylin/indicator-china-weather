@@ -14,3 +14,4 @@ Terminal=false
 Type=Application
 X-GNOME-Autostart-Delay=10
 Categories=GNOME;Utility;
+X-UKUI-AutoRestart=true;
