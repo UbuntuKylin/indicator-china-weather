@@ -30,7 +30,7 @@
     <message>
         <location filename="../src/citycollectionwidget.cpp" line="100"/>
         <source>Current Network Exception, Please Check Network Settings</source>
-        <translation type="unfinished">当前网络异常，请检查网络设置</translation>
+        <translation>当前网络异常，请检查网络设置</translation>
     </message>
 </context>
 <context>

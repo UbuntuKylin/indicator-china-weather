@@ -264,7 +264,7 @@ void MainWindow::initControlQss()
     m_scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
-    m_scrollarea->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 2px 0px 2px;width:10px;background:rgba(255,255,255,0);border-radius:6px;}"
+    m_scrollarea->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 2px 0px 2px;width:13px;background:rgba(255,255,255,0);border-radius:6px;}"
                                                      "QScrollBar::up-arrow:vertical{height:0px;}"
                                                      "QScrollBar::sub-line:vertical{border:0px solid;height:0px}"
                                                      "QScrollBar::sub-page:vertical{background:transparent;}"
