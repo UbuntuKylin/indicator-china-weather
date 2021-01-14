@@ -1,3 +1,9 @@
+indicator-china-weather (3.1.0-37) v101; urgency=medium
+
+  * 解决了BUG#30685 程序没有IP定位功能
+
+ -- shixiaoshuo <shixiaoshuo@kylinos.cn>  Fri,8  Jan 2021 10:33:00 +0800
+
 indicator-china-weather (3.1.0-36) v101; urgency=medium
 
   * 修复了一处因为gsetting文件初始化问题引起的严重BUG

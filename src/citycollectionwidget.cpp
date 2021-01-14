@@ -81,8 +81,8 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     ui->btnCancel->setFocusPolicy(Qt::NoFocus);
     ui->lbLeftUpTitle->setText(tr("Kylin Weather"));
     ui->lbLeftUpTitle->setFixedWidth(100);
-    ui->lbCityCollect->setText("收藏城市");
-    ui->lbCityCurrent->setText("当前城市");
+    ui->lbCityCollect->setText(tr("Collections")); //收藏城市
+    ui->lbCityCurrent->setText(tr("Local"));    //当前城市
 
     ui->lbCityCount->setText("0/8");
     m_citynumber = 0;
@@ -97,7 +97,7 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     m_tipLabel->setWordWrap(true);
     m_tipLabel->setAlignment(Qt::AlignCenter);
     m_tipLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
-    m_tipLabel->setText("当前网络异常，请检查网络设置");//Current Network Exception, Please Check Network Settings
+    m_tipLabel->setText(tr("Current Network Exception, Please Check Network Settings"));//当前网络异常，请检查网络设置
     m_tipLabel->move(0, 300);
     m_tipLabel->hide();
 
