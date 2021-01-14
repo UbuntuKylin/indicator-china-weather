@@ -17,6 +17,21 @@
         <source>Kylin Weather</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/citycollectionwidget.cpp" line="84"/>
+        <source>Collections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/citycollectionwidget.cpp" line="85"/>
+        <source>Local</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/citycollectionwidget.cpp" line="100"/>
+        <source>Current Network Exception, Please Check Network Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LeftUpSearchBox</name>
@@ -31,7 +46,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="44"/>
         <location filename="../src/mainwindow.cpp" line="95"/>
-        <location filename="../src/mainwindow.cpp" line="405"/>
+        <location filename="../src/mainwindow.cpp" line="409"/>
         <source>Kylin Weather</source>
         <translation type="unfinished"></translation>
     </message>
@@ -133,16 +148,19 @@
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="24"/>
+        <location filename="../src/menumodule.cpp" line="106"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="26"/>
+        <location filename="../src/menumodule.cpp" line="104"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="28"/>
+        <location filename="../src/menumodule.cpp" line="102"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
