@@ -368,6 +368,7 @@ void MainWindow::initConnections()
             QStringList listCityId = getCityList().split(",");
             qDebug()<<"listCityId:"<<listCityId;
             m_weatherManager->startGetTheWeatherData(listCityId.at(0));
+            m_trayIcon->show();
         } else {
             if (status == "Fail") {
                 onHandelAbnormalSituation("Without wired Carrier");
@@ -554,7 +555,8 @@ void MainWindow::onHandelAbnormalSituation(QString abnormalText){
 //处理异常时的主界面显示
 void MainWindow::setAbnormalMainWindow()
 {
-    m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
+//    m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
+    m_trayIcon->hide();
 //    m_openAction->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
     ui->lbCurrTmp->setText("");
     ui->lbCurrTmpUnit->setText("");

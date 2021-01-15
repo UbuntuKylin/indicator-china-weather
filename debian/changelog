@@ -2,6 +2,7 @@ indicator-china-weather (3.1.0-37) v101; urgency=medium
 
   * 解决了BUG#30685 程序没有IP定位功能
   * 解决了BUG#27090 收藏界面国际化问题
+  * 解决了BUG#34026 断网情况下隐藏托盘icon
 
  -- shixiaoshuo <shixiaoshuo@kylinos.cn>  Fri,8  Jan 2021 10:33:00 +0800
 
