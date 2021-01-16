@@ -87,18 +87,15 @@ bool LeftUpSearchBox::event(QEvent *e){
         switch(k->key()){
             case Qt::Key_Up:{
                 emit lineEditKeyEvent("up");
-//                return true;
-            break;
+                break;
             }
             case Qt::Key_Down:{
                 emit lineEditKeyEvent("down");
-            //                return true;
-                        break;
+                break;
             }
             case Qt::Key_Return:{
                 emit lineEditKeyEvent("enter");
-            //                return true;
-                        break;
+                break;
             }
         }
     }

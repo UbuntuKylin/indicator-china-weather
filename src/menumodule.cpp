@@ -14,7 +14,9 @@ void menuModule::initAction(){
     iconSize = QSize(30,30);
     menuButton = new QPushButton;
     menuButton->setIcon(QIcon::fromTheme("application-menu"));
+    menuButton->setFlat(true);
     menuButton->setFixedSize(iconSize);
+
     m_menu = new QMenu();
     addCityAction = new AddCityAction(m_menu);
     QList<QAction *> actions ;
@@ -249,7 +251,13 @@ QVBoxLayout* menuModule::initBody(){
 }
 
 void menuModule::setStyle(){
-    menuButton->setStyleSheet("QPushButton::menu-indicator{image:None;}");
+//    menuButton->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
+//                              "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.1);}"
+//                              "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.15);}");
+    menuButton->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
+                              "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.1);}"
+                              "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.15);}"
+                              "QPushButton::menu-indicator{image:None;}");
 }
 
 void menuModule::initGsetting(){

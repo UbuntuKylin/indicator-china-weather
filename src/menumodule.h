@@ -9,6 +9,7 @@
 #include <QWidget>
 #include <QMenu>
 #include <QPushButton>
+#include <QToolButton>
 #include <QDebug>
 #include <QString>
 #include <QLabel>
