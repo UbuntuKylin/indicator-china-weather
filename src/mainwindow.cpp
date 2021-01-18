@@ -20,6 +20,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MainWindow)
@@ -231,14 +232,15 @@ void MainWindow::initControlQss()
     ui->centralwidget->setStyleSheet("#centralwidget{color:white;background-image:url(':/res/background/weather-clear.png');background-repeat:no-repeat;}");
     ui->centralwidget->move(10,10);
     ui->centralwidget->setFixedSize(865,520);
-    ui->btnMinimize->setIcon(QIcon::fromTheme("window-minimize-symbolic"));
+    ui->btnMinimize->setIcon(QIcon::fromTheme(":/res/control_icons/dark-window-min.svg"));
     ui->btnMinimize->setFixedSize(30,30);
     ui->btnMinimize->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
                                "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.1);}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.15);}");
+
     ui->btnMinimize->setFocusPolicy(Qt::NoFocus);//设置焦点类型
 
-    ui->btnCancel->setIcon(QIcon::fromTheme("window-close-symbolic"));
+    ui->btnCancel->setIcon(QIcon::fromTheme(":/res/control_icons/dark-window-close.svg"));
     ui->btnCancel->setFixedSize(30,30);
     ui->btnCancel->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
                                "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:#F86457;}"

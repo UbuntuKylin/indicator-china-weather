@@ -386,6 +386,8 @@
         <file>res/forecast-icons/1x/900.png</file>
         <file>res/forecast-icons/1x/901.png</file>
         <file>res/forecast-icons/1x/999.png</file>
+        <file>res/control_icons/dark-window-close.svg</file>
+        <file>res/control_icons/dark-window-min.svg</file>
     </qresource>
     <qresource prefix="/data">
         <file>data/china-city-list.csv</file>

@@ -1,5 +1,7 @@
 #include "menumodule.h"
 #include "xatom-helper.h"
+#include "HighLight.h"
+
 menuModule::menuModule(QWidget *parent = nullptr) : QWidget(parent)
 {
     init();
@@ -14,6 +16,8 @@ void menuModule::initAction(){
     iconSize = QSize(30,30);
     menuButton = new QPushButton;
     menuButton->setIcon(QIcon::fromTheme("application-menu"));
+    menuButton->setProperty("setIconHighlightEffectDefaultColor", QColor(Qt::white));
+    menuButton->setStyleSheet("color:rgba(255,255,255，1);");
     menuButton->setFlat(true);
     menuButton->setFixedSize(iconSize);
 
