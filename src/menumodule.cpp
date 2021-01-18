@@ -1,6 +1,5 @@
 #include "menumodule.h"
 #include "xatom-helper.h"
-#include "HighLight.h"
 
 menuModule::menuModule(QWidget *parent = nullptr) : QWidget(parent)
 {
@@ -13,6 +12,7 @@ void menuModule::init(){
 }
 
 void menuModule::initAction(){
+    aboutWindow = new QWidget();
     iconSize = QSize(30,30);
     menuButton = new QPushButton;
     menuButton->setIcon(QIcon::fromTheme("application-menu"));
@@ -158,7 +158,7 @@ void menuModule::helpAction(){
 }
 
 void menuModule::initAbout(){
-    aboutWindow = new QWidget();
+    aboutWindow->setWindowFlag(Qt::Tool);
     MotifWmHints hints;
     hints.flags = MWM_HINTS_FUNCTIONS|MWM_HINTS_DECORATIONS;
     hints.functions = MWM_FUNC_ALL;

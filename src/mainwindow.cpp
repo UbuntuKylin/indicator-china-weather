@@ -758,7 +758,6 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
 //            readCityIdList.append(oldCurrentCityId);
 //        }
 //    }
-
     //将列表中第一个城市设置为当前搜索的新城市
     readCityIdList.replace(0, m_observeweather.id);
 
@@ -777,7 +776,7 @@ void MainWindow::convertCodeToTrayIcon(QString code)
 {
     if (code.isEmpty()) {
         m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
-//        m_openAction->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
+//        m_openAction->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))));
         return;
     }
 
