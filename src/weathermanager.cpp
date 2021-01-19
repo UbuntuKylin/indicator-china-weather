@@ -165,7 +165,6 @@ void WeatherManager::setAutomaticCity(const QString &cityName)
         }
         file.close();
     }
-
     if (autoSuccess) {
         emit this->requestAutoLocationData(info, true);
     } else {

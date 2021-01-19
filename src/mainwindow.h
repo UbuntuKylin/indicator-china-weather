@@ -49,9 +49,8 @@
 
 #include <QGSettings>
 #include <QGraphicsDropShadowEffect>
-
-#include "addcityaction.h"
 #include "daemondbus.h"
+#include "menumodule.h"
 
 namespace Ui {
 class MainWindow;
@@ -119,11 +118,11 @@ private:
 
     QPushButton *setBtn;
     QMenu *menu ;
-    AddCityAction *addCityAction;
+//    AddCityAction *addCityAction;
     QAction *aboutAction;
     QList<QAction *> actions ;
     //*****2020.12.19增加
-
+    menuModule *m_menu = nullptr;
 
     void judgeSystemLanguage();
 

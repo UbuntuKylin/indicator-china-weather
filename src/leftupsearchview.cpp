@@ -28,7 +28,6 @@ LeftUpSearchView::LeftUpSearchView(QWidget *parent)
     this->setMouseTracking(true);
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setFocusPolicy(Qt::NoFocus);//设置焦点类型
-
     this->setStyleSheet("QListView{margin:0px;padding:0px;border:none;border-radius:4px;outline:none;background-color:rgba(255,255,255,0.25);}"
                         "QListView::item:selected:!active{background-color:rgba(255,255,255,0.25);}"
                         "QListView::item:selected:active{background-color:rgba(255,255,255,0.25);}"
@@ -50,18 +49,20 @@ LeftUpSearchView::~LeftUpSearchView()
 
 }
 
-void LeftUpSearchView::mouseReleaseEvent(QMouseEvent *e)
+void LeftUpSearchView::mouseReleaseEvent(QMouseEvent *)
 {
-    QModelIndexList sourceIndexList = this->selectionModel()->selectedIndexes();
+    send();
+}
 
+void LeftUpSearchView::send(){
+    QModelIndexList sourceIndexList = this->selectionModel()->selectedIndexes();
+    qDebug()<<sourceIndexList;
     foreach (QModelIndex sourceIndex, sourceIndexList) {
         QVariant variant = sourceIndex.data(Qt::UserRole);
         ItemData data = variant.value<ItemData>();
-        // qDebug() << "Index : " << sourceIndex.row();
-        // emit requestSetCityName(data.cityName);
-
         requestWeatherData(data.cityId);
     }
+    qDebug()<<"#####";
 }
 
 void LeftUpSearchView::requestWeatherData(QString cityId) {
@@ -94,22 +95,42 @@ void LeftUpSearchView::ThemeLeftUpSearchView(QString str)
                                                 "QScrollBar::down-arrow:vertical{background-color:transparent;}" \
                                                 "QScrollBar::add-line:vertical{subcontrol-origin:margin;border:none;height:6px;}");
 
+    }else if("ukui-default" == str || "ukui-white" == str || "ukui-light" == str)
+    {
+        this->setStyleSheet("QListView{margin:0px;padding:0px;border:none;border-radius:4px;outline:none;background-color:rgba(255,255,255,0.25);}"
+                            "QListView::item:selected:!active{background-color:rgba(255,255,255,0.25);}"
+                            "QListView::item:selected:active{background-color:rgba(255,255,255,0.25);}"
+                            "QListView::item:hover{background-color:rgba(255,255,255,0.25);}");
+        this->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 0px 0px 0px;background-color:transparent;border:0px;width:1px;}" \
+                                                 "QScrollBar::sub-line:vertical{subcontrol-origin:margin;border:none;height:6px;}" \
+                                                 "QScrollBar::up-arrow:vertical{subcontrol-origin:margin;background-color:transparent;height:6px;}" \
+                                                 "QScrollBar::sub-page:vertical{background-color:transparent;}" \
+                                                 "QScrollBar::handle:vertical{background-color:transparent;width:1px;}" \
+                                                 "QScrollBar::handle:vertical:hover{background-color:transparent;width:1px;}" \
+                                                 "QScrollBar::handle:vertical:pressed{background-color:transparent;width:1px;}" \
+                                                 "QScrollBar::add-page:vertical{background-color:transparent;}" \
+                                                 "QScrollBar::down-arrow:vertical{background-color:transparent;}" \
+                                                 "QScrollBar::add-line:vertical{subcontrol-origin:margin;border:none;height:6px;}");
     }
-        else if("ukui-default" == str || "ukui-white" == str || "ukui-light" == str)
-        {
-            this->setStyleSheet("QListView{margin:0px;padding:0px;border:none;border-radius:4px;outline:none;background-color:rgba(255,255,255,0.25);}"
-                                "QListView::item:selected:!active{background-color:rgba(255,255,255,0.25);}"
-                                "QListView::item:selected:active{background-color:rgba(255,255,255,0.25);}"
-                                "QListView::item:hover{background-color:rgba(255,255,255,0.25);}");
-            this->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 0px 0px 0px;background-color:transparent;border:0px;width:1px;}" \
-                                                     "QScrollBar::sub-line:vertical{subcontrol-origin:margin;border:none;height:6px;}" \
-                                                     "QScrollBar::up-arrow:vertical{subcontrol-origin:margin;background-color:transparent;height:6px;}" \
-                                                     "QScrollBar::sub-page:vertical{background-color:transparent;}" \
-                                                     "QScrollBar::handle:vertical{background-color:transparent;width:1px;}" \
-                                                     "QScrollBar::handle:vertical:hover{background-color:transparent;width:1px;}" \
-                                                     "QScrollBar::handle:vertical:pressed{background-color:transparent;width:1px;}" \
-                                                     "QScrollBar::add-page:vertical{background-color:transparent;}" \
-                                                     "QScrollBar::down-arrow:vertical{background-color:transparent;}" \
-                                                     "QScrollBar::add-line:vertical{subcontrol-origin:margin;border:none;height:6px;}");
-        }
 }
+void LeftUpSearchView::dealSearchBoxKeyPress(QString str){
+    if(str == "up"){
+        if(-1 == this->currentIndex().row()){
+
+            setCurrentIndex(model()->index(model()->rowCount() - 1,0));
+        }else{
+//            this->model()->index(this->model()->rowCount() - 1, 0);
+            this->setCurrentIndex(model()->index(this->currentIndex().row() - 1,0));
+        }
+    }else if(str == "down"){
+        if(this->currentIndex().row() == -1){
+            setCurrentIndex(model()->index(0,0));
+        }else{
+            this->setCurrentIndex(model()->index(this->currentIndex().row() + 1,0));
+        }
+    }else if(str == "enter"){
+        send();
+    }
+    return ;
+}
+

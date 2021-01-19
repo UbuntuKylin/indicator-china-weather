@@ -1,3 +1,54 @@
+indicator-china-weather (3.1.0-39) v101; urgency=medium
+
+  * 菜单栏按钮反白，城市和应用名字体调整大小和颜色调整为白色
+
+ -- baijincheng <baijincheng@kylinos.cn>  Tue,19  Jan 2021 09:46:00 +0800
+
+indicator-china-weather (3.1.0-38) v101; urgency=medium
+
+  * 按钮反白
+
+ -- baijincheng <baijincheng@kylinos.cn>  Sat,16  Jan 2021 21:33:00 +0800
+
+indicator-china-weather (3.1.0-37) v101; urgency=medium
+
+  * 解决了BUG#30685 程序没有IP定位功能
+  * 解决了BUG#27090 收藏界面国际化问题
+  * 解决了BUG#34026 断网情况下隐藏托盘icon
+
+ -- shixiaoshuo <shixiaoshuo@kylinos.cn>  Fri,8  Jan 2021 10:33:00 +0800
+
+indicator-china-weather (3.1.0-36) v101; urgency=medium
+
+  * 修复了一处因为gsetting文件初始化问题引起的严重BUG
+
+ -- shixiaoshuo <shixiaoshuo@kylinos.cn>  Fri,8  Jan 2021 10:33:00 +0800
+
+indicator-china-weather (3.1.0-35) v101; urgency=medium
+
+  * 菜单按钮功能上线。
+  * 修复高危BUG#32077 按钮位置异常
+  * 修复高优先BUG#30941 关于按钮无反应
+
+ -- shixiaoshuo <shixiaoshuo@kylinos.cn>  Thu,7  Jan 2021 10:33:00 +0800
+
+indicator-china-weather (3.1.0-34) v101; urgency=medium
+
+  * 菜单按钮因可能导致功能缺失因此补充上线
+
+ -- shixiaoshuo <shixiaoshuo@kylinos.cn>  Tue,5  Jan 2021 10:33:00 +0800
+
+indicator-china-weather (3.1.0-33) v101; urgency=medium
+
+  * 修复bug#30515 菜单按钮开发未完成，该功能已下线
+  * 修复bug#29599 默认地区海南改北京
+  * 修复bug#29121 导航键控制预选框
+  * 修复bug#30752 不同天气下显示的素材图一致
+  * 修复bug#28584 图标显示错误
+  * 修复bug#31114 搜索框位置错误
+
+ -- shixiaoshuo <shixiaoshuo@kylinos.cn>  Sun,3  Jan 2021 18:33:00 +0800
+
 indicator-china-weather (3.1.0-32) unstable; urgency=medium
 
   * 设计稿主界面改变：调整麒麟天气主界面以及增加菜单栏和选项等功能

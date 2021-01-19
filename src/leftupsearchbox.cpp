@@ -51,7 +51,8 @@ void LeftUpSearchBox::paintEvent(QPaintEvent *event)
         bool noChinese=(QLocale::system().name() != "zh_CN");
 
         //2020.12.22调整右上角搜索框里的间距
-        QRect iconRect(QPoint(40-13*noChinese, 7), m_searchPixmap.size()/qApp->devicePixelRatio());
+//        QRect iconRect(QPoint(40-13*noChinese, 7), m_searchPixmap.size()/qApp->devicePixelRatio());
+        QRect iconRect(QPoint(40-13*noChinese, 7), m_searchPixmap.size());
         painter.drawPixmap(iconRect, m_searchPixmap); //add icon in searchbox
 
         QRect textRect(62-13*noChinese, 3, 43, 28);//2020.12.22调整右上角搜索框里的间距
@@ -61,7 +62,8 @@ void LeftUpSearchBox::paintEvent(QPaintEvent *event)
         QPainter painter(this);
         painter.setOpacity(0.5);
 
-        QRect iconRect(QPoint(9, 6), m_searchPixmap.size()/qApp->devicePixelRatio());
+//        QRect iconRect(QPoint(9, 6), m_searchPixmap.size()/qApp->devicePixelRatio());
+        QRect iconRect(QPoint(9, 6), m_searchPixmap.size());
         painter.drawPixmap(iconRect, m_searchPixmap);
     }
 }//主题适配
@@ -76,4 +78,28 @@ void LeftUpSearchBox::ThemeLeftUpSearchBox(QString str)
     {
        this->setStyleSheet("QLineEdit{padding-left:31px;background:rgba(255,255,255,0.2);border-radius:4px;color:rgba(255,255,255,0.5);}");
     }
+}
+
+bool LeftUpSearchBox::event(QEvent *e){
+    if(e->type() == QEvent::FocusOut){
+        return QLineEdit::event(e);
+    }
+    if(e->type() == QEvent::KeyPress){
+        QKeyEvent *k = static_cast<QKeyEvent *>(e);
+        switch(k->key()){
+            case Qt::Key_Up:{
+                emit lineEditKeyEvent("up");
+                break;
+            }
+            case Qt::Key_Down:{
+                emit lineEditKeyEvent("down");
+                break;
+            }
+            case Qt::Key_Return:{
+                emit lineEditKeyEvent("enter");
+                break;
+            }
+        }
+    }
+    return QLineEdit::event(e);
 }

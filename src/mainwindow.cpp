@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -26,7 +25,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-//    judgeSystemLanguage();
     // 用户手册功能
     mDaemonIpcDbus = new DaemonDbus();
 
@@ -38,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //设置主界面样式
     this->setFixedSize(885, 600);
     this->setWindowFlags(Qt::FramelessWindowHint);
-    qDebug()<< this->windowState();
+//    qDebug()<< this->windowState();
     //this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::Tool);
     this->setFocusPolicy(Qt::ClickFocus);//this->setFocusPolicy(Qt::NoFocus);//设置焦点类型
     this->setWindowTitle(tr("Kylin Weather"));
@@ -53,7 +51,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //给垂直布局器设置边距(此步很重要, 设置宽度为阴影的宽度)
 //    ui->centralwidget->setMargin(24);
 
-
     QPainterPath path;
     auto rect = this->rect();
     rect.adjust(1, 1, -1, -1);
@@ -63,21 +60,14 @@ MainWindow::MainWindow(QWidget *parent) :
     titleWid = new QWidget(this);
     titleLayout = new QHBoxLayout();
     cityLabel = new QLabel(this);
-    cityLabel->setStyleSheet("font:20px;");
+    cityLabel->setStyleSheet("font:36px;color:white;");
 
-    setBtn = new QPushButton(this);
-    menu = new QMenu(this);
-    addCityAction = new AddCityAction(menu);
-    addCityAction->setText(tr("Add City"));
-    aboutAction = new QAction(tr("About"),menu);
-    actions<<addCityAction<<aboutAction;
-    menu->addActions(actions);
-    setBtn->setMenu(menu);
-    connect(addCityAction, &AddCityAction::requestSetCityName, this, [=] (QString cityName) {
+    m_menu = new menuModule(this);
+    connect(m_menu,&menuModule::menuModuleClose,this,&MainWindow::close);
+    m_menu->addCityAction->setText(tr("Add City"));
+    connect(m_menu->addCityAction, &AddCityAction::requestSetCityName, this, [=] (QString cityName) {
         cityLabel->setText(cityName);//一会设置个label用于显示地名
-
     });
-
 
 
 
@@ -92,7 +82,7 @@ MainWindow::MainWindow(QWidget *parent) :
     logoBtn->setIconSize(QSize(24,24));//重置图标大小
     logoBtn->setIcon(QIcon(":/res/control_icons/logo_24.png"));
     logolb->setText(tr("Kylin Weather"));
-    logolb->setStyleSheet("font-size:14px;");
+    logolb->setStyleSheet("font-size:14px;color:white;");
 
 
     //左上角搜索框
@@ -108,12 +98,12 @@ MainWindow::MainWindow(QWidget *parent) :
     m_openAction = new QAction(tr("Open Kylin Weather"),this);//打开麒麟天气
     m_quitAction = new QAction(tr("Exit"),this);//退出
     m_mainMenu->addAction(m_openAction);
-//    m_openAction->setIcon(QIcon::fromTheme(QString("indicator-china-weather"), QIcon(QString(":/res/control_icons/indicator-china-weather_min.png"))) );
+//    m_openAction->setIcon(QIcon::fromTheme(QString("indicator-china-weather"), QIcon(QString(":/res/control_icons/indicator-china-weather_min.png"))));
     m_openAction->setIcon(QIcon(QString(":/res/control_icons/logo_24.png")) );
     m_mainMenu->addAction(m_quitAction);
+
     m_quitAction->setIcon(QIcon::fromTheme(QString("exit-symbolic"), QIcon(QString(":/res/control_icons/quit_normal.png"))) );
 //    m_quitAction->setIcon(QIcon(QString(":/res/control_icons/quit_normal.png")));
-
     connect(m_openAction, &QAction::triggered, this, [=] {
         if(this->isHidden()){
         this->show();}
@@ -136,7 +126,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //    m_searchView->move(100, 49);//2020.12.22
     m_searchView->resize(178,205);
     m_searchView->hide();
-
+    m_searchView->move(605,49);
     m_hintWidget = new PromptWidget(this);
     m_hintWidget->setIconAndText(":/res/control_icons/network_warn.png", tr("Network not connected"));//网络未连接
     m_hintWidget->move((this->width() - m_hintWidget->width())/2, 100);
@@ -145,7 +135,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_locationWorker = new LocationWorker(this);
     m_weatherManager = new WeatherManager(this);
     m_weatherManager->initConnectionInfo(); //get information about network connection
-
     initConnections(); //建立信号与槽的连接
 
     onRefreshMainWindowWeather();//软件启动时先获取一次网络数据
@@ -203,7 +192,7 @@ void MainWindow::initControlQss()
     titleLayout->addWidget(m_leftupsearchbox);//麒麟天气搜索栏
     titleLayout->addSpacing(4);
 //    titleLayout->addStretch();//添加伸缩
-    titleLayout->addWidget(setBtn);//设置按钮
+    titleLayout->addWidget(m_menu->menuButton);//设置按钮
     titleLayout->addWidget(ui->btnMinimize);
     titleLayout->addWidget(ui->btnCancel);
     titleLayout->setSpacing(4);
@@ -212,32 +201,32 @@ void MainWindow::initControlQss()
     titleWid->setFixedWidth(865);
     titleWid->move(10,10);
 
-    setBtn->setFixedSize(30,30);
+//    setBtn->setFixedSize(30,30);
     //menu跟主题走
-    menu->setFixedSize(120,66);
-    menu->setStyleSheet("QMenu{border-radius:3px;background-color:white;color:black;}"
-                        "QMenu::item:selected {color:white;background-color: #2dabf9;}"
-                        "QMenu::item {font-size:14px;border-radius:4px;background-color: transparent;}");
+//    menu->setFixedSize(120,66);
+//    menu->setStyleSheet("QMenu{border-radius:3px;background-color:white;color:black;}"
+//                        "QMenu::item:selected {color:white;background-color: #2dabf9;}"
+//                        "QMenu::item {font-size:14px;border-radius:4px;background-color: transparent;}");
 
-    setBtn->setIcon(QIcon::fromTheme("application-menu"));
+//    setBtn->setIcon(QIcon::fromTheme("application-menu"));
 
-    setBtn->setStyleSheet("QPushButton{border-radius:4px;}"
-                          "QPushButton::hover{background-color:rgba(0,0,0,0.1)}"
-                          "QPushButton::pressed{background-color:rgba(0,0,0,0.15)}"
-                          "QPushButton::menu-indicator{image:None;}");
+//    setBtn->setStyleSheet("QPushButton{border-radius:4px;}"
+//                          "QPushButton::hover{background-color:rgba(0,0,0,0.1)}"
+//                          "QPushButton::pressed{background-color:rgba(0,0,0,0.15)}"
+//                          "QPushButton::menu-indicator{image:None;}");
 
     ui->centralwidget->setStyleSheet("#centralwidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(19,19,20,0);}");
     ui->centralwidget->setStyleSheet("#centralwidget{color:white;background-image:url(':/res/background/weather-clear.png');background-repeat:no-repeat;}");
     ui->centralwidget->move(10,10);
     ui->centralwidget->setFixedSize(865,520);
-    ui->btnMinimize->setIcon(QIcon::fromTheme("window-minimize-symbolic"));
+    ui->btnMinimize->setIcon(QIcon::fromTheme(":/res/control_icons/dark-window-min.svg"));
     ui->btnMinimize->setFixedSize(30,30);
     ui->btnMinimize->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
                                "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.1);}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.15);}");
     ui->btnMinimize->setFocusPolicy(Qt::NoFocus);//设置焦点类型
 
-    ui->btnCancel->setIcon(QIcon::fromTheme("window-close-symbolic"));
+    ui->btnCancel->setIcon(QIcon::fromTheme(":/res/control_icons/dark-window-close.svg"));
     ui->btnCancel->setFixedSize(30,30);
     ui->btnCancel->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
                                "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:#F86457;}"
@@ -263,7 +252,7 @@ void MainWindow::initControlQss()
     m_scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
-    m_scrollarea->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 2px 0px 2px;width:10px;background:rgba(255,255,255,0);border-radius:6px;}"
+    m_scrollarea->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 2px 0px 2px;width:13px;background:rgba(255,255,255,0);border-radius:6px;}"
                                                      "QScrollBar::up-arrow:vertical{height:0px;}"
                                                      "QScrollBar::sub-line:vertical{border:0px solid;height:0px}"
                                                      "QScrollBar::sub-page:vertical{background:transparent;}"
@@ -295,16 +284,16 @@ void MainWindow::initConnections()
         }
     });
 
-
+    connect(m_leftupsearchbox,&LeftUpSearchBox::lineEditKeyEvent,m_searchView,&LeftUpSearchView::dealSearchBoxKeyPress);
     //1*****addCityAction替换原来的m_leftupcitybtn*****
-    connect(m_searchView, SIGNAL(requestSetCityName(QString)), addCityAction, SIGNAL(requestSetCityName(QString)) );
+    connect(m_searchView, SIGNAL(requestSetCityName(QString)), m_menu->addCityAction, SIGNAL(requestSetCityName(QString)) );
 //    connect(m_searchView, SIGNAL(requestSetCityName(QString)), m_leftupcitybtn, SIGNAL(requestSetCityName(QString)) );
 
     connect(m_searchView, &LeftUpSearchView::requestSetNewCityWeather, this, [=] (QString id) {
         m_weatherManager->startGetTheWeatherData(id);
     });
     //2*****addCityAction替换原来的m_leftupcitybtn*****
-    connect(addCityAction,&AddCityAction::sendCurrentCityId, this, [=] (QString id) {
+    connect(m_menu->addCityAction,&AddCityAction::sendCurrentCityId, this, [=] (QString id) {
         if(this->isHidden()){
             handleIconClickedSub(); //显示在屏幕中央
         }
@@ -318,17 +307,17 @@ void MainWindow::initConnections()
 //    });
 
     //3*****addCityAction替换原来的m_leftupcitybtn*****
-    connect(addCityAction, SIGNAL(requestShowCollCityWeather()), m_weatherManager, SIGNAL(requestShowCollCityWeather()));
+    connect(m_menu->addCityAction, SIGNAL(requestShowCollCityWeather()), m_weatherManager, SIGNAL(requestShowCollCityWeather()));
 //    connect(m_leftupcitybtn, SIGNAL(requestShowCollCityWeather()), m_weatherManager, SIGNAL(requestShowCollCityWeather()));
 
     //同步主界面和收藏界面当前城市信息
     //4*****addCityAction替换原来的m_leftupcitybtn*****
-    connect(this,&MainWindow::updatecity,addCityAction,&AddCityAction ::updatecity);
+    connect(this,&MainWindow::updatecity,m_menu->addCityAction,&AddCityAction ::updatecity);
 //    connect(this,&MainWindow::updatecity,m_leftupcitybtn,&LeftUpCityBtn ::updatecity);
 
     //获取传过来的收藏城市的天气数据，并传给显示收藏城市窗口
     //5*****addCityAction替换原来的m_leftupcitybtn*****
-    connect(m_weatherManager, SIGNAL(requestSetCityWeather(QString)), addCityAction, SIGNAL(requestSetCityWeather(QString)));
+    connect(m_weatherManager, SIGNAL(requestSetCityWeather(QString)), m_menu->addCityAction, SIGNAL(requestSetCityWeather(QString)));
 //    connect(m_weatherManager, SIGNAL(requestSetCityWeather(QString)), m_leftupcitybtn, SIGNAL(requestSetCityWeather(QString)));
 
     //收到信号带来的数据时，更新主界面天气数据
@@ -360,12 +349,14 @@ void MainWindow::initConnections()
     //根据获取到网络探测的结果分别处理
     connect(m_weatherManager, &WeatherManager::nofityNetworkStatus, this, [=] (const QString &status) {
         if (status == "OK") {
-            //m_weatherManager->startAutoLocationTask();//开始自动定位城市
+            m_weatherManager->startAutoLocationTask();//开始自动定位城市
 
             //CN101010100,beijing,北京,CN,China,中国
-            // m_weatherManager->startGetTheWeatherData("101010100");
+//            m_weatherManager->startGetTheWeatherData("101010100");
             QStringList listCityId = getCityList().split(",");
+            qDebug()<<"listCityId:"<<listCityId;
             m_weatherManager->startGetTheWeatherData(listCityId.at(0));
+            m_trayIcon->show();
         } else {
             if (status == "Fail") {
                 onHandelAbnormalSituation("Without wired Carrier");
@@ -380,6 +371,9 @@ void MainWindow::initConnections()
     connect(m_weatherManager, &WeatherManager::requestAutoLocationData, this, [=] (const CitySettingData &info, bool success) {
         if (success) {
             //自动定位城市成功后，更新各个ui，然后获取天气数据
+            m_weatherManager->startGetTheWeatherData(info.id);
+
+
         } else {
             //自动定位城市失败后，获取天气数据
         }
@@ -549,7 +543,8 @@ void MainWindow::onHandelAbnormalSituation(QString abnormalText){
 //处理异常时的主界面显示
 void MainWindow::setAbnormalMainWindow()
 {
-    m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
+//    m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
+    m_trayIcon->hide();
 //    m_openAction->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
     ui->lbCurrTmp->setText("");
     ui->lbCurrTmpUnit->setText("");
@@ -696,18 +691,18 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
 
     if(m_size1 == 3){
 
-        cityLabel->setGeometry(420,70,80,25);
-        ui->lbCurrTmp->setGeometry(351,85,148,100);
-        ui->lbCurrTmpUnit->move(447 + 30*(m_size1-1), 95);
-        ui->lbCurrWea->move(450 + 30*(m_size1-1), 165);
+        cityLabel->setGeometry(420,104,148,50);
+        ui->lbCurrTmp->setGeometry(351,145,116,100);
+        ui->lbCurrTmpUnit->move(447 + 30*(m_size1-1), 155);
+        ui->lbCurrWea->move(450 + 30*(m_size1-1), 225);
 
     }
     else if(m_size1 == 1 || m_size1 ==2){
 
-    cityLabel->setGeometry(420,70,80,25);
-    ui->lbCurrTmp->setGeometry(351,85,116,100);
-    ui->lbCurrTmpUnit->move(451 + 30*(m_size1-1), 95);
-    ui->lbCurrWea->move(454 + 30*(m_size1-1), 165);
+    cityLabel->setGeometry(420,104,148,50);
+    ui->lbCurrTmp->setGeometry(351,145,116,100);
+    ui->lbCurrTmpUnit->move(451 + 30*(m_size1-1), 155);
+    ui->lbCurrWea->move(454 + 30*(m_size1-1), 225);
 
 }
 
@@ -717,12 +712,13 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
     ui->lbCurrWea->setText(m_observeweather.cond_txt);
 
     QString strHum = "湿度 " + m_observeweather.hum + "%   " + m_observeweather.wind_dir + " " + m_observeweather.wind_sc + "级";//  Humidity-湿度
-    ui->lbCurrHum->setText(strHum);
+    ui->lbCurrHum->setText(strHum);//湿度和风级标签
+    ui->lbCurrHum->hide();
 
     if (m_observeweather.city != "") {
         m_weatherManager->postSystemInfoToServer(); //将当前城市告诉给服务器
 //        emit m_leftupcitybtn ->requestSetCityName(m_observeweather.city); //更新左上角按钮显示的城市
-        emit addCityAction->requestSetCityName(m_observeweather.city); //更新中间Label显示的城市
+        emit m_menu->addCityAction->requestSetCityName(m_observeweather.city); //更新中间Label显示的城市
     }
 
     //更新保存城市列表文件china-weather-data
@@ -749,7 +745,6 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
 //            readCityIdList.append(oldCurrentCityId);
 //        }
 //    }
-
     //将列表中第一个城市设置为当前搜索的新城市
     readCityIdList.replace(0, m_observeweather.id);
 
@@ -768,7 +763,7 @@ void MainWindow::convertCodeToTrayIcon(QString code)
 {
     if (code.isEmpty()) {
         m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
-//        m_openAction->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
+//        m_openAction->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))));
         return;
     }
 
@@ -853,6 +848,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event){
 void MainWindow::mouseReleaseEvent(QMouseEvent *event){
     this->isPress = false;
     this->setCursor(Qt::ArrowCursor);
+    return ;
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event){
@@ -934,6 +930,7 @@ void MainWindow::setThemeStyle()
 //          m_mainMenu ->setStyleSheet("QMenu {margin:2px;padding:5px;}");
 //  }
 //QMenu::icon{position:absolute;padding-left:10px;padding-top:5px;padding-bottom:5px;}
+
 }
 QString MainWindow::getCityList()
 {

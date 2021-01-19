@@ -264,29 +264,33 @@ const QString getCityFromIPAddr(const QString &ip)
 
 const QString automaicCity()
 {
-    QString ip;
-    QString city;
+//    QString ip;
+//    QString city;
 
-    getIpAndCityByUbuntu(UbuntuUrl, ip, city);
-    if (ip.isEmpty() || ip == "0.0.0.0") {
-        ip = getIpByPconline(PconlineUrl);
-    }
-
-//    qDebug() << "ip:" << ip;
-
-    if (city.isEmpty()) {
-        city = getCityFromIPAddr(ip);//根据ip从geoip库定位城市
-        if (city.isEmpty()) {
-            city = getCityFromIpByAmap(ip);//根据ip从高德API定位城市，该方式使用高德key，访问次数有限
-        }
-        if (city.isEmpty()) {
-            city = getCityFromIpByTaobao(ip);//根据ip从淘宝service定位城市，该方式访问速度慢，可能访问失败
-        }
-    }
-
-//    qDebug() << "city:" << city;
-
-    return city;
+//    getIpAndCityByUbuntu(UbuntuUrl, ip, city);
+//    if (ip.isEmpty() || ip == "0.0.0.0") {
+//        ip = getIpByPconline(PconlineUrl);
+//    }
+//    if (city.isEmpty()) {
+//        city = getCityFromIPAddr(ip);//根据ip从geoip库定位城市
+//        if (city.isEmpty()) {
+//            city = getCityFromIpByAmap(ip);//根据ip从高德API定位城市，该方式使用高德key，访问次数有限
+//        }
+//        if (city.isEmpty()) {
+//            city = getCityFromIpByTaobao(ip);//根据ip从淘宝service定位城市，该方式访问速度慢，可能访问失败
+//        }
+//    }
+//    return city;
+    QNetworkAccessManager *manager = new QNetworkAccessManager();
+    QNetworkReply *reply = manager->get(QNetworkRequest(QUrl("http://myip.ipip.net")));
+    QByteArray responseData ;
+    QEventLoop eventLoop;
+    QObject::connect(manager,&QNetworkAccessManager::finished,&eventLoop,&QEventLoop::quit);
+    eventLoop.exec();
+    responseData = reply->readAll();
+    QString str = responseData;
+    QStringList respList = str.split(' ');
+    return respList[5];
 }
 
 } // namespace

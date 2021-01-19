@@ -21,6 +21,10 @@
 #define GEOIP_WORKER_H
 
 #include <QObject>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QEventLoop>
 
 class QNetworkAccessManager;
 class QNetworkReply;

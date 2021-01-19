@@ -257,6 +257,9 @@ void Information::onSetForecastWeather(ForecastWeather forecastweather)
     } else {
         code  = forecastweather.cond_code_n.toInt();
     }
+//    ui->lbIcon_1->setScaledContents(true);
+//    ui->lbIcon_1->resize(ui->lbIcon_1->size());
+
     QString picStr = convertCodeToBackgroud(code);
     QString pic = "QLabel{background-image:url(" + picStr + ");}";
 
@@ -270,7 +273,7 @@ void Information::onSetForecastWeather(ForecastWeather forecastweather)
     }else {
         wea = forecastweather.cond_txt_d + "转" + forecastweather.cond_txt_n + "\n" + forecastweather.wind_dir + forecastweather.wind_sc + "级";
     }
-
+//    qDebug()<<"wea shixiasohuo#"<<wea<<"shixiaoshuo# code="<<code;
     switch (m_day) {
     case 1:
         ui->lbDay_1->setText(current_week_1);
@@ -345,40 +348,50 @@ void Information::onSetLifeStyle(LifeStyle lifestyle)
 
 QString Information::convertCodeToBackgroud(int code)
 {
-    if (code == 100 || code == 900) {
-        return ":/res/control_icons/weather-clear.png";
+//    code = 999;
+    QFileInfo file(":res/forecast-icons/1x/" + QString::number(code) + ".png");
+    if(!file.exists()){
+        return ":res/forecast-icons/1x/999.png";
+    }else{
+        return ":res/forecast-icons/1x/" + QString::number(code) + ".png";
     }
-    else if (code <= 103 && code >= 101) {
-        return ":/res/control_icons/weather-few-clouds.png";
-    }
-    else if (code == 104 || code == 901) {
-        return ":/res/control_icons/weather-overcast.png";
-    }
-    else if (code <= 204 && code >= 200) {
-        return ":/res/control_icons/weather-clear.png";
-    }
-    else if (code <= 213 && code >= 205) {
-        return ":/res/control_icons/weather-overcast.png";
-    }
-    else if (code <= 399 && code >= 300) {
-        return ":/res/control_icons/weather-rain.png";
-    }
-    else if (code <= 499 && code >= 400) {
-        return ":/res/control_icons/weather-snow.png";
-    }
-    else if (code <= 502 && code >= 500) {
-        return ":/res/control_icons/weather-fog.png";
-    }
-    else if (code <= 508 && code >= 503) {
-        return ":/res/control_icons/weather-sandstorm.png";
-    }
-    else if (code <= 515 && code >= 509) {
-        return ":/res/control_icons/weather-fog.png";
-    }
-    else if (code <= 999 && code >= 900) {
-        return ":/res/control_icons/weather-none.png";
-    }
-    else {
-        return ":/res/control_icons/weather-clear.png";
-    }
+//    switch (code){
+//        case 404: return ":/res/control_icons/weather-sleet-new.png";
+//    }
+//    if (code == 100 || code == 900) {
+//        return ":/res/control_icons/weather-clear.png";
+//    }
+//    else if (code <= 103 && code >= 101) {
+//        return ":/res/control_icons/weather-few-clouds.png";
+//    }
+//    else if (code == 104 || code == 901) {
+//        return ":/res/control_icons/weather-overcast.png";
+//    }
+//    else if (code <= 204 && code >= 200) {
+//        return ":/res/control_icons/weather-clear.png";
+//    }
+//    else if (code <= 213 && code >= 205) {
+//        return ":/res/control_icons/weather-overcast.png";
+//    }
+//    else if (code <= 399 && code >= 300) {
+//        return ":/res/control_icons/weather-rain.png";
+//    }
+//    else if (code <= 499 && code >= 400) {
+//        return ":/res/control_icons/weather-snow.png";
+//    }
+//    else if (code <= 502 && code >= 500) {
+//        return ":/res/control_icons/weather-fog.png";
+//    }
+//    else if (code <= 508 && code >= 503) {
+//        return ":/res/control_icons/weather-sandstorm.png";
+//    }
+//    else if (code <= 515 && code >= 509) {
+//        return ":/res/control_icons/weather-fog.png";
+//    }
+//    else if (code <= 999 && code >= 900) {
+//        return ":/res/control_icons/weather-none.png";
+//    }
+//    else {
+//        return ":/res/control_icons/weather-clear.png";
+//    }
 }

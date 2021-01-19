@@ -89,6 +89,7 @@ SOURCES +=\
     src/leftupsearchview.cpp \
     src/locationworker.cpp \
     src/mainwindow.cpp \
+    src/menumodule.cpp \
     src/promptwidget.cpp \
     src/weathermanager.cpp \
     src/weatherworker.cpp \
@@ -115,6 +116,7 @@ HEADERS  += src/mainwindow.h \
     src/leftupsearchdelegate.h \
     src/leftupsearchview.h \
     src/locationworker.h \
+    src/menumodule.h \
     src/promptwidget.h \
     src/weathermanager.h \
     src/weatherworker.h \
