@@ -16,10 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
 
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
@@ -27,7 +25,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-//    judgeSystemLanguage();
     // 用户手册功能
     mDaemonIpcDbus = new DaemonDbus();
 
@@ -39,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //设置主界面样式
     this->setFixedSize(885, 600);
     this->setWindowFlags(Qt::FramelessWindowHint);
-    qDebug()<< this->windowState();
+//    qDebug()<< this->windowState();
     //this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::Tool);
     this->setFocusPolicy(Qt::ClickFocus);//this->setFocusPolicy(Qt::NoFocus);//设置焦点类型
     this->setWindowTitle(tr("Kylin Weather"));
@@ -54,7 +51,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //给垂直布局器设置边距(此步很重要, 设置宽度为阴影的宽度)
 //    ui->centralwidget->setMargin(24);
 
-
     QPainterPath path;
     auto rect = this->rect();
     rect.adjust(1, 1, -1, -1);
@@ -68,18 +64,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_menu = new menuModule(this);
     connect(m_menu,&menuModule::menuModuleClose,this,&MainWindow::close);
-//    setBtn = new QPushButton(this);
-//    menu = new QMenu(this);
-//    addCityAction = new AddCityAction(menu);
     m_menu->addCityAction->setText(tr("Add City"));
-//    aboutAction = new QAction(tr("About"),menu);
-//    actions<<addCityAction<<aboutAction;
-//    menu->addActions(actions);
-//    setBtn->setMenu(menu);
     connect(m_menu->addCityAction, &AddCityAction::requestSetCityName, this, [=] (QString cityName) {
         cityLabel->setText(cityName);//一会设置个label用于显示地名
     });
-
 
 
 
@@ -113,6 +101,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //    m_openAction->setIcon(QIcon::fromTheme(QString("indicator-china-weather"), QIcon(QString(":/res/control_icons/indicator-china-weather_min.png"))));
     m_openAction->setIcon(QIcon(QString(":/res/control_icons/logo_24.png")) );
     m_mainMenu->addAction(m_quitAction);
+
     m_quitAction->setIcon(QIcon::fromTheme(QString("exit-symbolic"), QIcon(QString(":/res/control_icons/quit_normal.png"))) );
 //    m_quitAction->setIcon(QIcon(QString(":/res/control_icons/quit_normal.png")));
     connect(m_openAction, &QAction::triggered, this, [=] {
@@ -138,7 +127,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_searchView->resize(178,205);
     m_searchView->hide();
     m_searchView->move(605,49);
-
     m_hintWidget = new PromptWidget(this);
     m_hintWidget->setIconAndText(":/res/control_icons/network_warn.png", tr("Network not connected"));//网络未连接
     m_hintWidget->move((this->width() - m_hintWidget->width())/2, 100);
@@ -157,6 +145,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(m_refreshweather, SIGNAL(timeout()), this, SLOT(onRefreshMainWindowWeather()));
     m_refreshweather->start((20*60)*1000); //set time interval to refresh weather
     initGsetting();//初始化Gsetting
+
+
 }
 
 MainWindow::~MainWindow()
@@ -237,7 +227,6 @@ void MainWindow::initControlQss()
     ui->btnMinimize->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
                                "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.1);}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.15);}");
-
     ui->btnMinimize->setFocusPolicy(Qt::NoFocus);//设置焦点类型
 
     ui->btnCancel->setIcon(QIcon::fromTheme(":/res/control_icons/dark-window-close.svg"));
@@ -861,6 +850,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event){
 void MainWindow::mouseReleaseEvent(QMouseEvent *event){
     this->isPress = false;
     this->setCursor(Qt::ArrowCursor);
+    return ;
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event){
@@ -942,6 +932,7 @@ void MainWindow::setThemeStyle()
 //          m_mainMenu ->setStyleSheet("QMenu {margin:2px;padding:5px;}");
 //  }
 //QMenu::icon{position:absolute;padding-left:10px;padding-top:5px;padding-bottom:5px;}
+
 }
 QString MainWindow::getCityList()
 {

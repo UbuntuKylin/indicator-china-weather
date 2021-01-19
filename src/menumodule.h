@@ -30,6 +30,8 @@ public:
     void themeUpdate();
     AddCityAction *addCityAction = nullptr;
 
+
+
 signals:
     void menuModuleClose();
     void menuModuleSetThemeStyle(QString);
@@ -77,9 +79,12 @@ private:
     void setThemeStyle();
     void setThemeLight();
     void setThemeDark();
-//    void updateTheme(); //点击菜单中的主题设置后更新一次主题
 
     void refreshThemeBySystemConf();    //通过系统配置更改主题
+    QLabel* titleText = nullptr;
+    QLabel* bodyAppVersion = nullptr;
+    QLabel* bodySupport = nullptr;
+    QLabel* bodyAppName = nullptr;
 };
 
 #endif // MENUMODULE_H

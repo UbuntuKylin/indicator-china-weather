@@ -13,6 +13,10 @@ void menuModule::init(){
 
 void menuModule::initAction(){
     aboutWindow = new QWidget();
+    bodyAppName = new QLabel();
+    bodyAppVersion = new QLabel();
+    bodySupport = new QLabel();
+    titleText = new QLabel();
     iconSize = QSize(30,30);
     menuButton = new QPushButton;
 //    menuButton->setIcon(QIcon::fromTheme("application-menu"));
@@ -53,7 +57,6 @@ void menuModule::initAction(){
     darkTheme->setCheckable(true);
     QList<QAction* > themeActions;
     themeActions<<autoTheme<<lightTheme<<darkTheme;
-//    autoTheme->setChecked(true);
     actionTheme->setMenu(themeMenu);
     menuButton->setMenu(m_menu);
     connect(m_menu,&QMenu::triggered,this,&menuModule::triggerMenu);
@@ -185,28 +188,25 @@ void menuModule::initAbout(){
 
 QHBoxLayout* menuModule::initTitleBar(){
     QLabel* titleIcon = new QLabel();
-    QLabel* titleText = new QLabel();
     QPushButton *titleBtnClose = new QPushButton;
     titleIcon->setFixedSize(QSize(24,24));
-#if DEBUG_MENUMODULE
-    iconPath = ":/data/kylin-usb-creator.svg";
-    appShowingName = "kylin usb creator";
-#endif
     appShowingName = tr("indicator china weather");
-    iconPath = ":/res/control_icons/logo_24.png";
+    iconPath = ":/res/control_icons/indicator-china-weather.svg";
     //TODO：直接从主题调图标，不会QIcon转qpixmap所以暂时从本地拿
     titleIcon->setPixmap(QPixmap::fromImage(QImage(iconPath)));
-
     titleIcon->setScaledContents(true);
     titleBtnClose->setFixedSize(30,30);
-    titleBtnClose->setIcon(QIcon::fromTheme("window-close-symbolic"));
-    titleBtnClose->setProperty("isWindowButton",0x2);
-    titleBtnClose->setProperty("useIconHighlightEffect",0x8);
-    titleBtnClose->setFlat(true);
+//    titleBtnClose->setProperty("isWindowButton",0x2);
+//    titleBtnClose->setProperty("useIconHighlightEffect",0x8);
+//    titleBtnClose->setFlat(true);
+    titleBtnClose->setIcon(QIcon(":/res/control_icons/close_black.png"));
+    titleBtnClose->setIconSize(QSize(30,30));
+    titleBtnClose->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
+                               "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:#F86457;}"
+                               "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:#E44C50;}");
     connect(titleBtnClose,&QPushButton::clicked,[=](){aboutWindow->close();});
     QHBoxLayout *hlyt = new QHBoxLayout;
-    titleText->setText(tr(appShowingName.toLocal8Bit()));
-    titleText->setStyleSheet("font-size:14px;");
+    titleText->setText(tr("Indicator China Weather"));
     hlyt->setSpacing(0);
     hlyt->setMargin(4);
     hlyt->addSpacing(4);
@@ -219,28 +219,22 @@ QHBoxLayout* menuModule::initTitleBar(){
 }
 
 QVBoxLayout* menuModule::initBody(){
-#if DEBUG_MENUMODULE
-    appVersion = "2020.12.12-test";
-#endif
-    appVersion = "3.1.0-33";
+    appVersion = "3.1.0";
     QLabel* bodyIcon = new QLabel();
     bodyIcon->setFixedSize(96,96);
     bodyIcon->setPixmap(QPixmap::fromImage(QImage(iconPath)));
     bodyIcon->setStyleSheet("font-size:14px;");
     bodyIcon->setScaledContents(true);
-    QLabel* bodyAppName = new QLabel();
     bodyAppName->setFixedHeight(28);
     bodyAppName->setText(tr(appShowingName.toLocal8Bit()));
-    bodyAppName->setStyleSheet("font-size:18px;");
-    QLabel* bodyAppVersion = new QLabel();
+//    bodyAppName->setStyleSheet("f/*ont-size:18px;*/");
     bodyAppVersion->setFixedHeight(24);
     bodyAppVersion->setText(tr("Version: ") + appVersion);
     bodyAppVersion->setAlignment(Qt::AlignLeft);
-    bodyAppVersion->setStyleSheet("font-size:14px;");
-    QLabel* bodySupport = new QLabel();
+//    bodyAppVersion->setStyleSheet("font-size:14px;");
     bodySupport->setText(tr("Support: support@kylinos.cn"));
     bodySupport->setFixedHeight(24);
-    bodySupport->setStyleSheet("font-size:14px;");
+//    bodySupport->setStyleSheet("font-size:14px;");
     QVBoxLayout *vlyt = new QVBoxLayout;
     vlyt->setMargin(0);
     vlyt->setSpacing(0);
@@ -282,6 +276,7 @@ void menuModule::dealSystemGsettingChange(const QString key){
 
 void menuModule::refreshThemeBySystemConf(){
     QString themeNow = m_pGsettingThemeData->get("styleName").toString();
+    qDebug()<<"themenow:"<<themeNow;
     if("ukui-dark" == themeNow || "ukui-black" == themeNow){
         setThemeDark();
     }else{
@@ -290,20 +285,22 @@ void menuModule::refreshThemeBySystemConf(){
 }
 
 void menuModule::setThemeDark(){
-    qDebug()<<"set theme dark";
-    if(aboutWindow)
-    {
-        aboutWindow->setStyleSheet("background-color:rgba(31,32,34，1);");
-    }
-    emit menuModuleSetThemeStyle("dark-theme");
+
 }
 
 void menuModule::setThemeLight(){
-//    qDebug()<<"set theme light";
-    if(aboutWindow)
-    {
-        aboutWindow->setStyleSheet("background-color:rgba(255，255，255，1);");
-    }
-    emit menuModuleSetThemeStyle("light-theme");
+    aboutWindow->setStyleSheet(".QWidget{background-color:rgba(255,255,255,1);}");
+    titleText->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
+    bodyAppName->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
+    bodyAppVersion->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
+    bodySupport->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
 
 }
+
+
+
+
+
+
+
+
