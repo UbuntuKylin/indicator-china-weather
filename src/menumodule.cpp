@@ -222,7 +222,7 @@ QVBoxLayout* menuModule::initBody(){
 #if DEBUG_MENUMODULE
     appVersion = "2020.12.12-test";
 #endif
-    appVersion = "3.1.0-33";
+    appVersion = "3.1.0";
     QLabel* bodyIcon = new QLabel();
     bodyIcon->setFixedSize(96,96);
     bodyIcon->setPixmap(QPixmap::fromImage(QImage(iconPath)));
