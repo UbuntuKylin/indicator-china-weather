@@ -1,3 +1,9 @@
+indicator-china-weather (3.1.0-39) v101; urgency=medium
+
+  * 菜单栏按钮反白，城市和应用名字体调整大小和颜色调整为白色
+
+ -- baijincheng <baijincheng@kylinos.cn>  Tue,19  Jan 2021 09:46:00 +0800
+
 indicator-china-weather (3.1.0-38) v101; urgency=medium
 
   * 按钮反白

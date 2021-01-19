@@ -1,0 +1,13 @@
+Package: indicator-china-weather-dbgsym
+Package-Type: ddeb
+Source: indicator-china-weather
+Version: 3.1.0-38
+Auto-Built-Package: debug-symbols
+Architecture: amd64
+Maintainer: lixiang <lixiang@kylinos.cn>
+Installed-Size: 6960
+Depends: indicator-china-weather (= 3.1.0-38)
+Section: debug
+Priority: optional
+Description: debug symbols for indicator-china-weather
+Build-Ids: b4ce3a7740ddbe8b48a228f6f10495034de27c8a

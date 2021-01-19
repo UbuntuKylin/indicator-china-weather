@@ -60,7 +60,7 @@ MainWindow::MainWindow(QWidget *parent) :
     titleWid = new QWidget(this);
     titleLayout = new QHBoxLayout();
     cityLabel = new QLabel(this);
-    cityLabel->setStyleSheet("font:20px;");
+    cityLabel->setStyleSheet("font:36px;color:white;");
 
     m_menu = new menuModule(this);
     connect(m_menu,&menuModule::menuModuleClose,this,&MainWindow::close);
@@ -82,7 +82,7 @@ MainWindow::MainWindow(QWidget *parent) :
     logoBtn->setIconSize(QSize(24,24));//重置图标大小
     logoBtn->setIcon(QIcon(":/res/control_icons/logo_24.png"));
     logolb->setText(tr("Kylin Weather"));
-    logolb->setStyleSheet("font-size:14px;");
+    logolb->setStyleSheet("font-size:14px;color:white;");
 
 
     //左上角搜索框
@@ -694,18 +694,18 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
 
     if(m_size1 == 3){
 
-        cityLabel->setGeometry(420,70,80,25);
-        ui->lbCurrTmp->setGeometry(351,85,148,100);
-        ui->lbCurrTmpUnit->move(447 + 30*(m_size1-1), 95);
-        ui->lbCurrWea->move(450 + 30*(m_size1-1), 165);
+        cityLabel->setGeometry(420,104,148,50);
+        ui->lbCurrTmp->setGeometry(351,145,116,100);
+        ui->lbCurrTmpUnit->move(447 + 30*(m_size1-1), 155);
+        ui->lbCurrWea->move(450 + 30*(m_size1-1), 225);
 
     }
     else if(m_size1 == 1 || m_size1 ==2){
 
-    cityLabel->setGeometry(420,70,80,25);
-    ui->lbCurrTmp->setGeometry(351,85,116,100);
-    ui->lbCurrTmpUnit->move(451 + 30*(m_size1-1), 95);
-    ui->lbCurrWea->move(454 + 30*(m_size1-1), 165);
+    cityLabel->setGeometry(420,104,148,50);
+    ui->lbCurrTmp->setGeometry(351,145,116,100);
+    ui->lbCurrTmpUnit->move(451 + 30*(m_size1-1), 155);
+    ui->lbCurrWea->move(454 + 30*(m_size1-1), 225);
 
 }
 
@@ -715,7 +715,8 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
     ui->lbCurrWea->setText(m_observeweather.cond_txt);
 
     QString strHum = "湿度 " + m_observeweather.hum + "%   " + m_observeweather.wind_dir + " " + m_observeweather.wind_sc + "级";//  Humidity-湿度
-    ui->lbCurrHum->setText(strHum);
+    ui->lbCurrHum->setText(strHum);//湿度和风级标签
+    ui->lbCurrHum->hide();
 
     if (m_observeweather.city != "") {
         m_weatherManager->postSystemInfoToServer(); //将当前城市告诉给服务器
