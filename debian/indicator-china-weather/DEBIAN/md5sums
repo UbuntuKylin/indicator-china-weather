@@ -1,9 +1,0 @@
-aa3d5fbfa2ea7e92a3c5b0c8a75c2ba4  usr/bin/indicator-china-weather
-9d806bf4af0b1df00d59095370cf9a88  usr/share/applications/indicator-china-weather.desktop
-a0156945aaa47cb9b3bfb28028401075  usr/share/doc/indicator-china-weather/changelog.Debian.gz
-759717c844aa74a02330a89dc33ba4d3  usr/share/doc/indicator-china-weather/copyright
-9c70f3be1f7cb45c8da3bedb4e8c0be0  usr/share/glib-2.0/schemas/org.china-weather-data.gschema.xml
-bcebcf42735c6849bdecbb77451021dd  usr/share/indicator-china-weather/translations/indicator-china-weather_bo.qm
-6b4ec4dcd84b0848c8fbf225c96a0786  usr/share/indicator-china-weather/translations/indicator-china-weather_zh_CN.qm
-5aabb0457271bf09354b516bbca07075  usr/share/lintian/overrides/indicator-china-weather
-0c4d3d6647087d58765b6bc8aacb3f72  usr/share/man/man1/indicator-china-weather.1.gz

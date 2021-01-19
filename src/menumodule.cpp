@@ -195,15 +195,17 @@ QHBoxLayout* menuModule::initTitleBar(){
     //TODO：直接从主题调图标，不会QIcon转qpixmap所以暂时从本地拿
     titleIcon->setPixmap(QPixmap::fromImage(QImage(iconPath)));
     titleIcon->setScaledContents(true);
+
+    titleBtnClose->setIcon(QIcon::fromTheme("window-close-symbolic"));
     titleBtnClose->setFixedSize(30,30);
-//    titleBtnClose->setProperty("isWindowButton",0x2);
-//    titleBtnClose->setProperty("useIconHighlightEffect",0x8);
-//    titleBtnClose->setFlat(true);
-    titleBtnClose->setIcon(QIcon(":/res/control_icons/close_black.png"));
-    titleBtnClose->setIconSize(QSize(30,30));
-    titleBtnClose->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
-                               "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:#F86457;}"
-                               "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:#E44C50;}");
+    titleBtnClose->setProperty("isWindowButton",0x2);
+    titleBtnClose->setProperty("useIconHighlightEffect",0x8);
+    titleBtnClose->setFlat(true);
+
+//    titleBtnClose->setIconSize(QSize(30,30));
+//    titleBtnClose->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
+//                               "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:#F86457;}"
+//                               "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:#E44C50;}");
     connect(titleBtnClose,&QPushButton::clicked,[=](){aboutWindow->close();});
     QHBoxLayout *hlyt = new QHBoxLayout;
     titleText->setText(tr("Indicator China Weather"));
@@ -289,11 +291,11 @@ void menuModule::setThemeDark(){
 }
 
 void menuModule::setThemeLight(){
-    aboutWindow->setStyleSheet(".QWidget{background-color:rgba(255,255,255,1);}");
-    titleText->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
-    bodyAppName->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
-    bodyAppVersion->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
-    bodySupport->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
+//    aboutWindow->setStyleSheet(".QWidget{background-color:rgba(255,255,255,1);}");
+//    titleText->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
+//    bodyAppName->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
+//    bodyAppVersion->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
+//    bodySupport->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
 
 }
 
