@@ -553,6 +553,7 @@ void MainWindow::setAbnormalMainWindow()
     ui->lbCurrTmpUnit->setText("");
     ui->lbCurrWea->setText("");
     ui->lbCurrHum->setText("");
+    cityLabel->setText("");//baibai
 
     ForecastWeather abnormalForecastweather;
     for (int i=0; i<7; i++) {
