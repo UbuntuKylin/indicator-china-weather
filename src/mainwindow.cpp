@@ -135,7 +135,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_locationWorker = new LocationWorker(this);
     m_weatherManager = new WeatherManager(this);
     m_weatherManager->initConnectionInfo(); //get information about network connection
-
     initConnections(); //建立信号与槽的连接
 
     onRefreshMainWindowWeather();//软件启动时先获取一次网络数据
@@ -145,8 +144,6 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(m_refreshweather, SIGNAL(timeout()), this, SLOT(onRefreshMainWindowWeather()));
     m_refreshweather->start((20*60)*1000); //set time interval to refresh weather
     initGsetting();//初始化Gsetting
-
-
 }
 
 MainWindow::~MainWindow()
