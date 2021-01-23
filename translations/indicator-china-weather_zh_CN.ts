@@ -176,17 +176,17 @@
     <message>
         <location filename="../src/menumodule.cpp" line="199"/>
         <source>Indicator China Weather</source>
-        <translation type="unfinished"></translation>
+        <translation>麒麟天气</translation>
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="221"/>
         <source>Version: </source>
-        <translation>版本:</translation>
+        <translation>版本：</translation>
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="223"/>
         <source>Service &amp; Support: </source>
-        <translation type="unfinished"></translation>
+        <translation>服务与支持：</translation>
     </message>
     <message>
         <source>Support: support@kylinos.cn</source>

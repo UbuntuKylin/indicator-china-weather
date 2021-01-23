@@ -220,10 +220,7 @@ QVBoxLayout* menuModule::initBody(){
     bodyAppVersion->setFixedHeight(24);
     bodyAppVersion->setText(tr("Version: ") + appVersion);
     bodyAppVersion->setAlignment(Qt::AlignLeft);
-    bodySupport->setText(tr("Service & Support: ") +
-                         "<a href=\"mailto://support@kylinos.cn\""
-                         "style=\"color:palttte(buttonText)\">"
-                         "support@kylinos.cn</a>");
+
     connect(bodySupport,&QLabel::linkActivated,this,[=](const QString url){
         QDesktopServices::openUrl(QUrl(url));
     });
@@ -287,6 +284,10 @@ void menuModule::setThemeDark(){
     titleBtnClose->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
                                "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:#F86457;}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:#E44C50;}");
+    bodySupport->setText(tr("Service & Support: ") +
+                         "<a href=\"mailto://support@kylinos.cn\""
+                         "style=\"color:rgba(255,255,255,1)\">"
+                         "support@kylinos.cn</a>");
 }
 
 void menuModule::setThemeLight(){
@@ -303,6 +304,10 @@ void menuModule::setThemeLight(){
     titleBtnClose->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
                                "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:#F86457;}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:#E44C50;}");
+    bodySupport->setText(tr("Service & Support: ") +
+                         "<a href=\"mailto://support@kylinos.cn\""
+                         "style=\"color:rgba(0,0,0,1)\">"
+                         "support@kylinos.cn</a>");
 
 }
 
