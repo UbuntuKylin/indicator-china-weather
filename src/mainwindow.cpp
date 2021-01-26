@@ -458,6 +458,7 @@ void MainWindow::closeActivated()
 }
 //处理点击托盘图标事件
 void MainWindow::handleIconClicked(){
+    qDebug()<<"MainWindow::handleIconClicked";
     QDesktopWidget* m = QApplication::desktop();
     QRect desk_rect = m->screenGeometry(m->screenNumber(QCursor::pos()));
     int desk_x = desk_rect.width();
@@ -531,9 +532,20 @@ void MainWindow::handleIconClicked(){
 
 void MainWindow::handleIconClickedSub()
 {
-    QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
-    this->move((availableGeometry.width() - this->width())/2, (availableGeometry.height() - this->height())/2);
+    qDebug()<<"MainWindow::handleIconClickedSub";
+//    QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
+//    this->move((availableGeometry.width() - this->width())/2, (availableGeometry.height() - this->height())/2);
 
+//    this->showNormal();
+//    this->raise();
+//    this->activateWindow();
+    QDesktopWidget* m = QApplication::desktop();
+    QRect desk_rect = m->screenGeometry(m->screenNumber(QCursor::pos()));
+    int desk_x = desk_rect.width();
+    int desk_y = desk_rect.height();
+    int x = this->width();
+    int y = this->height();
+    this->move(desk_x/2-x/2+desk_rect.left(),desk_y/2-y/2+desk_rect.top());
     this->showNormal();
     this->raise();
     this->activateWindow();

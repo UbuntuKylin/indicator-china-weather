@@ -143,7 +143,8 @@ int main(int argc, char *argv[])
     auto connection = QDBusConnection::sessionBus();
     //desktop文件启动会带showmainwdinow参数，此时启动会显示主界面
     if(argc == 2 && QLatin1String(argv[1]) == "showmainwindow"){
-        w.show();
+//        w.show();
+        w.handleIconClickedSub();
     }
     qDebug()<<"建立DBus服务成功： "<< (connection.registerService("com.kylin.weather")&&connection.registerObject("/com/kylin/weather", &w));
 
