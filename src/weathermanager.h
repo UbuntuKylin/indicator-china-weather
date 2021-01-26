@@ -45,8 +45,8 @@ public:
     void postSystemInfoToServer();
     void startAutoLocationTask();
 
-    int getTaskBarPos(QString str);
-    int getTaskBarHeight(QString str);
+//    int getTaskBarPos(QString str);
+//    int getTaskBarHeight(QString str);
 
 private:
     WeatherWorker *m_weatherWorker = nullptr;
