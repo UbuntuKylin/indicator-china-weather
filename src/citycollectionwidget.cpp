@@ -44,7 +44,6 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::citycollectionwidget)
 {
-
     //use ukui-kwin to draw round corner and shadow.
     MotifWmHints hints;
     hints.flags = MWM_HINTS_FUNCTIONS|MWM_HINTS_DECORATIONS;

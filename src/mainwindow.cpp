@@ -403,6 +403,7 @@ void MainWindow::createTrayIcon()
 //托盘图标被点击
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
+    qDebug()<<"sxs# iconactived";
     switch(reason){
     case QSystemTrayIcon::Trigger:
     case QSystemTrayIcon::MiddleClick:
@@ -465,7 +466,7 @@ void MainWindow::handleIconClicked(){
     int desk_y = desk_rect.height();
     int x = this->width();
     int y = this->height();
-    this->move(desk_x/2-x/2+desk_rect.left(),desk_y/2-y/2+desk_rect.top());
+//    this->move(desk_x/2-x/2+desk_rect.left(),desk_y/2-y/2+desk_rect.top());
     this->showNormal();
     this->raise();
     this->activateWindow();
@@ -488,8 +489,8 @@ void MainWindow::handleIconClicked(){
 //    //qDebug()<<"deskDupRect: "<<deskDupRect;
 //    //qDebug()<<"screenDupRect: "<<screenDupRect;
 
-////    int m = m_weatherManager->getTaskBarHeight("height");
-////    int n = m_weatherManager->getTaskBarPos("position");
+//    int m = m_weatherManager->getTaskBarHeight("height");
+//    int n = m_weatherManager->getTaskBarPos("position");
 //    int d = 2; //窗口边沿到任务栏距离
 
 //    if (screenGeometry.width() == availableGeometry.width() && screenGeometry.height() == availableGeometry.height()){
@@ -545,6 +546,7 @@ void MainWindow::handleIconClickedSub()
     int desk_y = desk_rect.height();
     int x = this->width();
     int y = this->height();
+    //英特尔注释掉move
     this->move(desk_x/2-x/2+desk_rect.left(),desk_y/2-y/2+desk_rect.top());
     this->showNormal();
     this->raise();

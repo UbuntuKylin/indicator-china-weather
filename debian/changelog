@@ -2,8 +2,11 @@ indicator-china-weather (3.1.0-40) v101; urgency=medium
   
   * 解决了BUG#30822 点击desktop文件的时候可以拉起窗口
   * 关于窗口适配深色&国际化&点击关于页面邮箱链接拉起邮箱客户端
+  * 解决了BUG#26544 双屏时要求麒麟天气在主屏显示
+  * 解决了BUG#35707 mips上持续高CPU占用
+  * 解决了BUG#23343 任务栏右键显示异常
 
- -- shixiaoshuo <shixiaoshuo@kylinos.cn>  Tue,19  Jan 2021 09:46:00 +0800
+ -- shixiaoshuo <shixiaoshuo@kylinos.cn>  Tue,27  Jan 2021 09:46:00 +0800
 
 indicator-china-weather (3.1.0-39) v101; urgency=medium
 
