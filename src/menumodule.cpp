@@ -14,6 +14,7 @@ void menuModule::init(){
 void menuModule::initAction(){
     aboutWindow = new QWidget();
     bodyAppName = new QLabel();
+    titleBtnClose = new QPushButton;
     bodyAppVersion = new QLabel();
     bodySupport = new QLabel();
     titleText = new QLabel();
@@ -152,9 +153,7 @@ void menuModule::aboutAction(){
 
 void menuModule::helpAction(){
 //    帮助点击事件处理
-#if DEBUG_MENUMODULE
-    appName = "tools/kylin-usb-creator";
-#endif
+
     appName = "tools/indicator-china-weather";
     DaemonDbus *ipcDbus = new DaemonDbus();
     if(!ipcDbus->daemonIsNotRunning()){
@@ -182,30 +181,19 @@ void menuModule::initAbout(){
     //TODO:在屏幕中央显示
     QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
     aboutWindow->move((availableGeometry.width()-aboutWindow->width())/2,(availableGeometry.height()- aboutWindow->height())/2);
-//    aboutWindow->setStyleSheet("background-color:rgba(255,255,255,1);");
     aboutWindow->show();
 }
 
 QHBoxLayout* menuModule::initTitleBar(){
     QLabel* titleIcon = new QLabel();
-    QPushButton *titleBtnClose = new QPushButton;
+//    titleBtnClose = new QPushButton;
     titleIcon->setFixedSize(QSize(24,24));
     appShowingName = tr("indicator china weather");
     iconPath = ":/res/control_icons/indicator-china-weather.svg";
-    //TODO：直接从主题调图标，不会QIcon转qpixmap所以暂时从本地拿
     titleIcon->setPixmap(QPixmap::fromImage(QImage(iconPath)));
     titleIcon->setScaledContents(true);
 
-    titleBtnClose->setIcon(QIcon::fromTheme("window-close-symbolic"));
-    titleBtnClose->setFixedSize(30,30);
-    titleBtnClose->setProperty("isWindowButton",0x2);
-    titleBtnClose->setProperty("useIconHighlightEffect",0x8);
-    titleBtnClose->setFlat(true);
 
-//    titleBtnClose->setIconSize(QSize(30,30));
-//    titleBtnClose->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
-//                               "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:#F86457;}"
-//                               "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:#E44C50;}");
     connect(titleBtnClose,&QPushButton::clicked,[=](){aboutWindow->close();});
     QHBoxLayout *hlyt = new QHBoxLayout;
     titleText->setText(tr("Indicator China Weather"));
@@ -229,14 +217,14 @@ QVBoxLayout* menuModule::initBody(){
     bodyIcon->setScaledContents(true);
     bodyAppName->setFixedHeight(28);
     bodyAppName->setText(tr(appShowingName.toLocal8Bit()));
-//    bodyAppName->setStyleSheet("f/*ont-size:18px;*/");
     bodyAppVersion->setFixedHeight(24);
     bodyAppVersion->setText(tr("Version: ") + appVersion);
     bodyAppVersion->setAlignment(Qt::AlignLeft);
-//    bodyAppVersion->setStyleSheet("font-size:14px;");
-    bodySupport->setText(tr("Support: support@kylinos.cn"));
+
+    connect(bodySupport,&QLabel::linkActivated,this,[=](const QString url){
+        QDesktopServices::openUrl(QUrl(url));
+    });
     bodySupport->setFixedHeight(24);
-//    bodySupport->setStyleSheet("font-size:14px;");
     QVBoxLayout *vlyt = new QVBoxLayout;
     vlyt->setMargin(0);
     vlyt->setSpacing(0);
@@ -253,9 +241,6 @@ QVBoxLayout* menuModule::initBody(){
 }
 
 void menuModule::setStyle(){
-//    menuButton->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
-//                              "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.1);}"
-//                              "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.15);}");
     menuButton->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
                               "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.1);}"
                               "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.15);}"
@@ -287,15 +272,42 @@ void menuModule::refreshThemeBySystemConf(){
 }
 
 void menuModule::setThemeDark(){
-
+    qDebug()<<"Dark";
+    aboutWindow->setStyleSheet(".QWidget{background-color:rgba(0,0,0,1);}");
+    titleText->setStyleSheet("color:rgba(255,255,255,1);font-size:14px;");
+    bodyAppName->setStyleSheet("color:rgba(255,255,255,1);font-size:18px;");
+    bodyAppVersion->setStyleSheet("color:rgba(255,255,255,1);font-size:14px;");
+    bodySupport->setStyleSheet("color:rgba(255,255,255,1);font-size:14px;");
+    titleBtnClose->setIcon(QIcon::fromTheme(":/res/control_icons/dark-window-close.svg"));
+    titleBtnClose->setIconSize(QSize(16,16));
+    titleBtnClose->setFixedSize(30,30);
+    titleBtnClose->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
+                               "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:#F86457;}"
+                               "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:#E44C50;}");
+    bodySupport->setText(tr("Service & Support: ") +
+                         "<a href=\"mailto://support@kylinos.cn\""
+                         "style=\"color:rgba(255,255,255,1)\">"
+                         "support@kylinos.cn</a>");
 }
 
 void menuModule::setThemeLight(){
-//    aboutWindow->setStyleSheet(".QWidget{background-color:rgba(255,255,255,1);}");
-//    titleText->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
-//    bodyAppName->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
-//    bodyAppVersion->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
-//    bodySupport->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
+    qDebug()<<"settheme Light";
+    aboutWindow->setStyleSheet(".QWidget{background-color:rgba(255,255,255,1);}");
+    titleText->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
+    bodyAppName->setStyleSheet("color:rgba(0,0,0,1);font-size:18px;");
+    bodyAppVersion->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
+    bodySupport->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
+
+    titleBtnClose->setIcon(QIcon::fromTheme(":/res/control_icons/close_black.png"));
+    titleBtnClose->setFixedSize(30,30);
+    titleBtnClose->setIconSize(QSize(30,30));
+    titleBtnClose->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
+                               "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:#F86457;}"
+                               "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:#E44C50;}");
+    bodySupport->setText(tr("Service & Support: ") +
+                         "<a href=\"mailto://support@kylinos.cn\""
+                         "style=\"color:rgba(0,0,0,1)\">"
+                         "support@kylinos.cn</a>");
 
 }
 

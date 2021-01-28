@@ -44,19 +44,19 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="44"/>
-        <location filename="../src/mainwindow.cpp" line="95"/>
-        <location filename="../src/mainwindow.cpp" line="409"/>
+        <location filename="../src/mainwindow.cpp" line="42"/>
+        <location filename="../src/mainwindow.cpp" line="84"/>
+        <location filename="../src/mainwindow.cpp" line="398"/>
         <source>Kylin Weather</source>
         <translation>麒麟天气</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="109"/>
+        <location filename="../src/mainwindow.cpp" line="98"/>
         <source>Open Kylin Weather</source>
         <translation>打开麒麟天气</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="73"/>
+        <location filename="../src/mainwindow.cpp" line="67"/>
         <source>Add City</source>
         <translation>增加城市</translation>
     </message>
@@ -65,22 +65,22 @@
         <translation type="vanished">关于</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="110"/>
+        <location filename="../src/mainwindow.cpp" line="99"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="142"/>
+        <location filename="../src/mainwindow.cpp" line="131"/>
         <source>Network not connected</source>
         <translation>网络未连接</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="355"/>
+        <location filename="../src/mainwindow.cpp" line="343"/>
         <source>Incorrect access address</source>
         <translation>访问地址异常</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="357"/>
+        <location filename="../src/mainwindow.cpp" line="345"/>
         <source>Network error code:%1</source>
         <translation>网络错误代码：%1</translation>
     </message>
@@ -146,42 +146,51 @@
 <context>
     <name>menuModule</name>
     <message>
-        <location filename="../src/menumodule.cpp" line="22"/>
+        <location filename="../src/menumodule.cpp" line="35"/>
         <source>Theme</source>
         <translation>主题</translation>
     </message>
     <message>
-        <location filename="../src/menumodule.cpp" line="24"/>
-        <location filename="../src/menumodule.cpp" line="106"/>
+        <location filename="../src/menumodule.cpp" line="37"/>
+        <location filename="../src/menumodule.cpp" line="118"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../src/menumodule.cpp" line="26"/>
-        <location filename="../src/menumodule.cpp" line="104"/>
+        <location filename="../src/menumodule.cpp" line="39"/>
+        <location filename="../src/menumodule.cpp" line="116"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../src/menumodule.cpp" line="28"/>
-        <location filename="../src/menumodule.cpp" line="102"/>
+        <location filename="../src/menumodule.cpp" line="41"/>
+        <location filename="../src/menumodule.cpp" line="114"/>
         <source>Quit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../src/menumodule.cpp" line="187"/>
+        <location filename="../src/menumodule.cpp" line="191"/>
         <source>indicator china weather</source>
         <translation>麒麟天气</translation>
     </message>
     <message>
-        <location filename="../src/menumodule.cpp" line="229"/>
-        <source>Version: </source>
-        <translation>版本:</translation>
+        <location filename="../src/menumodule.cpp" line="199"/>
+        <source>Indicator China Weather</source>
+        <translation>麒麟天气</translation>
     </message>
     <message>
-        <location filename="../src/menumodule.cpp" line="233"/>
+        <location filename="../src/menumodule.cpp" line="221"/>
+        <source>Version: </source>
+        <translation>版本：</translation>
+    </message>
+    <message>
+        <location filename="../src/menumodule.cpp" line="223"/>
+        <source>Service &amp; Support: </source>
+        <translation>服务与支持：</translation>
+    </message>
+    <message>
         <source>Support: support@kylinos.cn</source>
-        <translation>支持：support@kylinos.cn</translation>
+        <translation type="vanished">支持：support@kylinos.cn</translation>
     </message>
 </context>
 </TS>

@@ -273,7 +273,6 @@ void Information::onSetForecastWeather(ForecastWeather forecastweather)
     }else {
         wea = forecastweather.cond_txt_d + "转" + forecastweather.cond_txt_n + "\n" + forecastweather.wind_dir + forecastweather.wind_sc + "级";
     }
-//    qDebug()<<"wea shixiasohuo#"<<wea<<"shixiaoshuo# code="<<code;
     switch (m_day) {
     case 1:
         ui->lbDay_1->setText(current_week_1);

@@ -403,6 +403,7 @@ void MainWindow::createTrayIcon()
 //托盘图标被点击
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
+    qDebug()<<"sxs# iconactived";
     switch(reason){
     case QSystemTrayIcon::Trigger:
     case QSystemTrayIcon::MiddleClick:
@@ -457,71 +458,96 @@ void MainWindow::closeActivated()
     return;
 }
 //处理点击托盘图标事件
-void MainWindow::handleIconClicked()
-{
-    QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
-    QRect screenGeometry = qApp->primaryScreen()->geometry();
-
-    QDesktopWidget* desktopWidget = QApplication::desktop();
-    //QRect deskMainRect = desktopWidget->availableGeometry(0);//获取可用桌面大小
-    QRect screenMainRect = desktopWidget->screenGeometry(0);//获取设备屏幕大小
-    //QRect deskDupRect = desktopWidget->availableGeometry(1);//获取可用桌面大小
-    //QRect screenDupRect = desktopWidget->screenGeometry(1);//获取设备屏幕大小
-
-    //qDebug()<<"screenGeometry: "<<screenGeometry;
-    //qDebug()<<"availableGeometry: "<<availableGeometry;
-    //qDebug()<<"deskMainRect: "<<deskMainRect;
-    //qDebug()<<"screenMainRect: "<<screenMainRect;
-    //qDebug()<<"deskDupRect: "<<deskDupRect;
-    //qDebug()<<"screenDupRect: "<<screenDupRect;
-
-    int m = m_weatherManager->getTaskBarHeight("height");
-    int n = m_weatherManager->getTaskBarPos("position");
-    int d = 2; //窗口边沿到任务栏距离
-
-    if (screenGeometry.width() == availableGeometry.width() && screenGeometry.height() == availableGeometry.height()){ 
-        if(n == 0){
-            //任务栏在下侧
-            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + availableGeometry.height() - this->height() - m - d);
-        }else if(n == 1){
-            //任务栏在上侧
-            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + screenGeometry.height() - availableGeometry.height() + m + d);
-        } else if (n == 2){
-            //任务栏在左侧
-            if (screenGeometry.x() == 0){//主屏在左侧
-                this->move(m + d, screenMainRect.y() + screenMainRect.height() - this->height());
-            }else{//主屏在右侧
-                this->move(screenMainRect.x() + m + d, screenMainRect.y() + screenMainRect.height() - this->height());
-            }
-        } else if (n == 3){
-            //任务栏在右侧
-            if (screenGeometry.x() == 0){//主屏在左侧
-                this->move(screenMainRect.width() - this->width() - m - d, screenMainRect.y() + screenMainRect.height() - this->height());
-            }else{//主屏在右侧
-                this->move(screenMainRect.x() + screenMainRect.width() - this->width() - m - d, screenMainRect.y() + screenMainRect.height() - this->height());
-            }
-        }
-    } else if (availableGeometry.x() == screenGeometry.x() && availableGeometry.y() == screenGeometry.y()) { //panel in right or bottom
-        this->move(availableGeometry.x() + availableGeometry.width() - this->width() - d, availableGeometry.y() + availableGeometry.height() - this->height() - d);
-    } else {
-        if (availableGeometry.x() > 0) {//panel in left
-            this->move(availableGeometry.x() + d, availableGeometry.y() + availableGeometry.height()  - this->height());
-        }
-        else {//panel in top
-            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), availableGeometry.y() + d);
-        }
-    }
-
+void MainWindow::handleIconClicked(){
+    qDebug()<<"MainWindow::handleIconClicked";
+    QDesktopWidget* m = QApplication::desktop();
+    QRect desk_rect = m->screenGeometry(m->screenNumber(QCursor::pos()));
+    int desk_x = desk_rect.width();
+    int desk_y = desk_rect.height();
+    int x = this->width();
+    int y = this->height();
+//    this->move(desk_x/2-x/2+desk_rect.left(),desk_y/2-y/2+desk_rect.top());
     this->showNormal();
     this->raise();
     this->activateWindow();
 }
+//void MainWindow::handleIconClicked()
+//{
+//    QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
+//    QRect screenGeometry = qApp->primaryScreen()->geometry();
+
+//    QDesktopWidget* desktopWidget = QApplication::desktop();
+//    //QRect deskMainRect = desktopWidget->availableGeometry(0);//获取可用桌面大小
+//    QRect screenMainRect = desktopWidget->screenGeometry(0);//获取设备屏幕大小
+//    //QRect deskDupRect = desktopWidget->availableGeometry(1);//获取可用桌面大小
+//    //QRect screenDupRect = desktopWidget->screenGeometry(1);//获取设备屏幕大小
+
+//    //qDebug()<<"screenGeometry: "<<screenGeometry;
+//    //qDebug()<<"availableGeometry: "<<availableGeometry;
+//    //qDebug()<<"deskMainRect: "<<deskMainRect;
+//    //qDebug()<<"screenMainRect: "<<screenMainRect;
+//    //qDebug()<<"deskDupRect: "<<deskDupRect;
+//    //qDebug()<<"screenDupRect: "<<screenDupRect;
+
+//    int m = m_weatherManager->getTaskBarHeight("height");
+//    int n = m_weatherManager->getTaskBarPos("position");
+//    int d = 2; //窗口边沿到任务栏距离
+
+//    if (screenGeometry.width() == availableGeometry.width() && screenGeometry.height() == availableGeometry.height()){
+//        if(n == 0){
+//            //任务栏在下侧
+//            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + availableGeometry.height() - this->height() - m - d);
+//        }else if(n == 1){
+//            //任务栏在上侧
+//            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + screenGeometry.height() - availableGeometry.height() + m + d);
+//        } else if (n == 2){
+//            //任务栏在左侧
+//            if (screenGeometry.x() == 0){//主屏在左侧
+//                this->move(m + d, screenMainRect.y() + screenMainRect.height() - this->height());
+//            }else{//主屏在右侧
+//                this->move(screenMainRect.x() + m + d, screenMainRect.y() + screenMainRect.height() - this->height());
+//            }
+//        } else if (n == 3){
+//            //任务栏在右侧
+//            if (screenGeometry.x() == 0){//主屏在左侧
+//                this->move(screenMainRect.width() - this->width() - m - d, screenMainRect.y() + screenMainRect.height() - this->height());
+//            }else{//主屏在右侧
+//                this->move(screenMainRect.x() + screenMainRect.width() - this->width() - m - d, screenMainRect.y() + screenMainRect.height() - this->height());
+//            }
+//        }
+//    } else if (availableGeometry.x() == screenGeometry.x() && availableGeometry.y() == screenGeometry.y()) { //panel in right or bottom
+//        this->move(availableGeometry.x() + availableGeometry.width() - this->width() - d, availableGeometry.y() + availableGeometry.height() - this->height() - d);
+//    } else {
+//        if (availableGeometry.x() > 0) {//panel in left
+//            this->move(availableGeometry.x() + d, availableGeometry.y() + availableGeometry.height()  - this->height());
+//        }
+//        else {//panel in top
+//            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), availableGeometry.y() + d);
+//        }
+//    }
+
+//    this->showNormal();
+//    this->raise();
+//    this->activateWindow();
+//}
 
 void MainWindow::handleIconClickedSub()
 {
-    QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
-    this->move((availableGeometry.width() - this->width())/2, (availableGeometry.height() - this->height())/2);
+    qDebug()<<"MainWindow::handleIconClickedSub";
+//    QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
+//    this->move((availableGeometry.width() - this->width())/2, (availableGeometry.height() - this->height())/2);
 
+//    this->showNormal();
+//    this->raise();
+//    this->activateWindow();
+    QDesktopWidget* m = QApplication::desktop();
+    QRect desk_rect = m->screenGeometry(m->screenNumber(QCursor::pos()));
+    int desk_x = desk_rect.width();
+    int desk_y = desk_rect.height();
+    int x = this->width();
+    int y = this->height();
+    //英特尔注释掉move
+    this->move(desk_x/2-x/2+desk_rect.left(),desk_y/2-y/2+desk_rect.top());
     this->showNormal();
     this->raise();
     this->activateWindow();
@@ -550,6 +576,7 @@ void MainWindow::setAbnormalMainWindow()
     ui->lbCurrTmpUnit->setText("");
     ui->lbCurrWea->setText("");
     ui->lbCurrHum->setText("");
+    cityLabel->setText("");//baibai
 
     ForecastWeather abnormalForecastweather;
     for (int i=0; i<7; i++) {

@@ -19,7 +19,6 @@
 
 #include "mainwindow.h"
 #include "dbusadaptor.h"
-
 #include <QApplication>
 #include <QTranslator>
 #include <QLibraryInfo>
@@ -102,6 +101,7 @@ int main(int argc, char *argv[])
             QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     #endif
 
+
     QString id = QString("indicator-china-weather-"+QLatin1String(getenv("DISPLAY")));
     QtSingleApplication a(id, argc, argv);
     responseCommand(a);//响应外部DBus命令
@@ -141,6 +141,11 @@ int main(int argc, char *argv[])
     DbusAdaptor adaptor(&w);
     Q_UNUSED(adaptor);
     auto connection = QDBusConnection::sessionBus();
+    //desktop文件启动会带showmainwdinow参数，此时启动会显示主界面
+    if(argc == 2 && QLatin1String(argv[1]) == "showmainwindow"){
+//        w.show();
+        w.handleIconClickedSub();
+    }
     qDebug()<<"建立DBus服务成功： "<< (connection.registerService("com.kylin.weather")&&connection.registerObject("/com/kylin/weather", &w));
 
     return a.exec();

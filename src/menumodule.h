@@ -14,7 +14,9 @@
 #include <QString>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QUrl>
 #include <QHBoxLayout>
+#include <QDesktopServices>
 #include <QRect>
 #include <QScreen>
 #include <QGSettings>
@@ -81,6 +83,7 @@ private:
     void setThemeDark();
 
     void refreshThemeBySystemConf();    //通过系统配置更改主题
+    QPushButton *titleBtnClose = nullptr;
     QLabel* titleText = nullptr;
     QLabel* bodyAppVersion = nullptr;
     QLabel* bodySupport = nullptr;
