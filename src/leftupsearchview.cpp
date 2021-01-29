@@ -114,6 +114,7 @@ void LeftUpSearchView::ThemeLeftUpSearchView(QString str)
     }
 }
 void LeftUpSearchView::dealSearchBoxKeyPress(QString str){
+    qDebug()<<"SXS#BUG37112 debuging…… dealSearchBoxKeyPress triggered";
     if(str == "up"){
         if(-1 == this->currentIndex().row()){
 
