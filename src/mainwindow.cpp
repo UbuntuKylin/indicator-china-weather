@@ -718,8 +718,8 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
 
     if(m_size1 == 3){
 
-        cityLabel->setGeometry(420,104,148,50);
-        ui->lbCurrTmp->setGeometry(351,145,116,100);
+        cityLabel->setGeometry(405,104,148,50);
+        ui->lbCurrTmp->setGeometry(351,145,155,100);
         ui->lbCurrTmpUnit->move(447 + 30*(m_size1-1), 155);
         ui->lbCurrWea->move(450 + 30*(m_size1-1), 225);
 
