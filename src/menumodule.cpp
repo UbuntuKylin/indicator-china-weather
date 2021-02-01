@@ -162,6 +162,7 @@ void menuModule::helpAction(){
 }
 
 void menuModule::initAbout(){
+    aboutWindow->setWindowModality(Qt::ApplicationModal);
     aboutWindow->setWindowFlag(Qt::Tool);
     MotifWmHints hints;
     hints.flags = MWM_HINTS_FUNCTIONS|MWM_HINTS_DECORATIONS;
