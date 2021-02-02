@@ -52,6 +52,7 @@ LeftUpSearchView::~LeftUpSearchView()
 void LeftUpSearchView::mouseReleaseEvent(QMouseEvent *)
 {
     send();
+    return QListView::mouseReleaseEvent(e);
 }
 
 void LeftUpSearchView::send(){

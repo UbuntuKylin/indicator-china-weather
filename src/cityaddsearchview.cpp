@@ -54,6 +54,11 @@ CityAddSearchView::~CityAddSearchView()
 
 void CityAddSearchView::mouseReleaseEvent(QMouseEvent *e)
 {
+    send();
+    return QListView::mouseReleaseEvent(e);
+}
+
+void CityAddSearchView::send(){
     QModelIndexList sourceIndexList = this->selectionModel()->selectedIndexes();
 
     foreach (QModelIndex sourceIndex, sourceIndexList){
@@ -63,6 +68,28 @@ void CityAddSearchView::mouseReleaseEvent(QMouseEvent *e)
         emit requestClearLineEdit();
         emit requestAddNewCity(data.cityId);
     }
+    return ;
+}
+
+void CityAddSearchView::dealSearchBoxKeyPress(QString str){
+    if(str == "up"){
+        if(-1 == this->currentIndex().row()){
+
+            setCurrentIndex(model()->index(model()->rowCount() - 1,0));
+        }else{
+//            this->model()->index(this->model()->rowCount() - 1, 0);
+            this->setCurrentIndex(model()->index(this->currentIndex().row() - 1,0));
+        }
+    }else if(str == "down"){
+        if(this->currentIndex().row() == -1){
+            setCurrentIndex(model()->index(0,0));
+        }else{
+            this->setCurrentIndex(model()->index(this->currentIndex().row() + 1,0));
+        }
+    }else if(str == "enter"){
+        send();
+    }
+    return ;
 }
 //主题适配
 void CityAddSearchView::ThemeCitySearchView(QString str)

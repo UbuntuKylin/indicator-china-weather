@@ -21,7 +21,7 @@ protected:
 private:
     QString m_searchText;
     QPixmap m_searchPixmap;
-    bool isFocus;
+    bool isFocus = false;
 };
 
 #endif // LEFTUPSEARCHBOX_H
