@@ -82,9 +82,15 @@ void LeftUpSearchBox::ThemeLeftUpSearchBox(QString str)
 
 bool LeftUpSearchBox::event(QEvent *e){
     if(e->type() == QEvent::FocusOut){
+        isFocus = false;
+        return QLineEdit::event(e);
+    }else if(e->type() == QEvent::FocusIn)
+    {
+        isFocus = true;
         return QLineEdit::event(e);
     }
-    if(e->type() == QEvent::KeyPress){
+
+    if(e->type() == QEvent::KeyPress && isFocus){
         QKeyEvent *k = static_cast<QKeyEvent *>(e);
         switch(k->key()){
             case Qt::Key_Up:{
