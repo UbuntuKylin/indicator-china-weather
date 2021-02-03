@@ -26,6 +26,7 @@
 #include <QDir>
 #include <signal.h>
 #include <X11/Xlib.h>
+#include "xatom-helper.h"
 
 #include <QtSingleApplication>
 
@@ -135,6 +136,15 @@ int main(int argc, char *argv[])
     }
 
     MainWindow w;
+
+    //适配窗管
+    MotifWmHints hints;
+    hints.flags = MWM_HINTS_FUNCTIONS|MWM_HINTS_DECORATIONS;
+    hints.functions = MWM_FUNC_ALL;
+    hints.decorations = MWM_DECOR_BORDER;
+    XAtomHelper::getInstance()->setWindowMotifHint(w.winId(), hints);
+
+
     showThis(w);//读取开机启动服务列表，判断是否开机启动
 
     //建立DBus服务（YYF 经自测封装到函数里会导致程序在响应DBus信号时异常结束）

@@ -3,7 +3,7 @@
 # Project created by QtCreator 2019-08-10T17:28:11
 #
 #-------------------------------------------------
-QT       += network dbus
+QT       += network dbus x11extras
 include(src/qtsingleapplication/qtsingleapplication.pri)
 isEqual(QT_MAJOR_VERSION, 5) {
     QT += widgets gui core dbus KWindowSystem x11extras
