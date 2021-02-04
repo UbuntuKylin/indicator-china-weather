@@ -33,7 +33,7 @@
 bool onlyOne(QtSingleApplication &a)
 {
     if (a.isRunning()) {
-        a.sendMessage(QApplication::arguments().length() > 1 ? QApplication::arguments().at(1) : a.applicationFilePath());
+        qDebug()<<"给首个对象发送信号："<< a.sendMessage(QApplication::arguments().length() > 1 ? QApplication::arguments().at(1) : a.applicationFilePath());
         qDebug() << "Can't lock single file, indicator-china-weather is already running!";
         return true;
     }
@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
 
     QString id = QString("indicator-china-weather-"+QLatin1String(getenv("DISPLAY")));
     QtSingleApplication a(id, argc, argv);
-    responseCommand(a);//响应外部DBus命令
+//    responseCommand(a);//响应外部DBus命令
     if(onlyOne(a))return 0;
     setAttribute(a);//设置属性
 

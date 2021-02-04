@@ -1,9 +1,10 @@
-indicator-china-weather (3.1.0-40kord~rc1) v101; urgency=medium
+indicator-china-weather (3.1.0-41) v101; urgency=medium
   
+  * 解决了BUG#26075 vnc异常
   * 解决了BUG#36841 地区温度为零下两位数字时，如零下18度，会导致温度显示不全
   * 解决了BUG#35657 主界面地区、温度值显示不全及未居中
 
- -- baijincheng <baijincheng@kylinos.cn>  Tue,27  Jan 2021 19:19:00 +0800
+ -- liuyuhui <liuyuhui@kylinos.cn>  Tue,27  Jan 2021 09:46:00 +0800
 
 indicator-china-weather (3.1.0-40) v101; urgency=medium
   

@@ -175,7 +175,6 @@ void MainWindow::judgeSystemLanguage()
 void MainWindow::initControlQss()
 {
     m_leftupsearchbox->setFixedWidth(150);
-
     titleLayout->addSpacing(4);
     titleLayout->addWidget(logoBtn);//麒麟天气logo
     titleLayout->addSpacing(4);
