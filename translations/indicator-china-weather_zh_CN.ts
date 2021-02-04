@@ -193,4 +193,12 @@
         <translation type="vanished">支持：support@kylinos.cn</translation>
     </message>
 </context>
+<context>
+    <name>Information</name>
+    <message>
+        <location filename="../src/informationwidget.cpp" line="233"/>
+        <source>Today</source>
+        <translation>今天</translation>
+    </message>
+</context>
 </TS>
