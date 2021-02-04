@@ -136,6 +136,7 @@ int main(int argc, char *argv[])
     }
 
     MainWindow w;
+    a.setActivationWindow(&w);
 
     //适配窗管
     MotifWmHints hints;
