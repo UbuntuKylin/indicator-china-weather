@@ -230,7 +230,7 @@ void Information::onSetForecastWeather(ForecastWeather forecastweather)
 
     //获取星期
     QDateTime current_date_time = QDateTime::fromString(forecastweather.dateTime,"yyyy-MM-dd");//将从服务器上获取到的日期处理成特定格式
-    QString current_week_1 = "今天";//current_date_time.toString("ddd");
+    QString current_week_1 = tr("Today");//current_date_time.toString("ddd");
     QString current_week_2 = current_date_time.addDays(+1).toString("ddd");
     QString current_week_3 = current_date_time.addDays(+2).toString("ddd");
     QString current_week_4 = current_date_time.addDays(+3).toString("ddd");
