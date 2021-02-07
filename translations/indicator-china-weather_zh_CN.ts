@@ -77,12 +77,12 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="196"/>
         <source>minimize</source>
-        <translation type="unfinished"></translation>
+        <translation>最小化</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="201"/>
         <source>close</source>
-        <translation type="unfinished"></translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="318"/>
@@ -158,7 +158,7 @@
     <message>
         <location filename="../src/menumodule.cpp" line="23"/>
         <source>menu</source>
-        <translation type="unfinished"></translation>
+        <translation>菜单</translation>
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="36"/>
