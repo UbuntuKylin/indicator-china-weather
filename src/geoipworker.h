@@ -25,6 +25,9 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QEventLoop>
+#include <QJsonDocument>
+#include <QJsonParseError>
+#include <QJsonObject>
 
 class QNetworkAccessManager;
 class QNetworkReply;
