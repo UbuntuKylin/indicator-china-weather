@@ -1,3 +1,21 @@
+indicator-china-weather (3.1.0-42) v101; urgency=medium
+  
+  * 解决了BUG#26877 ip定位逻辑优化
+  * 解决了BUG#38531 三联加tooltip
+  * 解决了高优BUG#34396 拖动事件未适配缩放
+  # 解决了BUG#36719 主界面重绘，适配了窗管
+  * 解决了BUG#37808 链接右键菜单未屏蔽
+  * 解决了BUG#37114 主界面天气资源加载慢
+  * 解决了BUG#36937 添加城市界面的按键映射
+  * 修复了-9以下气温显示遮挡
+  * 修复了BUG#34922 关于窗口改模态
+  * 修复了BUG#37114 天气加载慢
+  * 修复了高优BUG#37112 网络情况导致的按键映射延迟导致的主界面闪屏
+  * 修改了程序左上角图标
+  * 应用分类修改为系统应用
+
+ -- zoujunnan <zoujunnan@kylinos.cn>  Sat,20  Feb 2021 09:46:00 +0800
+
 indicator-china-weather (3.1.0-41) v101; urgency=medium
   
   * 解决了BUG#26075 vnc异常
