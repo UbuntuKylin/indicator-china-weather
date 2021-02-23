@@ -48,7 +48,6 @@
 #include <QLabel>
 
 #include <QGSettings>
-#include <QGraphicsDropShadowEffect>
 #include "daemondbus.h"
 #include "menumodule.h"
 
@@ -140,9 +139,9 @@ private:
     // 键盘响应事件
     void keyPressEvent(QKeyEvent *event);
 
-    void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
+//    void mousePressEvent(QMouseEvent *event);
+//    void mouseReleaseEvent(QMouseEvent *event);
+//    void mouseMoveEvent(QMouseEvent *event);
 
     bool event(QEvent *event);
     bool isPress;

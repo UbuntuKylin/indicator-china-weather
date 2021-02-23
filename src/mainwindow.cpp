@@ -34,23 +34,11 @@ MainWindow::MainWindow(QWidget *parent) :
     qRegisterMetaType<LifeStyle>();
 
     //设置主界面样式
-    this->setFixedSize(885, 600);
-    this->setWindowFlags(Qt::FramelessWindowHint);
-//    qDebug()<< this->windowState();
-    //this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::Tool);
+    this->setFixedSize(865,520);
     this->setFocusPolicy(Qt::ClickFocus);//this->setFocusPolicy(Qt::NoFocus);//设置焦点类型
     this->setWindowTitle(tr("Kylin Weather"));
-    this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
-    this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/logo_24.png")) );
-
-    QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect(this);
-    shadow->setOffset(0,0);
-    shadow->setColor(QColor(0,0,0,127));
-    shadow->setBlurRadius(13);
-    ui->centralwidget->setGraphicsEffect(shadow);
-    //给垂直布局器设置边距(此步很重要, 设置宽度为阴影的宽度)
-//    ui->centralwidget->setMargin(24);
-
+//    this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
+    this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/logo_24.png")));
     QPainterPath path;
     auto rect = this->rect();
     rect.adjust(1, 1, -1, -1);
@@ -181,9 +169,7 @@ void MainWindow::judgeSystemLanguage()
 //初始化各控件样式
 void MainWindow::initControlQss()
 {
-    //baibai Modify左上角标题栏布局
     m_leftupsearchbox->setFixedWidth(150);
-
     titleLayout->addSpacing(4);
     titleLayout->addWidget(logoBtn);//麒麟天气logo
     titleLayout->addSpacing(4);
@@ -191,7 +177,6 @@ void MainWindow::initControlQss()
     titleLayout->addStretch();//添加伸缩
     titleLayout->addWidget(m_leftupsearchbox);//麒麟天气搜索栏
     titleLayout->addSpacing(4);
-//    titleLayout->addStretch();//添加伸缩
     titleLayout->addWidget(m_menu->menuButton);//设置按钮
     titleLayout->addWidget(ui->btnMinimize);
     titleLayout->addWidget(ui->btnCancel);
@@ -199,33 +184,20 @@ void MainWindow::initControlQss()
     titleLayout->setMargin(4);
     titleWid->setLayout(titleLayout);
     titleWid->setFixedWidth(865);
-    titleWid->move(10,10);
+    titleWid->move(0,0);
 
-//    setBtn->setFixedSize(30,30);
-    //menu跟主题走
-//    menu->setFixedSize(120,66);
-//    menu->setStyleSheet("QMenu{border-radius:3px;background-color:white;color:black;}"
-//                        "QMenu::item:selected {color:white;background-color: #2dabf9;}"
-//                        "QMenu::item {font-size:14px;border-radius:4px;background-color: transparent;}");
-
-//    setBtn->setIcon(QIcon::fromTheme("application-menu"));
-
-//    setBtn->setStyleSheet("QPushButton{border-radius:4px;}"
-//                          "QPushButton::hover{background-color:rgba(0,0,0,0.1)}"
-//                          "QPushButton::pressed{background-color:rgba(0,0,0,0.15)}"
-//                          "QPushButton::menu-indicator{image:None;}");
-
-    ui->centralwidget->setStyleSheet("#centralwidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(19,19,20,0);}");
+//    ui->centralwidget->setStyleSheet("#centralwidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(19,19,20,0);}");
     ui->centralwidget->setStyleSheet("#centralwidget{color:white;background-image:url(':/res/background/weather-clear.png');background-repeat:no-repeat;}");
-    ui->centralwidget->move(10,10);
+    ui->centralwidget->move(0,0);
     ui->centralwidget->setFixedSize(865,520);
     ui->btnMinimize->setIcon(QIcon::fromTheme(":/res/control_icons/dark-window-min.svg"));
     ui->btnMinimize->setFixedSize(30,30);
+    ui->btnMinimize->setToolTip(tr("minimize"));
     ui->btnMinimize->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
                                "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.1);}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.15);}");
     ui->btnMinimize->setFocusPolicy(Qt::NoFocus);//设置焦点类型
-
+    ui->btnCancel->setToolTip(tr("close"));
     ui->btnCancel->setIcon(QIcon::fromTheme(":/res/control_icons/dark-window-close.svg"));
     ui->btnCancel->setFixedSize(30,30);
     ui->btnCancel->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
@@ -249,6 +221,7 @@ void MainWindow::initControlQss()
     m_scrollarea->setFixedSize(858, 220);
     m_scrollarea->move(4, 290);
     m_scrollarea->setStyleSheet("QScrollArea{border:none;border-radius:4px;background:transparent;color:rgba(255,255,255,1);}");
+
     m_scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
@@ -266,6 +239,7 @@ void MainWindow::initControlQss()
     m_scrollwidget = new QWidget(m_scrollarea);
     m_scrollwidget->resize(858, 450);
     m_scrollwidget->setStyleSheet("QWidget{border:none;border-radius:4px;background:transparent;color:rgba(255,255,255,1);}");
+//    m_scrollwidget->setStyleSheet("QWidget{border:2px;border-radius:4px;background:transparent;color:rgba(255,255,255,1);}");
     m_scrollarea->setWidget(m_scrollwidget);
     m_scrollwidget->move(0, 0);
     m_information = new Information(m_scrollwidget);
@@ -863,28 +837,28 @@ void MainWindow::on_btnCancel_clicked()
     this->setVisible(false);
 }
 
-void MainWindow::mousePressEvent(QMouseEvent *event){
-    if(event->button() == Qt::LeftButton){
-        this->isPress = true;
-        this->winPos = this->pos();
-        this->dragPos = event->globalPos();
-        event->accept();
-    }
-}
+//void MainWindow::mousePressEvent(QMouseEvent *event){
+//    if(event->button() == Qt::LeftButton){
+//        this->isPress = true;
+//        this->winPos = this->pos();
+//        this->dragPos = event->globalPos();
+//        event->accept();
+//    }
+//}
 
-void MainWindow::mouseReleaseEvent(QMouseEvent *event){
-    this->isPress = false;
-    this->setCursor(Qt::ArrowCursor);
-    return ;
-}
+//void MainWindow::mouseReleaseEvent(QMouseEvent *event){
+//    this->isPress = false;
+//    this->setCursor(Qt::ArrowCursor);
+//    return ;
+//}
 
-void MainWindow::mouseMoveEvent(QMouseEvent *event){
-    if(this->isPress){
-        this->move(this->winPos - (this->dragPos - event->globalPos()));
-        this->setCursor(Qt::ClosedHandCursor);
-        event->accept();
-    }
-}
+//void MainWindow::mouseMoveEvent(QMouseEvent *event){
+//    if(this->isPress){
+//        this->move(this->winPos - (this->dragPos - event->globalPos()));
+//        this->setCursor(Qt::ClosedHandCursor);
+//        event->accept();
+//    }
+//}
 //鼠标点击外部，收起搜索列表
 bool MainWindow::event(QEvent *event)
 {

@@ -26,13 +26,14 @@
 #include <QDir>
 #include <signal.h>
 #include <X11/Xlib.h>
+#include "xatom-helper.h"
 
 #include <QtSingleApplication>
 
 bool onlyOne(QtSingleApplication &a)
 {
     if (a.isRunning()) {
-        a.sendMessage(QApplication::arguments().length() > 1 ? QApplication::arguments().at(1) : a.applicationFilePath());
+        qDebug()<<"给首个对象发送信号："<< a.sendMessage(QApplication::arguments().length() > 1 ? QApplication::arguments().at(1) : a.applicationFilePath());
         qDebug() << "Can't lock single file, indicator-china-weather is already running!";
         return true;
     }
@@ -104,7 +105,7 @@ int main(int argc, char *argv[])
 
     QString id = QString("indicator-china-weather-"+QLatin1String(getenv("DISPLAY")));
     QtSingleApplication a(id, argc, argv);
-    responseCommand(a);//响应外部DBus命令
+//    responseCommand(a);//响应外部DBus命令
     if(onlyOne(a))return 0;
     setAttribute(a);//设置属性
 
@@ -135,6 +136,16 @@ int main(int argc, char *argv[])
     }
 
     MainWindow w;
+    a.setActivationWindow(&w);
+
+    //适配窗管
+    MotifWmHints hints;
+    hints.flags = MWM_HINTS_FUNCTIONS|MWM_HINTS_DECORATIONS;
+    hints.functions = MWM_FUNC_ALL;
+    hints.decorations = MWM_DECOR_BORDER;
+    XAtomHelper::getInstance()->setWindowMotifHint(w.winId(), hints);
+
+
     showThis(w);//读取开机启动服务列表，判断是否开机启动
 
     //建立DBus服务（YYF 经自测封装到函数里会导致程序在响应DBus信号时异常结束）

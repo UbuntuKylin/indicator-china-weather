@@ -80,7 +80,7 @@ CityAddition::CityAddition(QWidget *parent) :
     m_cityaddsearchview->move(35, 115);
     m_cityaddsearchview->resize(470,227);
     m_cityaddsearchview->hide();
-
+    connect(m_cityaddsearchbox,&CityAddSearchBox::lineEditKeyEvent,m_cityaddsearchview,&CityAddSearchView::dealSearchBoxKeyPress);
     connect(m_cityaddsearchview, SIGNAL(requestClearLineEdit() ), this, SLOT(onRequestClearLineEdit()) );
     connect(m_cityaddsearchview, SIGNAL(requestAddNewCity(QString)), this, SIGNAL(requestAddNewCity(QString)) );
 

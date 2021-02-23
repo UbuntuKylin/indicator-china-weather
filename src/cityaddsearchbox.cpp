@@ -111,3 +111,31 @@ void CityAddSearchBox::drawbackground()
         }
 
 }
+
+bool CityAddSearchBox::event(QEvent *e){
+    // 此处做预留，阻塞的操作在焦点外不做处理。如果出现类似问题就在这里做焦点的判断，失焦就不做后续的按键操作
+    if(e->type() == QEvent::FocusOut){
+        return QLineEdit::event(e);
+    }else if(e->type() == QEvent::FocusIn){
+        return QLineEdit::event(e);
+    }
+
+    if(e->type() == QEvent::KeyPress){
+        QKeyEvent *k = static_cast<QKeyEvent*>(e);
+        switch(k->key()){
+            case Qt::Key_Up:{
+                emit lineEditKeyEvent("up");
+                break;
+            }
+            case Qt::Key_Down:{
+                emit lineEditKeyEvent("down");
+                break;
+            }
+            case Qt::Key_Enter:{
+                emit lineEditKeyEvent("enter");
+                break;
+            }
+        }
+    }
+    return QLineEdit::event(e);
+}

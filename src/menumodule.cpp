@@ -20,6 +20,7 @@ void menuModule::initAction(){
     titleText = new QLabel();
     iconSize = QSize(30,30);
     menuButton = new QPushButton;
+    menuButton->setToolTip(tr("menu"));
 //    menuButton->setIcon(QIcon::fromTheme("application-menu"));
     menuButton->setIcon(QIcon(":/res/control_icons/menu.png"));
     menuButton->setIconSize(QSize(30,30));
@@ -226,6 +227,7 @@ QVBoxLayout* menuModule::initBody(){
         QDesktopServices::openUrl(QUrl(url));
     });
     bodySupport->setFixedHeight(24);
+    bodySupport->setContextMenuPolicy(Qt::NoContextMenu);
     QVBoxLayout *vlyt = new QVBoxLayout;
     vlyt->setMargin(0);
     vlyt->setSpacing(0);

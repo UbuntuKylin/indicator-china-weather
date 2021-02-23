@@ -41,7 +41,6 @@ public:
     QPushButton *menuButton = nullptr;
 
 public:
-//    程序在实例化的时候需要传递的信息字段,打开debug开关后这些字段会被自动填充
     QString appName = "appName字段未填充!"; //格式kylin-usb-creator
     QString appShowingName = "app展示名字段未填充"; //格式kylin usb creator ,用来在前端展示
     QString appVersion = "appVersion字段未填充!";

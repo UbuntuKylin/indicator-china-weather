@@ -324,6 +324,8 @@ void QtSingleApplication::activateWindow()
 {
     if (actWin) {
         actWin->setWindowState(actWin->windowState() & ~Qt::WindowMinimized);
+        if(!actWin->isActiveWindow())
+            actWin->hide();
         actWin->show(); // 解决了vnc远程时应用窗口不显示的问题
         actWin->raise();
         actWin->activateWindow();

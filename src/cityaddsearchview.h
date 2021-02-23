@@ -16,10 +16,14 @@ public:
 protected:
     // handle click event of searchview, send signal when mouse release.
     void mouseReleaseEvent(QMouseEvent *e) override;
+public slots:
+    void dealSearchBoxKeyPress(QString);
 
 signals:
     void requestClearLineEdit(); //set original state after mouse release
     void requestAddNewCity(QString cityId); //send this signal to mainwindow, show new city weather
+private:
+    void send();
 };
 
 #endif // CITYADDSEARCHVIEW_H
