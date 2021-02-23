@@ -35,10 +35,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //设置主界面样式
     this->setFixedSize(865,520);
-//    this->setFixedSize(865,520);
-//    this->setWindowFlags(Qt::FramelessWindowHint);
-//    qDebug()<< this->windowState();
-    //this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint | Qt::Tool);
     this->setFocusPolicy(Qt::ClickFocus);//this->setFocusPolicy(Qt::NoFocus);//设置焦点类型
     this->setWindowTitle(tr("Kylin Weather"));
 //    this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
@@ -196,11 +192,12 @@ void MainWindow::initControlQss()
     ui->centralwidget->setFixedSize(865,520);
     ui->btnMinimize->setIcon(QIcon::fromTheme(":/res/control_icons/dark-window-min.svg"));
     ui->btnMinimize->setFixedSize(30,30);
+    ui->btnMinimize->setToolTip(tr("minimize"));
     ui->btnMinimize->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
                                "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.1);}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:rgba(0,0,0,0.15);}");
     ui->btnMinimize->setFocusPolicy(Qt::NoFocus);//设置焦点类型
-
+    ui->btnCancel->setToolTip(tr("close"));
     ui->btnCancel->setIcon(QIcon::fromTheme(":/res/control_icons/dark-window-close.svg"));
     ui->btnCancel->setFixedSize(30,30);
     ui->btnCancel->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"

@@ -20,6 +20,7 @@ void menuModule::initAction(){
     titleText = new QLabel();
     iconSize = QSize(30,30);
     menuButton = new QPushButton;
+    menuButton->setToolTip(tr("menu"));
 //    menuButton->setIcon(QIcon::fromTheme("application-menu"));
     menuButton->setIcon(QIcon(":/res/control_icons/menu.png"));
     menuButton->setIconSize(QSize(30,30));
