@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
     cityLabel->setStyleSheet("font:36px;color:white;");
 
     m_menu = new menuModule(this);
-    connect(m_menu,&menuModule::menuModuleClose,this,&MainWindow::close);
+    connect(m_menu,&menuModule::menuModuleClose,this,&MainWindow::closeActivated);
     m_menu->addCityAction->setText(tr("Add City"));
     connect(m_menu->addCityAction, &AddCityAction::requestSetCityName, this, [=] (QString cityName) {
         cityLabel->setText(cityName);//一会设置个label用于显示地名
