@@ -93,18 +93,22 @@ bool LeftUpSearchBox::event(QEvent *e){
     if(e->type() == QEvent::KeyPress && isFocus){
         QKeyEvent *k = static_cast<QKeyEvent *>(e);
         switch(k->key()){
-            case Qt::Key_Up:{
-                emit lineEditKeyEvent("up");
-                break;
-            }
-            case Qt::Key_Down:{
-                emit lineEditKeyEvent("down");
-                break;
-            }
-            case Qt::Key_Return:{
-                emit lineEditKeyEvent("enter");
-                break;
-            }
+        case Qt::Key_Up:{
+            emit lineEditKeyEvent("up");
+            break;
+        }
+        case Qt::Key_Down:{
+            emit lineEditKeyEvent("down");
+            break;
+        }
+        case Qt::Key_Return:{
+            emit lineEditKeyEvent("enter");
+            break;
+        }
+        case Qt::Key_Enter:{
+            emit lineEditKeyEvent("enter");
+            break;
+        }
         }
     }
     return QLineEdit::event(e);
