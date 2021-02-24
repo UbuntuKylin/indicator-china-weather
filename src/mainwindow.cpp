@@ -94,7 +94,8 @@ MainWindow::MainWindow(QWidget *parent) :
 //    m_quitAction->setIcon(QIcon(QString(":/res/control_icons/quit_normal.png")));
     connect(m_openAction, &QAction::triggered, this, [=] {
         if(this->isHidden()){
-        this->show();}
+            handleIconClickedSub();
+        }
         else{
             return;
         }
@@ -514,6 +515,14 @@ void MainWindow::handleIconClickedSub()
 //    this->showNormal();
 //    this->raise();
 //    this->activateWindow();
+
+    MotifWmHints hints;
+    hints.flags = MWM_HINTS_FUNCTIONS|MWM_HINTS_DECORATIONS;
+    hints.functions = MWM_FUNC_ALL;
+    hints.decorations = MWM_DECOR_BORDER;
+    XAtomHelper::getInstance()->setWindowMotifHint(this->winId(), hints);
+    \
+
     QDesktopWidget* m = QApplication::desktop();
     QRect desk_rect = m->screenGeometry(m->screenNumber(QCursor::pos()));
     int desk_x = desk_rect.width();
