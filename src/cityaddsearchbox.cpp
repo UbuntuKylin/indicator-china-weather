@@ -122,19 +122,24 @@ bool CityAddSearchBox::event(QEvent *e){
 
     if(e->type() == QEvent::KeyPress){
         QKeyEvent *k = static_cast<QKeyEvent*>(e);
+        qDebug()<<"sxs# key = "<<k->key();
         switch(k->key()){
-            case Qt::Key_Up:{
-                emit lineEditKeyEvent("up");
-                break;
-            }
-            case Qt::Key_Down:{
-                emit lineEditKeyEvent("down");
-                break;
-            }
-            case Qt::Key_Enter:{
-                emit lineEditKeyEvent("enter");
-                break;
-            }
+        case Qt::Key_Up:{
+            emit lineEditKeyEvent("up");
+            break;
+        }
+        case Qt::Key_Down:{
+            emit lineEditKeyEvent("down");
+            break;
+        }
+        case Qt::Key_Enter:{
+            emit lineEditKeyEvent("enter");
+            break;
+        }
+        case Qt::Key_Return:{
+            emit lineEditKeyEvent("enter");
+            break;
+        }
         }
     }
     return QLineEdit::event(e);

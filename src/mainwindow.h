@@ -50,6 +50,7 @@
 #include <QGSettings>
 #include "daemondbus.h"
 #include "menumodule.h"
+#include "xatom-helper.h"
 
 namespace Ui {
 class MainWindow;
