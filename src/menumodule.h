@@ -61,6 +61,10 @@ private:
         themeBlackOnly = 1,
         themeLightOnly = 2
     } themeStatus;
+    enum typeTheme {
+        themeBlack,
+        themeLight
+    } themeNow;
 public slots:
     void dealSystemGsettingChange(const QString);
 private:

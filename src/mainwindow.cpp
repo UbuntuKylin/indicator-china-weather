@@ -49,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
     titleLayout = new QHBoxLayout();
     cityLabel = new QLabel(this);
     cityLabel->setStyleSheet("font:36px;color:white;");
+    cityLabel->setAlignment(Qt::AlignCenter);
 
     m_menu = new menuModule(this);
     connect(m_menu,&menuModule::menuModuleClose,this,&MainWindow::closeActivated);
@@ -382,7 +383,7 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
     switch(reason){
     case QSystemTrayIcon::Trigger:
     case QSystemTrayIcon::MiddleClick:
-        if(this->isHidden()){
+        if(this->isHidden() || this->isMinimized()){
             //this->showNormal();
             //handleIconClicked(); //靠近任务栏显示
             handleIconClickedSub(); //显示在屏幕中央
@@ -659,7 +660,7 @@ void MainWindow::searchCityName()
         }
         else//结果小于4时，按城市数量显示行数
         {
-            m_searchView->resize(178,tempNumsOfCityInSearchResultList * 50 + 5);
+            m_searchView->resize(178,tempNumsOfCityInSearchResultList * 50 + 2);
         }
     }
 }
@@ -701,18 +702,21 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
 
     if(m_size1 == 3){
 
-        cityLabel->setGeometry(405,104,148,50);
         ui->lbCurrTmp->setGeometry(351,145,155,100);
         ui->lbCurrTmpUnit->move(447 + 30*(m_size1-1), 155);
         ui->lbCurrWea->move(450 + 30*(m_size1-1), 225);
+        cityLabel->setGeometry(405,104,148,50);
+        cityLabel->move(ui->lbCurrTmp->x() + int((ui->lbCurrTmp->width() + ui->lbCurrTmpUnit->width() - cityLabel->width())/2),104);
 
     }
     else if(m_size1 == 1 || m_size1 ==2){
 
-    cityLabel->setGeometry(420,104,148,50);
+
     ui->lbCurrTmp->setGeometry(351,145,116,100);
     ui->lbCurrTmpUnit->move(451 + 30*(m_size1-1), 155);
     ui->lbCurrWea->move(454 + 30*(m_size1-1), 225);
+    cityLabel->setGeometry(420,104,148,50);
+    cityLabel->move(ui->lbCurrTmp->x() + int((ui->lbCurrTmp->width() + ui->lbCurrTmpUnit->width() - cityLabel->width())/2),104);
 
 }
 
