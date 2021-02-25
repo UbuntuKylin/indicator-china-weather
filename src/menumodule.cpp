@@ -12,7 +12,7 @@ void menuModule::init(){
 }
 
 void menuModule::initAction(){
-    aboutWindow = new QWidget();
+
     bodyAppName = new QLabel();
     titleBtnClose = new QPushButton;
     bodyAppVersion = new QLabel();
@@ -163,8 +163,17 @@ void menuModule::helpAction(){
 }
 
 void menuModule::initAbout(){
+    aboutWindow->deleteLater();
+    aboutWindow = new QWidget();
     aboutWindow->setWindowModality(Qt::ApplicationModal);
     aboutWindow->setWindowFlag(Qt::Tool);
+    if(themeNow == themeBlack)
+        aboutWindow->setStyleSheet(".QWidget{background-color:rgba(0,0,0,1);}");
+    else if(themeNow == themeLight)
+        aboutWindow->setStyleSheet(".QWidget{background-color:rgba(255,255,255,1);}");
+
+
+//    aboutWindow->setAttribute(Qt::WA_DeleteOnClose);
     MotifWmHints hints;
     hints.flags = MWM_HINTS_FUNCTIONS|MWM_HINTS_DECORATIONS;
     hints.functions = MWM_FUNC_ALL;
@@ -276,7 +285,8 @@ void menuModule::refreshThemeBySystemConf(){
 
 void menuModule::setThemeDark(){
     qDebug()<<"Dark";
-    aboutWindow->setStyleSheet(".QWidget{background-color:rgba(0,0,0,1);}");
+    themeNow = themeBlack;
+
     titleText->setStyleSheet("color:rgba(255,255,255,1);font-size:14px;");
     bodyAppName->setStyleSheet("color:rgba(255,255,255,1);font-size:18px;");
     bodyAppVersion->setStyleSheet("color:rgba(255,255,255,1);font-size:14px;");
@@ -295,7 +305,7 @@ void menuModule::setThemeDark(){
 
 void menuModule::setThemeLight(){
     qDebug()<<"settheme Light";
-    aboutWindow->setStyleSheet(".QWidget{background-color:rgba(255,255,255,1);}");
+    themeNow = themeLight;
     titleText->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
     bodyAppName->setStyleSheet("color:rgba(0,0,0,1);font-size:18px;");
     bodyAppVersion->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");

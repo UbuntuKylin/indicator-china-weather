@@ -1,3 +1,12 @@
+indicator-china-weather (3.1.0-43) v101; urgency=medium
+  
+  * 解决了BUG#38852 搜索下拉框只有一个地名，鼠标悬停时UI异常
+  * 解决了BUG#35657 主界面地区、温度值显示不全及未居中
+  * 解决了BUG#38854 主界面退出但进程不退出，任务栏托盘处麒麟天气弹窗点击打开麒麟天气，主界面没有被拉起
+  * 解决了BUG#38851 关于弹窗title区域logo和麒麟天气没有整齐排列
+
+ -- zoujunnan <zoujunnan@kylinos.cn> Thu,25  Feb 2021 09:46:00 +0800
+
 indicator-china-weather (3.1.0-42) v101; urgency=medium
   
   * 解决了BUG#26877 ip定位逻辑优化
