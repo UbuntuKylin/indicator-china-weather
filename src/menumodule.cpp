@@ -156,7 +156,10 @@ void menuModule::helpAction(){
 //    帮助点击事件处理
 
     appName = "tools/indicator-china-weather";
-    DaemonDbus *ipcDbus = new DaemonDbus();
+    if(!ipcDbus){
+        ipcDbus = new DaemonDbus();
+    }
+
     if(!ipcDbus->daemonIsNotRunning()){
         ipcDbus->showGuide(appName);
     }

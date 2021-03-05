@@ -263,7 +263,8 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
             observeweather.city = m_json.value("location").toString();
 
             if (i==0) { //current city
-                citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
+//                citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
+                m_currentcity = new citycollectionitem(ui->backwidget);
                 m_currentcity->move(35, 81);
                 m_currentcity->setItemWidgetState(true, true, m_citynumber);
                 m_currentcity->setCityWeather(observeweather);
@@ -271,7 +272,8 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
                 connect(m_currentcity, SIGNAL(requestDeleteCity(QString)), this, SLOT(onRequestDeleteCity(QString)) );
                 connect(m_currentcity, SIGNAL(changeCurrentCity(QString)), this, SLOT(onChangeCurrentCity(QString)) );
             } else { //collected city
-                citycollectionitem *m_collecity = new citycollectionitem(ui->backwidget);
+//                citycollectionitem *m_collecity = new citycollectionitem(ui->backwidget);
+                m_collecity = new citycollectionitem(ui->backwidget);
                 m_collecity->move(35 + column*170, 242 + row*100); //m_currentcity->move(35 + j*170, 242 + i*100);
                 m_collecity->setItemWidgetState(true, false, m_citynumber);
                 m_collecity->setCityWeather(observeweather);
@@ -287,7 +289,8 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
             }
         } //end for (int i=0; i< strList.size()-1; i++)
         //add collect city item
-        citycollectionitem *m_lastitem = new citycollectionitem(ui->backwidget);
+//        citycollectionitem *m_lastitem = new citycollectionitem(ui->backwidget);
+        m_lastitem = new citycollectionitem(ui->backwidget);
         m_lastitem->move(35 + column*170, 242 + row*100);
         m_lastitem->setItemWidgetState(false, false, m_citynumber);
         m_lastitem->show();
@@ -317,7 +320,8 @@ void CityCollectionWidget::showCollectCity(int x, int y, bool isShowNormal, QStr
         observeweather.city = m_json.value("location").toString();
     }
 
-    citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
+//    citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
+    m_currentcity = new citycollectionitem(ui->backwidget);
     m_currentcity->move(x, y); //m_currentcity->move(35 + j*170, 242 + i*100);
     m_currentcity->setItemWidgetState(isShowNormal, false, m_citynumber);
     if (isShowNormal) {

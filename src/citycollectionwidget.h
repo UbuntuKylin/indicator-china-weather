@@ -72,7 +72,9 @@ private:
     CityAddition *m_cityaddition= nullptr;
     QLabel *m_tipIcon = nullptr;
     QLabel *m_tipLabel = nullptr;
-
+    citycollectionitem *m_currentcity = nullptr;
+    citycollectionitem *m_collecity = nullptr;
+    citycollectionitem *m_lastitem = nullptr;
     //save new city list to configre file
     void writeCollectedCity(QString cityId);
     //get city list data saved in configure before
