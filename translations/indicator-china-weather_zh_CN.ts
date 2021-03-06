@@ -97,7 +97,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="14"/>
         <source>MainWindow</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -202,7 +202,7 @@
         <location filename="../src/menumodule.cpp" line="290"/>
         <location filename="../src/menumodule.cpp" line="310"/>
         <source>Service &amp; Support: </source>
-        <translation>服务与支持：</translation>
+        <translation>服务与支持团队：</translation>
     </message>
     <message>
         <source>Support: support@kylinos.cn</source>
