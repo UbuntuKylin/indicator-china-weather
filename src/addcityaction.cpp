@@ -15,6 +15,10 @@ void AddCityAction::addCityClick()
     qDebug()<<"点击了我!";
     if (!is_open_city_collect_widget) {
         m_citycollectionwidget = new CityCollectionWidget();
+        QRect availableGeometry = this->parentWidget()->geometry();
+        m_citycollectionwidget->move(availableGeometry.center().x() -m_citycollectionwidget->rect().center().x() -420,availableGeometry.center().y() -m_citycollectionwidget->rect().center().y() + 155);
+//        m_citycollectionwidget->move(m_citycollectionwidget->x()-400,m_citycollectionwidget->y() + 155);
+//        qDebug()<<"2!"<<m_citycollectionwidget->rect().center().x()<<m_citycollectionwidget->rect().center().y();
         //接收来自收藏城市窗口发来的信号，再发送一个信号到主窗口
         connect(m_citycollectionwidget, &CityCollectionWidget::sendCurrentCityId, this, &AddCityAction::sendCurrentCityId);
 
@@ -42,6 +46,9 @@ void AddCityAction::addCityClick()
     else{
         if(nullptr != m_citycollectionwidget){
             m_citycollectionwidget->show();
+            QRect availableGeometry = this->parentWidget()->geometry();
+            m_citycollectionwidget->move(availableGeometry.center().x() -m_citycollectionwidget->rect().center().x() -420,availableGeometry.center().y() -m_citycollectionwidget->rect().center().y() + 155);
+
             m_citycollectionwidget->activateWindow();
             return;
         }

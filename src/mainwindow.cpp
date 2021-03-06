@@ -94,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_quitAction->setIcon(QIcon::fromTheme(QString("exit-symbolic"), QIcon(QString(":/res/control_icons/quit_normal.png"))) );
 //    m_quitAction->setIcon(QIcon(QString(":/res/control_icons/quit_normal.png")));
     connect(m_openAction, &QAction::triggered, this, [=] {
-        if(this->isHidden()){
+        if(this->isHidden() || this->isMinimized()){
             handleIconClickedSub();
         }
         else{
@@ -689,7 +689,7 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
     m_leftupsearchbox->setText("");
     int m_size = m_observeweather.city.size();
 //    m_leftupsearchbox->move(100 + 15*(m_size-2), 18);
-    m_searchView->move(605 + 15*(m_size-2), 49);//2020.12.22修改搜索视图位置
+//    m_searchView->move(605 + 15*(m_size-2), 49);//2020.12.22修改搜索视图位置
 
     int code  = m_observeweather.cond_code.toInt();
     convertCodeToTrayIcon(m_observeweather.cond_code);
@@ -705,7 +705,7 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
         ui->lbCurrTmp->setGeometry(351,145,155,100);
         ui->lbCurrTmpUnit->move(447 + 30*(m_size1-1), 155);
         ui->lbCurrWea->move(450 + 30*(m_size1-1), 225);
-        cityLabel->setGeometry(405,104,148,50);
+        cityLabel->setGeometry(405,104,250,50);
         cityLabel->move(ui->lbCurrTmp->x() + int((ui->lbCurrTmp->width() + ui->lbCurrTmpUnit->width() - cityLabel->width())/2),104);
 
     }
@@ -715,7 +715,7 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
     ui->lbCurrTmp->setGeometry(351,145,116,100);
     ui->lbCurrTmpUnit->move(451 + 30*(m_size1-1), 155);
     ui->lbCurrWea->move(454 + 30*(m_size1-1), 225);
-    cityLabel->setGeometry(420,104,148,50);
+    cityLabel->setGeometry(420,104,250,50);
     cityLabel->move(ui->lbCurrTmp->x() + int((ui->lbCurrTmp->width() + ui->lbCurrTmpUnit->width() - cityLabel->width())/2),104);
 
 }
