@@ -56,6 +56,7 @@ private:
     QWidget *aboutWindow = nullptr;
     QGSettings *m_pGsettingThemeData = nullptr;
     QGSettings *m_pGsettingThemeStatus = nullptr;
+    DaemonDbus *ipcDbus = nullptr;
     enum typeThemeStatus {
         themeAuto = 0,
         themeBlackOnly = 1,

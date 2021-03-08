@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QAction>
+#include <QRect>
 
 #include "data.h"
 #include "citycollectionwidget.h"

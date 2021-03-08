@@ -231,6 +231,7 @@ const QString getCityFromIpByTaobao(const QString &ip)
     return QString();
 }
 
+QString cityName = "";
 const QString getCityFromIPAddr(const QString &ip)
 {
     int charset = GEOIP_CHARSET_UTF8;
@@ -251,7 +252,7 @@ const QString getCityFromIPAddr(const QString &ip)
     if (gir) {
         //const char *region = GeoIP_region_name_by_code(gir->country_code, gir->region);
         //qDebug() << "country_name=" << gir->country_name << ",region=" << region << ",gir->city=" << gir->city << ",gir->latitude=" << gir->latitude << ",gir->longitude=" << gir->longitude;
-        QString cityName = QString(gir->city);
+        cityName = QString(gir->city);
         GeoIPRecord_delete(gir);
         GeoIP_delete(gi);
         return cityName;

@@ -1,3 +1,12 @@
+indicator-china-weather (3.1.0-44) v101; urgency=medium
+  
+  * 解决了BUG#39647 主界面对于较长地区名称显示不全
+  * 解决了BUG#39668 当前主界面城市名称超过3个字时，搜索下拉框与搜索框错位，不能整齐排列
+  * 解决了BUG#40040 麒麟天气最小化到任务栏后，点击任务栏天气icon的结果是关闭刚才最小化的窗口；右击icon选择打开麒麟天气的结果是不能再次调起窗口。
+  * 解决了BUG#39134 应用弹窗出现时应该应用居中出现，而不是桌面居中弹出
+
+ -- zoujunnan <zoujunnan@kylinos.cn> Fri,5  Mar 2021 09:46:00 +0800
+
 indicator-china-weather (3.1.0-43) v101; urgency=medium
   
   * 解决了BUG#38852 搜索下拉框只有一个地名，鼠标悬停时UI异常
@@ -5,7 +14,7 @@ indicator-china-weather (3.1.0-43) v101; urgency=medium
   * 解决了BUG#38854 主界面退出但进程不退出，任务栏托盘处麒麟天气弹窗点击打开麒麟天气，主界面没有被拉起
   * 解决了BUG#38851 关于弹窗title区域logo和麒麟天气没有整齐排列
 
- -- zoujunnan <zoujunnan@kylinos.cn> Thu,25  Feb 2021 09:46:00 +0800
+ -- zoujunnan <zoujunnan@kylinos.cn> Sat,27  Feb 2021 09:46:00 +0800
 
 indicator-china-weather (3.1.0-42) v101; urgency=medium
   
