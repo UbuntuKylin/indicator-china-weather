@@ -109,6 +109,7 @@ int main(int argc, char *argv[])
     if(onlyOne(a))return 0;
     setAttribute(a);//设置属性
 
+
     //翻译（YYF 经自测封装到函数里会导致程序部分翻译文件失效）
     QTranslator app_trans;
     QTranslator qt_trans;
@@ -138,6 +139,7 @@ int main(int argc, char *argv[])
     MainWindow w;
     a.setActivationWindow(&w);
 
+    QObject::connect(&a,SIGNAL(messageReceived(const QString&)),&w,SLOT(handleIconClickedSub()));
     //适配窗管
     MotifWmHints hints;
     hints.flags = MWM_HINTS_FUNCTIONS|MWM_HINTS_DECORATIONS;
