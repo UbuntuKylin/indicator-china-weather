@@ -124,8 +124,15 @@ void citycollectionitem::setItemWidgetState(bool isShowNormal, bool isCurrentCit
 
 void citycollectionitem::setCityWeather(ObserveWeather observeweather)
 {
-    ui->lbTmp->setText(observeweather.tmp); //set current temperature
-    ui->lbwea->setText(observeweather.cond_txt); //set current wrather describe
+    if(observeweather.tmp !="" && observeweather.tmp != "-")
+        ui->lbTmp->setText(observeweather.tmp); //set current temperature
+    else
+        ui->lbTmp->setText("-"); //set current temperature
+
+    if(observeweather.cond_txt !="" && observeweather.cond_txt != "-")
+        ui->lbwea->setText(observeweather.cond_txt); //set current wrather describe
+    else
+        ui->lbwea->setText("-"); //set current wrather describe
     ui->lbTmpUnit->setText("℃"); //set temperature unit
     //
    if(observeweather.tmp.toInt() > -1 && observeweather.tmp.toInt() < 10){

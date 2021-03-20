@@ -43,6 +43,22 @@ private:
 
     WeatherWorker *m_weatherworker = nullptr;
 
+    QString date_1;
+    QString date_2;
+    QString date_3;
+    QString date_4;
+    QString date_5;
+    QString date_6;
+    QString date_7;
+
+    QString current_week_1;
+    QString current_week_2;
+    QString current_week_3;
+    QString current_week_4;
+    QString current_week_5;
+    QString current_week_6;
+    QString current_week_7;
+
 };
 
 #endif // INFORMATION_H

@@ -166,7 +166,15 @@ void WeatherWorker::onWeatherDataRequest(const QString &cityId)
     QNetworkRequest request;
     request.setUrl(forecastUrl);
     QNetworkReply *reply = m_networkManager->get(request);
-    connect(reply, &QNetworkReply::finished, this, &WeatherWorker::onWeatherDataReply );
+    if(nextGo){
+        nextGo = false;
+        connect(reply, &QNetworkReply::finished, this,[=]{
+            nextGo = true;
+            onWeatherDataReply(); });
+    }else{
+        return;
+    }
+
 }
 
 
@@ -279,7 +287,7 @@ void WeatherWorker::onWeatherDataReply()
                 }
 
                 QString now_msg = weatherObj.value("now").toString();
-                if (now_msg != ""){
+                if (now_msg != "" && now_msg.contains(",",Qt::CaseInsensitive)){
                     QStringList strList = now_msg.split(",");
                     QJsonObject m_json;
                     foreach(QString str, strList){
@@ -316,14 +324,44 @@ void WeatherWorker::onWeatherDataReply()
                     weatherNow.append(weatherObj.value("admin_area").toString()+",");//省份
                     weatherNow.append(m_observeweather.cond_code+",");
                     setCityWeatherNow(weatherNow);//YYF 写入配置文件供其他组件调用
+                    emit this->requestSetObserveWeather(m_observeweather);//用于设置主窗口
 
+                }else{
+                    m_observeweather.tmp = "-";
+                    m_observeweather.wind_sc = "-";
+                    m_observeweather.cond_txt = "-";
+//                    m_observeweather.vis = m_json.value("vis").toString();
+//                    m_observeweather.hum = m_json.value("hum").toString();
+//                    m_observeweather.cond_code = m_json.value("cond_code").toString();
+//                    m_observeweather.wind_deg = m_json.value("wind_deg").toString();
+//                    m_observeweather.pcpn = m_json.value("pcpn").toString();
+//                    m_observeweather.pres = m_json.value("pres").toString();
+//                    m_observeweather.wind_spd = m_json.value("wind_spd").toString();
+                    m_observeweather.wind_dir = "-";
+                    m_observeweather.fl = "-";
+                    m_observeweather.cloud = "-";
+                    m_observeweather.serveTime ="-";
+
+                    QString weatherNow="";
+
+                    weatherNow.append(m_observeweather.serveTime+",");//时间
+                    weatherNow.append(m_observeweather.id+",");//省市编码
+                    weatherNow.append(m_observeweather.city+",");//城市名称
+                    weatherNow.append(m_observeweather.cond_txt+",");//天气情况
+                    weatherNow.append(m_observeweather.hum+"%,");//湿度
+                    weatherNow.append(m_observeweather.tmp+"℃,");//温度
+                    weatherNow.append(m_observeweather.wind_dir+",");//风向
+                    weatherNow.append(m_observeweather.wind_sc+"级,");//风力
+                    weatherNow.append(weatherObj.value("admin_area").toString()+",");//省份
+                    weatherNow.append(m_observeweather.cond_code+",");
+                    setCityWeatherNow(weatherNow);//YYF 写入配置文件供其他组件调用
                     emit this->requestSetObserveWeather(m_observeweather);//用于设置主窗口
 
                 }
 
                 //处理预报天气
                 QString forecast_msg = weatherObj.value("forecast").toString();
-                if (forecast_msg != ""){
+                if (forecast_msg != "" && forecast_msg.contains(",",Qt::CaseInsensitive)){
                     QStringList strList = forecast_msg.split(";");
                     foreach(QString strDay, strList){
                         QStringList strListDaySub;
@@ -364,6 +402,31 @@ void WeatherWorker::onWeatherDataReply()
                             emit this->requestSetForecastWeather(m_forecastweather);
                         }
                     }
+                }else{
+                    ForecastWeather m_forecastweather;
+                    m_forecastweather.uv_index ="-";
+                    m_forecastweather.wind_spd = "-";
+                    m_forecastweather.sr = "-";
+                    m_forecastweather.wind_sc = "-";
+                    m_forecastweather.ms = "-";
+                    m_forecastweather.cond_txt_d = "-";
+                    m_forecastweather.vis = "-";
+                    m_forecastweather.ss = "-";
+                    m_forecastweather.hum = "-";
+                    m_forecastweather.cond_txt_n = "-";
+                    m_forecastweather.pop = "-";
+                    m_forecastweather.wind_deg = "-";
+                    m_forecastweather.pcpn = "-";
+                    m_forecastweather.wind_dir = "-";
+                    m_forecastweather.cond_code_d = "-";
+                    m_forecastweather.mr = "-";
+                    m_forecastweather.date = "-";
+                    m_forecastweather.tmp_max = "-";
+                    m_forecastweather.cond_code_n = "-";
+                    m_forecastweather.pres = "-";
+                    m_forecastweather.tmp_min = "-";
+                    m_forecastweather.dateTime="-";
+                    emit this->requestSetForecastWeather(m_forecastweather);
                 }
 
             }

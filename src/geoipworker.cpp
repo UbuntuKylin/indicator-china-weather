@@ -290,6 +290,9 @@ const QString automaicCity()
     QEventLoop eventLoop;
     QObject::connect(manager,&QNetworkAccessManager::finished,&eventLoop,&QEventLoop::quit);
     eventLoop.exec();
+    if(reply == nullptr){
+        return getCityFromIPIP();
+    }
     responeData = reply->readAll();
     QJsonParseError parseJsonError;
     QJsonDocument jsonDocument = QJsonDocument::fromJson(responeData.toUtf8(),&parseJsonError);
