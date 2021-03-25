@@ -229,24 +229,54 @@ void Information::onSetForecastWeather(ForecastWeather forecastweather)
     }
 
     //获取星期
-    QDateTime current_date_time = QDateTime::fromString(forecastweather.dateTime,"yyyy-MM-dd");//将从服务器上获取到的日期处理成特定格式
-    QString current_week_1 = tr("Today");//current_date_time.toString("ddd");
-    QString current_week_2 = current_date_time.addDays(+1).toString("ddd");
-    QString current_week_3 = current_date_time.addDays(+2).toString("ddd");
-    QString current_week_4 = current_date_time.addDays(+3).toString("ddd");
-    QString current_week_5 = current_date_time.addDays(+4).toString("ddd");
-    QString current_week_6 = current_date_time.addDays(+5).toString("ddd");
-    QString current_week_7 = current_date_time.addDays(+6).toString("ddd");
+//    QDateTime current_date_time = QDateTime::fromString(forecastweather.dateTime,"yyyy-MM-dd");//将从服务器上获取到的日期处理成特定格式
+//    current_week_1 = tr("Today");//current_date_time.toString("ddd");
+//    current_week_2 = current_date_time.addDays(+1).toString("ddd");
+//    current_week_3 = current_date_time.addDays(+2).toString("ddd");
+//    current_week_4 = current_date_time.addDays(+3).toString("ddd");
+//    current_week_5 = current_date_time.addDays(+4).toString("ddd");
+//    current_week_6 = current_date_time.addDays(+5).toString("ddd");
+//    current_week_7 = current_date_time.addDays(+6).toString("ddd");
 
-    //获取日期
-    QDateTime time = QDateTime::fromString(forecastweather.dateTime,"yyyy-MM-dd");//将从服务器上获取到的日期处理成特定格式
-    QString date_1 = time.toString("M月d日"); //设置显示格式
-    QString date_2 = time.addDays(+1).toString("M月d日");
-    QString date_3 = time.addDays(+2).toString("M月d日");
-    QString date_4 = time.addDays(+3).toString("M月d日");
-    QString date_5 = time.addDays(+4).toString("M月d日");
-    QString date_6 = time.addDays(+5).toString("M月d日");
-    QString date_7 = time.addDays(+6).toString("M月d日");
+    //获取日期和星期
+    if(forecastweather.dateTime =="" || forecastweather.dateTime == "-"){
+        QDateTime time1 = QDateTime::currentDateTime();
+        //显示时间，格式为：年-月-日 时：分：秒 周几
+        QString StrCurrentTime = time1.toString("yyyy-MM-dd");
+        QDateTime time = QDateTime::fromString(StrCurrentTime,"yyyy-MM-dd");//将从服务器上获取到的日期处理成特定格式
+        date_1 = time.toString("M月d日"); //设置显示格式
+        date_2 = time.addDays(+1).toString("M月d日");
+        date_3 = time.addDays(+2).toString("M月d日");
+        date_4 = time.addDays(+3).toString("M月d日");
+        date_5 = time.addDays(+4).toString("M月d日");
+        date_6 = time.addDays(+5).toString("M月d日");
+        date_7 = time.addDays(+6).toString("M月d日");
+        current_week_1 = tr("Today");//current_date_time.toString("ddd");
+        current_week_2 = time.addDays(+1).toString("ddd");
+        current_week_3 = time.addDays(+2).toString("ddd");
+        current_week_4 = time.addDays(+3).toString("ddd");
+        current_week_5 = time.addDays(+4).toString("ddd");
+        current_week_6 = time.addDays(+5).toString("ddd");
+        current_week_7 = time.addDays(+6).toString("ddd");
+    }else{
+        QDateTime time = QDateTime::fromString(forecastweather.dateTime,"yyyy-MM-dd");//将从服务器上获取到的日期处理成特定格式
+        date_1 = time.toString("M月d日"); //设置显示格式
+        date_2 = time.addDays(+1).toString("M月d日");
+        date_3 = time.addDays(+2).toString("M月d日");
+        date_4 = time.addDays(+3).toString("M月d日");
+        date_5 = time.addDays(+4).toString("M月d日");
+        date_6 = time.addDays(+5).toString("M月d日");
+        date_7 = time.addDays(+6).toString("M月d日");
+        current_week_1 = tr("Today");//current_date_time.toString("ddd");
+        current_week_2 = time.addDays(+1).toString("ddd");
+        current_week_3 = time.addDays(+2).toString("ddd");
+        current_week_4 = time.addDays(+3).toString("ddd");
+        current_week_5 = time.addDays(+4).toString("ddd");
+        current_week_6 = time.addDays(+5).toString("ddd");
+        current_week_7 = time.addDays(+6).toString("ddd");
+    }
+
+
 
     //获取天气图片
     int code;
@@ -273,6 +303,8 @@ void Information::onSetForecastWeather(ForecastWeather forecastweather)
     }else {
         wea = forecastweather.cond_txt_d + "转" + forecastweather.cond_txt_n + "\n" + forecastweather.wind_dir + forecastweather.wind_sc + "级";
     }
+    if(!(forecastweather.dateTime =="" || forecastweather.dateTime == "-"))
+    {
     switch (m_day) {
     case 1:
         ui->lbDay_1->setText(current_week_1);
@@ -328,6 +360,51 @@ void Information::onSetForecastWeather(ForecastWeather forecastweather)
     }
 
     m_day += 1;
+    }else
+    {
+            ui->lbDay_1->setText(current_week_1);
+            ui->lbDate_1->setText(date_1);
+            ui->lbIcon_1->setStyleSheet(pic);
+            ui->lbTmp_1->setText(tmp);
+            ui->lbWea_1->setText(wea);
+
+            ui->lbDay_2->setText(current_week_2);
+            ui->lbDate_2->setText(date_2);
+            ui->lbIcon_2->setStyleSheet(pic);
+            ui->lbTmp_2->setText(tmp);
+            ui->lbWea_2->setText(wea);
+
+            ui->lbDay_3->setText(current_week_3);
+            ui->lbDate_3->setText(date_3);
+            ui->lbIcon_3->setStyleSheet(pic);
+            ui->lbTmp_3->setText(tmp);
+            ui->lbWea_3->setText(wea);
+
+            ui->lbDay_4->setText(current_week_4);
+            ui->lbDate_4->setText(date_4);
+            ui->lbIcon_4->setStyleSheet(pic);
+            ui->lbTmp_4->setText(tmp);
+            ui->lbWea_4->setText(wea);
+
+            ui->lbDay_5->setText(current_week_5);
+            ui->lbDate_5->setText(date_5);
+            ui->lbIcon_5->setStyleSheet(pic);
+            ui->lbTmp_5->setText(tmp);
+            ui->lbWea_5->setText(wea);
+
+            ui->lbDay_6->setText(current_week_6);
+            ui->lbDate_6->setText(date_6);
+            ui->lbIcon_6->setStyleSheet(pic);
+            ui->lbTmp_6->setText(tmp);
+            ui->lbWea_6->setText(wea);
+
+            ui->lbDay_7->setText(current_week_7);
+            ui->lbDate_7->setText(date_7);
+            ui->lbIcon_7->setStyleSheet(pic);
+            ui->lbTmp_7->setText(tmp);
+            ui->lbWea_7->setText(wea);
+
+    }
 }
 
 void Information::onSetLifeStyle(LifeStyle lifestyle)

@@ -298,14 +298,17 @@ void MainWindow::initConnections()
 
     //收到信号带来的数据时，更新主界面天气数据
     connect(m_weatherManager, &WeatherManager::requestSetObserveWeather, this, [=] (ObserveWeather observerdata) {
+        m_trayIcon->show();
         this->onSetObserveWeather(observerdata);
     });
 
     connect(m_weatherManager, &WeatherManager::requestSetForecastWeather, this, [=] (ForecastWeather forecastweather) {
+
         this->onSetForecastWeather(forecastweather);
     });
 
     connect(m_weatherManager, &WeatherManager::requestSetLifeStyle, this, [=] (LifeStyle lifestyle) {
+
         this->onSetLifeStyle(lifestyle);
     });
 
@@ -330,9 +333,8 @@ void MainWindow::initConnections()
             //CN101010100,beijing,北京,CN,China,中国
 //            m_weatherManager->startGetTheWeatherData("101010100");
             QStringList listCityId = getCityList().split(",");
-            qDebug()<<"listCityId:"<<listCityId;
             m_weatherManager->startGetTheWeatherData(listCityId.at(0));
-            m_trayIcon->show();
+
         } else {
             if (status == "Fail") {
                 onHandelAbnormalSituation("Without wired Carrier");
@@ -372,8 +374,9 @@ void MainWindow::createTrayIcon()
 {
     m_trayIcon = new QSystemTrayIcon(this);
     m_trayIcon->setToolTip(QString(tr("Kylin Weather")));
-    m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
+//    m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
     m_trayIcon->setVisible(true);
+    m_trayIcon->hide();
 }
 
 //托盘图标被点击
@@ -775,9 +778,11 @@ void MainWindow::onSetObserveWeather(ObserveWeather m_observeweather)
 //根据天气情况设置托盘图标
 void MainWindow::convertCodeToTrayIcon(QString code)
 {
-    if (code.isEmpty()) {
-        m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
+    if (code.isEmpty() || code == "-") {
+//        onRefreshMainWindowWeather();
+//       m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
 //        m_openAction->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))));
+        m_trayIcon->hide();
         return;
     }
 
