@@ -34,6 +34,14 @@
     </message>
 </context>
 <context>
+    <name>Information</name>
+    <message>
+        <location filename="../src/informationwidget.cpp" line="233"/>
+        <source>Today</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>LeftUpSearchBox</name>
     <message>
         <location filename="../src/leftupsearchbox.cpp" line="28"/>
@@ -44,9 +52,8 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="39"/>
         <location filename="../src/mainwindow.cpp" line="73"/>
-        <location filename="../src/mainwindow.cpp" line="373"/>
+        <location filename="../src/mainwindow.cpp" line="374"/>
         <source>Kylin Weather</source>
         <translation type="unfinished"></translation>
     </message>
@@ -61,32 +68,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.cpp" line="39"/>
+        <source>Weather</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/mainwindow.cpp" line="88"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="120"/>
+        <location filename="../src/mainwindow.cpp" line="121"/>
         <source>Network not connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="196"/>
+        <location filename="../src/mainwindow.cpp" line="197"/>
         <source>minimize</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="201"/>
+        <location filename="../src/mainwindow.cpp" line="202"/>
         <source>close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="318"/>
+        <location filename="../src/mainwindow.cpp" line="319"/>
         <source>Incorrect access address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="320"/>
+        <location filename="../src/mainwindow.cpp" line="321"/>
         <source>Network error code:%1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -180,23 +192,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/menumodule.cpp" line="193"/>
+        <location filename="../src/menumodule.cpp" line="205"/>
         <source>indicator china weather</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/menumodule.cpp" line="201"/>
+        <location filename="../src/menumodule.cpp" line="213"/>
         <source>Indicator China Weather</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/menumodule.cpp" line="223"/>
+        <location filename="../src/menumodule.cpp" line="235"/>
         <source>Version: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/menumodule.cpp" line="290"/>
-        <location filename="../src/menumodule.cpp" line="310"/>
+        <location filename="../src/menumodule.cpp" line="303"/>
+        <location filename="../src/menumodule.cpp" line="323"/>
         <source>Service &amp; Support: </source>
         <translation type="unfinished"></translation>
     </message>

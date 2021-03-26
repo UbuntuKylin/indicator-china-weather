@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //设置主界面样式
     this->setFixedSize(865,520);
     this->setFocusPolicy(Qt::ClickFocus);//this->setFocusPolicy(Qt::NoFocus);//设置焦点类型
-    this->setWindowTitle(tr("Kylin Weather"));
+    this->setWindowTitle(tr("Weather"));
 //    this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/logo_24.png")));
     QPainterPath path;
