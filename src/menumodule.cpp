@@ -289,7 +289,12 @@ void menuModule::refreshThemeBySystemConf(){
 void menuModule::setThemeDark(){
     qDebug()<<"Dark";
     themeNow = themeBlack;
-
+    if(aboutWindow){
+        if(themeNow == themeBlack)
+            aboutWindow->setStyleSheet(".QWidget{background-color:rgba(0,0,0,1);}");
+        else if(themeNow == themeLight)
+            aboutWindow->setStyleSheet(".QWidget{background-color:rgba(255,255,255,1);}");
+    }
     titleText->setStyleSheet("color:rgba(255,255,255,1);font-size:14px;");
     bodyAppName->setStyleSheet("color:rgba(255,255,255,1);font-size:18px;");
     bodyAppVersion->setStyleSheet("color:rgba(255,255,255,1);font-size:14px;");
@@ -309,6 +314,12 @@ void menuModule::setThemeDark(){
 void menuModule::setThemeLight(){
     qDebug()<<"settheme Light";
     themeNow = themeLight;
+    if(aboutWindow){
+        if(themeNow == themeBlack)
+            aboutWindow->setStyleSheet(".QWidget{background-color:rgba(0,0,0,1);}");
+        else if(themeNow == themeLight)
+            aboutWindow->setStyleSheet(".QWidget{background-color:rgba(255,255,255,1);}");
+    }
     titleText->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");
     bodyAppName->setStyleSheet("color:rgba(0,0,0,1);font-size:18px;");
     bodyAppVersion->setStyleSheet("color:rgba(0,0,0,1);font-size:14px;");

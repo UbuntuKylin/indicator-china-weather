@@ -1,3 +1,24 @@
+indicator-china-weather (3.1.0-47) v101; urgency=medium
+  
+  * 解决了BUG#43146 打开麒麟天气，点击输入框，输入内容“bao",在弹出的选项中点击多个城市出现卡顿，会出现应用界面频繁切换城市
+  * 修复服务器返回的信息缺失时闪退的问题
+
+ -- zoujunnan <zoujunnan@kylinos.cn> Fri,19  Mar 2021 14:27:00 +0800
+
+indicator-china-weather (3.1.0-46) v101; urgency=medium
+  
+  * 解决了BUG#42974 系统主题切换至深色主题时，关于弹窗除了logo，其余内容均不可见
+  * 解决了BUG#39647 主界面对于较长地区名称显示不全
+  * 解决了BUG#42444 开机自启动中的麒麟天气在开机任务栏显示后又消失
+
+ -- zoujunnan <zoujunnan@kylinos.cn> Wed,17  Mar 2021 14:27:00 +0800
+
+indicator-china-weather (3.1.0-45) v101; urgency=medium
+  
+  * 解决了BUG#41761 从开始菜单或者桌面快捷方式打开麒麟天气，应用界面随机出现，位置不固定
+
+ -- zoujunnan <zoujunnan@kylinos.cn> Thu,11  Mar 2021 09:46:00 +0800
+
 indicator-china-weather (3.1.0-44) v101; urgency=medium
   
   * 解决了BUG#39647 主界面对于较长地区名称显示不全

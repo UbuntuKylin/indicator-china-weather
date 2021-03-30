@@ -29,6 +29,7 @@
 #include <QtNetwork/QNetworkConfigurationManager>
 #include <QHostInfo>
 #include <QStandardPaths>
+#include <QTimer>
 
 #include "data.h"
 
@@ -43,6 +44,8 @@ public:
     ~WeatherWorker();
 
     void AccessDedirectUrlWithPost(const QString &redirectUrl);
+    bool nextGo = true;
+    bool checkNetwork = false;
 
 public slots:
     void onWeatherDataRequest(const QString &cityId);
