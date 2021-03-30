@@ -72,6 +72,7 @@ void CityAddSearchView::send(){
 }
 
 void CityAddSearchView::dealSearchBoxKeyPress(QString str){
+    if(this->isHidden()) return ;
     if(str == "up"){
         if(-1 == this->currentIndex().row()){
 

@@ -46,3 +46,4 @@ CMakeLists.txt.user*
 
 # translations
 *.qm
+*DS_Store
