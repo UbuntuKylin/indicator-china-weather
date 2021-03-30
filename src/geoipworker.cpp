@@ -273,6 +273,7 @@ const QString getCityFromIPIP(){
     responseData = reply->readAll();
     QString str = responseData;
     QStringList respList = str.split(' ');
+    if(!(respList.size() >= 5)) return  "";
     return respList[5];
 }
 

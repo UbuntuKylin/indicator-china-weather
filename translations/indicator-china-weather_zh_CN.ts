@@ -34,6 +34,14 @@
     </message>
 </context>
 <context>
+    <name>Information</name>
+    <message>
+        <location filename="../src/informationwidget.cpp" line="233"/>
+        <source>Today</source>
+        <translation>今天</translation>
+    </message>
+</context>
+<context>
     <name>LeftUpSearchBox</name>
     <message>
         <location filename="../src/leftupsearchbox.cpp" line="28"/>
@@ -44,10 +52,9 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="39"/>
         <location filename="../src/mainwindow.cpp" line="73"/>
-        <location filename="../src/mainwindow.cpp" line="373"/>
-        <source>Kylin Weather</source>
+        <location filename="../src/mainwindow.cpp" line="374"/>
+        <source>Weather</source>
         <translation>麒麟天气</translation>
     </message>
     <message>
@@ -65,32 +72,37 @@
         <translation type="vanished">关于</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.cpp" line="39"/>
+        <source>Weather</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/mainwindow.cpp" line="88"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="120"/>
+        <location filename="../src/mainwindow.cpp" line="121"/>
         <source>Network not connected</source>
         <translation>网络未连接</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="196"/>
+        <location filename="../src/mainwindow.cpp" line="197"/>
         <source>minimize</source>
         <translation>最小化</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="201"/>
+        <location filename="../src/mainwindow.cpp" line="202"/>
         <source>close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="318"/>
+        <location filename="../src/mainwindow.cpp" line="319"/>
         <source>Incorrect access address</source>
         <translation>访问地址异常</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="320"/>
+        <location filename="../src/mainwindow.cpp" line="321"/>
         <source>Network error code:%1</source>
         <translation>网络错误代码：%1</translation>
     </message>
@@ -184,37 +196,29 @@
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../src/menumodule.cpp" line="193"/>
+        <location filename="../src/menumodule.cpp" line="205"/>
         <source>indicator china weather</source>
         <translation>麒麟天气</translation>
     </message>
     <message>
-        <location filename="../src/menumodule.cpp" line="201"/>
+        <location filename="../src/menumodule.cpp" line="213"/>
         <source>Indicator China Weather</source>
         <translation>麒麟天气</translation>
     </message>
     <message>
-        <location filename="../src/menumodule.cpp" line="223"/>
+        <location filename="../src/menumodule.cpp" line="235"/>
         <source>Version: </source>
         <translation>版本：</translation>
     </message>
     <message>
-        <location filename="../src/menumodule.cpp" line="290"/>
-        <location filename="../src/menumodule.cpp" line="310"/>
+        <location filename="../src/menumodule.cpp" line="303"/>
+        <location filename="../src/menumodule.cpp" line="323"/>
         <source>Service &amp; Support: </source>
         <translation>服务与支持团队：</translation>
     </message>
     <message>
         <source>Support: support@kylinos.cn</source>
         <translation type="vanished">支持：support@kylinos.cn</translation>
-    </message>
-</context>
-<context>
-    <name>Information</name>
-    <message>
-        <location filename="../src/informationwidget.cpp" line="233"/>
-        <source>Today</source>
-        <translation>今天</translation>
     </message>
 </context>
 </TS>
