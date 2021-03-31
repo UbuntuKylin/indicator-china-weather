@@ -12,15 +12,15 @@
 #include <QDebug>
 #include <QObject>
 #include <QLabel>
-
+#include <QMovie>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkConfigurationManager>
 #include <QGraphicsDropShadowEffect>
-
+#include <QMessageBox>
 #include <unistd.h>
-
+#include <QDBusInterface>
 #include <QGSettings>
 #include "data.h"
 
@@ -39,6 +39,7 @@ public:
     explicit CityCollectionWidget(QWidget *parent = nullptr);
     ~CityCollectionWidget();
 
+
 public slots:
     //add a new collected city in the collected city list.
     void onRequestAddNewCity(QString cityId);
@@ -53,6 +54,8 @@ public slots:
     void onRequestSetCityWeather(QString weather_data);
 
     void updatecity();
+    void noNetWork();
+//    bool checkNetForWid = true;
 
 protected:
     void mousePressEvent(QMouseEvent *event);
@@ -70,8 +73,8 @@ private:
     Ui::citycollectionwidget *ui;
     QNetworkAccessManager *m_networkManager= nullptr;
     CityAddition *m_cityaddition= nullptr;
-    QLabel *m_tipIcon = nullptr;
-    QLabel *m_tipLabel = nullptr;
+//    QLabel *m_tipIcon = nullptr;
+//    QLabel *m_tipLabel = nullptr;
 //    citycollectionitem *m_currentcity = nullptr;
 //    citycollectionitem *m_collecity = nullptr;
 //    citycollectionitem *m_lastitem = nullptr;
@@ -102,7 +105,14 @@ private:
     void setThemeStyle();
     QGSettings  *m_pWeatherData= nullptr;
     QGSettings *m_pThemeStyle = nullptr;
-
+    bool addIsOk = false;
+    bool checkNetWork = true;
+    QMovie *loading;
+    QMovie *loadingBig;
+    QLabel *wait1;
+    QLabel *wait2;
+    QLabel *wait3;
+    QLabel *wait3_4;
 
 signals:
     void sendCurrentCityId(QString id);

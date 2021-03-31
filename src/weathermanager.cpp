@@ -222,7 +222,10 @@ void WeatherManager::onPropertiesChanged(QVariantMap qvm)
                                           QDBusConnection::systemBus() );
 
                 QDBusReply<QVariant> reply = interface.call("Get", "org.freedesktop.NetworkManager.Connection.Active", "Type");
-                //qDebug()<<"dbug: ccccc "<<reply.value().toString();
+
+                if(reply.value().toString() == ""){
+                    emit noNetWork();
+                }
                 newPathInfo.append(reply.value().toString());
             }
 

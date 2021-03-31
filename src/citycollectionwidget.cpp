@@ -86,19 +86,47 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     ui->lbCityCount->setText("0/8");
     m_citynumber = 0;
 
-    m_tipIcon = new QLabel(this);
-    m_tipIcon->setFixedSize(127 ,93);
-    m_tipIcon->setPixmap(QPixmap(":/res/control_icons/unlink.png"));
-    m_tipIcon->move((this->width()-m_tipIcon->width())/2, 180);
-    m_tipIcon->hide();
-    m_tipLabel = new QLabel(this);
-    m_tipLabel->setFixedWidth(this->width());
-    m_tipLabel->setWordWrap(true);
-    m_tipLabel->setAlignment(Qt::AlignCenter);
-    m_tipLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
-    m_tipLabel->setText(tr("Current Network Exception, Please Check Network Settings"));//当前网络异常，请检查网络设置
-    m_tipLabel->move(0, 300);
-    m_tipLabel->hide();
+    loading = new QMovie(":/res/control_icons/loadgif23.gif");
+    loadingBig = new QMovie(":/res/control_icons/loadgif.gif");
+//    m_tipIcon = new QLabel(this);
+//    m_tipIcon->setFixedSize(127 ,93);
+//    m_tipIcon->setPixmap(QPixmap(":/res/control_icons/unlink.png"));
+//    m_tipIcon->move((this->width()-m_tipIcn->width())/2, 180);
+//    m_tipIcon->show();
+//    m_tipLabel = new QLabel(this);
+//    m_tipLabel->setFixedWidth(this->width());
+//    m_tipLabel->setWordWrap(true);
+//    m_tipLabel->setAlignment(Qt::AlignCenter);
+//    m_tipLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+//    m_tipLabel->setText(tr("Current Network Exception, Please Check Network Settings"));//当前网络异常，请检查网络设置
+//    m_tipLabel->move(0, 300);
+//    m_tipLabel->show();
+//    if(checkNetWork == false){
+//        checkNetWork = true;
+//        return;
+//    }
+    wait1 = new QLabel(this);
+    wait1->setFixedSize(40 ,40);
+    wait1->setMovie(loading);
+    wait1->move((this->width()-wait1->width())/2, 100);
+    loading->start();
+    wait1->show();
+    wait2 = new QLabel(this);
+    wait2->setFixedSize(40 ,40);
+    wait2->setMovie(loading);
+    wait2->move((this->width()-wait2->width())/2, 400);
+    loading->start();
+    wait2->show();
+
+    wait3 = new QLabel(this);
+    wait3->setFixedSize(this->width(),580-223);
+    wait3->move(0,this->height()-wait3->height());
+
+    wait3_4 = new QLabel(wait3);
+    wait3_4->setFixedSize(200 ,200);
+    wait3_4->setMovie(loadingBig);
+    wait3_4->move(((wait3->width()-wait3_4->width())/2 + 20 ),((wait3->height()-wait3_4->height())/2));
+    wait3->hide();
 
     m_cityaddition = new CityAddition(this);
     connect(m_cityaddition,&CityAddition::setHotCity,this,&CityCollectionWidget::onRequestAddNewCity);
@@ -121,8 +149,10 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     ui->lbCityCurrent->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(68,68,68,1);}");
     ui->lbCityCollect->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(68,68,68,1);}");
     ui->lbCityCount->setStyleSheet("QLabel{border:none;background:transparent;font-size:12px;font-weight:400;color:rgba(68,68,68,1);}");
-    m_tipIcon->setStyleSheet("QLabel{border:none;background-color:transparent;}");
-    m_tipLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
+    wait3->setStyleSheet("QLabel{border:none;background:rgba(0,0,0,0);}");
+    wait3_4->setStyleSheet("QLabel{border:none;background:rgba(0,0,0,0);}");
+    //    m_tipIcon->setStyleSheet("QLabel{border:none;background-color:transparent;}");
+//    m_tipLabel->setStyleSheet("QLabel{border:none;background-color:transparent;color:#808080;font-size:12px;}");
 
     m_networkManager = new QNetworkAccessManager(this);
     initGsetting();
@@ -142,6 +172,12 @@ void CityCollectionWidget::updatecity()
 {
     is_open_city_collect_widget = true;
     emit requestShowCollCityWeather();
+
+}
+
+void CityCollectionWidget::noNetWork()
+{
+    checkNetWork = false;
 
 }
 void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
@@ -250,8 +286,13 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
         m_citynumber = strList.size()-2;
         QString citynumber = QString::number(m_citynumber) + "/8";
         //#28524 天气首页点击左上角+号，弹出收藏城市显示为0/8，进行增删操作恢复正常，再次打开，依旧显示0/8
-        ui->lbCityCount->setText(citynumber); //show number of collected cities
-
+        if(addIsOk == true){
+            loadingBig->start();
+            wait3->show();
+        }else{
+            ui->lbCityCount->setText(citynumber); //show number of collected cities
+            wait3->hide();
+        }
         int row = 0; //current row
         int column = 0; //cuerrent column
         for (int i=0; i< strList.size()-1; i++) {
@@ -307,6 +348,9 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
         m_lastitem->show();
         connect(m_lastitem, SIGNAL(showCityAddWiget()), this, SLOT(onShowCityAddWiget()) );//收藏界面的“+”按钮的信号，按下，打开搜索窗口
     }
+    wait1->hide();
+    wait2->hide();
+
 }
 
 void CityCollectionWidget::showCollectCity(int x, int y, bool isShowNormal, QString weatherStr)
@@ -343,6 +387,10 @@ void CityCollectionWidget::showCollectCity(int x, int y, bool isShowNormal, QStr
     connect(m_currentcity, SIGNAL(showCityAddWiget()), this, SLOT(onShowCityAddWiget()) );
     connect(m_currentcity, SIGNAL(requestDeleteCity(QString)), this, SLOT(onRequestDeleteCity(QString)) );
     connect(m_currentcity, SIGNAL(changeCurrentCity(QString)), this, SLOT(onChangeCurrentCity(QString)) );
+    addIsOk = false;
+    QString citynumber = QString::number(m_citynumber) + "/8";
+    ui->lbCityCount->setText(citynumber);
+    wait3->hide();
 }
 
 void CityCollectionWidget::onRequestAddNewCity(QString cityId)
@@ -358,15 +406,25 @@ void CityCollectionWidget::onRequestAddNewCity(QString cityId)
             return;
         }
     }
-
+    if(checkNetWork == false){
+        checkNetWork = true;
+        return;
+    }
     //将新增城市写入列表
     if (listSavedCityId.size() == 10){ //包含最后一项为空字符串的项
         listSavedCityId.replace(8, cityId); //收藏城市已经有8个，替换最后一个收藏城市
     }else {
+
         listSavedCityId.append(cityId); //若收藏城市未满8个,将新添加的城市加到最后
         m_citynumber += 1;
         QString citynumber = QString::number(m_citynumber) + "/8";
-        ui->lbCityCount->setText(citynumber);
+        if(addIsOk = true){
+            loadingBig->start();
+            wait3->show();
+        }else{
+            ui->lbCityCount->setText(citynumber);
+            wait3->hide();
+        }
         if (m_citynumber == 1) {
             QList<citycollectionitem *> cityitemlist = ui->backwidget->findChildren<citycollectionitem *>();
             citycollectionitem *firstitem = cityitemlist.at(0);
@@ -385,11 +443,12 @@ void CityCollectionWidget::onRequestAddNewCity(QString cityId)
     writeCollectedCity(newStrCityId);
     isAddCity = true;
     emit requestShowCollCityWeather(); //发信号从网络获取数据用于显示城市天气
+
 }
 
 void CityCollectionWidget::onRequestDeleteCity(QString cityId)
 {
-    qDebug()<<"debug: city id = "<<cityId;
+//    qDebug()<<"debug: city id = "<<cityId;
 
     QString strSavedCity = readCollectedCity();
     QStringList listSavedCityId = strSavedCity.split(",");
@@ -401,8 +460,14 @@ void CityCollectionWidget::onRequestDeleteCity(QString cityId)
 
     m_citynumber -= 1;
     QString citynumber = QString::number(m_citynumber) + "/8";
-    ui->lbCityCount->setText(citynumber);
+    if(addIsOk == true){
+        loadingBig->start();
+        wait3->show();
+    }else{
 
+        ui->lbCityCount->setText(citynumber); //show number of collected cities
+        wait3->hide();
+    }
     //删掉对应的城市
     QList<citycollectionitem *> cityItemList = ui->backwidget->findChildren<citycollectionitem *>();
     for(int i = 0;i < cityItemList.size(); i ++){
@@ -599,6 +664,8 @@ void CityCollectionWidget::setThemeStyle()
                                  "QPushButton:Pressed{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_normal_btn.png);}");
   }
 }
+
+
 QString CityCollectionWidget::getCityList()
 {
     QString str="";
