@@ -1,3 +1,25 @@
+indicator-china-weather (3.1.0-50) v101; urgency=medium
+  
+  * 解决了BUG#45555 启动应用后搜索栏获得焦点后按enter键，应用闪退
+  * 解决了BUG#45532 英文模式菜单和主界面英文名称一致
+  * 解决了BUG#45852 打开麒麟天气，点击任务栏右下角麒麟添加icon,麒麟天气在任务栏的图标消失
+
+ -- zoujunnan <zoujunnan@kylinos.cn>  Wed,31  Mar 2021 14:27:00 +0800
+
+indicator-china-weather (3.1.0-49) v101; urgency=medium
+  
+  * 解决了BUG#44350 英文模式下，应用名称首字母未大写 
+  * 解决了BUG#42909 当遇到网络问题导致麒麟天气出现报错“网络错误代码” 或者 “访问地址异常“时，点击重试 会导致麒麟天气闪退
+
+ -- zoujunnan <zoujunnan@kylinos.cn>  Wed,24  Mar 2021 14:27:00 +0800
+
+indicator-china-weather (3.1.0-48) v101; urgency=medium
+  
+  * 解决了BUG#43182 夜间模式下打开麒麟天气，点击增加城市，点击“+”号添加2个城市后界面i不显示
+  * 解决了BUG#43139 打开麒麟天气，点击菜单栏-增加城市，查看界面显示异常 
+
+ -- zoujunnan <zoujunnan@kylinos.cn>  Mon,22  Mar 2021 14:27:00 +0800
+
 indicator-china-weather (3.1.0-47) v101; urgency=medium
   
   * 解决了BUG#43146 打开麒麟天气，点击输入框，输入内容“bao",在弹出的选项中点击多个城市出现卡顿，会出现应用界面频繁切换城市

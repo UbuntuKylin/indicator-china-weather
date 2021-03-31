@@ -270,7 +270,7 @@ void MainWindow::initConnections()
     });
     //2*****addCityAction替换原来的m_leftupcitybtn*****
     connect(m_menu->addCityAction,&AddCityAction::sendCurrentCityId, this, [=] (QString id) {
-        if(this->isHidden()){
+        if(this->isHidden() || this->isMinimized()){
             handleIconClickedSub(); //显示在屏幕中央
         }
         m_weatherManager->startGetTheWeatherData(id);
@@ -295,7 +295,8 @@ void MainWindow::initConnections()
     //5*****addCityAction替换原来的m_leftupcitybtn*****
     connect(m_weatherManager, SIGNAL(requestSetCityWeather(QString)), m_menu->addCityAction, SIGNAL(requestSetCityWeather(QString)));
 //    connect(m_weatherManager, SIGNAL(requestSetCityWeather(QString)), m_leftupcitybtn, SIGNAL(requestSetCityWeather(QString)));
-
+    //没有网络的时候发送信号到收藏城市界面阻断动作进行
+    connect(m_weatherManager,&WeatherManager::noNetWork,m_menu->addCityAction,&AddCityAction::noNetWork);
     //收到信号带来的数据时，更新主界面天气数据
     connect(m_weatherManager, &WeatherManager::requestSetObserveWeather, this, [=] (ObserveWeather observerdata) {
         m_trayIcon->show();
@@ -391,11 +392,11 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
             //handleIconClicked(); //靠近任务栏显示
             handleIconClickedSub(); //显示在屏幕中央
         }else{
-            this->hide();
+            this->showMinimized();
         }
         break;
     case QSystemTrayIcon::DoubleClick:
-        this->hide();
+        this->showMinimized();
         break;
     case QSystemTrayIcon::Context:
         //右键点击托盘图标弹出菜单

@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QAction>
 #include <QRect>
-
+#include <QDBusInterface>
 #include "data.h"
 #include "citycollectionwidget.h"
 class AddCityAction : public QAction
@@ -30,11 +30,13 @@ private:
     bool is_open_city_collect_widget = false;//需要
     QLabel *addCityLabel = nullptr;
     CityCollectionWidget *m_citycollectionwidget;//需要
+    void onRequestSendDesktopNotify(QString message);
+
 private slots:
     void addCityClick();
 signals:
 
-
+    void noNetWork();//断网
     void requestSetCityName(QString cityName); //需要//在搜索列表中选中一个城市后，左上角城市名需要更改
 
 };

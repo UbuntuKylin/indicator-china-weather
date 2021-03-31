@@ -171,6 +171,8 @@ signals:
     void updatecity();
     void requestSetCityName(QString cityName);//在搜索列表中选中一个城市后，左上角城市名需要更改
 
+
+
 };
 
 #endif // MAINWINDOW_H

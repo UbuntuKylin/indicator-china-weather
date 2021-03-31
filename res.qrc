@@ -391,6 +391,8 @@
         <file>res/control_icons/menu.png</file>
         <file>res/control_icons/menu_d.png</file>
         <file>res/control_icons/indicator-china-weather.svg</file>
+        <file>res/control_icons/loadgif23.gif</file>
+        <file>res/control_icons/loadgif.gif</file>
     </qresource>
     <qresource prefix="/data">
         <file>data/china-city-list.csv</file>
