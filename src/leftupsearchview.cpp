@@ -57,13 +57,11 @@ void LeftUpSearchView::mouseReleaseEvent(QMouseEvent *e)
 
 void LeftUpSearchView::send(){
     QModelIndexList sourceIndexList = this->selectionModel()->selectedIndexes();
-    qDebug()<<sourceIndexList;
     foreach (QModelIndex sourceIndex, sourceIndexList) {
         QVariant variant = sourceIndex.data(Qt::UserRole);
         ItemData data = variant.value<ItemData>();
         requestWeatherData(data.cityId);
     }
-    qDebug()<<"#####";
 }
 
 void LeftUpSearchView::requestWeatherData(QString cityId) {
@@ -115,7 +113,6 @@ void LeftUpSearchView::ThemeLeftUpSearchView(QString str)
     }
 }
 void LeftUpSearchView::dealSearchBoxKeyPress(QString str){
-    qDebug()<<"SXS#BUG37112 debuging…… dealSearchBoxKeyPress triggered";
     if(this->isHidden()) return ;
     if(str == "up"){
         if(-1 == this->currentIndex().row()){

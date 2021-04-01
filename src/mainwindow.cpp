@@ -383,7 +383,6 @@ void MainWindow::createTrayIcon()
 //托盘图标被点击
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
-    qDebug()<<"sxs# iconactived";
     switch(reason){
     case QSystemTrayIcon::Trigger:
     case QSystemTrayIcon::MiddleClick:
@@ -619,7 +618,7 @@ void MainWindow::onSearchBoxEdited()
 }
 void MainWindow::searchCityName()
 {
-    const QString inputText = m_leftupsearchbox->text().trimmed();
+    const QString inputText = m_leftupsearchbox->text().trimmed().toLower();
     if (inputText.isEmpty())
         return;
 
