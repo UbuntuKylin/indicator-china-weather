@@ -2,6 +2,21 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="bo_CN">
 <context>
+    <name>AddCityAction</name>
+    <message>
+        <location filename="../src/addcityaction.cpp" line="76"/>
+        <location filename="../src/addcityaction.cpp" line="79"/>
+        <source>麒麟天气</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/addcityaction.cpp" line="85"/>
+        <location filename="../src/addcityaction.cpp" line="88"/>
+        <source>indicator-china-weather</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CityAddSearchBox</name>
     <message>
         <location filename="../src/cityaddsearchbox.cpp" line="38"/>
@@ -27,16 +42,12 @@
         <source>Local</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../src/citycollectionwidget.cpp" line="99"/>
-        <source>Current Network Exception, Please Check Network Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Information</name>
     <message>
-        <location filename="../src/informationwidget.cpp" line="233"/>
+        <location filename="../src/informationwidget.cpp" line="254"/>
+        <location filename="../src/informationwidget.cpp" line="270"/>
         <source>Today</source>
         <translation type="unfinished"></translation>
     </message>
@@ -52,8 +63,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="73"/>
-        <location filename="../src/mainwindow.cpp" line="374"/>
+        <location filename="../src/mainwindow.cpp" line="377"/>
         <source>Kylin Weather</source>
         <translation type="unfinished"></translation>
     </message>
@@ -69,6 +79,7 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="39"/>
+        <location filename="../src/mainwindow.cpp" line="73"/>
         <source>Weather</source>
         <translation type="unfinished"></translation>
     </message>
@@ -93,12 +104,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="319"/>
+        <location filename="../src/mainwindow.cpp" line="323"/>
         <source>Incorrect access address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="321"/>
+        <location filename="../src/mainwindow.cpp" line="325"/>
         <source>Network error code:%1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -113,6 +124,32 @@
     <message>
         <location filename="../src/promptwidget.cpp" line="65"/>
         <source>retry</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QApplication</name>
+    <message>
+        <location filename="../../../Qt5.12.8/5.12.8/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h" line="320"/>
+        <source>Executable &apos;%1&apos; requires Qt %2, found Qt %3.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Qt5.12.8/5.12.8/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h" line="322"/>
+        <source>Incompatible Qt Library Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>T::QApplication</name>
+    <message>
+        <location filename="../../../Qt5.12.8/5.12.8/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h" line="320"/>
+        <source>Executable &apos;%1&apos; requires Qt %2, found Qt %3.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Qt5.12.8/5.12.8/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h" line="322"/>
+        <source>Incompatible Qt Library Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -207,8 +244,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/menumodule.cpp" line="303"/>
-        <location filename="../src/menumodule.cpp" line="323"/>
+        <location filename="../src/menumodule.cpp" line="308"/>
+        <location filename="../src/menumodule.cpp" line="334"/>
         <source>Service &amp; Support: </source>
         <translation type="unfinished"></translation>
     </message>
