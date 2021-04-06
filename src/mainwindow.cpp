@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
     logoBtn->setFixedSize(24,24);
     logoBtn->setIconSize(QSize(24,24));//重置图标大小
     logoBtn->setIcon(QIcon(":/res/control_icons/logo_24.png"));
-    logolb->setText(tr("Kylin Weather"));
+    logolb->setText(tr("Weather"));
     logolb->setStyleSheet("font-size:14px;color:white;");
 
 
