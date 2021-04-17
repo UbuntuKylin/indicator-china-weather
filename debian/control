@@ -1,4 +1,4 @@
-Source: indicator-china-weather
+Source: weather
 Section: utils
 Priority: optional
 Maintainer: lixiang <lixiang@kylinos.cn>
@@ -20,7 +20,7 @@ Homepage: https://github.com/ubuntukylin/indicator-china-weather
 Vcs-Git: https://github.com/ubuntukylin/indicator-china-weather.git
 Vcs-Browser: https://github.com/ubuntukylin/indicator-china-weather
 
-Package: indicator-china-weather
+Package:weather
 Architecture: any
 Depends: ${misc:Depends},${shlibs:Depends}
 Description: Indicator that displays China weather information

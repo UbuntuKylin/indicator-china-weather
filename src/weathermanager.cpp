@@ -94,7 +94,7 @@ void WeatherManager::initConnections()
                                          QString("PropertiesChanged"), this, SLOT(onPropertiesChanged(QVariantMap) ) );
 }
 
-void WeatherManager::startGetTheWeatherData(QString cityId)
+void WeatherManager:: startGetTheWeatherData(QString cityId)
 {
     emit m_weatherWorker->requestGetTheWeatherData(cityId);
 }

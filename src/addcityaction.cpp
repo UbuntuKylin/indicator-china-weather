@@ -82,10 +82,10 @@ void AddCityAction::onRequestSendDesktopNotify(QString message)
         <<QVariantMap()
         <<(int)-1;
     }else{
-        args<<(tr("indicator-china-weather"))
+        args<<(tr("weather"))
            <<((unsigned int) 0)
-          <<("indicator-china-weather")
-         <<tr("indicator-china-weather") //显示的是什么类型的信息  控制面板-更新提示
+          <<("weather")
+         <<tr("weather") //显示的是什么类型的信息  控制面板-更新提示
         <<message //显示的具体信息
         <<QStringList()
         <<QVariantMap()

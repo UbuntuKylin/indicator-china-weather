@@ -226,8 +226,8 @@ void citycollectionitem::onWeatherDataReply()
         qDebug() << "Json object null or empty!";
         return;
     }
-    if (jsonObject.contains("KylinWeather")) {
-        QJsonObject mainObj = jsonObject.value("KylinWeather").toObject();
+    if (jsonObject.contains("Weather")) {
+        QJsonObject mainObj = jsonObject.value("Weather").toObject();
         if (mainObj.isEmpty() || mainObj.size() == 0) {
             return;
         }
@@ -261,7 +261,7 @@ void citycollectionitem::onWeatherDataReply()
                 }
             }
         } //end if (mainObj.contains("weather"))
-    } //end if (jsonObject.contains("KylinWeather"))
+    }
     emit this->mThreadFinish();
 }
 

@@ -38,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setFocusPolicy(Qt::ClickFocus);//this->setFocusPolicy(Qt::NoFocus);//设置焦点类型
     this->setWindowTitle(tr("Weather"));
 //    this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
-    this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/logo_24.png")));
+    this->setWindowIcon(QIcon::fromTheme("weather", QIcon(":/res/control_icons/logo_24.png")));
     QPainterPath path;
     auto rect = this->rect();
     rect.adjust(1, 1, -1, -1);
@@ -84,15 +84,13 @@ MainWindow::MainWindow(QWidget *parent) :
     //添加托盘菜单
     m_mainMenu = new QMenu;
 //    m_mainMenu->addSeparator();
-    m_openAction = new QAction(tr("Open Kylin Weather"),this);//打开麒麟天气
+    m_openAction = new QAction(tr("Open Weather"),this);//打开麒麟天气
     m_quitAction = new QAction(tr("Exit"),this);//退出
     m_mainMenu->addAction(m_openAction);
-//    m_openAction->setIcon(QIcon::fromTheme(QString("indicator-china-weather"), QIcon(QString(":/res/control_icons/indicator-china-weather_min.png"))));
     m_openAction->setIcon(QIcon(QString(":/res/control_icons/logo_24.png")) );
     m_mainMenu->addAction(m_quitAction);
 
     m_quitAction->setIcon(QIcon::fromTheme(QString("exit-symbolic"), QIcon(QString(":/res/control_icons/quit_normal.png"))) );
-//    m_quitAction->setIcon(QIcon(QString(":/res/control_icons/quit_normal.png")));
     connect(m_openAction, &QAction::triggered, this, [=] {
         if(this->isHidden() || this->isMinimized()){
             handleIconClickedSub();
@@ -147,9 +145,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     // F1快捷键打开用户手册
     if (event->key() == Qt::Key_F1) {
         if (!mDaemonIpcDbus->daemonIsNotRunning()){
-            //F1快捷键打开用户手册，如kylin-recorder
-            //由于是小工具类，下面的showGuide参数要填写"tools/indicator-china-weather"
-            mDaemonIpcDbus->showGuide("tools/indicator-china-weather");
+            mDaemonIpcDbus->showGuide("tools/weather");
         }
     }
 }
@@ -374,7 +370,7 @@ void MainWindow::initConnections()
 void MainWindow::createTrayIcon()
 {
     m_trayIcon = new QSystemTrayIcon(this);
-    m_trayIcon->setToolTip(QString(tr("Kylin Weather")));
+    m_trayIcon->setToolTip(QString(tr("Weather")));
 //    m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
     m_trayIcon->setVisible(true);
     m_trayIcon->hide();
@@ -409,11 +405,11 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 void MainWindow::closeActivated()
 {
     //托盘退出默认关闭开机自启
-    QString autostart=QStandardPaths::standardLocations(QStandardPaths::HomeLocation)[0]+"/.config/autostart/indicator-china-weather.desktop";
+    QString autostart=QStandardPaths::standardLocations(QStandardPaths::HomeLocation)[0]+"/.config/autostart/weather.desktop";
     QFile file(autostart);
     if(!file.exists())
     {
-        QString path="/etc/xdg/autostart/indicator-china-weather.desktop";
+        QString path="/etc/xdg/autostart/weather.desktop";
         QFileInfo file2(path);
         if(!file2.exists())
         {

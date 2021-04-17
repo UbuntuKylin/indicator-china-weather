@@ -9,7 +9,7 @@ isEqual(QT_MAJOR_VERSION, 5) {
     QT += widgets gui core dbus KWindowSystem x11extras
 }
 
-TARGET = indicator-china-weather
+TARGET = weather
 TEMPLATE = app
 
 target.source  += $$TARGET
@@ -17,18 +17,18 @@ target.path = /usr/bin
 
 !system($$PWD/translations/generate_translations_pm.sh): error("Failed to generate pm")
 qm_files.files = translations/*.qm
-qm_files.path = /usr/share/indicator-china-weather/translations/
+qm_files.path = /usr/share/weather/translations/
 
-icons.files += res/indicator-china-weather.png
+icons.files += res/weather.png
 icons.path = /usr/share/pixmaps/
 
-appdesktop.files += indicator-china-weather.desktop
+appdesktop.files += weather.desktop
 appdesktop.path = /usr/share/applications/
 
-startdesktop.files += indicator-china-weather.desktop
+startdesktop.files += weather.desktop
 startdesktop.path = /etc/xdg/autostart/
 
-schemes.files += data/org.china-weather-data.gschema.xml
+schemes.files += data/org.weather-data.gschema.xml
 schemes.path = /usr/share/glib-2.0/schemas/
     
 INSTALLS += target icons qm_files appdesktop startdesktop schemes
@@ -127,8 +127,8 @@ RESOURCES += \
     res.qrc
 
 TRANSLATIONS += \
-    translations/indicator-china-weather_zh_CN.ts \
-    translations/indicator-china-weather_bo.ts
+    translations/weather_zh_CN.ts \
+    translations/weather_bo.ts
 
 FORMS += \
     src/cityaddwidget.ui \

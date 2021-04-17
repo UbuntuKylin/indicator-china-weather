@@ -239,8 +239,8 @@ void WeatherWorker::onWeatherDataReply()
         emit responseFailure(0);
         return;
     }
-    if (jsonObject.contains("KylinWeather")) {
-        QJsonObject mainObj = jsonObject.value("KylinWeather").toObject();
+    if (jsonObject.contains("Weather")) {
+        QJsonObject mainObj = jsonObject.value("Weather").toObject();
         if (mainObj.isEmpty() || mainObj.size() == 0) {
             emit responseFailure(0);
             return;
@@ -431,7 +431,7 @@ void WeatherWorker::onWeatherDataReply()
 
             }
         }
-    } //end if (jsonObject.contains("KylinWeather"))
+    }
 }
 
 //获取收藏城市天气数据
@@ -504,8 +504,8 @@ void WeatherWorker::onCityWeatherDataReply()
         qDebug() << "Json object null or empty!";
         return;
     }
-    if (jsonObject.contains("KylinWeather")) {
-        QJsonObject mainObj = jsonObject.value("KylinWeather").toObject();
+    if (jsonObject.contains("Weather")) {
+        QJsonObject mainObj = jsonObject.value("Weather").toObject();
         if (mainObj.isEmpty() || mainObj.size() == 0) {
             return;
         }
@@ -515,7 +515,7 @@ void WeatherWorker::onCityWeatherDataReply()
                 emit requestSetCityWeather(weather_msg);
             }
         }
-    } //end if (jsonObject.contains("KylinWeather"))
+    }
 }
 void WeatherWorker::initGsetting()
 {

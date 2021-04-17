@@ -71,14 +71,14 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     rect.adjust(1, 1, -1, -1);
     path.addRoundedRect(rect, 6, 6); //set border radius
     setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
-    this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/logo_24.png")) ); //set taskbar icon
-    this->setWindowTitle(tr("Kylin Weather"));
+    this->setWindowIcon(QIcon::fromTheme("weather", QIcon(":/res/control_icons/logo_24.png")) ); //set taskbar icon
+    this->setWindowTitle(tr("Weather"));
 
     QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
     this->move((availableGeometry.width()-this->width())/2, (availableGeometry.height()-this->height())/2);
 
     ui->btnCancel->setFocusPolicy(Qt::NoFocus);
-    ui->lbLeftUpTitle->setText(tr("Kylin Weather"));
+    ui->lbLeftUpTitle->setText(tr("Weather"));
     ui->lbLeftUpTitle->setFixedWidth(100);
     ui->lbCityCollect->setText(tr("Collections")); //收藏城市
     ui->lbCityCurrent->setText(tr("Local"));    //当前城市
