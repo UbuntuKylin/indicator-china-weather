@@ -1,5 +1,5 @@
-indicator-china-weather (3.1.0-50) v101; urgency=medium
-  
+weather (3.1.0-50) v101; urgency=medium
+ - 
   * 解决了BUG#45555 启动应用后搜索栏获得焦点后按enter键，应用闪退
   * 解决了BUG#45532 英文模式菜单和主界面英文名称一致
   * 解决了BUG#45852 打开麒麟天气，点击任务栏右下角麒麟添加icon,麒麟天气在任务栏的图标消失

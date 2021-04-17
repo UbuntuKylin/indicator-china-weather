@@ -1,0 +1,6 @@
+e12d73e7b57b1eb47306b08809053cd6  usr/bin/weather
+ad69a890e260174d1bcba95a2c8473a5  usr/share/applications/weather.desktop
+337db82406d69b4608bbc92e0612b6b2  usr/share/doc/weather/changelog.Debian.gz
+759717c844aa74a02330a89dc33ba4d3  usr/share/doc/weather/copyright
+bcebcf42735c6849bdecbb77451021dd  usr/share/weather/translations/weather_bo_CN.qm
+fdc0ef225b2142e0e2e2dd84633aae46  usr/share/weather/translations/weather_zh_CN.qm
