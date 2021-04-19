@@ -12,7 +12,7 @@
     <message>
         <location filename="../src/addcityaction.cpp" line="85"/>
         <location filename="../src/addcityaction.cpp" line="88"/>
-        <source>indicator-china-weather</source>
+        <source>weather</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -29,7 +29,7 @@
     <message>
         <location filename="../src/citycollectionwidget.cpp" line="75"/>
         <location filename="../src/citycollectionwidget.cpp" line="81"/>
-        <source>Kylin Weather</source>
+        <source>Weather</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -63,16 +63,6 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="377"/>
-        <source>Kylin Weather</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="87"/>
-        <source>Open Kylin Weather</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/mainwindow.cpp" line="56"/>
         <source>Add City</source>
         <translation type="unfinished"></translation>
@@ -80,7 +70,13 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="39"/>
         <location filename="../src/mainwindow.cpp" line="73"/>
+        <location filename="../src/mainwindow.cpp" line="373"/>
         <source>Weather</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="87"/>
+        <source>Open Weather</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -89,27 +85,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="121"/>
+        <location filename="../src/mainwindow.cpp" line="119"/>
         <source>Network not connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="197"/>
+        <location filename="../src/mainwindow.cpp" line="193"/>
         <source>minimize</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="202"/>
+        <location filename="../src/mainwindow.cpp" line="198"/>
         <source>close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="323"/>
+        <location filename="../src/mainwindow.cpp" line="319"/>
         <source>Incorrect access address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="325"/>
+        <location filename="../src/mainwindow.cpp" line="321"/>
         <source>Network error code:%1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -189,12 +185,12 @@
     <name>main</name>
     <message>
         <location filename="../src/main.cpp" line="72"/>
-        <source>KylinWeather</source>
+        <source>Weather</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="76"/>
-        <source>show indicator-china-weather test</source>
+        <source>show weather test</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -230,12 +226,12 @@
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="205"/>
-        <source>indicator china weather</source>
+        <source>weather</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="213"/>
-        <source>Indicator China Weather</source>
+        <source>Weather</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -7,13 +7,13 @@
         <location filename="../src/addcityaction.cpp" line="76"/>
         <location filename="../src/addcityaction.cpp" line="79"/>
         <source>麒麟天气</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/addcityaction.cpp" line="85"/>
         <location filename="../src/addcityaction.cpp" line="88"/>
-        <source>indicator-china-weather</source>
-        <translation type="unfinished"></translation>
+        <source>weather</source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -27,9 +27,13 @@
 <context>
     <name>CityCollectionWidget</name>
     <message>
+        <source>Kylin Weather</source>
+        <translation type="vanished">麒麟天气</translation>
+    </message>
+    <message>
         <location filename="../src/citycollectionwidget.cpp" line="75"/>
         <location filename="../src/citycollectionwidget.cpp" line="81"/>
-        <source>Kylin Weather</source>
+        <source>Weather</source>
         <translation>麒麟天气</translation>
     </message>
     <message>
@@ -69,13 +73,13 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="39"/>
         <location filename="../src/mainwindow.cpp" line="73"/>
+        <location filename="../src/mainwindow.cpp" line="373"/>
         <source>Weather</source>
         <translation>麒麟天气</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="87"/>
         <source>Open Kylin Weather</source>
-        <translation>打开麒麟天气</translation>
+        <translation type="vanished">打开麒麟天气</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="56"/>
@@ -87,39 +91,43 @@
         <translation type="vanished">关于</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.cpp" line="87"/>
+        <source>Open Weather</source>
+        <translation>打开麒麟天气</translation>
+    </message>
+    <message>
         <location filename="../src/mainwindow.cpp" line="88"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="121"/>
+        <location filename="../src/mainwindow.cpp" line="119"/>
         <source>Network not connected</source>
         <translation>网络未连接</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="197"/>
+        <location filename="../src/mainwindow.cpp" line="193"/>
         <source>minimize</source>
         <translation>最小化</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="202"/>
+        <location filename="../src/mainwindow.cpp" line="198"/>
         <source>close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="323"/>
+        <location filename="../src/mainwindow.cpp" line="319"/>
         <source>Incorrect access address</source>
         <translation>访问地址异常</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="325"/>
+        <location filename="../src/mainwindow.cpp" line="321"/>
         <source>Network error code:%1</source>
         <translation>网络错误代码：%1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="377"/>
         <source>Kylin Weather</source>
-        <translation type="unfinished">麒麟天气</translation>
+        <translation type="obsolete">麒麟天气</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="14"/>
@@ -196,14 +204,22 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../src/main.cpp" line="72"/>
         <source>KylinWeather</source>
-        <translation>KylinWeather</translation>
+        <translation type="vanished">KylinWeather</translation>
+    </message>
+    <message>
+        <source>show indicator-china-weather test</source>
+        <translation type="vanished">show indicator-china-weather test</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="72"/>
+        <source>Weather</source>
+        <translation type="unfinished">麒麟天气</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="76"/>
-        <source>show indicator-china-weather test</source>
-        <translation>show indicator-china-weather test</translation>
+        <source>show weather test</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -238,13 +254,21 @@
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="205"/>
-        <source>indicator china weather</source>
+        <source>weather</source>
         <translation>麒麟天气</translation>
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="213"/>
-        <source>Indicator China Weather</source>
+        <source>Weather</source>
         <translation>麒麟天气</translation>
+    </message>
+    <message>
+        <source>indicator china weather</source>
+        <translation type="vanished">麒麟天气</translation>
+    </message>
+    <message>
+        <source>Indicator China Weather</source>
+        <translation type="vanished">麒麟天气</translation>
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="235"/>

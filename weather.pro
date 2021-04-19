@@ -128,7 +128,7 @@ RESOURCES += \
 
 TRANSLATIONS += \
     translations/weather_zh_CN.ts \
-    translations/weather_bo.ts
+    translations/weather_bo_CN.ts
 
 FORMS += \
     src/cityaddwidget.ui \
