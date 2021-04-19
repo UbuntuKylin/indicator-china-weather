@@ -110,7 +110,7 @@ private:
     QAction *m_quitAction;
 
     //*****2020.12.19增加
-    QPushButton *logoBtn;
+    QLabel *logoBtn;
     QLabel *logolb;
 
     QWidget *titleWid;
