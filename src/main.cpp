@@ -26,6 +26,7 @@
 #include <QDir>
 #include <signal.h>
 #include <X11/Xlib.h>
+#include <ukui-log4qt.h>
 #include "xatom-helper.h"
 
 #include <QtSingleApplication>
@@ -93,6 +94,7 @@ void responseCommand(QtSingleApplication &a)
 
 int main(int argc, char *argv[])
 {
+    initUkuiLog4qt("weather");
     #if(QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
             QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
             QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
