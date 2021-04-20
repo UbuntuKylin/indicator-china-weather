@@ -84,7 +84,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //添加托盘菜单
     m_mainMenu = new QMenu;
 //    m_mainMenu->addSeparator();
-    m_openAction = new QAction(tr("Open Weather"),this);//打开麒麟天气
+    m_openAction = new QAction(tr("Open Weather"),this);//打开天气
     m_quitAction = new QAction(tr("Exit"),this);//退出
     m_mainMenu->addAction(m_openAction);
     m_openAction->setIcon(QIcon(QString(":/res/control_icons/logo_24.png")) );
@@ -169,11 +169,11 @@ void MainWindow::initControlQss()
 {
     m_leftupsearchbox->setFixedWidth(150);
     titleLayout->addSpacing(4);
-    titleLayout->addWidget(logoBtn);//麒麟天气logo
+    titleLayout->addWidget(logoBtn);//天气logo
     titleLayout->addSpacing(4);
-    titleLayout->addWidget(logolb);//麒麟天气标签
+    titleLayout->addWidget(logolb);//天气标签
     titleLayout->addStretch();//添加伸缩
-    titleLayout->addWidget(m_leftupsearchbox);//麒麟天气搜索栏
+    titleLayout->addWidget(m_leftupsearchbox);//天气搜索栏
     titleLayout->addSpacing(4);
     titleLayout->addWidget(m_menu->menuButton);//设置按钮
     titleLayout->addWidget(ui->btnMinimize);
@@ -413,7 +413,7 @@ void MainWindow::closeActivated()
         QFileInfo file2(path);
         if(!file2.exists())
         {
-            qDebug()<<"/etc/xdg/autostart/目录下无麒麟天气快捷方式";
+            qDebug()<<"/etc/xdg/autostart/目录下无天气快捷方式";
         }
         else
         {

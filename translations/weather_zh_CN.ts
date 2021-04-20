@@ -6,14 +6,14 @@
     <message>
         <location filename="../src/addcityaction.cpp" line="76"/>
         <location filename="../src/addcityaction.cpp" line="79"/>
-        <source>麒麟天气</source>
-        <translation></translation>
+        <source>天气</source>
+        <translation>天气</translation>
     </message>
     <message>
         <location filename="../src/addcityaction.cpp" line="85"/>
         <location filename="../src/addcityaction.cpp" line="88"/>
         <source>weather</source>
-        <translation></translation>
+        <translation>天气</translation>
     </message>
 </context>
 <context>
@@ -34,7 +34,7 @@
         <location filename="../src/citycollectionwidget.cpp" line="75"/>
         <location filename="../src/citycollectionwidget.cpp" line="81"/>
         <source>Weather</source>
-        <translation>麒麟天气</translation>
+        <translation>天气</translation>
     </message>
     <message>
         <location filename="../src/citycollectionwidget.cpp" line="83"/>
@@ -75,7 +75,7 @@
         <location filename="../src/mainwindow.cpp" line="73"/>
         <location filename="../src/mainwindow.cpp" line="373"/>
         <source>Weather</source>
-        <translation>麒麟天气</translation>
+        <translation>天气</translation>
     </message>
     <message>
         <source>Open Kylin Weather</source>
@@ -93,7 +93,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="87"/>
         <source>Open Weather</source>
-        <translation>打开麒麟天气</translation>
+        <translation>打开天气</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="88"/>
@@ -212,12 +212,12 @@
         <translation type="vanished">show indicator-china-weather test</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="72"/>
+        <location filename="../src/main.cpp" line="73"/>
         <source>Weather</source>
-        <translation type="unfinished">麒麟天气</translation>
+        <translation>天气</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="76"/>
+        <location filename="../src/main.cpp" line="77"/>
         <source>show weather test</source>
         <translation type="unfinished"></translation>
     </message>
@@ -255,12 +255,12 @@
     <message>
         <location filename="../src/menumodule.cpp" line="205"/>
         <source>weather</source>
-        <translation>麒麟天气</translation>
+        <translation>天气</translation>
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="213"/>
         <source>Weather</source>
-        <translation>麒麟天气</translation>
+        <translation>天气</translation>
     </message>
     <message>
         <source>indicator china weather</source>

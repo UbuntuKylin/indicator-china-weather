@@ -73,10 +73,10 @@ void AddCityAction::onRequestSendDesktopNotify(QString message)
     QList<QVariant> args;
     if(QLocale::system().name() == "zh_CN")
     {
-        args<<(tr("麒麟天气"))
+        args<<(tr("天气"))
            <<((unsigned int) 0)
-          <<("麒麟天气")
-         <<tr("麒麟天气") //显示的是什么类型的信息  控制面板-更新提示
+          <<("天气")
+         <<tr("天气") //显示的是什么类型的信息  控制面板-更新提示
         <<message //显示的具体信息
         <<QStringList()
         <<QVariantMap()

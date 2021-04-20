@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/addcityaction.cpp" line="76"/>
         <location filename="../src/addcityaction.cpp" line="79"/>
-        <source>麒麟天气</source>
+        <source>天气</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -184,12 +184,12 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../src/main.cpp" line="72"/>
+        <location filename="../src/main.cpp" line="73"/>
         <source>Weather</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="76"/>
+        <location filename="../src/main.cpp" line="77"/>
         <source>show weather test</source>
         <translation type="unfinished"></translation>
     </message>
