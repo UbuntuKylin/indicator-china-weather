@@ -44,7 +44,7 @@ bool onlyOne(QtSingleApplication &a)
 void setAttribute(QtSingleApplication &a)
 {
     //init log module
-    initUkui-log4qt("indicator-china-weather");
+    initUkuiLog4qt("indicator-china-weather");
 
     signal(SIGINT, [](int) { QApplication::quit(); });// 设置退出信号
 

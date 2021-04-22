@@ -37,14 +37,14 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setFixedSize(865,520);
     this->setFocusPolicy(Qt::ClickFocus);//this->setFocusPolicy(Qt::NoFocus);//设置焦点类型
     this->setWindowTitle(tr("Weather"));
-//    this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
+    this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/logo_24.png")));
-    QPainterPath path;
-    auto rect = this->rect();
-    rect.adjust(1, 1, -1, -1);
-    path.addRoundedRect(rect, 6, 6);
-    setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
-    this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
+//    QPainterPath path;
+//    auto rect = this->rect();
+//    rect.adjust(1, 1, -1, -1);
+//    path.addRoundedRect(rect, 6, 6);
+//    setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
+//    this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
     titleWid = new QWidget(this);
     titleLayout = new QHBoxLayout();
     cityLabel = new QLabel(this);
@@ -64,12 +64,12 @@ MainWindow::MainWindow(QWidget *parent) :
     m_leftupcitybtn = new LeftUpCityBtn(ui->widget_normal);
     m_leftupcitybtn->hide();
 
-    logoBtn = new QPushButton(ui->widget_normal);
+    logoBtn = new QLabel(ui->widget_normal);
     logolb = new QLabel(ui->widget_normal);
     logolb->setFixedSize(100,24);
     logoBtn->setFixedSize(24,24);
-    logoBtn->setIconSize(QSize(24,24));//重置图标大小
-    logoBtn->setIcon(QIcon(":/res/control_icons/logo_24.png"));
+    logoBtn->setPixmap(QPixmap::fromImage(QImage(":/res/control_icons/logo_24.png")));
+    logoBtn->setScaledContents(true);
     logolb->setText(tr("Weather"));
     logolb->setStyleSheet("font-size:14px;color:white;");
 
