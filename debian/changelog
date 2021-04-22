@@ -1,3 +1,10 @@
+indicator-china-weather (3.1.1-0) v101; urgency=medium
+  
+  * 应用改名为weather
+  * 解决了BUG#43131 打开麒麟天气，应用界面四角存在黑色部分
+
+ -- fengyongfan <fengyongfan@kylinos.cn>  Thur,22  Apr 2021 14:27:00 +0800
+
 indicator-china-weather (3.1.0-50) v101; urgency=medium
   
   * 解决了BUG#45555 启动应用后搜索栏获得焦点后按enter键，应用闪退
