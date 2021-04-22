@@ -24,6 +24,7 @@
 #include <QLibraryInfo>
 #include <QObject>
 #include <QDir>
+#include <ukui-log4qt.h>
 #include <signal.h>
 #include <X11/Xlib.h>
 #include "xatom-helper.h"
@@ -42,6 +43,9 @@ bool onlyOne(QtSingleApplication &a)
 
 void setAttribute(QtSingleApplication &a)
 {
+    //init log module
+    initUkui-log4qt("indicator-china-weather");
+
     signal(SIGINT, [](int) { QApplication::quit(); });// 设置退出信号
 
 //    //自适应高清屏幕
