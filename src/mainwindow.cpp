@@ -84,7 +84,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //添加托盘菜单
     m_mainMenu = new QMenu;
 //    m_mainMenu->addSeparator();
-    m_openAction = new QAction(tr("Open Kylin Weather"),this);//打开麒麟天气
+    m_openAction = new QAction(tr("Open Weather"),this);//打开麒麟天气
     m_quitAction = new QAction(tr("Exit"),this);//退出
     m_mainMenu->addAction(m_openAction);
 //    m_openAction->setIcon(QIcon::fromTheme(QString("indicator-china-weather"), QIcon(QString(":/res/control_icons/indicator-china-weather_min.png"))));
@@ -374,7 +374,7 @@ void MainWindow::initConnections()
 void MainWindow::createTrayIcon()
 {
     m_trayIcon = new QSystemTrayIcon(this);
-    m_trayIcon->setToolTip(QString(tr("Kylin Weather")));
+    m_trayIcon->setToolTip(QString(tr("Weather")));
 //    m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
     m_trayIcon->setVisible(true);
     m_trayIcon->hide();

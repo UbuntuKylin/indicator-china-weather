@@ -55,7 +55,7 @@ void setAttribute(QtSingleApplication &a)
     QIcon::setThemeName("ukui-icon-theme-default");
 
     a.setOrganizationName("kylin");
-    a.setApplicationName("Kylin Weather (indicator-china-weather)");
+    a.setApplicationName("Weather (indicator-china-weather)");
     a.setApplicationVersion("3.1.0");
     a.setQuitOnLastWindowClosed(false);//Avoid that after hiding mainwindow, close the sub window would cause the program exit
 }
