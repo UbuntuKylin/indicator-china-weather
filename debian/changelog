@@ -1,12 +1,13 @@
 indicator-china-weather (3.1.1-0) v101; urgency=medium
-  
-  * 应用改名为weather
-  * 解决了BUG#43131 打开麒麟天气，应用界面四角存在黑色部分
+
+  * BUG号：43131
+  * 需求号：26470
+  * 其他改动说明：无
 
  -- fengyongfan <fengyongfan@kylinos.cn>  Thur,22  Apr 2021 14:27:00 +0800
 
 indicator-china-weather (3.1.0-50) v101; urgency=medium
-  
+
   * 解决了BUG#45555 启动应用后搜索栏获得焦点后按enter键，应用闪退
   * 解决了BUG#45532 英文模式菜单和主界面英文名称一致
   * 解决了BUG#45852 打开麒麟天气，点击任务栏右下角麒麟添加icon,麒麟天气在任务栏的图标消失
@@ -14,28 +15,28 @@ indicator-china-weather (3.1.0-50) v101; urgency=medium
  -- zoujunnan <zoujunnan@kylinos.cn>  Wed,31  Mar 2021 14:27:00 +0800
 
 indicator-china-weather (3.1.0-49) v101; urgency=medium
-  
-  * 解决了BUG#44350 英文模式下，应用名称首字母未大写 
+
+  * 解决了BUG#44350 英文模式下，应用名称首字母未大写
   * 解决了BUG#42909 当遇到网络问题导致麒麟天气出现报错“网络错误代码” 或者 “访问地址异常“时，点击重试 会导致麒麟天气闪退
 
  -- zoujunnan <zoujunnan@kylinos.cn>  Wed,24  Mar 2021 14:27:00 +0800
 
 indicator-china-weather (3.1.0-48) v101; urgency=medium
-  
+
   * 解决了BUG#43182 夜间模式下打开麒麟天气，点击增加城市，点击“+”号添加2个城市后界面i不显示
-  * 解决了BUG#43139 打开麒麟天气，点击菜单栏-增加城市，查看界面显示异常 
+  * 解决了BUG#43139 打开麒麟天气，点击菜单栏-增加城市，查看界面显示异常
 
  -- zoujunnan <zoujunnan@kylinos.cn>  Mon,22  Mar 2021 14:27:00 +0800
 
 indicator-china-weather (3.1.0-47) v101; urgency=medium
-  
+
   * 解决了BUG#43146 打开麒麟天气，点击输入框，输入内容“bao",在弹出的选项中点击多个城市出现卡顿，会出现应用界面频繁切换城市
   * 修复服务器返回的信息缺失时闪退的问题
 
  -- zoujunnan <zoujunnan@kylinos.cn> Fri,19  Mar 2021 14:27:00 +0800
 
 indicator-china-weather (3.1.0-46) v101; urgency=medium
-  
+
   * 解决了BUG#42974 系统主题切换至深色主题时，关于弹窗除了logo，其余内容均不可见
   * 解决了BUG#39647 主界面对于较长地区名称显示不全
   * 解决了BUG#42444 开机自启动中的麒麟天气在开机任务栏显示后又消失
@@ -43,13 +44,13 @@ indicator-china-weather (3.1.0-46) v101; urgency=medium
  -- zoujunnan <zoujunnan@kylinos.cn> Wed,17  Mar 2021 14:27:00 +0800
 
 indicator-china-weather (3.1.0-45) v101; urgency=medium
-  
+
   * 解决了BUG#41761 从开始菜单或者桌面快捷方式打开麒麟天气，应用界面随机出现，位置不固定
 
  -- zoujunnan <zoujunnan@kylinos.cn> Thu,11  Mar 2021 09:46:00 +0800
 
 indicator-china-weather (3.1.0-44) v101; urgency=medium
-  
+
   * 解决了BUG#39647 主界面对于较长地区名称显示不全
   * 解决了BUG#39668 当前主界面城市名称超过3个字时，搜索下拉框与搜索框错位，不能整齐排列
   * 解决了BUG#40040 麒麟天气最小化到任务栏后，点击任务栏天气icon的结果是关闭刚才最小化的窗口；右击icon选择打开麒麟天气的结果是不能再次调起窗口。
@@ -58,7 +59,7 @@ indicator-china-weather (3.1.0-44) v101; urgency=medium
  -- zoujunnan <zoujunnan@kylinos.cn> Fri,5  Mar 2021 09:46:00 +0800
 
 indicator-china-weather (3.1.0-43) v101; urgency=medium
-  
+
   * 解决了BUG#38852 搜索下拉框只有一个地名，鼠标悬停时UI异常
   * 解决了BUG#35657 主界面地区、温度值显示不全及未居中
   * 解决了BUG#38854 主界面退出但进程不退出，任务栏托盘处麒麟天气弹窗点击打开麒麟天气，主界面没有被拉起
@@ -67,7 +68,7 @@ indicator-china-weather (3.1.0-43) v101; urgency=medium
  -- zoujunnan <zoujunnan@kylinos.cn> Sat,27  Feb 2021 09:46:00 +0800
 
 indicator-china-weather (3.1.0-42) v101; urgency=medium
-  
+
   * 解决了BUG#26877 ip定位逻辑优化
   * 解决了BUG#38531 三联加tooltip
   * 解决了高优BUG#34396 拖动事件未适配缩放
@@ -85,7 +86,7 @@ indicator-china-weather (3.1.0-42) v101; urgency=medium
  -- zoujunnan <zoujunnan@kylinos.cn>  Sat,20  Feb 2021 09:46:00 +0800
 
 indicator-china-weather (3.1.0-41) v101; urgency=medium
-  
+
   * 解决了BUG#26075 vnc异常
   * 解决了BUG#36841 地区温度为零下两位数字时，如零下18度，会导致温度显示不全
   * 解决了BUG#35657 主界面地区、温度值显示不全及未居中
@@ -93,7 +94,7 @@ indicator-china-weather (3.1.0-41) v101; urgency=medium
  -- liuyuhui <liuyuhui@kylinos.cn>  Tue,27  Jan 2021 09:46:00 +0800
 
 indicator-china-weather (3.1.0-40) v101; urgency=medium
-  
+
   * 解决了BUG#30822 点击desktop文件的时候可以拉起窗口
   * 关于窗口适配深色&国际化&点击关于页面邮箱链接拉起邮箱客户端
   * 解决了BUG#26544 双屏时要求麒麟天气在主屏显示
