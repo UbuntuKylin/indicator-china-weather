@@ -108,10 +108,9 @@ void WeatherWorker::onPostHostInfoToWeatherServer()
 
     QByteArray parameters = hostInfo.toUtf8();
     QNetworkRequest request;
-    request.setUrl(QUrl("http://112.125.25.75:8001/weather/pingbackmain"));
+    request.setUrl(QUrl("http://weather.ubuntukylin.com:8001/weather/pingbackmain"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     request.setHeader(QNetworkRequest::ContentLengthHeader, parameters.length());
-    //QUrl url("http://112.125.25.75:8001/weather/pingbackmain");
     QNetworkReply *reply = m_networkManager->post(request, parameters);//QNetworkReply *reply = m_networkManager->post(QNetworkRequest(url), parameters);
     connect(reply, &QNetworkReply::finished, this, &WeatherWorker::onPingBackPostReply);
 }
@@ -162,7 +161,7 @@ void WeatherWorker::onWeatherDataRequest(const QString &cityId)
         return;
     }
 
-    QString forecastUrl = QString("http://112.125.25.75:8001/weather/api/3.0/heweather_data_s6/%1/").arg(cityId);
+    QString forecastUrl = QString("http://weather.ubuntukylin.com:8001/weather/api/3.0/heweather_data_s6/%1/").arg(cityId);
     QNetworkRequest request;
     request.setUrl(forecastUrl);
     QNetworkReply *reply = m_networkManager->get(request);
@@ -437,7 +436,7 @@ void WeatherWorker::onWeatherDataReply()
 //获取收藏城市天气数据
 void WeatherWorker::onCityWeatherDataRequest()
 {
-    QString urlPrefix = "http://112.125.25.75:8001/weather/api/3.0/heweather_simple_s6/?cityids=";
+    QString urlPrefix = "http://weather.ubuntukylin.com:8001/weather/api/3.0/heweather_simple_s6/?cityids=";
     QStringList cityList = getCityList().split(","); //cityList最后一项为空字符
     for (int i=0; i<cityList.size()-1; i++) {
         if (i == cityList.size()-2) {
