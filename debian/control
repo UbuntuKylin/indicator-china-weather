@@ -15,6 +15,7 @@ Build-Depends: debhelper (>=9),
 			   pkgconf,
 			   libqt5x11extras5-dev,
 			   libkf5windowsystem-dev,
+			libukui-log4qt-dev,
 Standards-Version: 4.4.0
 Homepage: https://github.com/ubuntukylin/indicator-china-weather
 Vcs-Git: https://github.com/ubuntukylin/indicator-china-weather.git

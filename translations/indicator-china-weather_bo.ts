@@ -29,7 +29,7 @@
     <message>
         <location filename="../src/citycollectionwidget.cpp" line="75"/>
         <location filename="../src/citycollectionwidget.cpp" line="81"/>
-        <source>Kylin Weather</source>
+        <source>Weather</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -63,16 +63,6 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="377"/>
-        <source>Kylin Weather</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="87"/>
-        <source>Open Kylin Weather</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/mainwindow.cpp" line="56"/>
         <source>Add City</source>
         <translation type="unfinished"></translation>
@@ -80,7 +70,13 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="39"/>
         <location filename="../src/mainwindow.cpp" line="73"/>
+        <location filename="../src/mainwindow.cpp" line="377"/>
         <source>Weather</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="87"/>
+        <source>Open Weather</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -188,12 +184,12 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../src/main.cpp" line="72"/>
+        <location filename="../src/main.cpp" line="76"/>
         <source>KylinWeather</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="76"/>
+        <location filename="../src/main.cpp" line="80"/>
         <source>show indicator-china-weather test</source>
         <translation type="unfinished"></translation>
     </message>
@@ -230,12 +226,12 @@
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="205"/>
-        <source>indicator china weather</source>
+        <source>weather</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/menumodule.cpp" line="213"/>
-        <source>Indicator China Weather</source>
+        <source>Weather</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

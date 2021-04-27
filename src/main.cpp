@@ -1,4 +1,4 @@
-/*
+    /*
  * Copyright (C) 2013 ~ 2020 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
@@ -24,6 +24,7 @@
 #include <QLibraryInfo>
 #include <QObject>
 #include <QDir>
+#include <ukui-log4qt.h>
 #include <signal.h>
 #include <X11/Xlib.h>
 #include "xatom-helper.h"
@@ -42,6 +43,9 @@ bool onlyOne(QtSingleApplication &a)
 
 void setAttribute(QtSingleApplication &a)
 {
+    //init log module
+    initUkuiLog4qt("indicator-china-weather");
+
     signal(SIGINT, [](int) { QApplication::quit(); });// 设置退出信号
 
 //    //自适应高清屏幕
@@ -51,7 +55,7 @@ void setAttribute(QtSingleApplication &a)
     QIcon::setThemeName("ukui-icon-theme-default");
 
     a.setOrganizationName("kylin");
-    a.setApplicationName("Kylin Weather (indicator-china-weather)");
+    a.setApplicationName("Weather (indicator-china-weather)");
     a.setApplicationVersion("3.1.0");
     a.setQuitOnLastWindowClosed(false);//Avoid that after hiding mainwindow, close the sub window would cause the program exit
 }
