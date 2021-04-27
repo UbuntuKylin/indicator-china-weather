@@ -75,6 +75,8 @@ signals:
     void requestSetLifeStyle(LifeStyle lifestyle);
 
     void newNetworkConnectionCreated();
+
+    void noNetWork();
 };
 
 #endif // WEATHER_MANAGER_H

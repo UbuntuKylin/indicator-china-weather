@@ -247,8 +247,6 @@
         <file>res/control_icons/delete_hover_pressed_btn.png</file>
         <file>res/control_icons/delete_normal_btn.png</file>
         <file>res/control_icons/delete_normal.png</file>
-        <file>res/control_icons/indicator-china-weather_min.png</file>
-        <file>res/control_icons/indicator-china-weather.png</file>
         <file>res/control_icons/link.gif</file>
         <file>res/control_icons/location_bg_hover.png</file>
         <file>res/control_icons/location.png</file>
@@ -390,7 +388,11 @@
         <file>res/control_icons/dark-window-min.svg</file>
         <file>res/control_icons/menu.png</file>
         <file>res/control_icons/menu_d.png</file>
-        <file>res/control_icons/indicator-china-weather.svg</file>
+        <file>res/control_icons/loadgif23.gif</file>
+        <file>res/control_icons/loadgif.gif</file>
+        <file>res/control_icons/weather_min.png</file>
+        <file>res/control_icons/weather.png</file>
+        <file>res/control_icons/weather.svg</file>
     </qresource>
     <qresource prefix="/data">
         <file>data/china-city-list.csv</file>

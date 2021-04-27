@@ -26,6 +26,7 @@
 #include <QDir>
 #include <signal.h>
 #include <X11/Xlib.h>
+#include <ukui-log4qt.h>
 #include "xatom-helper.h"
 
 #include <QtSingleApplication>
@@ -34,7 +35,7 @@ bool onlyOne(QtSingleApplication &a)
 {
     if (a.isRunning()) {
         qDebug()<<"给首个对象发送信号："<< a.sendMessage(QApplication::arguments().length() > 1 ? QApplication::arguments().at(1) : a.applicationFilePath());
-        qDebug() << "Can't lock single file, indicator-china-weather is already running!";
+        qDebug() << "Can't lock single file, weather is already running!";
         return true;
     }
     return false;
@@ -51,7 +52,7 @@ void setAttribute(QtSingleApplication &a)
     QIcon::setThemeName("ukui-icon-theme-default");
 
     a.setOrganizationName("kylin");
-    a.setApplicationName("Kylin Weather (indicator-china-weather)");
+    a.setApplicationName("Weather");
     a.setApplicationVersion("3.1.0");
     a.setQuitOnLastWindowClosed(false);//Avoid that after hiding mainwindow, close the sub window would cause the program exit
 }
@@ -59,7 +60,7 @@ void setAttribute(QtSingleApplication &a)
 void showThis(MainWindow &w)
 {
     //读取开机启动服务列表，判断是否开机启动
-    QString homepath="/.config/autostart/indicator-china-weather.desktop";
+    QString homepath="/.config/autostart/weather.desktop";
     QFile file(QStandardPaths::writableLocation(QStandardPaths::HomeLocation)+homepath);
     if(file.exists())
         w.handleIconClickedSub(); //显示在屏幕中央
@@ -69,11 +70,11 @@ void responseCommand(QtSingleApplication &a)
 {
     //提供DBus接口，添加show参数
     QCommandLineParser parser;
-    parser.setApplicationDescription(QCoreApplication::translate("main", "KylinWeather"));
+    parser.setApplicationDescription(QCoreApplication::translate("main", "Weather"));
     parser.addHelpOption();
     parser.addVersionOption();
 
-    QCommandLineOption swOption(QStringLiteral("show"),QCoreApplication::translate("main", "show indicator-china-weather test"));
+    QCommandLineOption swOption(QStringLiteral("show"),QCoreApplication::translate("main", "show weather test"));
 
     parser.addOptions({swOption});
     parser.process(a);
@@ -93,6 +94,7 @@ void responseCommand(QtSingleApplication &a)
 
 int main(int argc, char *argv[])
 {
+    initUkuiLog4qt("weather");
     #if(QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
             QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
             QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
@@ -103,7 +105,7 @@ int main(int argc, char *argv[])
     #endif
 
 
-    QString id = QString("indicator-china-weather-"+QLatin1String(getenv("DISPLAY")));
+    QString id = QString("weather-"+QLatin1String(getenv("DISPLAY")));
     QtSingleApplication a(id, argc, argv);
 //    responseCommand(a);//响应外部DBus命令
     if(onlyOne(a))return 0;
@@ -115,8 +117,8 @@ int main(int argc, char *argv[])
     QTranslator qt_trans;
     QString locale = QLocale::system().name();
     QString trans_path;
-    if (QDir("/usr/share/indicator-china-weather/translations").exists()) {
-        trans_path = "/usr/share/indicator-china-weather/translations";
+    if (QDir("/usr/share/weather/translations").exists()) {
+        trans_path = "/usr/share/weather/translations";
     }
     else {
         trans_path = qApp->applicationDirPath() + "/translations";
@@ -125,8 +127,8 @@ int main(int argc, char *argv[])
     qt_trans_path = QLibraryInfo::location(QLibraryInfo::TranslationsPath);// /usr/share/qt5/translations
 
     if (locale == "zh_CN") {
-        if(!app_trans.load("indicator-china-weather_" + locale + ".qm", trans_path))
-            qDebug() << "Load translation file："<< "indicator-china-weather_" + locale + ".qm from" << trans_path << "failed!";
+        if(!app_trans.load("weather_" + locale + ".qm", trans_path))
+            qDebug() << "Load translation file："<< "weather_" + locale + ".qm from" << trans_path << "failed!";
         else
             a.installTranslator(&app_trans);
 

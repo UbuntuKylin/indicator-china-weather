@@ -36,15 +36,15 @@ MainWindow::MainWindow(QWidget *parent) :
     //设置主界面样式
     this->setFixedSize(865,520);
     this->setFocusPolicy(Qt::ClickFocus);//this->setFocusPolicy(Qt::NoFocus);//设置焦点类型
-    this->setWindowTitle(tr("Kylin Weather"));
-//    this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
-    this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/logo_24.png")));
-    QPainterPath path;
-    auto rect = this->rect();
-    rect.adjust(1, 1, -1, -1);
-    path.addRoundedRect(rect, 6, 6);
-    setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
-    this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
+    this->setWindowTitle(tr("Weather"));
+    this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
+    this->setWindowIcon(QIcon::fromTheme("weather", QIcon(":/res/control_icons/logo_24.png")));
+//    QPainterPath path;
+//    auto rect = this->rect();
+//    rect.adjust(1, 1, -1, -1);
+//    path.addRoundedRect(rect, 6, 6);
+//    setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
+//    this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
     titleWid = new QWidget(this);
     titleLayout = new QHBoxLayout();
     cityLabel = new QLabel(this);
@@ -64,13 +64,13 @@ MainWindow::MainWindow(QWidget *parent) :
     m_leftupcitybtn = new LeftUpCityBtn(ui->widget_normal);
     m_leftupcitybtn->hide();
 
-    logoBtn = new QPushButton(ui->widget_normal);
+    logoBtn = new QLabel(ui->widget_normal);
     logolb = new QLabel(ui->widget_normal);
     logolb->setFixedSize(100,24);
     logoBtn->setFixedSize(24,24);
-    logoBtn->setIconSize(QSize(24,24));//重置图标大小
-    logoBtn->setIcon(QIcon(":/res/control_icons/logo_24.png"));
-    logolb->setText(tr("Kylin Weather"));
+    logoBtn->setPixmap(QPixmap::fromImage(QImage(":/res/control_icons/logo_24.png")));
+    logoBtn->setScaledContents(true);
+    logolb->setText(tr("Weather"));
     logolb->setStyleSheet("font-size:14px;color:white;");
 
 
@@ -84,15 +84,13 @@ MainWindow::MainWindow(QWidget *parent) :
     //添加托盘菜单
     m_mainMenu = new QMenu;
 //    m_mainMenu->addSeparator();
-    m_openAction = new QAction(tr("Open Kylin Weather"),this);//打开麒麟天气
+    m_openAction = new QAction(tr("Open Weather"),this);//打开天气
     m_quitAction = new QAction(tr("Exit"),this);//退出
     m_mainMenu->addAction(m_openAction);
-//    m_openAction->setIcon(QIcon::fromTheme(QString("indicator-china-weather"), QIcon(QString(":/res/control_icons/indicator-china-weather_min.png"))));
     m_openAction->setIcon(QIcon(QString(":/res/control_icons/logo_24.png")) );
     m_mainMenu->addAction(m_quitAction);
 
     m_quitAction->setIcon(QIcon::fromTheme(QString("exit-symbolic"), QIcon(QString(":/res/control_icons/quit_normal.png"))) );
-//    m_quitAction->setIcon(QIcon(QString(":/res/control_icons/quit_normal.png")));
     connect(m_openAction, &QAction::triggered, this, [=] {
         if(this->isHidden() || this->isMinimized()){
             handleIconClickedSub();
@@ -147,9 +145,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     // F1快捷键打开用户手册
     if (event->key() == Qt::Key_F1) {
         if (!mDaemonIpcDbus->daemonIsNotRunning()){
-            //F1快捷键打开用户手册，如kylin-recorder
-            //由于是小工具类，下面的showGuide参数要填写"tools/indicator-china-weather"
-            mDaemonIpcDbus->showGuide("tools/indicator-china-weather");
+            mDaemonIpcDbus->showGuide("tools/weather");
         }
     }
 }
@@ -173,11 +169,11 @@ void MainWindow::initControlQss()
 {
     m_leftupsearchbox->setFixedWidth(150);
     titleLayout->addSpacing(4);
-    titleLayout->addWidget(logoBtn);//麒麟天气logo
+    titleLayout->addWidget(logoBtn);//天气logo
     titleLayout->addSpacing(4);
-    titleLayout->addWidget(logolb);//麒麟天气标签
+    titleLayout->addWidget(logolb);//天气标签
     titleLayout->addStretch();//添加伸缩
-    titleLayout->addWidget(m_leftupsearchbox);//麒麟天气搜索栏
+    titleLayout->addWidget(m_leftupsearchbox);//天气搜索栏
     titleLayout->addSpacing(4);
     titleLayout->addWidget(m_menu->menuButton);//设置按钮
     titleLayout->addWidget(ui->btnMinimize);
@@ -270,7 +266,7 @@ void MainWindow::initConnections()
     });
     //2*****addCityAction替换原来的m_leftupcitybtn*****
     connect(m_menu->addCityAction,&AddCityAction::sendCurrentCityId, this, [=] (QString id) {
-        if(this->isHidden()){
+        if(this->isHidden() || this->isMinimized()){
             handleIconClickedSub(); //显示在屏幕中央
         }
         m_weatherManager->startGetTheWeatherData(id);
@@ -295,7 +291,8 @@ void MainWindow::initConnections()
     //5*****addCityAction替换原来的m_leftupcitybtn*****
     connect(m_weatherManager, SIGNAL(requestSetCityWeather(QString)), m_menu->addCityAction, SIGNAL(requestSetCityWeather(QString)));
 //    connect(m_weatherManager, SIGNAL(requestSetCityWeather(QString)), m_leftupcitybtn, SIGNAL(requestSetCityWeather(QString)));
-
+    //没有网络的时候发送信号到收藏城市界面阻断动作进行
+    connect(m_weatherManager,&WeatherManager::noNetWork,m_menu->addCityAction,&AddCityAction::noNetWork);
     //收到信号带来的数据时，更新主界面天气数据
     connect(m_weatherManager, &WeatherManager::requestSetObserveWeather, this, [=] (ObserveWeather observerdata) {
         m_trayIcon->show();
@@ -373,7 +370,7 @@ void MainWindow::initConnections()
 void MainWindow::createTrayIcon()
 {
     m_trayIcon = new QSystemTrayIcon(this);
-    m_trayIcon->setToolTip(QString(tr("Kylin Weather")));
+    m_trayIcon->setToolTip(QString(tr("Weather")));
 //    m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
     m_trayIcon->setVisible(true);
     m_trayIcon->hide();
@@ -382,7 +379,6 @@ void MainWindow::createTrayIcon()
 //托盘图标被点击
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
-    qDebug()<<"sxs# iconactived";
     switch(reason){
     case QSystemTrayIcon::Trigger:
     case QSystemTrayIcon::MiddleClick:
@@ -391,11 +387,11 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
             //handleIconClicked(); //靠近任务栏显示
             handleIconClickedSub(); //显示在屏幕中央
         }else{
-            this->hide();
+            this->showMinimized();
         }
         break;
     case QSystemTrayIcon::DoubleClick:
-        this->hide();
+        this->showMinimized();
         break;
     case QSystemTrayIcon::Context:
         //右键点击托盘图标弹出菜单
@@ -409,15 +405,15 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 void MainWindow::closeActivated()
 {
     //托盘退出默认关闭开机自启
-    QString autostart=QStandardPaths::standardLocations(QStandardPaths::HomeLocation)[0]+"/.config/autostart/indicator-china-weather.desktop";
+    QString autostart=QStandardPaths::standardLocations(QStandardPaths::HomeLocation)[0]+"/.config/autostart/weather.desktop";
     QFile file(autostart);
     if(!file.exists())
     {
-        QString path="/etc/xdg/autostart/indicator-china-weather.desktop";
+        QString path="/etc/xdg/autostart/weather.desktop";
         QFileInfo file2(path);
         if(!file2.exists())
         {
-            qDebug()<<"/etc/xdg/autostart/目录下无麒麟天气快捷方式";
+            qDebug()<<"/etc/xdg/autostart/目录下无天气快捷方式";
         }
         else
         {
@@ -618,7 +614,7 @@ void MainWindow::onSearchBoxEdited()
 }
 void MainWindow::searchCityName()
 {
-    const QString inputText = m_leftupsearchbox->text().trimmed();
+    const QString inputText = m_leftupsearchbox->text().trimmed().toLower();
     if (inputText.isEmpty())
         return;
 

@@ -52,7 +52,6 @@ private:
     QMenu *m_menu = nullptr;
     QMenu *themeMenu = nullptr;
     QSize iconSize;
-//    QString appPath = "tools/kylin-usb-creator"; //拉起帮助菜单时使用appName字段
     QWidget *aboutWindow = nullptr;
     QGSettings *m_pGsettingThemeData = nullptr;
     QGSettings *m_pGsettingThemeStatus = nullptr;

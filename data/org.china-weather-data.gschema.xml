@@ -1,5 +1,5 @@
-<schemalist gettext-domain="indicator-china-weather">
-     <schema id="org.china-weather-data.settings"  path="/org/ukui/indicator-china-weather/">
+<schemalist gettext-domain="weather">
+     <schema id="org.weather-data.settings"  path="/org/ukui/weather/">
         <key name="citylist" type="s">
             <default>"101010100,"</default>
             <summary>citylist</summary>

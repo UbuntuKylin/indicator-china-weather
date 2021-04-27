@@ -110,7 +110,7 @@ private:
     QAction *m_quitAction;
 
     //*****2020.12.19增加
-    QPushButton *logoBtn;
+    QLabel *logoBtn;
     QLabel *logolb;
 
     QWidget *titleWid;
@@ -170,6 +170,8 @@ signals:
     void requestSetCityWeather(QString weather_data); //发送出去显示主界面城市天气
     void updatecity();
     void requestSetCityName(QString cityName);//在搜索列表中选中一个城市后，左上角城市名需要更改
+
+
 
 };
 

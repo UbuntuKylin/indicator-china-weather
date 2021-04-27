@@ -185,7 +185,7 @@ void citycollectionitem::onWeatherDataRequest(const QString &cityId)
 {
     if (cityId.isEmpty()) { return; }
 
-    QString forecastUrl = QString("http://service.ubuntukylin.com:8001/weather/api/3.0/heweather_data_s6/%1/").arg(cityId);
+    QString forecastUrl = QString("http://112.125.25.75:8001/weather/api/3.0/heweather_data_s6/%1/").arg(cityId);
     QNetworkRequest request;
     request.setUrl(forecastUrl);
     QNetworkReply *reply = m_networkManager->get(request);
@@ -226,8 +226,8 @@ void citycollectionitem::onWeatherDataReply()
         qDebug() << "Json object null or empty!";
         return;
     }
-    if (jsonObject.contains("KylinWeather")) {
-        QJsonObject mainObj = jsonObject.value("KylinWeather").toObject();
+    if (jsonObject.contains("Weather")) {
+        QJsonObject mainObj = jsonObject.value("Weather").toObject();
         if (mainObj.isEmpty() || mainObj.size() == 0) {
             return;
         }
@@ -261,7 +261,7 @@ void citycollectionitem::onWeatherDataReply()
                 }
             }
         } //end if (mainObj.contains("weather"))
-    } //end if (jsonObject.contains("KylinWeather"))
+    }
     emit this->mThreadFinish();
 }
 

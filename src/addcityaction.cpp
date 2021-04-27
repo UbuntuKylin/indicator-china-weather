@@ -5,6 +5,14 @@ AddCityAction::AddCityAction(QWidget *parent) : QAction(parent)
 {
     emit cityNameLabelSignal("N/A");//需要//此处为加载时N/A
     connect(this,&AddCityAction::triggered,this,&AddCityAction::addCityClick);
+    connect(this,&AddCityAction::noNetWork,this,[=] {
+        if(is_open_city_collect_widget){
+        if(QLocale::system().name() == "zh_CN"){
+        onRequestSendDesktopNotify("网络已断开");
+    }else{
+        onRequestSendDesktopNotify("Network disconnected");
+    }}
+    });
 //    connect(this, &AddCityAction::requestSetCityName, this, [=] (QString cityName) {
 //        emit cityNameLabelSignal(cityName);
 //        qDebug()<<"城市名称:"<<cityName;
@@ -12,19 +20,21 @@ AddCityAction::AddCityAction(QWidget *parent) : QAction(parent)
 }
 void AddCityAction::addCityClick()
 {
-    qDebug()<<"点击了我!";
+   
     if (!is_open_city_collect_widget) {
+
         m_citycollectionwidget = new CityCollectionWidget();
         QRect availableGeometry = this->parentWidget()->geometry();
         m_citycollectionwidget->move(availableGeometry.center().x() -m_citycollectionwidget->rect().center().x() -420,availableGeometry.center().y() -m_citycollectionwidget->rect().center().y() + 155);
 //        m_citycollectionwidget->move(m_citycollectionwidget->x()-400,m_citycollectionwidget->y() + 155);
 //        qDebug()<<"2!"<<m_citycollectionwidget->rect().center().x()<<m_citycollectionwidget->rect().center().y();
+
         //接收来自收藏城市窗口发来的信号，再发送一个信号到主窗口
         connect(m_citycollectionwidget, &CityCollectionWidget::sendCurrentCityId, this, &AddCityAction::sendCurrentCityId);
 
         //给收藏城市窗口发送信号进行更新
         connect(this,&AddCityAction::updatecity,m_citycollectionwidget,&CityCollectionWidget::updatecity);
-
+        connect(this,&AddCityAction::noNetWork,m_citycollectionwidget,&CityCollectionWidget::noNetWork);
         //requestShowCollCityWeather信号会一直传到weathermanager.cpp，用于获取收藏列表中城市的实时天气
         connect(m_citycollectionwidget, &CityCollectionWidget::requestShowCollCityWeather, this, &AddCityAction::requestShowCollCityWeather);
 
@@ -53,4 +63,33 @@ void AddCityAction::addCityClick()
             return;
         }
     }
+}
+void AddCityAction::onRequestSendDesktopNotify(QString message)
+{
+    QDBusInterface iface("org.freedesktop.Notifications",
+                         "/org/freedesktop/Notifications",
+                         "org.freedesktop.Notifications",
+                         QDBusConnection::sessionBus());
+    QList<QVariant> args;
+    if(QLocale::system().name() == "zh_CN")
+    {
+        args<<(tr("天气"))
+           <<((unsigned int) 0)
+          <<("天气")
+         <<tr("天气") //显示的是什么类型的信息  控制面板-更新提示
+        <<message //显示的具体信息
+        <<QStringList()
+        <<QVariantMap()
+        <<(int)-1;
+    }else{
+        args<<(tr("weather"))
+           <<((unsigned int) 0)
+          <<("weather")
+         <<tr("weather") //显示的是什么类型的信息  控制面板-更新提示
+        <<message //显示的具体信息
+        <<QStringList()
+        <<QVariantMap()
+        <<(int)-1;
+    }
+    iface.callWithArgumentList(QDBus::AutoDetect,"Notify",args);
 }

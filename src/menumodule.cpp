@@ -155,7 +155,7 @@ void menuModule::aboutAction(){
 void menuModule::helpAction(){
 //    帮助点击事件处理
 
-    appName = "tools/indicator-china-weather";
+    appName = "tools/weather";
     if(!ipcDbus){
         ipcDbus = new DaemonDbus();
     }
@@ -202,15 +202,15 @@ QHBoxLayout* menuModule::initTitleBar(){
     QLabel* titleIcon = new QLabel();
 //    titleBtnClose = new QPushButton;
     titleIcon->setFixedSize(QSize(24,24));
-    appShowingName = tr("indicator china weather");
-    iconPath = ":/res/control_icons/indicator-china-weather.svg";
+    appShowingName = tr("weather");
+    iconPath = ":/res/control_icons/weather.svg";
     titleIcon->setPixmap(QPixmap::fromImage(QImage(iconPath)));
     titleIcon->setScaledContents(true);
 
 
     connect(titleBtnClose,&QPushButton::clicked,[=](){aboutWindow->close();});
     QHBoxLayout *hlyt = new QHBoxLayout;
-    titleText->setText(tr("Indicator China Weather"));
+    titleText->setText(tr("Weather"));
     hlyt->setSpacing(0);
     hlyt->setMargin(4);
     hlyt->addSpacing(4);
