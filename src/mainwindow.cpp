@@ -525,7 +525,10 @@ void MainWindow::handleIconClickedSub()
     hints.functions = MWM_FUNC_ALL;
     hints.decorations = MWM_DECOR_BORDER;
     XAtomHelper::getInstance()->setWindowMotifHint(this->winId(), hints);
-    \
+
+    if(this->m_menu && this->m_menu->aboutWindow){
+        this->m_menu->aboutWindow->close();
+    }
 
     QDesktopWidget* m = QApplication::desktop();
     QRect desk_rect = m->screenGeometry(m->screenNumber(QCursor::pos()));
