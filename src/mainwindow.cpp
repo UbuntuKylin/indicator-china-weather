@@ -529,15 +529,15 @@ void MainWindow::handleIconClickedSub()
     if(this->m_menu && this->m_menu->aboutWindow){
         this->m_menu->aboutWindow->close();
     }
-
-    QDesktopWidget* m = QApplication::desktop();
-    QRect desk_rect = m->screenGeometry(m->screenNumber(QCursor::pos()));
-    int desk_x = desk_rect.width();
-    int desk_y = desk_rect.height();
-    int x = this->width();
-    int y = this->height();
-    //英特尔注释掉move
-    this->move(desk_x/2-x/2+desk_rect.left(),desk_y/2-y/2+desk_rect.top());
+    if(!this->isVisible()){
+        QDesktopWidget* m = QApplication::desktop();
+        QRect desk_rect = m->screenGeometry(m->screenNumber(QCursor::pos()));
+        int desk_x = desk_rect.width();
+        int desk_y = desk_rect.height();
+        int x = this->width();
+        int y = this->height();
+        this->move(desk_x/2-x/2+desk_rect.left(),desk_y/2-y/2+desk_rect.top());
+    }
     this->showNormal();
     this->raise();
     this->activateWindow();
