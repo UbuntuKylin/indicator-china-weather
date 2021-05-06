@@ -71,7 +71,6 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     rect.adjust(1, 1, -1, -1);
     path.addRoundedRect(rect, 6, 6); //set border radius
     setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
-    this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/logo_24.png")) ); //set taskbar icon
     this->setWindowTitle(tr("Weather"));
 
     QRect availableGeometry = qApp->primaryScreen()->availableGeometry();

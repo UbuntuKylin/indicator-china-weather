@@ -38,7 +38,6 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setFocusPolicy(Qt::ClickFocus);//this->setFocusPolicy(Qt::NoFocus);//设置焦点类型
     this->setWindowTitle(tr("Weather"));
     this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
-    this->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/logo_24.png")));
 //    QPainterPath path;
 //    auto rect = this->rect();
 //    rect.adjust(1, 1, -1, -1);
