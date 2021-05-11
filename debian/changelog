@@ -1,3 +1,11 @@
+indicator-china-weather (3.1.1-2) v101; urgency=medium
+
+  * BUG号：40454,49268,52297,51738
+  * 需求号：无
+  * 其他改动说明：无
+
+ -- fengyongfan <fengyongfan@kylinos.cn>  Tue,11  May 2021 14:27:00 +0800
+
 indicator-china-weather (3.1.1-0) v101; urgency=medium
 
   * BUG号：43131
