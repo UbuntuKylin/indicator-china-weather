@@ -223,7 +223,7 @@ QHBoxLayout* menuModule::initTitleBar(){
 }
 
 QVBoxLayout* menuModule::initBody(){
-    appVersion = "3.1.0";
+    appVersion = "3.1.1";
     QLabel* bodyIcon = new QLabel();
     bodyIcon->setFixedSize(96,96);
     bodyIcon->setPixmap(QPixmap::fromImage(QImage(iconPath)));
