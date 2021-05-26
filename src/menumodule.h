@@ -31,6 +31,7 @@ public:
     explicit menuModule(QWidget *);
     void themeUpdate();
     AddCityAction *addCityAction = nullptr;
+    QWidget *aboutWindow = nullptr;
 
 
 
@@ -53,7 +54,6 @@ private:
     QMenu *themeMenu = nullptr;
     QSize iconSize;
 //    QString appPath = "tools/kylin-usb-creator"; //拉起帮助菜单时使用appName字段
-    QWidget *aboutWindow = nullptr;
     QGSettings *m_pGsettingThemeData = nullptr;
     QGSettings *m_pGsettingThemeStatus = nullptr;
     DaemonDbus *ipcDbus = nullptr;

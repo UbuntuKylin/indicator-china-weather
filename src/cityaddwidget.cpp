@@ -42,7 +42,6 @@ CityAddition::CityAddition(QWidget *parent) :
     path.addRoundedRect(rect, 6, 6); //set border radius
     setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
     this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
-    this->setWindowIcon(QIcon(":/res/control_icons/indicator-china-weather.png") ); //set taskbar icon
 
 //    ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(207,207,207,1);border-radius:6px;background:rgba(255,255,255,1);}");
 

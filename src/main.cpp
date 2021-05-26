@@ -52,10 +52,10 @@ void setAttribute(QtSingleApplication &a)
 //    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 //    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
-    QIcon::setThemeName("ukui-icon-theme-default");
+//    QIcon::setThemeName("ukui-icon-theme-default");
 
     a.setOrganizationName("kylin");
-    a.setApplicationName("Weather (indicator-china-weather)");
+    a.setApplicationName("indicator-china-weather");
     a.setApplicationVersion("3.1.0");
     a.setQuitOnLastWindowClosed(false);//Avoid that after hiding mainwindow, close the sub window would cause the program exit
 }
