@@ -109,6 +109,7 @@ int main(int argc, char *argv[])
 
     QString id = QString("indicator-china-weather-"+QLatin1String(getenv("DISPLAY")));
     QtSingleApplication a(id, argc, argv);
+    qApp->setWindowIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/logo_24.png")));
 //    responseCommand(a);//响应外部DBus命令
     if(onlyOne(a))return 0;
     setAttribute(a);//设置属性
