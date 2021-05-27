@@ -199,14 +199,17 @@ void menuModule::initAbout(){
 }
 
 QHBoxLayout* menuModule::initTitleBar(){
-    QLabel* titleIcon = new QLabel();
-//    titleBtnClose = new QPushButton;
-    titleIcon->setFixedSize(QSize(24,24));
+
     appShowingName = tr("weather");
     iconPath = ":/res/control_icons/indicator-china-weather.svg";
-    titleIcon->setPixmap(QPixmap::fromImage(QImage(iconPath)));
-    titleIcon->setScaledContents(true);
 
+    QPushButton *titleIcon = new QPushButton();
+    titleIcon->setFixedSize(QSize(24,24));
+    titleIcon->setIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/logo_24.png")));
+    titleIcon->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
+                             "QPushButton::hover{border:0px;border-radius:4px;background:transparent;}"
+                             "QPushButton::pressed{border:0px;border-radius:4px;background:transparent;}");
+    titleIcon->setIconSize(QSize(24,24));
 
     connect(titleBtnClose,&QPushButton::clicked,[=](){aboutWindow->close();});
     QHBoxLayout *hlyt = new QHBoxLayout;
@@ -224,11 +227,17 @@ QHBoxLayout* menuModule::initTitleBar(){
 
 QVBoxLayout* menuModule::initBody(){
     appVersion = "3.1.1";
-    QLabel* bodyIcon = new QLabel();
+
+
+    QPushButton *bodyIcon = new QPushButton();
     bodyIcon->setFixedSize(96,96);
-    bodyIcon->setPixmap(QPixmap::fromImage(QImage(iconPath)));
-    bodyIcon->setStyleSheet("font-size:14px;");
-    bodyIcon->setScaledContents(true);
+
+    bodyIcon->setIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/logo_24.png")));
+    bodyIcon->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
+                            "QPushButton::hover{border:0px;border-radius:4px;background:transparent;}"
+                            "QPushButton::pressed{border:0px;border-radius:4px;background:transparent;}");
+    bodyIcon->setIconSize(QSize(96,96));
+
     bodyAppName->setFixedHeight(28);
     bodyAppName->setText(tr(appShowingName.toLocal8Bit()));
     bodyAppVersion->setFixedHeight(24);

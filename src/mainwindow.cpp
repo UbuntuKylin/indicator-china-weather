@@ -63,16 +63,16 @@ MainWindow::MainWindow(QWidget *parent) :
     m_leftupcitybtn = new LeftUpCityBtn(ui->widget_normal);
     m_leftupcitybtn->hide();
 
-    logoBtn = new QLabel(ui->widget_normal);
     logolb = new QLabel(ui->widget_normal);
     logolb->setFixedSize(100,24);
-    logoBtn->setFixedSize(24,24);
-    logoBtn->setPixmap(QPixmap::fromImage(QImage(":/res/control_icons/logo_24.png")));
-    logoBtn->setScaledContents(true);
     logolb->setText(tr("Weather"));
     logolb->setStyleSheet("font-size:14px;color:white;");
 
-
+    logoBtn = new QPushButton(ui->widget_normal);
+    logoBtn->setFixedSize(24,24);//重置图标大小
+    logoBtn->setIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/logo_24.png")));
+    logoBtn->setIconSize(QSize(24,24));
+    logoBtn->setFocusPolicy(Qt::NoFocus);
     //左上角搜索框
     m_leftupsearchbox = new LeftUpSearchBox(ui->widget_normal);
     //设置其他控件样式
@@ -86,8 +86,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_openAction = new QAction(tr("Open Weather"),this);//打开麒麟天气
     m_quitAction = new QAction(tr("Exit"),this);//退出
     m_mainMenu->addAction(m_openAction);
-//    m_openAction->setIcon(QIcon::fromTheme(QString("indicator-china-weather"), QIcon(QString(":/res/control_icons/indicator-china-weather_min.png"))));
-    m_openAction->setIcon(QIcon(QString(":/res/control_icons/logo_24.png")) );
+    m_openAction->setIcon(QIcon::fromTheme(QString("indicator-china-weather"), QIcon(QString(":/res/control_icons/indicator-china-weather_min.png"))));
+//    m_openAction->setIcon(QIcon(QString(":/res/control_icons/logo_24.png")) );
     m_mainMenu->addAction(m_quitAction);
 
     m_quitAction->setIcon(QIcon::fromTheme(QString("exit-symbolic"), QIcon(QString(":/res/control_icons/quit_normal.png"))) );
@@ -186,7 +186,9 @@ void MainWindow::initControlQss()
     titleWid->setLayout(titleLayout);
     titleWid->setFixedWidth(865);
     titleWid->move(0,0);
-
+    logoBtn->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
+                             "QPushButton::hover{border:0px;border-radius:4px;background:transparent;}"
+                             "QPushButton::pressed{border:0px;border-radius:4px;background:transparent;}");
 //    ui->centralwidget->setStyleSheet("#centralwidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(19,19,20,0);}");
     ui->centralwidget->setStyleSheet("#centralwidget{color:white;background-image:url(':/res/background/weather-clear.png');background-repeat:no-repeat;}");
     ui->centralwidget->move(0,0);

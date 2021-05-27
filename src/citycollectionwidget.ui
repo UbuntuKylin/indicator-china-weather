@@ -13,19 +13,6 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLabel" name="lbLeftUpIcon">
-   <property name="geometry">
-    <rect>
-     <x>21</x>
-     <y>25</y>
-     <width>17</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
   <widget class="QLabel" name="lbLeftUpTitle">
    <property name="geometry">
     <rect>
@@ -101,13 +88,26 @@
     </rect>
    </property>
   </widget>
+  <widget class="QPushButton" name="lbLeftUpIcon">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>24</y>
+     <width>21</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
   <zorder>backwidget</zorder>
-  <zorder>lbLeftUpIcon</zorder>
   <zorder>lbLeftUpTitle</zorder>
   <zorder>btnCancel</zorder>
   <zorder>lbCityCurrent</zorder>
   <zorder>lbCityCollect</zorder>
   <zorder>lbCityCount</zorder>
+  <zorder>lbLeftUpIcon</zorder>
  </widget>
  <resources/>
  <connections/>
