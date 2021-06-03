@@ -31,6 +31,7 @@ LeftUpSearchBox::LeftUpSearchBox(QWidget* parent)
     this->setFixedSize(180, 28);
     this->setStyleSheet("QLineEdit{padding-left:31px;background:rgba(255,255,255,0.2);border-radius:4px;color:rgba(255,255,255,0.5);}");
     this->setFocusPolicy(Qt::ClickFocus);
+//    preferences-system-search-symbolic
 }
 
 void LeftUpSearchBox::paintEvent(QPaintEvent *event)
