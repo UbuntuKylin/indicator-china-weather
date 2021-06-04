@@ -139,8 +139,12 @@ CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     //   this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
     //    ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(255,255,255,1);}");
     ui->backwidget->setStyleSheet("QWidget{background:rgba(255,255,255,1);}");
-
-    ui->lbLeftUpIcon->setStyleSheet("QLabel{border:none;background:transparent;background-image:url(':/res/control_icons/logo.png');}");
+    ui->lbLeftUpIcon->setIcon(QIcon::fromTheme("indicator-china-weather", QIcon(":/res/control_icons/logo.png")));
+    ui->lbLeftUpIcon->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;}"
+                             "QPushButton::hover{border:0px;border-radius:4px;background:transparent;}"
+                             "QPushButton::pressed{border:0px;border-radius:4px;background:transparent;}");
+    ui->lbLeftUpIcon->setIconSize(ui->lbLeftUpIcon->size());
+    ui->lbLeftUpIcon->setFocusPolicy(Qt::NoFocus);
     ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");
     ui->btnCancel->setStyleSheet("QPushButton{border-radius:4px;border:none;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
                                  "QPushButton:Hover{border:0px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_normal_btn.png);}"

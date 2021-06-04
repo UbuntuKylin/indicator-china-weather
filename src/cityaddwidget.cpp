@@ -76,7 +76,7 @@ CityAddition::CityAddition(QWidget *parent) :
     m_darkcityaddsearchdelegate = new DarkCityAddSearchDelegate(m_cityaddsearchview);
     m_proxyModel = new QSortFilterProxyModel(m_cityaddsearchview);
     m_model = new QStandardItemModel();
-    m_cityaddsearchview->move(35, 115);
+    m_cityaddsearchview->move(45, 135);
     m_cityaddsearchview->resize(470,227);
     m_cityaddsearchview->hide();
     connect(m_cityaddsearchbox,&CityAddSearchBox::lineEditKeyEvent,m_cityaddsearchview,&CityAddSearchView::dealSearchBoxKeyPress);

@@ -13,24 +13,11 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLabel" name="lbLeftUpIcon">
-   <property name="geometry">
-    <rect>
-     <x>21</x>
-     <y>25</y>
-     <width>17</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
   <widget class="QLabel" name="lbLeftUpTitle">
    <property name="geometry">
     <rect>
-     <x>46</x>
-     <y>24</y>
+     <x>40</x>
+     <y>10</y>
      <width>121</width>
      <height>17</height>
     </rect>
@@ -42,8 +29,8 @@
   <widget class="QPushButton" name="btnCancel">
    <property name="geometry">
     <rect>
-     <x>556</x>
-     <y>14</y>
+     <x>566</x>
+     <y>4</y>
      <width>30</width>
      <height>30</height>
     </rect>
@@ -101,13 +88,26 @@
     </rect>
    </property>
   </widget>
+  <widget class="QPushButton" name="lbLeftUpIcon">
+   <property name="geometry">
+    <rect>
+     <x>8</x>
+     <y>8</y>
+     <width>24</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
   <zorder>backwidget</zorder>
-  <zorder>lbLeftUpIcon</zorder>
   <zorder>lbLeftUpTitle</zorder>
   <zorder>btnCancel</zorder>
   <zorder>lbCityCurrent</zorder>
   <zorder>lbCityCollect</zorder>
   <zorder>lbCityCount</zorder>
+  <zorder>lbLeftUpIcon</zorder>
  </widget>
  <resources/>
  <connections/>
