@@ -1,11 +1,11 @@
 indicator-china-weather (3.1.1-4) v101; urgency=medium
 
   * BUG号：无
-  * 需求号：6403，6397
+  * 需求号：6403，6397，6405，6391
   * 其他改动说明：无
   * 影响域：仅ui需求修改，无影响
 
- -- zoujunnan <zoujunnan@kylinos.cn>  Thu,03  Jun 2021 14:27:00 +0800
+ -- zoujunnan <zoujunnan@kylinos.cn>  Sat,05  Jun 2021 14:27:00 +0800
 
 indicator-china-weather (3.1.1-3) v101; urgency=medium
 

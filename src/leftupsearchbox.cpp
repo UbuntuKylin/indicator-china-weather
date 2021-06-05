@@ -30,6 +30,11 @@ LeftUpSearchBox::LeftUpSearchBox(QWidget* parent)
 {
     this->setFixedSize(180, 28);
     this->setStyleSheet("QLineEdit{padding-left:31px;background:rgba(255,255,255,0.2);border-radius:4px;color:rgba(255,255,255,0.5);}");
+//    this->setStyleSheet("QLineEdit{padding-left:31px;"
+//                        "background:rgba(255,255,255,0.2);"
+//                        "border:3px solid rgba(0,255,0,1);"
+//                        "border-radius:4px;"
+//                        "color:rgba(255,255,255,0.5);}");
     this->setFocusPolicy(Qt::ClickFocus);
 //    preferences-system-search-symbolic
 }
@@ -72,12 +77,22 @@ void LeftUpSearchBox::ThemeLeftUpSearchBox(QString str)
 {
     if("ukui-dark" == str || "ukui-black" == str)
     {
-   this->setStyleSheet("QLineEdit{padding-left:31px;background:rgba(0,0,0,0.2);border-radius:4px;color:rgba(255,255,255,0.5);}");
-
-}
+        // 改搜索框属性
+//        this->setStyleSheet("QLineEdit{padding-left:31px;background:rgba(0,0,0,0.2);border-radius:4px;color:rgba(255,255,255,0.5);border:1px solid rgba(0,0,255,1)}");
+        this->setStyleSheet("QLineEdit{padding-left:31px;background:rgba(0,0,0,0.2);border-radius:6px;color:rgba(255,255,255,1);}"
+                            "QLineEdit:hover{padding-left:31px;background:rgba(0,0,0,0.2);border-radius:6px;color:rgba(255,255,255,1);border:2px solid rgba(55,144,250,1);}"
+                            "QLineEdit:focus{padding-left:31px;background:rgba(0,0,0,0,0.2);border-radius:6px;color:rgba(255,255,255,1);border:2px solid rgba(55,144,250,1);}"
+                            );
+//        this->setPlaceholderText("搜索城市");
+    }
     else if("ukui-default" == str || "ukui-white" == str || "ukui-light" == str)
     {
-       this->setStyleSheet("QLineEdit{padding-left:31px;background:rgba(255,255,255,0.2);border-radius:4px;color:rgba(255,255,255,0.5);}");
+        // 改搜索框属性
+//       this->setStyleSheet("QLineEdit{padding-left:31px;background:rgba(255,255,255,0.2);border-radius:4px;color:rgba(255,255,255,0.5);border:1px solid rgba(0,0,255,1)}");
+        this->setStyleSheet("QLineEdit{padding-left:31px;background:rgba(255,255,255,0.2);border-radius:6px;color:rgba(255,255,255,1);}"
+                            "QLineEdit:hover{padding-left:31px;background:rgba(255,255,255,0.2);border-radius:6px;color:rgba(255,255,255,0.5);border:2px solid rgba(55,144,250,1);}"
+                            "QLineEdit:focus{padding-left:31px;background:rgba(255,255,255,0.2);border-radius:6px;color:rgba(255,255,255,0.5);border:2px solid rgba(55,144,250,1);}"
+                            );
     }
 }
 
