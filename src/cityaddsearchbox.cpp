@@ -53,6 +53,10 @@ void CityAddSearchBox::ThemeCitySearchBox(QString str)
 
     if("ukui-dark" == str || "ukui-black" == str)
     {
+//        this->setStyleSheet("QLineEdit{padding-left:31px;background:rgba(72,72,76,1);border-radius:6px;color:rgba(255,255,255,1);}"
+//                            "QLineEdit:hover{padding-left:31px;background:rgba(72,72,76,1);border-radius:6px;color:rgba(255,255,255,1);border:2px solid rgba(61,107,229,1);}"
+//                            );
+
         this->setStyleSheet("QLineEdit{padding-left:31px;"
                             "background:rgba(72,72,76,1);"
                             "border:1px solid rgba(61,107,229,1);"
@@ -64,6 +68,9 @@ void CityAddSearchBox::ThemeCitySearchBox(QString str)
     }
     else if("ukui-default" == str || "ukui-white" == str || "ukui-light" == str)
     {
+//        this->setStyleSheet("QLineEdit{padding-left:31px;background:rgba(248,248,248,1);border-radius:6px;color:rgba(0,0,0,1);}"
+//                            "QLineEdit:hover{padding-left:31px;background:rgba(233,233,233,1);border-radius:6px;color:rgba(0,0,0,1);border:2px solid rgba(55,144,250,1);}"
+//                            );
         this->setStyleSheet("QLineEdit{padding-left:31px;"
                             "background:rgba(248,248,248,1);"
                             "border:1px solid rgba(61,107,229,1);"
