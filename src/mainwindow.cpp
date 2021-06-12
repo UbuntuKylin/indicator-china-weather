@@ -378,7 +378,7 @@ void MainWindow::createTrayIcon()
     m_trayIcon = new QSystemTrayIcon(this);
     m_trayIcon->setToolTip(QString(tr("Weather")));
 //    m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
-    m_trayIcon->setVisible(true);
+    m_trayIcon->setVisible(false);
     m_trayIcon->hide();
 }
 
