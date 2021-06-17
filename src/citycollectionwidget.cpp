@@ -653,9 +653,7 @@ void CityCollectionWidget::setThemeStyle()
                                "QPushButton:Pressed{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_white.png);}");
 
 
-  }
-  else if("ukui-default" == nowThemeStyle || "ukui-white" == nowThemeStyle || "ukui-light" == nowThemeStyle)
-  {  
+  } else {
      // ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(255,255,255,1);}");
       ui->backwidget->setStyleSheet("QWidget{background:rgba(255,255,255,1);}");
       ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");
