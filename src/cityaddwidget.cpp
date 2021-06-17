@@ -109,8 +109,7 @@ void CityAddition::onSearchBoxEdited()
    if("ukui-dark" == ThemeStyle || "ukui-black" == ThemeStyle)
    {
         m_cityaddsearchview->setItemDelegate(m_darkcityaddsearchdelegate); //Set delegation for view
-   }else if("ukui-default" == ThemeStyle || "ukui-white" == ThemeStyle || "ukui-light" == ThemeStyle)
-   {
+   } else {
         m_cityaddsearchview->setItemDelegate(m_cityaddsearchdelegate);
    }
     m_proxyModel->setSourceModel(m_model);

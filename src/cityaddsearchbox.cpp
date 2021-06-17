@@ -92,8 +92,7 @@ void CityAddSearchBox::drawbackground()
                 QPen pen(Qt::white);
                 painter.setPen(pen);
                 painter.setFont(curFont);
-            } else if("ukui-default" == m_ThemeStyle || "ukui-white" == m_ThemeStyle || "ukui-light" == m_ThemeStyle)
-              {
+            } else {
                     QPen pen(Qt::black);
                     painter.setPen(pen);
                     painter.setFont(curFont);
