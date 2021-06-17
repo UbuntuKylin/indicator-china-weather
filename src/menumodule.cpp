@@ -216,10 +216,10 @@ QHBoxLayout* menuModule::initTitleBar(){
     titleText->setText(tr("Weather"));
     hlyt->setSpacing(0);
     hlyt->setMargin(4);
-    hlyt->addSpacing(4);
-    hlyt->addWidget(titleIcon,0,Qt::AlignBottom); //居下显示
+    hlyt->addSpacing(3);
+    hlyt->addWidget(titleIcon,0,Qt::AlignCenter); //居下显示
     hlyt->addSpacing(8);
-    hlyt->addWidget(titleText,0,Qt::AlignBottom);
+    hlyt->addWidget(titleText,0,Qt::AlignCenter);
     hlyt->addStretch();
     hlyt->addWidget(titleBtnClose,0,Qt::AlignBottom);
     return hlyt;

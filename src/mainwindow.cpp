@@ -115,7 +115,8 @@ MainWindow::MainWindow(QWidget *parent) :
 //    m_searchView->move(100, 49);//2020.12.22
     m_searchView->resize(178,205);
     m_searchView->hide();
-    m_searchView->move(605,49);
+    m_searchView->move(605,37);
+//    m_searchView->move(605,49);
     m_hintWidget = new PromptWidget(this);
     m_hintWidget->setIconAndText(":/res/control_icons/network_warn.png", tr("Network not connected"));//网络未连接
     m_hintWidget->move((this->width() - m_hintWidget->width())/2, 100);
@@ -377,7 +378,7 @@ void MainWindow::createTrayIcon()
     m_trayIcon = new QSystemTrayIcon(this);
     m_trayIcon->setToolTip(QString(tr("Weather")));
 //    m_trayIcon->setIcon(QIcon::fromTheme(QString("999"), QIcon(QString(":/res/weather_icons/white/999.png"))) );
-    m_trayIcon->setVisible(true);
+    m_trayIcon->setVisible(false);
     m_trayIcon->hide();
 }
 

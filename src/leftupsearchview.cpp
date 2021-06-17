@@ -28,10 +28,10 @@ LeftUpSearchView::LeftUpSearchView(QWidget *parent)
     this->setMouseTracking(true);
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setFocusPolicy(Qt::NoFocus);//设置焦点类型
-    this->setStyleSheet("QListView{margin:0px;padding:0px;border:none;border-radius:4px;outline:none;background-color:rgba(255,255,255,0.25);}"
-                        "QListView::item:selected:!active{background-color:rgba(255,255,255,0.25);}"
-                        "QListView::item:selected:active{background-color:rgba(255,255,255,0.25);}"
-                        "QListView::item:hover{background-color:rgba(255,255,255,0.25);}");
+    this->setStyleSheet("QListView{margin:0px;padding:0px;border:none;border-radius:4px;outline:none;background-color:rgba(255,255,255,1);}"
+                        "QListView::item:selected:!active{background-color:rgba(255,255,255,0.25);opacity:0.25}"
+                        "QListView::item:selected:active{background-color:rgba(255,255,255,0.25);opacity:0.25;}"
+                        "QListView::item:hover{background-color:rgba(255,255,255,0.1);opacity:0.1;}");
     this->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 0px 0px 0px;background-color:transparent;border:0px;width:1px;}" \
                                              "QScrollBar::sub-line:vertical{subcontrol-origin:margin;border:none;height:6px;}" \
                                              "QScrollBar::up-arrow:vertical{subcontrol-origin:margin;background-color:transparent;height:6px;}" \
@@ -79,10 +79,11 @@ void LeftUpSearchView::ThemeLeftUpSearchView(QString str)
 {
         if("ukui-dark" == str || "ukui-black" == str)
         {
-       this->setStyleSheet("QListView{margin:0px;padding:0px;border:none;border-radius:4px;outline:none;background-color:rgba(0,0,0,0.25);}"
-                           "QListView::item:selected:!active{background-color:rgba(255,255,255,0.25);}"
-                           "QListView::item:selected:active{background-color:rgba(255,255,255,0.25);}"
-                           "QListView::item:hover{background-color:rgba(255,255,255,0.25);}");
+            // 改下拉列表属性
+       this->setStyleSheet("QListView{margin:0px;padding:0px;border:none;border-radius:6px;outline:none;background-color:rgba(255,255,255,0.2);}"
+                           "QListView::item:selected:!active{background-color:rgba(255,255,255,0.2);border-radius:6px;}"
+                           "QListView::item:selected:active{background-color:rgba(255,255,255,0.25);border-radius:6px;}"
+                           "QListView::item:hover{background-color:rgba(255,255,255,0.1);border-radius:6px;}");
        this->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 0px 0px 0px;background-color:transparent;border:0px;width:1px;}" \
                                                 "QScrollBar::sub-line:vertical{subcontrol-origin:margin;border:none;height:6px;}" \
                                                 "QScrollBar::up-arrow:vertical{subcontrol-origin:margin;background-color:transparent;height:6px;}" \
@@ -96,10 +97,11 @@ void LeftUpSearchView::ThemeLeftUpSearchView(QString str)
 
     }else if("ukui-default" == str || "ukui-white" == str || "ukui-light" == str)
     {
-        this->setStyleSheet("QListView{margin:0px;padding:0px;border:none;border-radius:4px;outline:none;background-color:rgba(255,255,255,0.25);}"
-                            "QListView::item:selected:!active{background-color:rgba(255,255,255,0.25);}"
-                            "QListView::item:selected:active{background-color:rgba(255,255,255,0.25);}"
-                            "QListView::item:hover{background-color:rgba(255,255,255,0.25);}");
+            // 改下拉列表属性
+        this->setStyleSheet("QListView{margin:0px;padding:0px;border:none;border-radius:6px;outline:none;background-color:rgba(255,255,255,0.2);}"
+                            "QListView::item:selected:!active{background-color:rgba(255,255,255,0.2);border-radius:6px;}"
+                            "QListView::item:selected:active{background-color:rgba(255,255,255,0.25);border-radius:6px;}"
+                            "QListView::item:hover{background-color:rgba(255,255,255,0.1);border-radius:6px;}");
         this->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 0px 0px 0px;background-color:transparent;border:0px;width:1px;}" \
                                                  "QScrollBar::sub-line:vertical{subcontrol-origin:margin;border:none;height:6px;}" \
                                                  "QScrollBar::up-arrow:vertical{subcontrol-origin:margin;background-color:transparent;height:6px;}" \
