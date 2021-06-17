@@ -124,13 +124,11 @@ void CityAddition::onSearchBoxEdited()
 void CityAddition::searchCityName()
 {
     const QString inputText = m_cityaddsearchbox->text().trimmed(); //get data from search box
-    if (inputText.isEmpty())
-        return;
 
     QList<LocationData> searchResultList;
     searchResultList = m_locationWorker->exactMatchCity(inputText); //match cities in the city list file, and add the matched cities to the list
 
-    if (searchResultList.isEmpty()) {
+    if (searchResultList.isEmpty() || inputText.isEmpty()) {
         qDebug()<<"fail to search city information";
         m_model->clear();//清空上次遗留结果
         m_cityaddsearchview->resize(470,47);//只保留一行
@@ -210,9 +208,7 @@ void CityAddition::getStr(QString str)
     ui->btnReturn->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/return_white.png);}"
                                "QPushButton:Hover{border:0px;border-radius:4px;background:#3d6be5;background-image:url(:/res/control_icons/return_white.png);}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:#3257ca;background-image:url(:/res/control_icons/return_white.png);}");
-}
-     else if("ukui-default" == str || "ukui-white" == str  || "ukui-light" == str)
-     {
+      } else {
          ui->backwidget->setStyleSheet("QWidget{border:1px ;border-radius:6px;background:rgba(255,255,255,1);}");
 
          ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"

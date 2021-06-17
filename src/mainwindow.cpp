@@ -624,13 +624,11 @@ void MainWindow::onSearchBoxEdited()
 void MainWindow::searchCityName()
 {
     const QString inputText = m_leftupsearchbox->text().trimmed().toLower();
-    if (inputText.isEmpty())
-        return;
 
     QList<LocationData> searchResultList;
     searchResultList = m_locationWorker->exactMatchCity(inputText);
 
-    if (searchResultList.isEmpty()) {
+    if (searchResultList.isEmpty() || inputText.isEmpty()) {
         m_model->clear();//清空上一次搜索结果
         m_searchView->resize(178,55);//只保留一行大小
         //m_searchView->hide();//或一行不保留，无提示
