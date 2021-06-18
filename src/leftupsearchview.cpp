@@ -95,7 +95,8 @@ void LeftUpSearchView::ThemeLeftUpSearchView(QString str)
                                                 "QScrollBar::down-arrow:vertical{background-color:transparent;}" \
                                                 "QScrollBar::add-line:vertical{subcontrol-origin:margin;border:none;height:6px;}");
 
-    } else {
+    }else if("ukui-default" == str || "ukui-white" == str || "ukui-light" == str)
+    {
             // 改下拉列表属性
         this->setStyleSheet("QListView{margin:0px;padding:0px;border:none;border-radius:6px;outline:none;background-color:rgba(255,255,255,0.2);}"
                             "QListView::item:selected:!active{background-color:rgba(255,255,255,0.2);border-radius:6px;}"
