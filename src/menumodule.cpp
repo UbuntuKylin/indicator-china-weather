@@ -248,6 +248,7 @@ QVBoxLayout* menuModule::initBody(){
         QDesktopServices::openUrl(QUrl(url));
     });
     bodySupport->setFixedHeight(24);
+    bodySupport->setOpenExternalLinks(true);
     bodySupport->setContextMenuPolicy(Qt::NoContextMenu);
     QVBoxLayout *vlyt = new QVBoxLayout;
     vlyt->setMargin(0);

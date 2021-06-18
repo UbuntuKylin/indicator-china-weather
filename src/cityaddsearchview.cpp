@@ -112,7 +112,9 @@ void CityAddSearchView::ThemeCitySearchView(QString str)
                                             "QScrollBar::add-line:vertical{subcontrol-origin:margin;border:1px solid green;height:18px;}");
 
 
-} else {
+}
+    else if("ukui-default" == str || "ukui-white" == str  || "ukui-light" == str)
+    {
         this->setStyleSheet("QListView{margin:0px;padding:0px;border:1px solid rgba(207,207,207,1);border-radius:4px;outline:none;background:rgba(255,255,255,1);}"
                             "QListView::item:selected:active{background:rgba(238,242,253,1);}"
                             "QListView::item:hover{background:rgba(238,242,253,1);}");

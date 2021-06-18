@@ -109,7 +109,8 @@ void CityAddition::onSearchBoxEdited()
    if("ukui-dark" == ThemeStyle || "ukui-black" == ThemeStyle)
    {
         m_cityaddsearchview->setItemDelegate(m_darkcityaddsearchdelegate); //Set delegation for view
-   } else {
+   }else if("ukui-default" == ThemeStyle || "ukui-white" == ThemeStyle || "ukui-light" == ThemeStyle)
+   {
         m_cityaddsearchview->setItemDelegate(m_cityaddsearchdelegate);
    }
     m_proxyModel->setSourceModel(m_model);
@@ -207,7 +208,9 @@ void CityAddition::getStr(QString str)
     ui->btnReturn->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/return_white.png);}"
                                "QPushButton:Hover{border:0px;border-radius:4px;background:#3d6be5;background-image:url(:/res/control_icons/return_white.png);}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:#3257ca;background-image:url(:/res/control_icons/return_white.png);}");
-      } else {
+}
+     else if("ukui-default" == str || "ukui-white" == str  || "ukui-light" == str)
+     {
          ui->backwidget->setStyleSheet("QWidget{border:1px ;border-radius:6px;background:rgba(255,255,255,1);}");
 
          ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"

@@ -1,8 +1,17 @@
+indicator-china-weather (3.1.1-7) v101; urgency=medium
+
+  * BUG号：61962
+  * 需求号：无
+  * 其他改动说明：无
+  * 影响域：仅bug修复，无影响
+
+ -- zoujunnan <zoujunnan@kylinos.cn>  Fri,18  Jun 2021 14:27:00 +0800
+
 indicator-china-weather (3.1.1-6) v101; urgency=medium
 
-  * BUG号：61970，62001，61998
+  * BUG号：61970
   * 需求号：无
-  * 其他改动说明：优化主题切换部分代码
+  * 其他改动说明：无
   * 影响域：仅bug修复，无影响
 
  -- zoujunnan <zoujunnan@kylinos.cn>  Thu,17  Jun 2021 14:27:00 +0800
