@@ -66,7 +66,8 @@ void CityAddSearchBox::ThemeCitySearchBox(QString str)
         m_searchPixmap = (QPixmap(":/res/control_icons/search.png"));
 
     }
-    else if("ukui-default" == str || "ukui-white" == str || "ukui-light" == str)
+//    else if("ukui-default" == str || "ukui-white" == str || "ukui-light" == str)
+    else
     {
 //        this->setStyleSheet("QLineEdit{padding-left:31px;background:rgba(248,248,248,1);border-radius:6px;color:rgba(0,0,0,1);}"
 //                            "QLineEdit:hover{padding-left:31px;background:rgba(233,233,233,1);border-radius:6px;color:rgba(0,0,0,1);border:2px solid rgba(55,144,250,1);}"
@@ -94,8 +95,10 @@ void CityAddSearchBox::drawbackground()
                 QPen pen(Qt::white);
                 painter.setPen(pen);
                 painter.setFont(curFont);
-            } else if("ukui-default" == m_ThemeStyle || "ukui-white" == m_ThemeStyle || "ukui-light" == m_ThemeStyle)
-              {
+            }
+//            else if("ukui-default" == m_ThemeStyle || "ukui-white" == m_ThemeStyle || "ukui-light" == m_ThemeStyle)
+            else
+            {
                     QPen pen(Qt::black);
                     painter.setPen(pen);
                     painter.setFont(curFont);

@@ -41,9 +41,15 @@ CityAddition::CityAddition(QWidget *parent) :
     rect.adjust(1, 1, -1, -1);
     path.addRoundedRect(rect, 6, 6); //set border radius
     setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
-    this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
+
+    this->setObjectName("mainWid");
+    ui->backwidget->setObjectName("backWid");
+
+//    this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
+    this->setStyleSheet("#mainWid{border:none;border-radius:6px;}");
 
 //    ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(207,207,207,1);border-radius:6px;background:rgba(255,255,255,1);}");
+//    ui->backwidget->setStyleSheet("#backWid{border:1px solid rgba(207,207,207,1);border-radius:6px;background:rgba(255,255,255,1);}");
 
     ui->lbLeftUpIcon->setStyleSheet("QLabel{border:none;background:transparent;background-image:url(':/res/control_icons/logo.png');}");
     ui->lbLeftUpIcon->hide();
@@ -76,7 +82,11 @@ CityAddition::CityAddition(QWidget *parent) :
     m_darkcityaddsearchdelegate = new DarkCityAddSearchDelegate(m_cityaddsearchview);
     m_proxyModel = new QSortFilterProxyModel(m_cityaddsearchview);
     m_model = new QStandardItemModel();
-    m_cityaddsearchview->move(45, 135);
+
+    // “增加城市”收藏城市里面的搜索框和搜索结果列表的间距
+//    m_cityaddsearchview->move(45, 135);
+    m_cityaddsearchview->move(45, 127);
+
     m_cityaddsearchview->resize(470,227);
     m_cityaddsearchview->hide();
     connect(m_cityaddsearchbox,&CityAddSearchBox::lineEditKeyEvent,m_cityaddsearchview,&CityAddSearchView::dealSearchBoxKeyPress);
@@ -109,7 +119,9 @@ void CityAddition::onSearchBoxEdited()
    if("ukui-dark" == ThemeStyle || "ukui-black" == ThemeStyle)
    {
         m_cityaddsearchview->setItemDelegate(m_darkcityaddsearchdelegate); //Set delegation for view
-   }else if("ukui-default" == ThemeStyle || "ukui-white" == ThemeStyle || "ukui-light" == ThemeStyle)
+   }
+//   else if("ukui-default" == ThemeStyle || "ukui-white" == ThemeStyle || "ukui-light" == ThemeStyle)
+   else
    {
         m_cityaddsearchview->setItemDelegate(m_cityaddsearchdelegate);
    }
@@ -124,11 +136,13 @@ void CityAddition::onSearchBoxEdited()
 void CityAddition::searchCityName()
 {
     const QString inputText = m_cityaddsearchbox->text().trimmed(); //get data from search box
+    if (inputText.isEmpty())
+        return;
 
     QList<LocationData> searchResultList;
     searchResultList = m_locationWorker->exactMatchCity(inputText); //match cities in the city list file, and add the matched cities to the list
 
-    if (searchResultList.isEmpty() || inputText.isEmpty()) {
+    if (searchResultList.isEmpty()) {
         qDebug()<<"fail to search city information";
         m_model->clear();//清空上次遗留结果
         m_cityaddsearchview->resize(470,47);//只保留一行
@@ -163,11 +177,13 @@ void CityAddition::searchCityName()
         }
         if ( tempNumsOfCityInSearchResultList > 5 )//搜索栏默认大小为5行，搜索结果大于5时用滚轮滚动显示
         {
-            m_cityaddsearchview->resize(470,227);
+            // 整个搜索下拉框的宽度和高度
+//            m_cityaddsearchview->resize(470,227);
+            m_cityaddsearchview->resize(470,231);
         }
         else if ( tempNumsOfCityInSearchResultList > 0 )//小于5时，有几个结果显示几行
         {
-            m_cityaddsearchview->resize(470,tempNumsOfCityInSearchResultList * 45 + 2);
+            m_cityaddsearchview->resize(470,tempNumsOfCityInSearchResultList * 45 + 6);
         }
     }
 }
@@ -201,7 +217,10 @@ void CityAddition::getStr(QString str)
      if("ukui-dark" == str || "ukui-black" == str)
      {
 
-    ui->backwidget->setStyleSheet("QWidget{border:1px ;border-radius:6px;background:rgba(31, 32, 34, 1);}");
+//    ui->backwidget->setStyleSheet("QWidget{border:1px ;border-radius:6px;background:rgba(31, 32, 34, 1);}");
+//    ui->backwidget->setStyleSheet("QWidget{background:rgba(0, 0, 0, 1);}");
+//    ui->backwidget->setStyleSheet("#backWid{background:rgba(0, 0, 0, 1);}");
+    ui->backwidget->setStyleSheet("#backWid{border:1px ;border-radius:6px;background:rgba(0, 0, 0, 1);}");
     ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_white.png);}"
                                "QPushButton:Hover{border:0px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_white.png);}"
                                "QPushButton:Pressed{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_white.png);}");
@@ -209,9 +228,11 @@ void CityAddition::getStr(QString str)
                                "QPushButton:Hover{border:0px;border-radius:4px;background:#3d6be5;background-image:url(:/res/control_icons/return_white.png);}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:#3257ca;background-image:url(:/res/control_icons/return_white.png);}");
 }
-     else if("ukui-default" == str || "ukui-white" == str  || "ukui-light" == str)
+//     else if("ukui-default" == str || "ukui-white" == str  || "ukui-light" == str)
+     else
      {
-         ui->backwidget->setStyleSheet("QWidget{border:1px ;border-radius:6px;background:rgba(255,255,255,1);}");
+//         ui->backwidget->setStyleSheet("QWidget{border:1px ;border-radius:6px;background:rgba(255,255,255,1);}");
+         ui->backwidget->setStyleSheet("#backWid{border:1px ;border-radius:6px;background:rgba(255,255,255,1);}");
 
          ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
                                     "QPushButton:Hover{border:0px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_white.png);}"

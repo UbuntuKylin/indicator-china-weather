@@ -52,10 +52,16 @@ void LeftUpSearchDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         //set position and size of rect
         QRectF rect;
-        rect.setX(option.rect.x());
-        rect.setY(option.rect.y());
-        rect.setWidth( option.rect.width()-1);
-        rect.setHeight(option.rect.height()-1);
+//        rect.setX(option.rect.x());
+//        rect.setY(option.rect.y());
+        rect.setX(option.rect.x()+4);
+        rect.setY(option.rect.y()+4);
+
+//        rect.setWidth( option.rect.width()-1);
+//        rect.setHeight(option.rect.height()-1);
+        rect.setWidth( option.rect.width()-11);
+        rect.setHeight(option.rect.height()-4);
+
 
         //use QPainterPath to paint a rect with boder-radius
         const qreal radius = 4;
@@ -91,9 +97,19 @@ void LeftUpSearchDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         }
 
         //set the position of the text
+//        QRect NameRect = QRect(rect.left()+8, rect.top(), rect.width()-30, 28);
         QRect NameRect = QRect(rect.left()+8, rect.top(), rect.width()-30, 28);
         QRect telRect = QRect(rect.left()+8, rect.bottom()-24, rect.width()-10, 22);
 
+        // 更改搜索框有搜索结果和没有搜索结果的显示效果样式
+        if(data.cityProvince == ""){
+            QRect NameRect = QRect(rect.left()+17, rect.top() + 8, rect.width()-30, 28);
+            painter->setPen(QPen(Qt::white));
+            painter->setFont(QFont("",14));
+            painter->setOpacity(1);
+            painter->drawText(NameRect, Qt::AlignLeft, data.cityName); //绘制城市名字
+        }
+        else{
         //painter->setPen(QPen(Qt::black));
         painter->setPen(QPen(Qt::white));
         painter->setFont(QFont("", 15));
@@ -107,10 +123,14 @@ void LeftUpSearchDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         painter->drawText(telRect, Qt::AlignLeft, data.cityProvince); //绘制城市所属省份
 
         painter->restore();
+        }
     }
 }
 
 QSize LeftUpSearchDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    return QSize(178, 50);
+//    return QSize(178, 50);
+//  下拉列表item的宽度和高度
+    return QSize(141, 50);
+//    return QSize(120, 50);
 }

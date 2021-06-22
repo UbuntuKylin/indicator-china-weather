@@ -30,6 +30,7 @@ void menuModule::initAction(){
     menuButton->setFixedSize(iconSize);
 
     m_menu = new QMenu();
+
     addCityAction = new AddCityAction(m_menu);
     QList<QAction *> actions ;
     QAction *actionTheme = new QAction(m_menu);

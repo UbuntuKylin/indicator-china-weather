@@ -52,10 +52,13 @@ void DarkCityAddSearchDelegate::paint(QPainter *painter, const QStyleOptionViewI
 
         //set position and size of rect
         QRectF rect;
-        rect.setX(option.rect.x());
-        rect.setY(option.rect.y());
-        rect.setWidth( option.rect.width()-1);
-        rect.setHeight(option.rect.height()-1);
+//        rect.setX(option.rect.x());
+//        rect.setY(option.rect.y());
+        rect.setX(option.rect.x()+4);
+        rect.setY(option.rect.y()+4);
+
+        rect.setWidth( option.rect.width()-11);
+        rect.setHeight(option.rect.height()-4);
 
         //use QPainterPath to paint a rect with boder-radius
         const qreal radius = 4;
@@ -92,20 +95,44 @@ void DarkCityAddSearchDelegate::paint(QPainter *painter, const QStyleOptionViewI
         QRect NameRect = QRect(rect.left()+8, rect.top(), rect.width()-30, 26);
         QRect telRect = QRect(rect.left()+8, rect.bottom()-22, rect.width()-10, 20);
 
+        // 更改搜索框有搜索结果和没有搜索结果的显示效果样式
+        if(data.cityProvince == "请重新输入"){
+            QRect NameRect = QRect(rect.left()+8, rect.top()+4, rect.width()-30, 26);
+            painter->setPen(QPen(QColor(68,68,68)));
+            painter->setFont(QFont("", 13));
+            painter->setOpacity(1);
+            painter->drawText(NameRect,Qt::AlignLeft,data.cityName);
+        }
+        else{
+            //painter->setPen(QPen(Qt::black));
+            painter->setPen(QPen(QColor(68,68,68)));
+            painter->setFont(QFont("", 13));
+            painter->setOpacity(1);
+            painter->drawText(NameRect,Qt::AlignLeft,data.cityName);
 
-        //painter->setPen(QPen(Qt::black));
-        painter->setPen(QPen(QColor(255,255,255)));
-        painter->setFont(QFont("", 14));
-        painter->setOpacity(1);
-        painter->drawText(NameRect,Qt::AlignLeft,data.cityName);
+            //painter->setPen(QPen(Qt::black));
+            painter->setPen(QPen(QColor(136,136,136)));
+            painter->setFont(QFont("", 10));
+            painter->setOpacity(1);
+            painter->drawText(telRect,Qt::AlignLeft,data.cityProvince);
 
-        //painter->setPen(QPen(Qt::black));
-        painter->setPen(QPen(QColor(255,255,255)));
-        painter->setFont(QFont("", 11));
-        painter->setOpacity(0.4);
-        painter->drawText(telRect,Qt::AlignLeft,data.cityProvince);
+            painter->restore();
+        }
 
-        painter->restore();
+
+//        //painter->setPen(QPen(Qt::black));
+//        painter->setPen(QPen(QColor(255,255,255)));
+//        painter->setFont(QFont("", 14));
+//        painter->setOpacity(1);
+//        painter->drawText(NameRect,Qt::AlignLeft,data.cityName);
+
+//        //painter->setPen(QPen(Qt::black));
+//        painter->setPen(QPen(QColor(255,255,255)));
+//        painter->setFont(QFont("", 11));
+//        painter->setOpacity(0.4);
+//        painter->drawText(telRect,Qt::AlignLeft,data.cityProvince);
+
+//        painter->restore();
 
     }
 
@@ -113,5 +140,5 @@ void DarkCityAddSearchDelegate::paint(QPainter *painter, const QStyleOptionViewI
 
 QSize DarkCityAddSearchDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    return QSize(468, 45);
+    return QSize(456, 45);
 }

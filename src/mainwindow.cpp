@@ -18,6 +18,7 @@
  */
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QPainter>
 
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
@@ -114,6 +115,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_searchView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 //    m_searchView->move(100, 49);//2020.12.22
     m_searchView->resize(178,205);
+
     m_searchView->hide();
     m_searchView->move(605,37);
 //    m_searchView->move(605,49);
@@ -624,18 +626,25 @@ void MainWindow::onSearchBoxEdited()
 void MainWindow::searchCityName()
 {
     const QString inputText = m_leftupsearchbox->text().trimmed().toLower();
+    if (inputText.isEmpty())
+        return;
 
     QList<LocationData> searchResultList;
     searchResultList = m_locationWorker->exactMatchCity(inputText);
 
-    if (searchResultList.isEmpty() || inputText.isEmpty()) {
+    if (searchResultList.isEmpty()) {
         m_model->clear();//清空上一次搜索结果
-        m_searchView->resize(178,55);//只保留一行大小
+//        m_searchView->resize(178,55);//只保留一行大小
+
+        // 更改没有搜索结果时下拉框的长度/宽度
+        m_searchView->resize(151,55);//只保留一行大小
         //m_searchView->hide();//或一行不保留，无提示
         QStandardItem *Item = new QStandardItem;
+
         ItemData itemData;
         itemData.cityName = QString("无匹配城市");//无匹配搜索结果时，提示用户无结果
-        itemData.cityProvince = QString("请重新输入");
+
+//        itemData.cityProvince = QString("请重新输入");
         Item->setData(QVariant::fromValue(itemData),Qt::UserRole); //整体存取
 
         m_model->appendRow(Item); //追加Item
@@ -662,11 +671,16 @@ void MainWindow::searchCityName()
         }
         if ( tempNumsOfCityInSearchResultList > 4 )//默认显示4行，结果数大于4时，按默认大小显示
         {
-            m_searchView->resize(178,205);
+//            m_searchView->resize(178,205);
+//            m_searchView->resize(178,315);
+            // 整个搜索下拉框的宽度
+            m_searchView->resize(151,210);
+//            m_searchView->resize(151,310);
         }
         else//结果小于4时，按城市数量显示行数
         {
-            m_searchView->resize(178,tempNumsOfCityInSearchResultList * 50 + 2);
+//            m_searchView->resize(178,tempNumsOfCityInSearchResultList * 50 + 2);
+            m_searchView->resize(151,tempNumsOfCityInSearchResultList * 50 + 8);
         }
     }
 }

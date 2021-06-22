@@ -1,3 +1,12 @@
+indicator-china-weather (3.1.1-8) v101; urgency=medium
+
+  * BUG号：无
+  * 需求号：6760  ,  6758  ,  6757  ,  6756  ,  6755  ,  6737
+  * 其他改动说明：无
+  * 影响域：仅bug修复，无影响
+
+ -- huji1 <huji1@kylinos.cn>  Tue,18  Jun 2021 17:23:00 +0800
+
 indicator-china-weather (3.1.1-7) v101; urgency=medium
 
   * BUG号：61962

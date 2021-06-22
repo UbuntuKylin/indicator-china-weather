@@ -139,7 +139,8 @@ void CityAddHotView::ThemeCityHotView(QString str)
     {
        m_addCityhot->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(255,255,255,1);}");
 }
-    else if("ukui-default" == str || "ukui-white" == str || "ukui-light" == str)
+//    else if("ukui-default" == str || "ukui-white" == str || "ukui-light" == str)
+    else
     {
        m_addCityhot->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");
     }
