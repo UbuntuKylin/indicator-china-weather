@@ -40,6 +40,8 @@
 #include <QUrl>
 #include <QVariant>
 
+// 点击“收藏城市”按钮后出现的界面[1]
+
 CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::citycollectionwidget)

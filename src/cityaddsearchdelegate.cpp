@@ -19,6 +19,7 @@
 
 #include "cityaddsearchdelegate.h"
 #include "data.h"
+#include "cityaddwidget.h"
 
 #include <QPainter>
 #include <QPainterPath>
@@ -141,10 +142,14 @@ void CityAddSearchDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
 //        painter->restore();
     }
 }
-
+extern int tempNumsOfCityInSearchResultList_2;
 QSize CityAddSearchDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
 //    return QSize(468, 45);
-    return QSize(456, 45);
-//    return QSize(468, 50);
+//    return QSize(458, 45);
+    if(tempNumsOfCityInSearchResultList_2 > 5){
+        return QSize(458, 45);
+    }else{
+        return QSize(472, 45);
+    }
 }

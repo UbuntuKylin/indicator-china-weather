@@ -24,6 +24,10 @@
 
 #include <QDebug>
 
+// 点击收藏城市下面按钮后出现的界面[2]
+
+int tempNumsOfCityInSearchResultList_2 = 0;//列表中城市数量计数
+
 CityAddition::CityAddition(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::cityaddition)
@@ -63,9 +67,11 @@ CityAddition::CityAddition(QWidget *parent) :
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:#3257ca;background-image:url(:/res/control_icons/return_white.png);}");
     ui->btnReturn->setFocusPolicy(Qt::NoFocus);
 
-    ui->btnCancel->setStyleSheet("QPushButton{border:4px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
-                               "QPushButton:Hover{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_normal_btn.png);}"
-                               "QPushButton:Pressed{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_normal_btn.png);}");
+    ui->btnCancel->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
+//                               "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_normal_btn.png);}"
+                                 "QPushButton:Hover{border:0px;border-radius:4px;background-image:url(:/res/control_icons/close_hover_btn.png);}"
+//                               "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_normal_btn.png);}");
+                                 "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_pressed_btn.png);}");
     ui->btnCancel->setFocusPolicy(Qt::NoFocus);
 
     m_cityaddsearchbox = new CityAddSearchBox(this);
@@ -160,10 +166,11 @@ void CityAddition::searchCityName()
     else {
         delete m_model;
         m_model = new QStandardItemModel();
-        int tempNumsOfCityInSearchResultList = 0;//列表中城市数量计数
+//        int tempNumsOfCityInSearchResultList = 0;//列表中城市数量计数
+        tempNumsOfCityInSearchResultList_2 = 0;
         //Access data of each item in the lisearchResultListst, and add the acquired data to listview in turn
         foreach(LocationData m_locationdata, searchResultList){
-            tempNumsOfCityInSearchResultList++;
+            tempNumsOfCityInSearchResultList_2++;
             QStandardItem *Item = new QStandardItem;
             ItemData itemData;
 
@@ -175,15 +182,15 @@ void CityAddition::searchCityName()
             m_model->appendRow(Item); //add item to listview
             m_cityaddsearchview->setAttribute(Qt::WA_TransparentForMouseEvents, false);//有结果时点击搜索栏有效果
         }
-        if ( tempNumsOfCityInSearchResultList > 5 )//搜索栏默认大小为5行，搜索结果大于5时用滚轮滚动显示
+        if ( tempNumsOfCityInSearchResultList_2 > 5 )//搜索栏默认大小为5行，搜索结果大于5时用滚轮滚动显示
         {
             // 整个搜索下拉框的宽度和高度
 //            m_cityaddsearchview->resize(470,227);
             m_cityaddsearchview->resize(470,231);
         }
-        else if ( tempNumsOfCityInSearchResultList > 0 )//小于5时，有几个结果显示几行
+        else if ( tempNumsOfCityInSearchResultList_2 > 0 )//小于5时，有几个结果显示几行
         {
-            m_cityaddsearchview->resize(470,tempNumsOfCityInSearchResultList * 45 + 6);
+            m_cityaddsearchview->resize(470,tempNumsOfCityInSearchResultList_2 * 45 + 6);
         }
     }
 }
@@ -221,9 +228,9 @@ void CityAddition::getStr(QString str)
 //    ui->backwidget->setStyleSheet("QWidget{background:rgba(0, 0, 0, 1);}");
 //    ui->backwidget->setStyleSheet("#backWid{background:rgba(0, 0, 0, 1);}");
     ui->backwidget->setStyleSheet("#backWid{border:1px ;border-radius:6px;background:rgba(0, 0, 0, 1);}");
-    ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_white.png);}"
-                               "QPushButton:Hover{border:0px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_white.png);}"
-                               "QPushButton:Pressed{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_white.png);}");
+    ui->btnCancel->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_white.png);}"
+                               "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_white.png);}"
+                               "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_white.png);}");
     ui->btnReturn->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/return_white.png);}"
                                "QPushButton:Hover{border:0px;border-radius:4px;background:#3d6be5;background-image:url(:/res/control_icons/return_white.png);}"
                                "QPushButton:Pressed{border:0px;border-radius:4px;background:#3257ca;background-image:url(:/res/control_icons/return_white.png);}");
@@ -234,9 +241,9 @@ void CityAddition::getStr(QString str)
 //         ui->backwidget->setStyleSheet("QWidget{border:1px ;border-radius:6px;background:rgba(255,255,255,1);}");
          ui->backwidget->setStyleSheet("#backWid{border:1px ;border-radius:6px;background:rgba(255,255,255,1);}");
 
-         ui->btnCancel->setStyleSheet("QPushButton{border:0px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
-                                    "QPushButton:Hover{border:0px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_white.png);}"
-                                    "QPushButton:Pressed{border:0px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_white.png);}");
+         ui->btnCancel->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/close_black.png);}"
+                                    "QPushButton:Hover{border:0px;border-radius:4px;background:transparent;background-color:#F86457;background-image:url(:/res/control_icons/close_white.png);}"
+                                    "QPushButton:Pressed{border:0px;border-radius:4px;background:transparent;background-color:#E44C50;background-image:url(:/res/control_icons/close_white.png);}");
 
          ui->btnReturn->setStyleSheet("QPushButton{border:0px;border-radius:4px;background:transparent;background-image:url(:/res/control_icons/return_black.png);}"
                                     "QPushButton:Hover{border:0px;border-radius:4px;background:#3d6be5;background-image:url(:/res/control_icons/return_white.png);}"

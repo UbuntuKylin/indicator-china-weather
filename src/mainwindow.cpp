@@ -20,6 +20,8 @@
 #include "ui_mainwindow.h"
 #include <QPainter>
 
+int tempNumsOfCityInSearchResultList = 0;//搜索列表中城市数量
+
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MainWindow)
@@ -231,16 +233,18 @@ void MainWindow::initControlQss()
     m_scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
-    m_scrollarea->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 2px 0px 2px;width:13px;background:rgba(255,255,255,0);border-radius:6px;}"
-                                                     "QScrollBar::up-arrow:vertical{height:0px;}"
-                                                     "QScrollBar::sub-line:vertical{border:0px solid;height:0px}"
-                                                     "QScrollBar::sub-page:vertical{background:transparent;}"
-                                                     "QScrollBar::handle:vertical{width:6px;background:rgba(255,255,255,0.2);border-radius:3px;}"
-                                                     "QScrollBar::handle:vertical:hover{width:6px;background:rgba(255,255,255,0.2);border-radius:3px;}"
-                                                     "QScrollBar::handle:vertical:pressed{width:6px;background:rgba(255,255,255,0.2);border-radius:3px;}"
-                                                     "QScrollBar::add-page:vertical{background:transparent;}"
-                                                     "QScrollBar::add-line:vertical{border:0px solid;height:0px}"
-                                                     "QScrollBar::down-arrow:vertical{height:0px;}");
+
+    m_scrollarea->verticalScrollBar()->setProperty("drawScrollBarGroove",false);
+//    m_scrollarea->verticalScrollBar()->setStyleSheet("QScrollBar:vertical{margin:0px 2px 0px 2px;width:13px;background:rgba(255,255,255,0);border-radius:6px;}"
+//                                                     "QScrollBar::up-arrow:vertical{height:0px;}"
+//                                                     "QScrollBar::sub-line:vertical{border:0px solid;height:0px}"
+//                                                     "QScrollBar::sub-page:vertical{background:transparent;}"
+//                                                     "QScrollBar::handle:vertical{width:6px;background:rgba(255,255,255,0.2);border-radius:3px;}"
+//                                                     "QScrollBar::handle:vertical:hover{width:6px;background:rgba(255,255,255,0.2);border-radius:3px;}"
+//                                                     "QScrollBar::handle:vertical:pressed{width:6px;background:rgba(255,255,255,0.2);border-radius:3px;}"
+//                                                     "QScrollBar::add-page:vertical{background:transparent;}"
+//                                                     "QScrollBar::add-line:vertical{border:0px solid;height:0px}"
+//                                                     "QScrollBar::down-arrow:vertical{height:0px;}");
 
     m_scrollwidget = new QWidget(m_scrollarea);
     m_scrollwidget->resize(858, 450);
@@ -654,7 +658,8 @@ void MainWindow::searchCityName()
     else {
         delete m_model;
         m_model = new QStandardItemModel();
-        int tempNumsOfCityInSearchResultList = 0;//搜索列表中城市数量
+        // 改成全局变量
+        tempNumsOfCityInSearchResultList = 0;//搜索列表中城市数量
         foreach(LocationData m_locationdata, searchResultList){
             tempNumsOfCityInSearchResultList++;//计数
             QStandardItem *Item = new QStandardItem;

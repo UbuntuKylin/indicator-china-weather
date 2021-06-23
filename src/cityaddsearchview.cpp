@@ -22,6 +22,8 @@
 #include <QScrollBar>
 #include <QDebug>
 
+// 设置收藏城市搜索框下拉列表里面item的显示样式
+
 CityAddSearchView::CityAddSearchView(QWidget *parent)
     : QListView(parent)
 {

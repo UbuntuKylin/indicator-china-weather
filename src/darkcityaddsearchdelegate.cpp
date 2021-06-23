@@ -19,6 +19,7 @@
 
 #include "darkcityaddsearchdelegate.h"
 #include "data.h"
+#include "cityaddwidget.h"
 
 #include <QPainter>
 #include <QPainterPath>
@@ -98,14 +99,16 @@ void DarkCityAddSearchDelegate::paint(QPainter *painter, const QStyleOptionViewI
         // 更改搜索框有搜索结果和没有搜索结果的显示效果样式
         if(data.cityProvince == "请重新输入"){
             QRect NameRect = QRect(rect.left()+8, rect.top()+4, rect.width()-30, 26);
-            painter->setPen(QPen(QColor(68,68,68)));
+//            painter->setPen(QPen(QColor(68,68,68)));
+            painter->setPen(QPen(QColor(255,255,255)));
             painter->setFont(QFont("", 13));
             painter->setOpacity(1);
             painter->drawText(NameRect,Qt::AlignLeft,data.cityName);
         }
         else{
             //painter->setPen(QPen(Qt::black));
-            painter->setPen(QPen(QColor(68,68,68)));
+//            painter->setPen(QPen(QColor(68,68,68)));
+            painter->setPen(QPen(QColor(255,255,255)));
             painter->setFont(QFont("", 13));
             painter->setOpacity(1);
             painter->drawText(NameRect,Qt::AlignLeft,data.cityName);
@@ -137,8 +140,13 @@ void DarkCityAddSearchDelegate::paint(QPainter *painter, const QStyleOptionViewI
     }
 
 }
-
+extern int tempNumsOfCityInSearchResultList_2;
 QSize DarkCityAddSearchDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    return QSize(456, 45);
+//    return QSize(458, 45);
+    if(tempNumsOfCityInSearchResultList_2 > 5){
+        return QSize(458, 45);
+    }else{
+        return QSize(472, 45);
+    }
 }

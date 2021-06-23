@@ -19,6 +19,7 @@
 
 #include "leftupsearchdelegate.h"
 #include "data.h"
+#include "mainwindow.h"
 
 #include <QPainter>
 #include <QPainterPath>
@@ -103,7 +104,7 @@ void LeftUpSearchDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         // 更改搜索框有搜索结果和没有搜索结果的显示效果样式
         if(data.cityProvince == ""){
-            QRect NameRect = QRect(rect.left()+17, rect.top() + 8, rect.width()-30, 28);
+            QRect NameRect = QRect(rect.left()+22, rect.top() + 8, rect.width()-30, 28);
             painter->setPen(QPen(Qt::white));
             painter->setFont(QFont("",14));
             painter->setOpacity(1);
@@ -126,11 +127,20 @@ void LeftUpSearchDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         }
     }
 }
-
+extern int tempNumsOfCityInSearchResultList;
 QSize LeftUpSearchDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
 //    return QSize(178, 50);
 //  下拉列表item的宽度和高度
-    return QSize(141, 50);
-//    return QSize(120, 50);
+//    return QSize(141, 50);
+    if(tempNumsOfCityInSearchResultList > 4)
+    {
+        return QSize(141, 50);
+    }
+    else
+    {
+        return QSize(151, 50);
+    }
+
+
 }
