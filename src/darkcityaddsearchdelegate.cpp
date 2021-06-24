@@ -147,6 +147,6 @@ QSize DarkCityAddSearchDelegate::sizeHint(const QStyleOptionViewItem &option, co
     if(tempNumsOfCityInSearchResultList_2 > 5){
         return QSize(458, 45);
     }else{
-        return QSize(472, 45);
+        return QSize(470, 45);
     }
 }
