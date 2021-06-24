@@ -38,7 +38,9 @@ citycollectionitem::citycollectionitem(QWidget *parent) :
     ui->setupUi(this);
     this->setStyleSheet("QWidget{background:transparent;border:none;}");
 
-    ui->lbBackImage->setStyleSheet("QWidget{background:rgba(61,107,229,1);border:none;}");
+    // "收藏城市"的“+”添加框
+//    ui->lbBackImage->setStyleSheet("QWidget{background:rgba(61,107,229,1);border:none;}");
+    ui->lbBackImage->setStyleSheet("QWidget{background:rgba(61,107,229,1);border:none;border-radius:4px}");
 
     ui->lbCityName->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(255,255,255,1);}");
 
@@ -153,7 +155,7 @@ void citycollectionitem::setCityWeather(ObserveWeather observeweather)
     QString weather_code = observeweather.cond_code;
     int code  = weather_code.toInt();
     QString returnStr = convertCodeToBackgroud(code);
-    QString picStr = QString("QLabel{background-image:url(%1);}").arg(returnStr);
+    QString picStr = QString("QLabel{background-image:url(%1);border-radius:4px}").arg(returnStr);
     ui->lbBackImage->setStyleSheet(picStr); //add background image 
     ui->lbCityName->setText(observeweather.city); //add city name 
     this->m_city_id = observeweather.id;
@@ -256,7 +258,7 @@ void citycollectionitem::onWeatherDataReply()
                     QString weather_code = m_json.value("cond_code").toString();
                     int code  = weather_code.toInt();
                     QString returnStr = convertCodeToBackgroud(code);
-                    QString picStr = QString("QLabel{background-image:url(%1);}").arg(returnStr);
+                    QString picStr = QString("QLabel{background-image:url(%1);border-radius:4px}").arg(returnStr);
                     ui->lbBackImage->setStyleSheet(picStr);
                 }
             }

@@ -40,6 +40,8 @@
 #include <QUrl>
 #include <QVariant>
 
+// 点击“收藏城市”按钮后出现的界面[1]
+
 CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::citycollectionwidget)
@@ -643,7 +645,8 @@ void CityCollectionWidget::setThemeStyle()
   {
 
     //ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(31, 32, 34, 1);}");
-      ui->backwidget->setStyleSheet("QWidget{background:rgba(31, 32, 34, 1);}");
+//      ui->backwidget->setStyleSheet("QWidget{background:rgba(31, 32, 34, 1);}");
+    ui->backwidget->setStyleSheet("QWidget{background:rgba(0, 0, 0, 1);}");
     ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(255,255,255,1);}");
     ui->lbCityCurrent->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(255,255,255,1);}");
     ui->lbCityCollect->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(255,255,255,1);}");
@@ -654,8 +657,9 @@ void CityCollectionWidget::setThemeStyle()
 
 
   }
-  else if("ukui-default" == nowThemeStyle || "ukui-white" == nowThemeStyle || "ukui-light" == nowThemeStyle)
-  {  
+//  else if("ukui-default" == nowThemeStyle || "ukui-white" == nowThemeStyle || "ukui-light" == nowThemeStyle)
+  else
+  {
      // ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(255,255,255,1);}");
       ui->backwidget->setStyleSheet("QWidget{background:rgba(255,255,255,1);}");
       ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");
