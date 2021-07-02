@@ -2,10 +2,10 @@ indicator-china-weather (3.1.1-11) v101; urgency=medium
 
   * BUG号：61671，34847
   * 需求号：无
-  * 其他改动说明：无
+  * 其他改动说明：消除深色模式下热门城市蓝色背景
   * 影响域：仅bug修复，无影响
 
- -- huji1 <huji1@kylinos.cn>  Thu,01  Jul 2021 17:23:00 +0800
+ -- huji1 <huji1@kylinos.cn>  Fri,02  Jul 2021 14:00:00 +0800
 
 indicator-china-weather (3.1.1-10) v101; urgency=medium
 
