@@ -142,13 +142,11 @@ void CityAddition::onSearchBoxEdited()
 void CityAddition::searchCityName()
 {
     const QString inputText = m_cityaddsearchbox->text().trimmed(); //get data from search box
-    if (inputText.isEmpty())
-        return;
 
     QList<LocationData> searchResultList;
     searchResultList = m_locationWorker->exactMatchCity(inputText); //match cities in the city list file, and add the matched cities to the list
 
-    if (searchResultList.isEmpty()) {
+    if (searchResultList.isEmpty() || inputText.isEmpty()) {
         qDebug()<<"fail to search city information";
         m_model->clear();//清空上次遗留结果
         m_cityaddsearchview->resize(470,47);//只保留一行

@@ -216,7 +216,7 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
             observeweather.cond_code = m_json.value("cond_code").toString();
             observeweather.id = m_json.value("id").toString();
             observeweather.city = m_json.value("location").toString();
-        }else{
+        } else {
             observeweather.tmp = "-";
             observeweather.cond_txt = "-";
             observeweather.cond_code = "-";
@@ -304,20 +304,27 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
             QString eachCityData = strList.at(i); //get real-time weather data of each city
             ObserveWeather observeweather;
             QJsonObject m_json;
-            if (!eachCityData.isEmpty()) {
+            if (!eachCityData.isEmpty() && eachCityData.contains(",") ) {
                 QStringList eachKeyList = eachCityData.split(",");
                 foreach (QString strKey, eachKeyList) {
                     if (!strKey.isEmpty()) {
                         m_json.insert(strKey.split("=").at(0), strKey.split("=").at(1)); //change data to json format
                     }
                 }
+                observeweather.tmp = m_json.value("tmp").toString();
+                observeweather.cond_txt = m_json.value("cond_txt").toString();
+                observeweather.cond_code = m_json.value("cond_code").toString();
+                observeweather.id = m_json.value("id").toString();
+                observeweather.city = m_json.value("location").toString();
+            } else {
+                observeweather.tmp = "-";
+                observeweather.cond_txt = "-";
+                observeweather.cond_code = "-";
+                observeweather.id = "-";
+                observeweather.city = "-";
             }
 
-            observeweather.tmp = m_json.value("tmp").toString();
-            observeweather.cond_txt = m_json.value("cond_txt").toString();
-            observeweather.cond_code = m_json.value("cond_code").toString();
-            observeweather.id = m_json.value("id").toString();
-            observeweather.city = m_json.value("location").toString();
+
 
             if (i==0) { //current city
                 citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
@@ -362,7 +369,7 @@ void CityCollectionWidget::showCollectCity(int x, int y, bool isShowNormal, QStr
 {
     //首先将 weatherStr中天气数据保存在ObserveWeather结构体中
     ObserveWeather observeweather;
-    if (!weatherStr.isEmpty()) {
+    if (!weatherStr.isEmpty() && weatherStr.contains(",")) {
         QJsonObject m_json;
         if (!weatherStr.isEmpty()) {
             QStringList eachKeyList = weatherStr.split(",");
@@ -378,6 +385,13 @@ void CityCollectionWidget::showCollectCity(int x, int y, bool isShowNormal, QStr
         observeweather.cond_code = m_json.value("cond_code").toString();
         observeweather.id = m_json.value("id").toString();
         observeweather.city = m_json.value("location").toString();
+
+    } else {
+        observeweather.tmp = "-";
+        observeweather.cond_txt = "-";
+        observeweather.cond_code = "-";
+        observeweather.id = "-";
+        observeweather.city = "-";
     }
 
     citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
@@ -533,8 +547,6 @@ void CityCollectionWidget::onChangeCurrentCity(QString cityId)
     //更新城市列表
     QString newStrCityId = "";
     QString strSavedCity = readCollectedCity();
-
-    qDebug()<<strSavedCity ;
 
     QStringList listSavedCityId = strSavedCity.split(",");
 
