@@ -280,12 +280,15 @@ void Information::onSetForecastWeather(ForecastWeather forecastweather)
 
     //获取天气图片
     int code;
+    QString wea;
     QTime current_time = QTime::currentTime();
     int hour = current_time.hour();
     if (hour>=6 && hour<= 18){
         code  = forecastweather.cond_code_d.toInt();
+        wea = forecastweather.cond_txt_d + "\n" + forecastweather.wind_dir + forecastweather.wind_sc + "级";
     } else {
         code  = forecastweather.cond_code_n.toInt();
+        wea = forecastweather.cond_txt_n + "\n" + forecastweather.wind_dir + forecastweather.wind_sc + "级";
     }
 //    ui->lbIcon_1->setScaledContents(true);
 //    ui->lbIcon_1->resize(ui->lbIcon_1->size());
@@ -296,13 +299,6 @@ void Information::onSetForecastWeather(ForecastWeather forecastweather)
     //获取气温
     QString tmp = forecastweather.tmp_min + "℃~" + forecastweather.tmp_max + "℃";
 
-    //获取天气及风力
-    QString wea;
-    if (forecastweather.cond_code_d == forecastweather.cond_code_n){
-        wea = forecastweather.cond_txt_d + "\n" + forecastweather.wind_dir + forecastweather.wind_sc + "级";
-    }else {
-        wea = forecastweather.cond_txt_d + "转" + forecastweather.cond_txt_n + "\n" + forecastweather.wind_dir + forecastweather.wind_sc + "级";
-    }
     if(!(forecastweather.dateTime =="" || forecastweather.dateTime == "-"))
     {
     switch (m_day) {
