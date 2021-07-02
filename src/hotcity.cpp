@@ -24,8 +24,8 @@ void HotCity::onThemeChanged(QString str)
     if("ukui-dark" == str || "ukui-black" == str)
    {
         this->setStyleSheet("QPushButton{color:rgba(255,255,255,0.9);font-size:14px;background:transparent}"
-                            "QPushButton:Hover{color:#3E6CE5;font-size:14px;background:transparent}"
-                            "QPushButton:Pressed{color:#4260C4;font-size:14px;background:transparent}"
+                            "QPushButton:Hover{color:#3E6CE5;font-size:14px;background:transparent;border:none}"
+                            "QPushButton:Pressed{color:#4260C4;font-size:14px;background:transparent;border:none}"
                             );
     }
 //    else if ("ukui-default" == str || "ukui-white" == str || "ukui-light" == str)
