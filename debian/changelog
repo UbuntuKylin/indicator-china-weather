@@ -1,8 +1,14 @@
-indicator-china-weather (3.1.1-0ubuntu1) focal; urgency=medium
+indicator-china-weather (3.1.1-1) unstable; urgency=medium
 
   * New upstream release.
 
  -- handsome_feng <jianfengli@ubuntukylin.com>  Thu, 17 Jun 2021 15:11:25 +0800
+
+indicator-china-weather (3.0.4.1-0ubuntu1) hirsute; urgency=medium
+
+  * Add QPainterPath to avoid FTBFS.
+
+ -- handsome_feng <jianfengli@ubuntukylin.com> Fri, 09 Apr 2021 20:16:18 +0800
 
 indicator-china-weather (3.0.4-0ubuntu1) focal; urgency=medium
 
