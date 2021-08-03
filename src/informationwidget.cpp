@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2020 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ * Copyright (C) 2020, KylinSoft Co., Ltd.
  *
  * Authors:
  *  Kobe Lee    lixiang@kylinos.cn/kobe24_lixiang@126.com

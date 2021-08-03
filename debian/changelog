@@ -1,3 +1,12 @@
+indicator-china-weather (3.1.1-12) v101; urgency=medium
+
+  * BUG号：无
+  * 需求号：无
+  * 其他改动说明：添加copyright
+  * 影响域：仅添加许可说明，无影响
+
+ -- zoujunnan <zoujunnan@kylinos.cn>  Tue,03  Aug 2021 14:00:00 +0800
+
 indicator-china-weather (3.1.1-11) v101; urgency=medium
 
   * BUG号：61671，34847
