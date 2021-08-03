@@ -15,3 +15,4 @@ Type=Application
 X-GNOME-Autostart-Delay=10
 Categories=System Settings Security;
 X-UKUI-AutoRestart=true;
+X-Desktop-File-Install-Version=0.24
