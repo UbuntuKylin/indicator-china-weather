@@ -40,6 +40,8 @@
 #include <QUrl>
 #include <QVariant>
 
+// 点击“收藏城市”按钮后出现的界面[1]
+
 CityCollectionWidget::CityCollectionWidget(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::citycollectionwidget)
@@ -214,7 +216,7 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
             observeweather.cond_code = m_json.value("cond_code").toString();
             observeweather.id = m_json.value("id").toString();
             observeweather.city = m_json.value("location").toString();
-        }else{
+        } else {
             observeweather.tmp = "-";
             observeweather.cond_txt = "-";
             observeweather.cond_code = "-";
@@ -302,20 +304,27 @@ void CityCollectionWidget::onRequestSetCityWeather(QString weather_data)
             QString eachCityData = strList.at(i); //get real-time weather data of each city
             ObserveWeather observeweather;
             QJsonObject m_json;
-            if (!eachCityData.isEmpty()) {
+            if (!eachCityData.isEmpty() && eachCityData.contains(",") ) {
                 QStringList eachKeyList = eachCityData.split(",");
                 foreach (QString strKey, eachKeyList) {
                     if (!strKey.isEmpty()) {
                         m_json.insert(strKey.split("=").at(0), strKey.split("=").at(1)); //change data to json format
                     }
                 }
+                observeweather.tmp = m_json.value("tmp").toString();
+                observeweather.cond_txt = m_json.value("cond_txt").toString();
+                observeweather.cond_code = m_json.value("cond_code").toString();
+                observeweather.id = m_json.value("id").toString();
+                observeweather.city = m_json.value("location").toString();
+            } else {
+                observeweather.tmp = "-";
+                observeweather.cond_txt = "-";
+                observeweather.cond_code = "-";
+                observeweather.id = "-";
+                observeweather.city = "-";
             }
 
-            observeweather.tmp = m_json.value("tmp").toString();
-            observeweather.cond_txt = m_json.value("cond_txt").toString();
-            observeweather.cond_code = m_json.value("cond_code").toString();
-            observeweather.id = m_json.value("id").toString();
-            observeweather.city = m_json.value("location").toString();
+
 
             if (i==0) { //current city
                 citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
@@ -360,7 +369,7 @@ void CityCollectionWidget::showCollectCity(int x, int y, bool isShowNormal, QStr
 {
     //首先将 weatherStr中天气数据保存在ObserveWeather结构体中
     ObserveWeather observeweather;
-    if (!weatherStr.isEmpty()) {
+    if (!weatherStr.isEmpty() && weatherStr.contains(",")) {
         QJsonObject m_json;
         if (!weatherStr.isEmpty()) {
             QStringList eachKeyList = weatherStr.split(",");
@@ -376,6 +385,13 @@ void CityCollectionWidget::showCollectCity(int x, int y, bool isShowNormal, QStr
         observeweather.cond_code = m_json.value("cond_code").toString();
         observeweather.id = m_json.value("id").toString();
         observeweather.city = m_json.value("location").toString();
+
+    } else {
+        observeweather.tmp = "-";
+        observeweather.cond_txt = "-";
+        observeweather.cond_code = "-";
+        observeweather.id = "-";
+        observeweather.city = "-";
     }
 
     citycollectionitem *m_currentcity = new citycollectionitem(ui->backwidget);
@@ -532,8 +548,6 @@ void CityCollectionWidget::onChangeCurrentCity(QString cityId)
     QString newStrCityId = "";
     QString strSavedCity = readCollectedCity();
 
-    qDebug()<<strSavedCity ;
-
     QStringList listSavedCityId = strSavedCity.split(",");
 
     for(QStringList::iterator it=listSavedCityId.begin();it!=listSavedCityId.end();++it)
@@ -643,7 +657,8 @@ void CityCollectionWidget::setThemeStyle()
   {
 
     //ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(31, 32, 34, 1);}");
-      ui->backwidget->setStyleSheet("QWidget{background:rgba(31, 32, 34, 1);}");
+//      ui->backwidget->setStyleSheet("QWidget{background:rgba(31, 32, 34, 1);}");
+    ui->backwidget->setStyleSheet("QWidget{background:rgba(0, 0, 0, 1);}");
     ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(255,255,255,1);}");
     ui->lbCityCurrent->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(255,255,255,1);}");
     ui->lbCityCollect->setStyleSheet("QLabel{border:none;background:transparent;font-size:18px;font-weight:400;color:rgba(255,255,255,1);}");
@@ -654,8 +669,9 @@ void CityCollectionWidget::setThemeStyle()
 
 
   }
-  else if("ukui-default" == nowThemeStyle || "ukui-white" == nowThemeStyle || "ukui-light" == nowThemeStyle)
-  {  
+//  else if("ukui-default" == nowThemeStyle || "ukui-white" == nowThemeStyle || "ukui-light" == nowThemeStyle)
+  else
+  {
      // ui->backwidget->setStyleSheet("QWidget{border:1px solid rgba(38,38,38,0.15);border-radius:6px;background:rgba(255,255,255,1);}");
       ui->backwidget->setStyleSheet("QWidget{background:rgba(255,255,255,1);}");
       ui->lbLeftUpTitle->setStyleSheet("QLabel{border:none;background:transparent;font-size:14px;font-weight:400;color:rgba(68,68,68,1);}");

@@ -30,6 +30,7 @@ void menuModule::initAction(){
     menuButton->setFixedSize(iconSize);
 
     m_menu = new QMenu();
+
     addCityAction = new AddCityAction(m_menu);
     QList<QAction *> actions ;
     QAction *actionTheme = new QAction(m_menu);
@@ -248,6 +249,7 @@ QVBoxLayout* menuModule::initBody(){
         QDesktopServices::openUrl(QUrl(url));
     });
     bodySupport->setFixedHeight(24);
+    bodySupport->setOpenExternalLinks(true);
     bodySupport->setContextMenuPolicy(Qt::NoContextMenu);
     QVBoxLayout *vlyt = new QVBoxLayout;
     vlyt->setMargin(0);
