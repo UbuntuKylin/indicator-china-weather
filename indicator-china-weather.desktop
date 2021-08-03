@@ -13,5 +13,6 @@ Icon=indicator-china-weather
 Terminal=false
 Type=Application
 X-GNOME-Autostart-Delay=10
-Categories=System Settings Security;
+Categories=Utility;
 X-UKUI-AutoRestart=true;
+X-Desktop-File-Install-Version=0.24

@@ -3,7 +3,7 @@
 # output every command that modifies files on the build system.
 #export DH_VERBOSE = 1
 
-
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 export QT_SELECT=5
 
 QMAKE_OPTS = DEFINES+=NO_DEBUG_ON_CONSOLE
@@ -11,8 +11,7 @@ MAKE_OPTS  = PREFIX=/usr QMAKE=qmake LRELEASE=lrelease QMAKE_OPTS="$(QMAKE_OPTS)
 
 override_dh_auto_configure:
 	QT_SELECT=qt5 dh_auto_configure \
-                -- "QMAKE_CXXFLAGS=$(CFLAGS)" \
-                indicator-china-weather.pro
+                -- "QMAKE_CXXFLAGS=$(CFLAGS)" indicator-china-weather.pro
 
 %:
 	dh $@

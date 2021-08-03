@@ -2,21 +2,22 @@ Source: indicator-china-weather
 Section: utils
 Priority: optional
 Maintainer: lixiang <lixiang@kylinos.cn>
-Build-Depends: debhelper (>=9),
-               qtbase5-dev,
-               qt5-qmake,
-               qtchooser,
-               qtscript5-dev,
-               qttools5-dev-tools,
-               qtbase5-dev-tools,
-               libgeoip-dev,
-               libx11-dev,
-               libgsettings-qt-dev,
-			   pkgconf,
-			   libqt5x11extras5-dev,
-			   libkf5windowsystem-dev,
-			libukui-log4qt-dev,
-Standards-Version: 4.4.0
+Build-Depends: debhelper-compat (=13),
+                         qtbase5-dev,
+                         qt5-qmake,
+                         qtchooser,
+                         qtscript5-dev,
+                         qttools5-dev-tools,
+                         qtbase5-dev-tools,
+                         libgeoip-dev,
+                         libx11-dev,
+                         libgsettings-qt-dev,
+                         pkgconf,
+                         libqt5x11extras5-dev,
+                         libkf5windowsystem-dev,
+                         libukui-log4qt-dev,
+Standards-Version: 4.5.1
+Rules-Requires-Root: no
 Homepage: https://github.com/ubuntukylin/indicator-china-weather
 Vcs-Git: https://github.com/ubuntukylin/indicator-china-weather.git
 Vcs-Browser: https://github.com/ubuntukylin/indicator-china-weather
