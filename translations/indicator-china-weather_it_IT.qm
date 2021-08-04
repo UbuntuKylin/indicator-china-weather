@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="it_IT">
+<context>
+    <name>AddCityAction</name>
+    <message>
+        <location filename="../src/addcityaction.cpp" line="76"/>
+        <location filename="../src/addcityaction.cpp" line="79"/>
+        <source>Meteo Kylin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/addcityaction.cpp" line="85"/>
+        <location filename="../src/addcityaction.cpp" line="88"/>
+        <source>indicator-china-weather</source>
+        <translation type="unfinished">天气</translation>
+    </message>
+</context>
+<context>
+    <name>CityAddSearchBox</name>
+    <message>
+        <location filename="../src/cityaddsearchbox.cpp" line="38"/>
+        <source>search</source>
+        <translation>Cerca</translation>
+    </message>
+</context>
+<context>
+    <name>CityCollectionWidget</name>
+    <message>
+        <source>Kylin Weather</source>
+        <translation type="vanished">Meteo Kylin</translation>
+    </message>
+    <message>
+        <location filename="../src/citycollectionwidget.cpp" line="75"/>
+        <location filename="../src/citycollectionwidget.cpp" line="81"/>
+        <source>Weather</source>
+        <translation>Meteo</translation>
+    </message>
+    <message>
+        <location filename="../src/citycollectionwidget.cpp" line="83"/>
+        <source>Collections</source>
+        <translation>Località preferita</translation>
+    </message>
+    <message>
+        <location filename="../src/citycollectionwidget.cpp" line="84"/>
+        <source>Local</source>
+        <translation>Località corrente</translation>
+    </message>
+    <message>
+        <source>Current Network Exception, Please Check Network Settings</source>
+        <translation type="vanished">Accesso internet assente, verifica le impostazioni di rete</translation>
+    </message>
+</context>
+<context>
+    <name>Information</name>
+    <message>
+        <location filename="../src/informationwidget.cpp" line="254"/>
+        <location filename="../src/informationwidget.cpp" line="270"/>
+        <source>Today</source>
+        <translation>Oggi</translation>
+    </message>
+</context>
+<context>
+    <name>LeftUpSearchBox</name>
+    <message>
+        <location filename="../src/leftupsearchbox.cpp" line="28"/>
+        <source>search</source>
+        <translation>Cerca</translation>
+    </message>
+</context>
+<context>
+    <name>MainWindow</name>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="39"/>
+        <location filename="../src/mainwindow.cpp" line="73"/>
+        <location filename="../src/mainwindow.cpp" line="377"/>
+        <source>Weather</source>
+        <translation>Meteo</translation>
+    </message>
+    <message>
+        <source>Open Kylin Weather</source>
+        <translation type="vanished">Apri Kylin Meteo</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="56"/>
+        <source>Add City</source>
+        <translation>Aggiungi località</translation>
+    </message>
+    <message>
+        <source>About</source>
+        <translation type="vanished">Informazioni</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="87"/>
+        <source>Open Weather</source>
+        <translation>Apri Meteo</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="88"/>
+        <source>Exit</source>
+        <translation>Esci</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="121"/>
+        <source>Network not connected</source>
+        <translation>Accesso internet assente</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="197"/>
+        <source>minimize</source>
+        <translation>Minimizza</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="202"/>
+        <source>close</source>
+        <translation>Chiudi</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="323"/>
+        <source>Incorrect access address</source>
+        <translation>Indirizzo non corretto</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="325"/>
+        <source>Network error code:%1</source>
+        <translation>Errore di rete：%1</translation>
+    </message>
+    <message>
+        <source>Kylin Weather</source>
+        <translation type="obsolete">Kylin Meteo</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="14"/>
+        <source>MainWindow</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>PromptWidget</name>
+    <message>
+        <location filename="../src/promptwidget.cpp" line="65"/>
+        <source>retry</source>
+        <translation>Riprova</translation>
+    </message>
+</context>
+<context>
+    <name>QApplication</name>
+    <message>
+        <location filename="../../../Qt5.12.8/5.12.8/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h" line="320"/>
+        <source>Executable &apos;%1&apos; requires Qt %2, found Qt %3.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Qt5.12.8/5.12.8/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h" line="322"/>
+        <source>Incompatible Qt Library Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>T::QApplication</name>
+    <message>
+        <location filename="../../../Qt5.12.8/5.12.8/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h" line="320"/>
+        <source>Executable &apos;%1&apos; requires Qt %2, found Qt %3.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Qt5.12.8/5.12.8/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h" line="322"/>
+        <source>Incompatible Qt Library Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>cityaddition</name>
+    <message>
+        <location filename="../src/cityaddwidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>citycollectionitem</name>
+    <message>
+        <location filename="../src/citycollectionitem.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>citycollectionwidget</name>
+    <message>
+        <location filename="../src/citycollectionwidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>information</name>
+    <message>
+        <location filename="../src/informationwidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>main</name>
+    <message>
+        <location filename="../src/main.cpp" line="76"/>
+        <source>KylinWeather</source>
+        <translation>Weather</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="80"/>
+        <source>show indicator-china-weather test</source>
+        <translation>show indicator-china-weather test</translation>
+    </message>
+</context>
+<context>
+    <name>menuModule</name>
+    <message>
+        <location filename="../src/menumodule.cpp" line="23"/>
+        <source>menu</source>
+        <translation>Menù</translation>
+    </message>
+    <message>
+        <location filename="../src/menumodule.cpp" line="36"/>
+        <source>Theme</source>
+        <translation>Tema</translation>
+    </message>
+    <message>
+        <location filename="../src/menumodule.cpp" line="38"/>
+        <location filename="../src/menumodule.cpp" line="119"/>
+        <source>Help</source>
+        <translation>Aiuto</translation>
+    </message>
+    <message>
+        <location filename="../src/menumodule.cpp" line="40"/>
+        <location filename="../src/menumodule.cpp" line="117"/>
+        <source>About</source>
+        <translation>Informazioni</translation>
+    </message>
+    <message>
+        <location filename="../src/menumodule.cpp" line="42"/>
+        <location filename="../src/menumodule.cpp" line="115"/>
+        <source>Quit</source>
+        <translation>Esci</translation>
+    </message>
+    <message>
+        <location filename="../src/menumodule.cpp" line="205"/>
+        <source>weather</source>
+        <translation>Meteo</translation>
+    </message>
+    <message>
+        <location filename="../src/menumodule.cpp" line="213"/>
+        <source>Weather</source>
+        <translation>Meteo</translation>
+    </message>
+    <message>
+        <source>indicator china weather</source>
+        <translation type="vanished">Kylin Meteo</translation>
+    </message>
+    <message>
+        <source>Indicator China Weather</source>
+        <translation type="vanished">Kylin meteo</translation>
+    </message>
+    <message>
+        <location filename="../src/menumodule.cpp" line="235"/>
+        <source>Version: </source>
+        <translation>Versione：</translation>
+    </message>
+    <message>
+        <location filename="../src/menumodule.cpp" line="308"/>
+        <location filename="../src/menumodule.cpp" line="334"/>
+        <source>Service &amp; Support: </source>
+        <translation>Supporto：</translation>
+    </message>
+    <message>
+        <source>Support: support@kylinos.cn</source>
+        <translation type="vanished">Supporto：support@kylinos.cn</translation>
+    </message>
+</context>
+</TS>
